@@ -70,19 +70,19 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <OutDir>$(ProjectDir)\Bin\$(Configuration)\</OutDir>
+    <OutDir>$(ProjectDir)\Bin\Win32\$(Configuration)\</OutDir>
     <IntDir>$(ProjectDir)\Obj\$(Configuration)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <OutDir>$(ProjectDir)\Bin\$(Configuration)\</OutDir>
+    <OutDir>$(ProjectDir)\Bin\Win32\$(Configuration)\</OutDir>
     <IntDir>$(ProjectDir)\Obj\$(Configuration)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <OutDir>$(ProjectDir)\Bin\$(Configuration)\</OutDir>
+    <OutDir>$(ProjectDir)\Bin\Win64\$(Configuration)\</OutDir>
     <IntDir>$(ProjectDir)\Obj\$(Configuration)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <OutDir>$(ProjectDir)\Bin\$(Configuration)\</OutDir>
+    <OutDir>$(ProjectDir)\Bin\Win64\$(Configuration)\</OutDir>
     <IntDir>$(ProjectDir)\Obj\$(Configuration)\</IntDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
