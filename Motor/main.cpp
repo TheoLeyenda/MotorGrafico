@@ -3,7 +3,7 @@
 #include "glew.h"
 #include "GLFW/glfw3.h"
 
-int main(void)
+int main()
 {
 	glfwWindowHint(GLFW_SAMPLES, 4); // 4x antialiasing
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3); // Queremos OpenGL 3.3
@@ -25,4 +25,5 @@ int main(void)
 		fprintf(stderr, "Falló al inicializar GLEW\n");
 		return -1;
 	}
+	return 0;
 }
