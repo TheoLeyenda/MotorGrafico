@@ -1,4 +1,4 @@
-#include "glew.h"
+#include "Lib/GLEW/Include/glew.h"
 #include "GLFW/glfw3.h"
 
 int main(void)

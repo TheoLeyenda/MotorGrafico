@@ -1,6 +1,0 @@
-﻿  main.cpp
-LINK : warning LNK4098: la biblioteca predeterminada'MSVCRT' entra en conflicto con otras bibliotecas; use la biblioteca /NODEFAULTLIB:biblioteca
-main.obj : error LNK2019: símbolo externo __imp_glewInit sin resolver al que se hace referencia en la función main
-main.obj : error LNK2001: símbolo externo __imp_glewExperimental sin resolver
-C:\Users\Theo\Desktop\MotorGrafico\Lib\GLEW\Lib\glew32s.lib : warning LNK4272: el tipo de máquina de biblioteca 'x86' está en conflicto con el tipo de máquina de destino 'x64'
-C:\Users\Theo\Desktop\MotorGrafico\x64\Debug\Motor.dll : fatal error LNK1120: 2 externos sin resolver

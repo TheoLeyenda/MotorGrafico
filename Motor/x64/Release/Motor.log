@@ -1,4 +1,0 @@
-﻿  main.cpp
-main.obj : error LNK2001: símbolo externo __imp_glewExperimental sin resolver
-main.obj : error LNK2001: símbolo externo __imp_glewInit sin resolver
-C:\Users\Theo\Desktop\MotorGrafico\x64\Release\Motor.dll : fatal error LNK1120: 2 externos sin resolver
