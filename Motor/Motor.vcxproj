@@ -107,7 +107,7 @@
       <AdditionalIncludeDirectories>$(ProjectDir)\Lib\GLFW\include;$(ProjectDir)\Lib\GLEW\Include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
-      <AdditionalLibraryDirectories>$(ProyectDir)Lib\GLEW\Lib;$(ProyectDir)\Lib\GLFW\glfw-3.3.2.bin.WIN64\lib-vc2017</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(ProyectDir)Lib\GLEW\Lib;$(ProyectDir)Lib\GLFW\glfw-3.3.2.bin.WIN64\lib-vc2017</AdditionalLibraryDirectories>
       <AdditionalDependencies>opengl32.lib;glew32s.lib;glfw3.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
@@ -141,7 +141,7 @@
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalLibraryDirectories>$(ProyectDir)Lib\GLEW\Lib;$(ProyectDir)\Lib\GLFW\glfw-3.3.2.bin.WIN64\lib-vc2017</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(ProyectDir)Lib\GLEW\Lib;$(ProyectDir)Lib\GLFW\glfw-3.3.2.bin.WIN64\lib-vc2017</AdditionalLibraryDirectories>
       <AdditionalDependencies>opengl32.lib;glew32s.lib;glfw3.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
