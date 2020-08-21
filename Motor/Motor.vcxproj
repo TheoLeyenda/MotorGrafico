@@ -18,6 +18,13 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Src\GameBase.h" />
+    <ClInclude Include="Src\PrivateClass\Export.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Src\GameBase.cpp" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
     <ProjectGuid>{F15CBE09-9B9E-4C6B-AAB0-ADEF0548B852}</ProjectGuid>
@@ -72,18 +79,22 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <OutDir>$(ProjectDir)\Bin\Win32\$(Configuration)\</OutDir>
     <IntDir>$(ProjectDir)\Obj\$(Configuration)\</IntDir>
+    <TargetName>Motor32</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <OutDir>$(ProjectDir)\Bin\Win32\$(Configuration)\</OutDir>
     <IntDir>$(ProjectDir)\Obj\$(Configuration)\</IntDir>
+    <TargetName>Motor32</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <OutDir>$(ProjectDir)\Bin\Win64\$(Configuration)\</OutDir>
     <IntDir>$(ProjectDir)\Obj\$(Configuration)\</IntDir>
+    <TargetName>Motor64</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <OutDir>$(ProjectDir)\Bin\Win64\$(Configuration)\</OutDir>
     <IntDir>$(ProjectDir)\Obj\$(Configuration)\</IntDir>
+    <TargetName>Motor64</TargetName>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -145,9 +156,6 @@
       <AdditionalDependencies>opengl32.lib;glew32s.lib;glfw3.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <ClCompile Include="main.cpp" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
