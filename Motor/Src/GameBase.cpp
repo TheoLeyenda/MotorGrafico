@@ -5,44 +5,30 @@
 
 GameBase::GameBase()
 {
-
+	windows = new Windows(640, 480, "MOTORASO", NULL, NULL);
 }
 GameBase::~GameBase() 
 {
-
+	if (windows != NULL) 
+	{
+		delete windows;
+	}
 }
 int GameBase::Init()
-{
-	GLFWwindow* window;
-
-	//Initialize the library 
-	if (!glfwInit())
+{ 
+	if (!glfwInit() || windows == NULL)
 		return -1;
 
-	//Create a windowed mode window and its OpenGL context /
-	window = glfwCreateWindow(640, 480, "Hello World", NULL, NULL);
-	if (!window)
-	{
-		glfwTerminate();
-		return -1;
-	}
+	windows->CheckCreateWindows();
 
-	// Make the window's context current /
-	glfwMakeContextCurrent(window);
+	windows->CreateContextWindows();
 
-	//Loop until the user closes the window /
-	while (!glfwWindowShouldClose(window))
+	while (!windows->CheckGLFWwindowShouldClose()) 
 	{
-		//Render here 
 		glClear(GL_COLOR_BUFFER_BIT);
-
-		// Swap front and back buffers
-		glfwSwapBuffers(window);
-
-		// Poll for and process events 
+		windows->SwapBuffersWindows();
 		glfwPollEvents();
 	}
-
 	glfwTerminate();
-	return 0;
+	return 0; 
 }

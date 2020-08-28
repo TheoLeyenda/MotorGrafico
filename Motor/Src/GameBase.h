@@ -2,8 +2,11 @@
 #define GAMEBASE_H
 
 #include "PrivateClass/Export.h"
-class ENGINE_API GameBase {
+#include "Windows.h"
 
+class ENGINE_API GameBase {
+private:
+	Windows* windows;
 public:
 	GameBase();
 	~GameBase();
