@@ -95,11 +95,12 @@
       <PrecompiledHeaderFile />
     </ClCompile>
     <Link>
-      <AdditionalLibraryDirectories>$(SolutionDir)Game\LIb\MotorWin32\Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)Motor\Bin\Win32\Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>Motor32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>copy "$(SolutionDir)Game\LIb\MotorWin32\Debug\Motor32.dll" "$(SolutionDir)Game"</Command>
+      <Command>
+      </Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -136,11 +137,12 @@
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalLibraryDirectories>$(SolutionDir)Game\LIb\MotorWin32\Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)Motor\Bin\Win32\Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>Motor32.lib</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>copy "$(SolutionDir)Game\LIb\MotorWin32\Release\Motor32.dll" "$(SolutionDir)Game"</Command>
+      <Command>
+      </Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">

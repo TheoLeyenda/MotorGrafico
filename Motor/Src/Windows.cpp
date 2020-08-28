@@ -1,13 +1,16 @@
 #include "Windows.h"
+#include "glew.h"
+#include "GLFW/glfw3.h"
 
+GLFWwindow* RefWindow;
 Windows::Windows()
 {
 	RefWindow = glfwCreateWindow(640, 480, "Hello World", NULL, NULL);
 }
 
-Windows::Windows(int x, int y, const char* name, GLFWmonitor * monitor, GLFWwindow * share)
+Windows::Windows(int x, int y, const char* name)
 {
-	RefWindow = glfwCreateWindow(x, y, name, monitor, share);
+	RefWindow = glfwCreateWindow(x, y, name, NULL, NULL);
 }
 
 Windows::~Windows()
@@ -81,5 +84,3 @@ bool Windows::CheckGLFWwindowShouldClose()
 {
 	return glfwWindowShouldClose(RefWindow);
 }
-
-

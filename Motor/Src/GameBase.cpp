@@ -1,11 +1,13 @@
 
-#include "GameBase.h"
 #include "glew.h"
 #include "GLFW/glfw3.h"
+#include "GameBase.h"
 
 GameBase::GameBase()
 {
-	windows = new Windows(640, 480, "MOTORASO", NULL, NULL);
+	glfwInit();
+
+	windows = new Windows(1080, 680, "MOTORASO");
 }
 GameBase::~GameBase() 
 {
@@ -26,6 +28,7 @@ int GameBase::Init()
 	while (!windows->CheckGLFWwindowShouldClose()) 
 	{
 		glClear(GL_COLOR_BUFFER_BIT);
+		glClearColor(0.5f, 0.0f, 0.5f, 1.0f);
 		windows->SwapBuffersWindows();
 		glfwPollEvents();
 	}

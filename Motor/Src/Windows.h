@@ -2,8 +2,6 @@
 #define WINDOWS_H
 #define TAM 100
 
-#include "glew.h"
-#include "GLFW/glfw3.h"
 class Windows
 {
 private:
@@ -12,9 +10,8 @@ private:
 	char nameWindows[TAM];
 	bool fullscreen;
 public:
-	GLFWwindow* RefWindow;
 	Windows();
-	Windows(int x, int y, const char* name, GLFWmonitor *monitor, GLFWwindow *share);
+	Windows(int x, int y, const char* name);
 	~Windows();
 	void SetSize(int _sizeX, int _sizeY);
 	int GetSizeX();
