@@ -1,6 +1,5 @@
-
-#include "glew.h"
-#include "GLFW/glfw3.h"
+#include <glew.h>
+#include <GLFW/glfw3.h>
 #include "GameBase.h"
 
 GameBase::GameBase()
@@ -22,13 +21,16 @@ int GameBase::Init()
 		return -1;
 
 	windows->CheckCreateWindows();
-
 	windows->CreateContextWindows();
+	render->GLEWInit();
+	render->CreateVbo();
+	render->CreateShaderProgram();
 
 	while (!windows->CheckGLFWwindowShouldClose()) 
 	{
 		glClear(GL_COLOR_BUFFER_BIT);
-		glClearColor(0.5f, 0.0f, 0.5f, 1.0f);
+		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+		glDrawArrays(GL_TRIANGLES, 0, 3);
 		windows->SwapBuffersWindows();
 		glfwPollEvents();
 	}

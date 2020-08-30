@@ -2,8 +2,12 @@
 #define WINDOWS_H
 #define TAM 100
 
-class Windows
-{
+#include "PrivateClass/Export.h"
+#include <glew.h>
+#include <GLFW/glfw3.h>
+//#include "GLFW/glfw3.h"
+
+class ENGINE_API Windows{
 private:
 	int sizeX;
 	int sizeY;
@@ -18,7 +22,7 @@ public:
 	int GetSizeY();
 	void SetNameWindows(char name[]);
 	void SetFullscreen(bool _fullscreen);
-	//int CheckGLFWInit();
+
 	int CheckCreateWindows();
 	void CreateContextWindows();
 	bool CheckGLFWwindowShouldClose();
@@ -26,5 +30,4 @@ public:
 	void SwapBuffersWindows();
 	//void EventsWindows();
 };
-
 #endif

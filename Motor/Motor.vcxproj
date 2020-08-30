@@ -19,12 +19,16 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Src\fragmentShader.h" />
     <ClInclude Include="Src\GameBase.h" />
     <ClInclude Include="Src\PrivateClass\Export.h" />
+    <ClInclude Include="Src\Renderer.h" />
+    <ClInclude Include="Src\vertexShader.h" />
     <ClInclude Include="Src\Windows.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Src\GameBase.cpp" />
+    <ClCompile Include="Src\Renderer.cpp" />
     <ClCompile Include="Src\Windows.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
@@ -105,6 +109,7 @@
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(ProjectDir)\Lib\GLFW\include;$(ProjectDir)\Lib\GLEW\Include</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>GLEW_STATIC;_WINDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <AdditionalLibraryDirectories>$(ProyectDir)Lib\GLEW\Lib;$(ProjectDir)Lib\GLFW\glfw-3.3.2.bin.WIN32\lib-vc2017</AdditionalLibraryDirectories>
@@ -136,6 +141,7 @@
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(ProjectDir)\Lib\GLFW\include;$(ProjectDir)\Lib\GLEW\Include</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>GLEW_STATIC;_WINDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
