@@ -17,13 +17,20 @@ GameBase::~GameBase()
 }
 int GameBase::Init()
 { 
+	
 	if (!glfwInit() || windows == NULL)
 		return -1;
 
 	windows->CheckCreateWindows();
 	windows->CreateContextWindows();
 	render->GLEWInit();
-	render->CreateVbo();
+	//ESTO DESPUES VA EN SHAPE Y SHAPE RECIBE DE ENTITY EL RENDERER.
+	GLfloat _vertexBuffer[] = {
+		-0.5f , -0.5f , 0.0f , 0.0f ,1.0f,
+		 0.5f , -0.5f , 0.0f , 0.0f ,1.0f,
+		 0.0f ,  0.5f , 0.0f , 0.0f, 1.0f
+	};
+	render->CreateVbo(_vertexBuffer, sizeof(_vertexBuffer));
 	render->CreateShaderProgram();
 
 	while (!windows->CheckGLFWwindowShouldClose()) 

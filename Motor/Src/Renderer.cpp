@@ -1,6 +1,7 @@
 #include "Renderer.h"
 #include "vertexShader.h"
 #include "fragmentShader.h"
+#include <iostream>
 
 Renderer::Renderer() {
 	//Nada
@@ -8,41 +9,23 @@ Renderer::Renderer() {
 Renderer::~Renderer() {
 	DeleteShaders();
 }
-<<<<<<< HEAD
+
 void Renderer::GLEWInit(){
 	glewExperimental = GL_TRUE;
 	glewInit();
 }
-void Renderer::CreateVbo(){
-	GLfloat _vertexBuffer[] = {
-		-0.8f , -0.8f , 0.0f , 0.0f ,0.0f,
-		 0.8f , -0.8f , 0.0f , 1.0f ,0.0f,
-		 0.0f ,  0.8f , 0.5f , 0.5f, 0.0f
-	};
-	GLuint vbo;
-	glGenBuffers(1, &vbo);
-	glBindBuffer(GL_ARRAY_BUFFER, vbo);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(_vertexBuffer), _vertexBuffer, GL_STATIC_DRAW);
-}
-void Renderer::DeleteShaders() {
-=======
-void Renderer::GLEWInit(){
-	glewExperimental = GL_TRUE;
-	glewInit();
-}
-void Renderer::CreateVbo(){
-	GLfloat _vertexBuffer[] = {
+void Renderer::CreateVbo(GLfloat _vertexBuffer[], int tam){
+	/*GLfloat _vertexBuffer[] = {
 		-0.5f , -0.5f , 0.0f , 0.0f ,1.0f,
 		 0.5f , -0.5f , 0.0f , 0.0f ,1.0f,
 		 0.0f ,  0.5f , 0.0f , 0.0f, 1.0f
-	};
+	};*/
 	GLuint vbo;
 	glGenBuffers(1, &vbo);
 	glBindBuffer(GL_ARRAY_BUFFER, vbo);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(_vertexBuffer), _vertexBuffer, GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, tam, _vertexBuffer, GL_STATIC_DRAW);
 }
 void Renderer::DeleteShaders() {
->>>>>>> master
 	glDeleteProgram(_shaderProgram);
 	glDeleteShader(_vertexShader);
 	glDeleteShader(_fragmentShader);
