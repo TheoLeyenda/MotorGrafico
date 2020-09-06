@@ -24,7 +24,7 @@ int GameBase::Init()
 	windows->CheckCreateWindows();
 	windows->CreateContextWindows();
 	render->GLEWInit();
-	//ESTO DESPUES VA EN SHAPE Y SHAPE RECIBE DE ENTITY EL RENDERER.
+	//ESTO DESPUES VA EN SHAPE Y SHAPE RECIBE DE ENTITY EL RENDERER (uwu).
 	GLfloat _vertexBuffer[] = {
 		-0.5f , -0.5f , 0.0f , 0.0f ,1.0f,
 		 0.5f , -0.5f , 0.0f , 0.0f ,1.0f,
