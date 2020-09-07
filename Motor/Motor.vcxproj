@@ -19,16 +19,24 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Src\Entity.h" />
+    <ClInclude Include="Src\Entity2D.h" />
     <ClInclude Include="Src\fragmentShader.h" />
     <ClInclude Include="Src\GameBase.h" />
+    <ClInclude Include="Src\Material.h" />
     <ClInclude Include="Src\PrivateClass\Export.h" />
     <ClInclude Include="Src\Renderer.h" />
+    <ClInclude Include="Src\Shape.h" />
     <ClInclude Include="Src\vertexShader.h" />
     <ClInclude Include="Src\Windows.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Src\Entity.cpp" />
+    <ClCompile Include="Src\Entity2D.cpp" />
     <ClCompile Include="Src\GameBase.cpp" />
+    <ClCompile Include="Src\Material.cpp" />
     <ClCompile Include="Src\Renderer.cpp" />
+    <ClCompile Include="Src\Shape.cpp" />
     <ClCompile Include="Src\Windows.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
