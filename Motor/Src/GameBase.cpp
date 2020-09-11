@@ -1,5 +1,9 @@
 #include <glew.h>
 #include <GLFW/glfw3.h>
+#include <iostream>
+
+#include "vertexShader.h"
+#include "fragmentShader.h"
 #include "GameBase.h"
 
 GameBase::GameBase()
@@ -8,14 +12,17 @@ GameBase::GameBase()
 
 	windows = new Windows(1080, 680, "MOTORASO");
 	render = new Renderer();
-	shape = new Shape(render);
+	quad = new Shape(render);
+	tri = new Shape(render);
 }
 GameBase::~GameBase() 
 {
 	if (windows != NULL) 
 		delete windows;
-	if (shape != NULL)
-		delete shape;
+	if (quad != NULL)
+		delete quad;
+	if (tri != NULL)
+		delete tri;
 	if (render != NULL)
 		delete render;
 }
@@ -27,11 +34,23 @@ int GameBase::Init()
 	windows->CheckCreateWindows();
 	windows->CreateContextWindows();
 	render->GLEWInit();
-	shape->DrawShape(GL_QUADS);
+	if (glewInit() != GLEW_OK)
+		std::cout << "Error on GLEW!" << std::endl;
+
+	std::cout << glGetString(GL_VERSION) << std::endl;
+	//tri->InitShape(GL_TRIANGLES);
+	quad->InitShape(GL_QUADS);
+	unsigned int shaderProgram = render->CreateShaderProgram(vertexShader,fragmentShader);
+	glUseProgram(shaderProgram);
 
 	while (!windows->CheckGLFWwindowShouldClose()) 
 	{
-		render->DrawShapes(GL_QUADS);
+		glClear(GL_COLOR_BUFFER_BIT);
+		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+
+		render->Draw(); //ACA SE VA A BINDEAR EL VBUFFER Y EL SHADER TODO EL TIEMPO
+		//tri->DrawShape(GL_TRIANGLES);
+		quad->DrawShape(GL_QUADS);
 		windows->SwapBuffersWindows();
 		glfwPollEvents();
 	}

@@ -11,7 +11,8 @@ private:
 	Windows* windows;
 	Renderer* render;
 	
-	Shape* shape; //no tiene que ir xd
+	Shape* quad; //no tiene que ir xd
+	Shape* tri;
 public:
 	GameBase();
 	~GameBase();

@@ -6,25 +6,24 @@
 #include "PrivateClass/Export.h"
 #include <glew.h>
 #include <GLFW/glfw3.h>
+#include <iostream>
 
 class ENGINE_API Renderer {
 private:
-	//float _AttribVertex[TAMVBO];
-	GLuint _vertexShader;
-	GLuint _fragmentShader;
-	GLuint _shaderProgram;
-	GLuint _vbo;
-	GLuint _posAttrib;
-	GLuint _colorAttrib;
+	//unsigned int _vertexShader;
+	//unsigned int _fragmentShader;
+	//unsigned int _shaderProgram;
+	//unsigned int _vbo;
+	//unsigned int _posAttrib;
+	//unsigned int _colorAttrib;
 public:
 	Renderer();
 	~Renderer();
 	void GLEWInit();
 	void CreateVbo(float* _vertexBuffer);
-	void DrawShapes(GLenum type);
-	GLuint CreateVertexShader();
-	GLuint CreateFragmentShader();
-	void CreateShaderProgram();
-	void DeleteShaders();
+	void Draw();
+	unsigned int CompileShader(unsigned int type, const std::string& source);
+	int CreateShaderProgram(const std::string& vertexShader, const std::string& fragmentShader);
+	//void DeleteShaders();
 };
 #endif // !RENDERER_H

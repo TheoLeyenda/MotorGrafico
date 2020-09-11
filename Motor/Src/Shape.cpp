@@ -25,9 +25,10 @@ Shape::Shape(Renderer * _renderer, Material * _material) : Entity2D(_renderer, _
 
 Shape::~Shape(){}
 
-void Shape::DrawShape(GLenum typeShape)
+void Shape::InitShape(GLenum typeShape)
 {
-	switch (typeShape){
+	switch (typeShape)
+	{
 	case GL_TRIANGLES:
 		_vertexBuffer = vertexBufferTri;
 		break;
@@ -36,8 +37,17 @@ void Shape::DrawShape(GLenum typeShape)
 		break;
 	}
 	GetRenderer()->CreateVbo(_vertexBuffer);
-	GetRenderer()->CreateShaderProgram();
+}
 
+void Shape::DrawShape(GLenum typeShape)
+{
+	switch (typeShape)
+	{
+	case GL_TRIANGLES: glDrawArrays(GL_TRIANGLES, 0, 3);
+		break;
+	case GL_QUADS: glDrawArrays(GL_QUADS, 0, 4);
+		break;
+	}
 }
 
 float* Shape::GetVertexBuffer()

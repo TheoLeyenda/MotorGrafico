@@ -11,6 +11,7 @@ public:
 	Shape(Renderer *_renderer);
 	Shape(Renderer *_renderer, Material* _material);
 	~Shape();
+	void InitShape(GLenum typeShape);
 	void DrawShape(GLenum typeShape);
 	float* GetVertexBuffer();
 };
