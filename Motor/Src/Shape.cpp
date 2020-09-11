@@ -35,6 +35,9 @@ void Shape::DrawShape(GLenum typeShape)
 		_vertexBuffer = vertexBufferQuad;
 		break;
 	}
+	GetRenderer()->CreateVbo(_vertexBuffer);
+	GetRenderer()->CreateShaderProgram();
+
 }
 
 float* Shape::GetVertexBuffer()

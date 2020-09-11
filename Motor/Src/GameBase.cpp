@@ -28,8 +28,6 @@ int GameBase::Init()
 	windows->CreateContextWindows();
 	render->GLEWInit();
 	shape->DrawShape(GL_QUADS);
-	render->CreateVbo(shape->GetVertexBuffer());
-	render->CreateShaderProgram();
 
 	while (!windows->CheckGLFWwindowShouldClose()) 
 	{

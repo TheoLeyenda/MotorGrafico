@@ -18,6 +18,10 @@ Entity::Entity(Renderer * _renderer)
 
 Entity::~Entity(){}
 
+Renderer * Entity::GetRenderer(){
+	return renderer;
+}
+
 void Entity::SetPosition(float x, float y, float z)
 {
 	transform.position[0] = x;

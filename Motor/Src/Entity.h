@@ -62,7 +62,7 @@ public:
 	Entity(Renderer *_renderer);
 	~Entity();
 	Transform transform;
-	Renderer* GetRenderer() { return renderer; }
+	Renderer* GetRenderer();
 	void SetPosition(float x, float y, float z);
 	void SetScale(float x, float y, float z);
 	void SetRotationX(float x);
