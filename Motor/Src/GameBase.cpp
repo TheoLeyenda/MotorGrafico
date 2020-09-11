@@ -27,24 +27,13 @@ int GameBase::Init()
 	windows->CheckCreateWindows();
 	windows->CreateContextWindows();
 	render->GLEWInit();
-	//ESTO DESPUES VA EN SHAPE Y SHAPE RECIBE DE ENTITY EL RENDERER (uwu).
-	float _vertexBuffer[] = {
-		-0.5f , -0.5f , 1.0f , 0.0f ,0.0f,
-		 0.5f , -0.5f , 0.0f , 1.0f ,0.0f,
-		 0.0f ,  0.5f , 0.0f , 0.0f, 1.0f
-	};
-	float _vertexBuffer2[] = {
-		-0.5f, 0.5f,1.0f,0.0f,0.0f,
-		-0.5f,-0.5f,0.0f,1.0f,0.0f,
-		 0.5f,-0.5f,0.0f,0.0f,1.0f,
-		 0.5f, 0.5f,1.0f,0.0f,0.0f,
-	};
-	render->CreateVbo(_vertexBuffer);
+	shape->DrawShape(GL_QUADS);
+	render->CreateVbo(shape->GetVertexBuffer());
 	render->CreateShaderProgram();
 
 	while (!windows->CheckGLFWwindowShouldClose()) 
 	{
-		render->DrawShapes(GL_TRIANGLES);
+		render->DrawShapes(GL_QUADS);
 		windows->SwapBuffersWindows();
 		glfwPollEvents();
 	}
