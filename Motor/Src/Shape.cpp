@@ -12,3 +12,13 @@ Shape::Shape(Renderer * _renderer, Material * _material) : Entity2D(_renderer, _
 }
 
 Shape::~Shape(){}
+
+void Shape::setVertexBuffer(float* vertexBuf)
+{
+
+}
+
+float* Shape::getVertexBuffer()
+{
+	return _vertexBuffer;
+}

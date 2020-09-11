@@ -73,7 +73,3 @@ void Entity::SetRotationZ(float z)
 	internalData.rotateY = glm::rotate(glm::mat4(1.0f), z, axis);
 	UpdateMatrixModel();
 }
-
-
-
-

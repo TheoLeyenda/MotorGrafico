@@ -14,16 +14,22 @@ void Renderer::GLEWInit(){
 	glewExperimental = GL_TRUE;
 	glewInit();
 }
-void Renderer::CreateVbo(GLfloat _vertexBuffer[], int tam){
+void Renderer::CreateVbo(float* _vertexBuffer){
 	/*GLfloat _vertexBuffer[] = {
 		-0.5f , -0.5f , 0.0f , 0.0f ,1.0f,
 		 0.5f , -0.5f , 0.0f , 0.0f ,1.0f,
 		 0.0f ,  0.5f , 0.0f , 0.0f, 1.0f
 	};*/
-	GLuint vbo;
+
+	int tam = 0;
+	while (_vertexBuffer[tam] <= 1 && _vertexBuffer[tam] >= -1){
+		tam++;
+	}
+	std::cout << tam << std::endl;
+	unsigned int vbo;
 	glGenBuffers(1, &vbo);
 	glBindBuffer(GL_ARRAY_BUFFER, vbo);
-	glBufferData(GL_ARRAY_BUFFER, tam, _vertexBuffer, GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, tam * sizeof(float), _vertexBuffer, GL_STATIC_DRAW);
 }
 void Renderer::DeleteShaders() {
 	glDeleteProgram(_shaderProgram);
@@ -32,32 +38,32 @@ void Renderer::DeleteShaders() {
 	glDeleteBuffers(1, &_vbo);
 }
 GLuint Renderer::CreateVertexShader() {
-	GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
+	unsigned int vertexShader = glCreateShader(GL_VERTEX_SHADER);
 	glShaderSource(vertexShader, 1, &vertexSource, NULL);
 	glCompileShader(vertexShader);
 		return vertexShader;
 }
 GLuint Renderer::CreateFragmentShader() {
-	GLuint fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
+	unsigned int fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
 	glShaderSource(fragmentShader, 1, &fragmentSource, NULL);
 	glCompileShader(fragmentShader);
 		return fragmentShader;
 }
 void Renderer::CreateShaderProgram() {
-	GLuint vertex;
-	GLuint fragment;
+	unsigned int vertex;
+	unsigned int fragment;
 	
 	vertex = CreateVertexShader();
 	fragment = CreateFragmentShader();
-	GLuint shaderProgram = glCreateProgram();
+	unsigned int shaderProgram = glCreateProgram();
 	glAttachShader(shaderProgram, vertex);
 	glAttachShader(shaderProgram, fragment);
 	glLinkProgram(shaderProgram);
 	glUseProgram(shaderProgram);
-	GLuint posAttrib = glGetAttribLocation(shaderProgram, "position");
+	unsigned int posAttrib = glGetAttribLocation(shaderProgram, "position");
 	glVertexAttribPointer(posAttrib, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), 0);
 	glEnableVertexAttribArray(posAttrib);
-	GLuint colorAttrib = glGetAttribLocation(shaderProgram, "customColor");
+	unsigned int colorAttrib = glGetAttribLocation(shaderProgram, "customColor");
 	glVertexAttribPointer(colorAttrib, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(2 * sizeof(float)));
 	glEnableVertexAttribArray(colorAttrib);
 }

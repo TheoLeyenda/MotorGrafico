@@ -20,7 +20,7 @@ public:
 	Renderer();
 	~Renderer();
 	void GLEWInit();
-	void CreateVbo(GLfloat _vertexBuffer[], int tam);
+	void CreateVbo(float* _vertexBuffer);
 	GLuint CreateVertexShader();
 	GLuint CreateFragmentShader();
 	void CreateShaderProgram();

@@ -7,17 +7,20 @@ GameBase::GameBase()
 	glfwInit();
 
 	windows = new Windows(1080, 680, "MOTORASO");
+	render = new Renderer();
+	shape = new Shape(render);
 }
 GameBase::~GameBase() 
 {
 	if (windows != NULL) 
-	{
 		delete windows;
-	}
+	if (shape != NULL)
+		delete shape;
+	if (render != NULL)
+		delete render;
 }
 int GameBase::Init()
 { 
-	
 	if (!glfwInit() || windows == NULL)
 		return -1;
 
@@ -25,12 +28,12 @@ int GameBase::Init()
 	windows->CreateContextWindows();
 	render->GLEWInit();
 	//ESTO DESPUES VA EN SHAPE Y SHAPE RECIBE DE ENTITY EL RENDERER (uwu).
-	GLfloat _vertexBuffer[] = {
-		-0.5f , -0.5f , 0.0f , 0.0f ,1.0f,
-		 0.5f , -0.5f , 0.0f , 0.0f ,1.0f,
+	float _vertexBuffer[] = {
+		-0.5f , -0.5f , 1.0f , 0.0f ,0.0f,
+		 0.5f , -0.5f , 0.0f , 1.0f ,0.0f,
 		 0.0f ,  0.5f , 0.0f , 0.0f, 1.0f
 	};
-	render->CreateVbo(_vertexBuffer, sizeof(_vertexBuffer));
+	render->CreateVbo(_vertexBuffer);
 	render->CreateShaderProgram();
 
 	while (!windows->CheckGLFWwindowShouldClose()) 
