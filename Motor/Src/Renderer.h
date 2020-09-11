@@ -21,6 +21,7 @@ public:
 	~Renderer();
 	void GLEWInit();
 	void CreateVbo(float* _vertexBuffer);
+	void DrawShapes(GLenum type);
 	GLuint CreateVertexShader();
 	GLuint CreateFragmentShader();
 	void CreateShaderProgram();

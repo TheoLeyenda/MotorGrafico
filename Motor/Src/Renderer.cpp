@@ -31,6 +31,17 @@ void Renderer::CreateVbo(float* _vertexBuffer){
 	glBindBuffer(GL_ARRAY_BUFFER, vbo);
 	glBufferData(GL_ARRAY_BUFFER, tam * sizeof(float), _vertexBuffer, GL_STATIC_DRAW);
 }
+void Renderer::DrawShapes(GLenum type)
+{
+	glClear(GL_COLOR_BUFFER_BIT);
+	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+	switch (type){
+	case GL_TRIANGLES:	glDrawArrays(GL_TRIANGLES, 0, 3);
+		break;
+	case GL_QUADS:	glDrawArrays(GL_QUADS, 0, 4);
+		break;
+	}
+}
 void Renderer::DeleteShaders() {
 	glDeleteProgram(_shaderProgram);
 	glDeleteShader(_vertexShader);

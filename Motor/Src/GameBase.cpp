@@ -33,14 +33,18 @@ int GameBase::Init()
 		 0.5f , -0.5f , 0.0f , 1.0f ,0.0f,
 		 0.0f ,  0.5f , 0.0f , 0.0f, 1.0f
 	};
+	float _vertexBuffer2[] = {
+		-0.5f, 0.5f,1.0f,0.0f,0.0f,
+		-0.5f,-0.5f,0.0f,1.0f,0.0f,
+		 0.5f,-0.5f,0.0f,0.0f,1.0f,
+		 0.5f, 0.5f,1.0f,0.0f,0.0f,
+	};
 	render->CreateVbo(_vertexBuffer);
 	render->CreateShaderProgram();
 
 	while (!windows->CheckGLFWwindowShouldClose()) 
 	{
-		glClear(GL_COLOR_BUFFER_BIT);
-		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-		glDrawArrays(GL_TRIANGLES, 0, 3);
+		render->DrawShapes(GL_TRIANGLES);
 		windows->SwapBuffersWindows();
 		glfwPollEvents();
 	}
