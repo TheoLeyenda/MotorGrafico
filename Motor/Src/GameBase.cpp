@@ -21,8 +21,8 @@ GameBase::~GameBase()
 		delete windows;
 	if (quad != NULL)
 		delete quad;
-	if (tri != NULL)
-		delete tri;
+	if (quad != NULL)
+		delete quad;
 	if (render != NULL)
 		delete render;
 }
@@ -38,8 +38,8 @@ int GameBase::Init()
 		std::cout << "Error on GLEW!" << std::endl;
 
 	std::cout << glGetString(GL_VERSION) << std::endl;
-	//tri->InitShape(GL_TRIANGLES);
-	quad->InitShape(GL_QUADS);
+	//quad->InitShape(GL_QUADS);
+	tri->InitShape(GL_TRIANGLES);
 	unsigned int shaderProgram = render->CreateShaderProgram(vertexShader,fragmentShader);
 	glUseProgram(shaderProgram);
 
@@ -49,11 +49,13 @@ int GameBase::Init()
 		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 
 		render->Draw(); //ACA SE VA A BINDEAR EL VBUFFER Y EL SHADER TODO EL TIEMPO
-		//tri->DrawShape(GL_TRIANGLES);
-		quad->DrawShape(GL_QUADS);
+		//quad->DrawShape(GL_QUADS);
+		tri->DrawShape(GL_TRIANGLES);
+
 		windows->SwapBuffersWindows();
 		glfwPollEvents();
 	}
+	glDeleteProgram(shaderProgram);
 	glfwTerminate();
 	return 0; 
 }

@@ -8,12 +8,12 @@
 std::string fragmentShader =
 	"#version 330 core\n"
 	"\n"
-	"in vec3 color;"
+	"in vec4 color;"
 	"out vec4 outColor;"
 	"\n"
 	"void main()"
 	"{"
-	"	outColor = vec4(color,1.0);\n"
+	"	outColor = color;\n"
 	"}"
 	"\n"
 ;
