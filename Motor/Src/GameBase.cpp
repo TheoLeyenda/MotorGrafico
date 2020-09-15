@@ -21,8 +21,8 @@ GameBase::~GameBase()
 		delete windows;
 	if (quad != NULL)
 		delete quad;
-	if (quad != NULL)
-		delete quad;
+	if (tri != NULL)
+		delete tri;
 	if (render != NULL)
 		delete render;
 }
@@ -39,7 +39,7 @@ int GameBase::Init()
 
 	std::cout << glGetString(GL_VERSION) << std::endl;
 	//quad->InitShape(GL_QUADS);
-	tri->InitShape(GL_TRIANGLES);
+	quad->InitShape(GL_QUADS);
 	unsigned int shaderProgram = render->CreateShaderProgram(vertexShader,fragmentShader);
 	glUseProgram(shaderProgram);
 
@@ -50,7 +50,7 @@ int GameBase::Init()
 
 		render->Draw(); //ACA SE VA A BINDEAR EL VBUFFER Y EL SHADER TODO EL TIEMPO
 		//quad->DrawShape(GL_QUADS);
-		tri->DrawShape(GL_TRIANGLES);
+		quad->DrawShape(GL_QUADS);
 
 		windows->SwapBuffersWindows();
 		glfwPollEvents();
