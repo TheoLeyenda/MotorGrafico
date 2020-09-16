@@ -46,17 +46,23 @@ void Shape::InitShape(GLenum typeShape)
 	{
 	case GL_TRIANGLES:
 		_vertexBuffer = vertexBufferTri;
+		
 		//material->SetMaterialValue(0.5f, 0.3f, 0.2f, 1.0f);
 		//SetVertexMaterial(material->GetColorRGBA(), vertexBufferTri, 3, 4, 3);
+
 		material->SetMaterialValue(ColorTri, 4,3);
 		SetVertexMaterial(material->GetVertexColorRGBA(), vertexBufferTri, 3, 4, 3, 4);
+		
 		break;
 	case GL_QUADS:
 		_vertexBuffer = vertexBufferQuad;
+		
 		//material->SetMaterialValue(0.5f, 0.3f, 0.2f, 1.0f);
 		//SetVertexMaterial(material->GetColorRGBA(),vertexBufferQuad,3,4,4);
+		
 		material->SetMaterialValue(ColorQuad, 4, 4);
 		SetVertexMaterial(material->GetVertexColorRGBA(), vertexBufferQuad, 3, 4, 4, 4);
+		
 		break;
 	}
 	CreateVbo(_vertexBuffer);
