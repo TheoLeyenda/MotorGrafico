@@ -4,8 +4,11 @@ int main()
 {
 	Game* game = new Game();
 
-	game->Play();
+	if(game != NULL)
+		game->Play();
 
-	delete game;
+	if (game != NULL)
+		delete game;
+
 	return 0;
 }
