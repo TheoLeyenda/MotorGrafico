@@ -80,15 +80,8 @@ void Shape::CreateVbo(float* vertexBuffer){
 	glBufferData(GL_ARRAY_BUFFER, tam * sizeof(float), vertexBuffer, GL_DYNAMIC_DRAW);
 }
 
-void Shape::DrawShape(GLenum typeShape)
-{
-	switch (typeShape)
-	{
-	case GL_TRIANGLES: glDrawArrays(GL_TRIANGLES, 0, 3);
-		break;
-	case GL_QUADS: glDrawArrays(GL_QUADS, 0, 4);
-		break;
-	}
+unsigned int Shape::GetVertexObject(){
+	return _vbo;
 }
 
 float* Shape::GetVertexBuffer()

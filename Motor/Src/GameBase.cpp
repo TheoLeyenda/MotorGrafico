@@ -6,6 +6,8 @@
 #include "fragmentShader.h"
 #include "GameBase.h"
 
+//#define ASSERT(x) if (!(x)) __debugbreak();
+
 GameBase::GameBase()
 {
 	glfwInit();
@@ -38,24 +40,38 @@ int GameBase::Init()
 		std::cout << "Error on GLEW!" << std::endl;
 
 	std::cout << glGetString(GL_VERSION) << std::endl;
-	quad->InitShape(GL_QUADS);
-	//tri->InitShape(GL_TRIANGLES);
-	unsigned int shaderProgram = render->CreateShaderProgram(vertexShader,fragmentShader);
-	glUseProgram(shaderProgram);
+	bool triOn = true;
+	bool quadOn = false;
+
+	unsigned int shaderProgram1;
+	unsigned int shaderProgram2;
+
+	if (triOn){
+		tri->InitShape(GL_TRIANGLES);
+		shaderProgram1 = render->CreateShaderProgram(vertexShader, fragmentShader);
+		glUseProgram(shaderProgram1);
+	}
+	if (quadOn){
+		quad->InitShape(GL_QUADS);
+		shaderProgram2 = render->CreateShaderProgram(vertexShader, fragmentShader);
+		glUseProgram(shaderProgram2);
+	}
 
 	while (!windows->CheckGLFWwindowShouldClose()) 
 	{
 		glClear(GL_COLOR_BUFFER_BIT);
 		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 
-		render->Draw(); //ACA SE VA A BINDEAR EL VBUFFER Y EL SHADER TODO EL TIEMPO
-		quad->DrawShape(GL_QUADS);
-		//tri->DrawShape(GL_TRIANGLES);
+		//render->GLClearError();
+		if (triOn && shaderProgram1){ render->Draw(GL_TRIANGLES, 3, tri->GetVertexObject(), shaderProgram1); }
+		else if (quadOn && shaderProgram2){ render->Draw(GL_QUADS, 4, quad->GetVertexObject(), shaderProgram2); }
+		//ASSERT(render->GLLogCall());
 
 		windows->SwapBuffersWindows();
 		glfwPollEvents();
 	}
-	glDeleteProgram(shaderProgram);
+	glDeleteProgram(shaderProgram1);
+	glDeleteProgram(shaderProgram2);
 	glfwTerminate();
 	return 0; 
 }

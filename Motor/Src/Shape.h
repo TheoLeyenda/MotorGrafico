@@ -10,13 +10,14 @@ class ENGINE_API Shape : public Entity2D
 {
 private:
 	float* _vertexBuffer;
+	unsigned int _vbo;
 public:
 	Shape(Renderer *_renderer);
 	Shape(Renderer *_renderer, Material* _material);
 	~Shape();
 	void InitShape(GLenum typeShape);
 	void CreateVbo(float* vertexBuffer);
-	void DrawShape(GLenum typeShape);
+	unsigned int GetVertexObject();
 	float* GetVertexBuffer();
 	void SetVertexMaterial(glm::vec4 material,float* VBA, int start,int offset, int repeticiones);
 	void SetVertexMaterial(glm::vec4* materials, float* VBA, int start, int offset, int repeticiones, int countElementsForRepe);

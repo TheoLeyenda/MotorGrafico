@@ -13,9 +13,26 @@ void Renderer::GLEWInit(){
 	glewInit();
 }
 
-void Renderer::Draw()
-{
-	//ACA SE BINDE EL SHADER, EL VBO EL VAO Y DRAW ARRAY
+void Renderer::GLClearError(){
+	while (glGetError() != GL_NO_ERROR);
+}
+
+bool Renderer::GLLogCall(){
+	while (GLenum error = glGetError()){
+		std::cout << "[OpenGL Error]	(" << error << ")" << std::endl;
+		return false;
+	}
+	return true;
+}
+
+void Renderer::Draw(GLenum figura, int vertexs, unsigned int vbo, unsigned int& shaderProg){
+	
+	glUseProgram(shaderProg);
+
+	glBindBuffer(1, vbo);
+
+	glDrawArrays(figura, 0, vertexs);
+
 }
 
 unsigned int Renderer::CompileShader(unsigned int type, const std::string& source){

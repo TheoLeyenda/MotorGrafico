@@ -15,7 +15,9 @@ public:
 	Renderer();
 	~Renderer();
 	void GLEWInit();
-	void Draw();
+	void GLClearError();
+	bool GLLogCall();
+	void Draw(GLenum figura, int vertexs, unsigned int vbo, unsigned int& shaderProg);
 	unsigned int CompileShader(unsigned int type, const std::string& source);
 	int CreateShaderProgram(const std::string& vertexShader, const std::string& fragmentShader);
 };
