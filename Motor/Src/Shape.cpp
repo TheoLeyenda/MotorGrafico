@@ -115,6 +115,11 @@ void Shape::SetVertexMaterial(glm::vec4* materials, float* VBA, int start, int o
 		std::cout << std::endl;
 	}
 }
+void Shape::Draw(GLenum figura,int vertexs, unsigned int& shaderProg)
+{
+	if (renderer != NULL)
+		renderer->Draw(figura, vertexs, _vbo, shaderProg);
+}
 //float vertexBufferTri[] = {
 //	//X		  Y		 Z		R	  G	    B	  A
 //	-0.5f , -0.5f , 0.0f, 0.0f , 0.0f ,0.0f, 1.0f,

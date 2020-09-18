@@ -40,6 +40,7 @@ int GameBase::Init()
 		std::cout << "Error on GLEW!" << std::endl;
 
 	std::cout << glGetString(GL_VERSION) << std::endl;
+	
 	bool triOn = true;
 	bool quadOn = false;
 
@@ -63,15 +64,17 @@ int GameBase::Init()
 		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 
 		//render->GLClearError();
-		if (triOn && shaderProgram1){ render->Draw(GL_TRIANGLES, 3, tri->GetVertexObject(), shaderProgram1); }
-		else if (quadOn && shaderProgram2){ render->Draw(GL_QUADS, 4, quad->GetVertexObject(), shaderProgram2); }
+		if (triOn && shaderProgram1){ tri->Draw(GL_TRIANGLES, 3,  shaderProgram1); }
+		else if (quadOn && shaderProgram2){ quad->Draw(GL_QUADS, 4, shaderProgram2); }
 		//ASSERT(render->GLLogCall());
 
 		windows->SwapBuffersWindows();
 		glfwPollEvents();
 	}
-	glDeleteProgram(shaderProgram1);
-	glDeleteProgram(shaderProgram2);
+	if(triOn)
+		glDeleteProgram(shaderProgram1);
+	if(quadOn)
+		glDeleteProgram(shaderProgram2);
 	glfwTerminate();
 	return 0; 
 }

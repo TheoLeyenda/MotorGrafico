@@ -21,5 +21,6 @@ public:
 	float* GetVertexBuffer();
 	void SetVertexMaterial(glm::vec4 material,float* VBA, int start,int offset, int repeticiones);
 	void SetVertexMaterial(glm::vec4* materials, float* VBA, int start, int offset, int repeticiones, int countElementsForRepe);
+	void Draw(GLenum figura, int vertexs, unsigned int& shaderProg);
 };
 #endif
