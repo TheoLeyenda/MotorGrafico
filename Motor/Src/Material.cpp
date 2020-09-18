@@ -29,6 +29,7 @@ Material::~Material()
 
 void Material::SetMaterialValue(float r, float g, float b, float a){
 	_colorRGBA = { r,g,b,a };
+	//std::cout << "r: " << _colorRGBA[0] << " g: " << _colorRGBA[1] << " b: " << _colorRGBA[2] << " a: " << _colorRGBA[3] << std::endl;
 }
 
 void Material::SetMaterialValue(float * arrayRGBA, int tamArrayRGBA, int repeticiones)

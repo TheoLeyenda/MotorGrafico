@@ -11,9 +11,13 @@
 class ENGINE_API Renderer {
 private:
 	//nothing
+	unsigned int _shader;
 public:
+
 	Renderer();
 	~Renderer();
+	unsigned int GetShader();
+	void SetShader(const std::string& vertexShader, const std::string& fragmentShader);
 	void GLEWInit();
 	void GLClearError();
 	bool GLLogCall();

@@ -1,4 +1,7 @@
+#include <iostream>
 #include "Shape.h"
+
+
 
 float vertexBufferTri[] = {
 	//X		  Y		 Z		R	  G	    B	  A
@@ -42,6 +45,7 @@ Shape::~Shape(){}
 void Shape::InitShape(GLenum typeShape)
 {
 	//material->SetMaterialValue()
+	_currentShape = typeShape;
 	switch (typeShape)
 	{
 	case GL_TRIANGLES:
@@ -119,6 +123,29 @@ void Shape::Draw(GLenum figura,int vertexs, unsigned int& shaderProg)
 {
 	if (renderer != NULL)
 		renderer->Draw(figura, vertexs, _vbo, shaderProg);
+
+	_currentShape = figura;
+}
+void Shape::SetSolidColor(float r, float g, float b, float a, const std::string& vertexShader, const std::string& fragmentShader)
+{
+	material->SetMaterialValue(r, g, b, a);
+	switch (_currentShape)
+	{
+	case GL_TRIANGLES:
+
+		SetVertexMaterial(material->GetColorRGBA(), vertexBufferTri, 3, 4, 3);
+		break;
+	case GL_QUADS:
+		SetVertexMaterial(material->GetColorRGBA(), vertexBufferQuad, 3, 4, 4);
+		break;
+	}
+	glBindBuffer(GL_ARRAY_BUFFER, _vbo);
+	int tam = 0;
+	while (_vertexBuffer[tam] <= 1 && _vertexBuffer[tam] >= -1) {
+		tam++;
+	}
+	glBufferData(GL_ARRAY_BUFFER, tam * sizeof(float), _vertexBuffer, GL_DYNAMIC_DRAW);
+	renderer->SetShader(vertexShader,fragmentShader);
 }
 //float vertexBufferTri[] = {
 //	//X		  Y		 Z		R	  G	    B	  A

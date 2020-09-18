@@ -23,6 +23,7 @@ Renderer* GetRenderer();
 
 #ifndef ENTITY_H
 #define ENTITY_H
+
 #include "../Lib/glm/vec4.hpp"
 #include "../Lib/glm/vec3.hpp"
 #include "../Lib/glm/vec2.hpp"
@@ -32,6 +33,8 @@ Renderer* GetRenderer();
 #include "../Lib/glm/ext/scalar_constants.hpp"
 #include "PrivateClass/Export.h"
 #include "Renderer.h"
+
+
 
 #define ENTITY_2DIMENTIONS 1
 #define ENTITY_3DIMENTIONS 2
@@ -43,7 +46,7 @@ struct ENGINE_API Transform
 	glm::vec3 rotation;
 	glm::vec3 scale;
 };
-struct ENGINE_API InternalData 
+struct ENGINE_API InternalData
 {
 	glm::mat4 model;
 	glm::mat4 translate;

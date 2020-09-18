@@ -1,11 +1,19 @@
 #include "Renderer.h"
 #include <iostream>
-
 Renderer::Renderer() {
 	//Nada
 }
 Renderer::~Renderer() {
 	//DeleteShaders();
+}
+
+unsigned int Renderer::GetShader()
+{
+	return _shader;
+}
+void Renderer::SetShader(const std::string & vertexShader, const std::string & fragmentShader)
+{
+	_shader = CreateShaderProgram(vertexShader, fragmentShader);
 }
 
 void Renderer::GLEWInit(){
