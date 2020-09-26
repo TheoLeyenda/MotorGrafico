@@ -61,6 +61,8 @@ int Windows::CheckCreateWindows()
 void Windows::CreateContextWindows()
 {
 	glfwMakeContextCurrent(RefWindow);
+
+	glfwSwapInterval(1);
 }
 bool Windows::CheckGLFWwindowShouldClose()
 {

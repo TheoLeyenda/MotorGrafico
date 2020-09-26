@@ -78,19 +78,35 @@ void Shape::CreateVbo(float* vertexBuffer){
 	while (vertexBuffer[tam] <= 1 && vertexBuffer[tam] >= -1){
 		tam++;
 	}
-	unsigned int vbo;
-	glGenBuffers(1, &vbo);
-	glBindBuffer(GL_ARRAY_BUFFER, vbo);
+	glGenBuffers(1, &_vbo);
+	glBindBuffer(GL_ARRAY_BUFFER, _vbo);
 	glBufferData(GL_ARRAY_BUFFER, tam * sizeof(float), vertexBuffer, GL_DYNAMIC_DRAW);
 }
 
-unsigned int Shape::GetVertexObject(){
+unsigned int Shape::GetVbo(){
 	return _vbo;
 }
 
 float* Shape::GetVertexBuffer()
 {
 	return _vertexBuffer;
+}
+
+void Shape::SetVertexsAttrib(unsigned int & shaderId){
+	_posAttrib = glGetAttribLocation(shaderId, "position");
+	glVertexAttribPointer(_posAttrib, 3, GL_FLOAT, GL_FALSE, 7 * sizeof(float), 0);
+	glEnableVertexAttribArray(_posAttrib);
+	_colorAttrib = glGetAttribLocation(shaderId, "customColor");
+	glVertexAttribPointer(_colorAttrib, 4, GL_FLOAT, GL_FALSE, 7 * sizeof(float), (void*)(3 * sizeof(float)));
+	glEnableVertexAttribArray(_colorAttrib);
+}
+
+unsigned int Shape::GetPosAttrib(){
+	return _posAttrib;
+}
+
+unsigned int Shape::GetColAttrib(){
+	return _colorAttrib;
 }
 
 void Shape::SetVertexMaterial(glm::vec4 material, float* VBA, int start, int offset, int repeticiones){
@@ -119,11 +135,16 @@ void Shape::SetVertexMaterial(glm::vec4* materials, float* VBA, int start, int o
 		std::cout << std::endl;
 	}
 }
-void Shape::Draw(GLenum figura,int vertexs, unsigned int& shaderProg)
+void Shape::Draw(GLenum figura,int vertexs, unsigned int& shaderProg, Windows* refWindow)
 {
 	if (renderer != NULL)
-		renderer->Draw(figura, vertexs, _vbo, shaderProg);
+	{
+		renderer->BeignDraw();
 
+		renderer->Draw(figura, vertexs, GetVbo(), shaderProg,GetPosAttrib(),GetColAttrib());
+
+		renderer->EndDraw(refWindow);
+	}
 	_currentShape = figura;
 }
 void Shape::SetSolidColor(float r, float g, float b, float a, const std::string& vertexShader, const std::string& fragmentShader)

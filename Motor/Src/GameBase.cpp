@@ -32,46 +32,25 @@ int GameBase::Init()
 	windows->CheckCreateWindows();
 	windows->CreateContextWindows();
 	render->GLEWInit();
-	if (glewInit() != GLEW_OK)
-		std::cout << "Error on GLEW!" << std::endl;
-
-	std::cout << glGetString(GL_VERSION) << std::endl;
 	
-	bool triOn = true;
-	bool quadOn = false;
+	tri->InitShape(GL_TRIANGLES);
 
-	if (triOn){
-		tri->InitShape(GL_TRIANGLES);
-	}
-	if (quadOn){
-		quad->InitShape(GL_QUADS);
-	}
 	render->SetShader(vertexShader, fragmentShader);
-	glUseProgram(render->GetShader());
-	unsigned int shaderAux = render->GetShader();
-	while (!windows->CheckGLFWwindowShouldClose()) 
-	{
-		glClear(GL_COLOR_BUFFER_BIT);
-		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-		
-		shaderAux = render->GetShader();
-		
-		//render->GLClearError();
-		if (triOn)
-		{ 
-			tri->SetSolidColor(1.0f, 1.0f, 0.0f, 1.0f, vertexShader, fragmentShader);
-			tri->Draw(GL_TRIANGLES, 3, shaderAux);
-			
-		}
-		else if (quadOn)
-		{ 
-			quad->SetSolidColor(1.0f, 0.0f, 1.0f, 1.0f, vertexShader, fragmentShader);
-			quad->Draw(GL_QUADS, 4, shaderAux);
-			
-		}
-		//ASSERT(render->GLLogCall());
 
-		windows->SwapBuffersWindows();
+	tri->SetVertexsAttrib(render->GetShader());
+
+	glUseProgram(render->GetShader());
+
+	//Limpiar shader y buffer 
+	glUseProgram(0);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+	while (!windows->CheckGLFWwindowShouldClose()) 
+	{	
+		tri->SetSolidColor(1.0f, 0.0f, 0.0f, 1.0f, vertexShader, fragmentShader);
+
+		tri->Draw(GL_TRIANGLES, 3, render->GetShader(), windows);
+
 		glfwPollEvents();
 	}
 

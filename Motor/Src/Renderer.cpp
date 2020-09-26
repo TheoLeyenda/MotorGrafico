@@ -7,18 +7,22 @@ Renderer::~Renderer() {
 	//DeleteShaders();
 }
 
-unsigned int Renderer::GetShader()
+unsigned int& Renderer::GetShader()
 {
-	return _shader;
+	return _shaderProgram;
 }
 void Renderer::SetShader(const std::string & vertexShader, const std::string & fragmentShader)
 {
-	_shader = CreateShaderProgram(vertexShader, fragmentShader);
+	_shaderProgram = CreateShaderProgram(vertexShader, fragmentShader);
 }
 
 void Renderer::GLEWInit(){
 	glewExperimental = GL_TRUE;
 	glewInit();
+	if (glewInit() != GLEW_OK)
+		std::cout << "Error on GLEW!" << std::endl;
+
+	std::cout << glGetString(GL_VERSION) << std::endl;
 }
 
 void Renderer::GLClearError(){
@@ -33,14 +37,26 @@ bool Renderer::GLLogCall(){
 	return true;
 }
 
-void Renderer::Draw(GLenum figura, int vertexs, unsigned int vbo, unsigned int& shaderProg){
+void Renderer::BeignDraw(){
+	glClear(GL_COLOR_BUFFER_BIT);
+	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+}
+
+void Renderer::Draw(GLenum figura, int vertexs, unsigned int vbo, unsigned int& shaderProg, unsigned int posAttrib, unsigned int colAttrib){
 	
 	glUseProgram(shaderProg);
 
-	glBindBuffer(1, vbo);
+	glBindBuffer(GL_ARRAY_BUFFER, vbo);
+	glVertexAttribPointer(posAttrib, 3, GL_FLOAT, GL_FALSE, 7 * sizeof(float), 0);
+	glEnableVertexAttribArray(posAttrib);
+	glVertexAttribPointer(colAttrib, 4, GL_FLOAT, GL_FALSE, 7 * sizeof(float), (void*)(3 * sizeof(float)));
+	glEnableVertexAttribArray(colAttrib);
 
 	glDrawArrays(figura, 0, vertexs);
+}
 
+void Renderer::EndDraw(Windows* refWindow){
+	refWindow->SwapBuffersWindows();
 }
 
 unsigned int Renderer::CompileShader(unsigned int type, const std::string& source){
@@ -81,13 +97,6 @@ int Renderer::CreateShaderProgram(const std::string& vertexShader, const std::st
 
 	glDeleteShader(vertex);
 	glDeleteShader(fragment);
-
-	unsigned int posAttrib = glGetAttribLocation(sProgram, "position");
-	glVertexAttribPointer(posAttrib, 3, GL_FLOAT, GL_FALSE, 7 * sizeof(float), 0);
-	glEnableVertexAttribArray(posAttrib);
-	unsigned int colorAttrib = glGetAttribLocation(sProgram, "customColor");
-	glVertexAttribPointer(colorAttrib, 4, GL_FLOAT, GL_FALSE, 7 * sizeof(float), (void*)(3 * sizeof(float)));
-	glEnableVertexAttribArray(colorAttrib);
 
 	return sProgram;
 }
