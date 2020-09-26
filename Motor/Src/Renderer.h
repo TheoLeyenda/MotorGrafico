@@ -21,6 +21,10 @@ public:
 	void GLEWInit();
 	void GLClearError();
 	bool GLLogCall();
+	void UseProgram(unsigned int& shader);
+	void ClearShader();
+	void BindBuffer(unsigned int vbo, unsigned int posAttrib, unsigned int colAttrib);
+	void UnbindBuffer();
 	void BeignDraw();
 	void Draw(GLenum figura, int vertexs, unsigned int vbo, unsigned int& shaderProg, unsigned int posAttrib, unsigned int colAttrib);
 	void EndDraw(Windows* refWindow);

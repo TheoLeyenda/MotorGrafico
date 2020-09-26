@@ -37,6 +37,26 @@ bool Renderer::GLLogCall(){
 	return true;
 }
 
+void Renderer::UseProgram(unsigned int & shader){
+	glUseProgram(shader);
+}
+
+void Renderer::ClearShader(){
+	glUseProgram(0);
+}
+
+void Renderer::BindBuffer(unsigned int vbo, unsigned int posAttrib, unsigned int colAttrib){
+	glBindBuffer(GL_ARRAY_BUFFER, vbo);
+	glVertexAttribPointer(posAttrib, 3, GL_FLOAT, GL_FALSE, 7 * sizeof(float), 0);
+	glEnableVertexAttribArray(posAttrib);
+	glVertexAttribPointer(colAttrib, 4, GL_FLOAT, GL_FALSE, 7 * sizeof(float), (void*)(3 * sizeof(float)));
+	glEnableVertexAttribArray(colAttrib);
+}
+
+void Renderer::UnbindBuffer(){
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+}
+
 void Renderer::BeignDraw(){
 	glClear(GL_COLOR_BUFFER_BIT);
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
@@ -44,15 +64,13 @@ void Renderer::BeignDraw(){
 
 void Renderer::Draw(GLenum figura, int vertexs, unsigned int vbo, unsigned int& shaderProg, unsigned int posAttrib, unsigned int colAttrib){
 	
-	glUseProgram(shaderProg);
+	UseProgram(shaderProg);
 
-	glBindBuffer(GL_ARRAY_BUFFER, vbo);
-	glVertexAttribPointer(posAttrib, 3, GL_FLOAT, GL_FALSE, 7 * sizeof(float), 0);
-	glEnableVertexAttribArray(posAttrib);
-	glVertexAttribPointer(colAttrib, 4, GL_FLOAT, GL_FALSE, 7 * sizeof(float), (void*)(3 * sizeof(float)));
-	glEnableVertexAttribArray(colAttrib);
+	BindBuffer(vbo, posAttrib, colAttrib);
 
 	glDrawArrays(figura, 0, vertexs);
+
+	UnbindBuffer();
 }
 
 void Renderer::EndDraw(Windows* refWindow){

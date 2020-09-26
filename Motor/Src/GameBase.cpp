@@ -42,8 +42,8 @@ int GameBase::Init()
 	glUseProgram(render->GetShader());
 
 	//Limpiar shader y buffer 
-	glUseProgram(0);
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	render->ClearShader();
+	render->UnbindBuffer();
 
 	while (!windows->CheckGLFWwindowShouldClose()) 
 	{	
