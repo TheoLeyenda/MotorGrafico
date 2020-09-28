@@ -22,7 +22,7 @@ public:
 	int GetSizeY();
 	void SetNameWindows(char name[]);
 	void SetFullscreen(bool _fullscreen);
-
+	GLFWwindow* GetWindowsPtr();
 	int CheckCreateWindows();
 	void CreateContextWindows();
 	bool CheckGLFWwindowShouldClose();

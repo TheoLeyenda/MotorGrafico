@@ -1,3 +1,4 @@
+
 #include "Renderer.h"
 #include <iostream>
 Renderer::Renderer() {
@@ -37,8 +38,17 @@ bool Renderer::GLLogCall(){
 	return true;
 }
 
-void Renderer::UseProgram(unsigned int & shader){
+void Renderer::UseProgram(unsigned int& shader, glm::mat4 model){
+
+	unsigned int modelLocation = glGetUniformLocation(shader, "model");
+	std::cout << "model location: "<<modelLocation << std::endl;
+	//unsigned int viewLocation = glGetUniformLocation(shader, "view");
+	//unsigned int projectionLocation = glGetUniformLocation(shader, "projection");
 	glUseProgram(shader);
+
+	glUniformMatrix4fv(modelLocation, 1, GL_FALSE, glm::value_ptr(model));
+	//glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view));
+	//glUniformMatrix4fv(projectionLoc, 1, GL_FALSE, glm::value_ptr(projection));
 }
 
 void Renderer::ClearShader(){
@@ -62,11 +72,11 @@ void Renderer::BeignDraw(){
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 }
 
-void Renderer::Draw(GLenum figura, int vertexs, unsigned int vbo, unsigned int& shaderProg, unsigned int posAttrib, unsigned int colAttrib){
+void Renderer::Draw(GLenum figura, int vertexs, unsigned int vbo, unsigned int& shaderProg, unsigned int posAttrib, unsigned int colAttrib, glm::mat4 model){
 	
-	UseProgram(shaderProg);
-
 	BindBuffer(vbo, posAttrib, colAttrib);
+
+	UseProgram(shaderProg, model);
 
 	glDrawArrays(figura, 0, vertexs);
 

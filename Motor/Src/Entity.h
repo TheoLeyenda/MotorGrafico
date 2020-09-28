@@ -66,6 +66,7 @@ public:
 	~Entity();
 	Transform transform;
 	Renderer* GetRenderer();
+	InternalData GetInternalData();
 	void SetPosition(float x, float y, float z);
 	void SetScale(float x, float y, float z);
 	void SetRotationX(float x);

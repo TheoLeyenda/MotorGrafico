@@ -45,12 +45,80 @@ int GameBase::Init()
 	render->ClearShader();
 	render->UnbindBuffer();
 
+	//VALORES DE TESTEO
+	float posX = 0;
+	float posY = 0;
+	float speed = 0.05f;
+	const float posZ = 1;
+
+	float rotX = 0;
+	float rotY = 0;
+	float rotZ = 0;
+	float speedRotation = 0.05f;
+
+	float scalX = 0;
+	float scalY = 0;
+	float scalZ = 0;
+	float speedScale = 0.05f;
+
 	while (!windows->CheckGLFWwindowShouldClose()) 
 	{	
 		tri->SetSolidColor(1.0f, 0.0f, 0.0f, 1.0f, vertexShader, fragmentShader);
 
-		tri->Draw(GL_TRIANGLES, 3, render->GetShader(), windows);
+		tri->Draw(GL_TRIANGLES, 3, render->GetShader(), windows, tri->GetInternalData().model);
+		
+		//INPUT DE MOVIMIENTO
+		if (glfwGetKey(windows->GetWindowsPtr(), GLFW_KEY_W) == GLFW_PRESS)
+		{
+			posY = posY + speed;
+			tri->SetPosition(posX, posY, posZ);
+		}
+		if (glfwGetKey(windows->GetWindowsPtr(), GLFW_KEY_S) == GLFW_PRESS)
+		{
+			posY = posY - speed;
+			tri->SetPosition(posX, posY, posZ);
+		}
+		if (glfwGetKey(windows->GetWindowsPtr(), GLFW_KEY_D) == GLFW_PRESS)
+		{
+			posX = posX + speed;
+			tri->SetPosition(posX, posY, posZ);
+		}
+		if (glfwGetKey(windows->GetWindowsPtr(), GLFW_KEY_A) == GLFW_PRESS)
+		{
+			posX = posX - speed;
+			tri->SetPosition(posX, posY, posZ);
+		}
+		//-------------------//
 
+		//INPUT DE ROTACION
+		if (glfwGetKey(windows->GetWindowsPtr(), GLFW_KEY_LEFT) == GLFW_PRESS)
+		{
+			rotZ = rotZ + speedRotation;
+			tri->SetRotationZ(rotZ);
+		}
+		if (glfwGetKey(windows->GetWindowsPtr(), GLFW_KEY_RIGHT) == GLFW_PRESS)
+		{
+			rotZ = rotZ - speedRotation;
+			tri->SetRotationZ(rotZ);
+		}
+		//------------------//
+
+		//INPUT DE ESCALA
+		if (glfwGetKey(windows->GetWindowsPtr(), GLFW_KEY_UP) == GLFW_PRESS)
+		{
+			scalX = scalX + speedScale;
+			scalY = scalY + speedScale;
+			scalZ = scalZ + speedScale;
+			tri->SetScale(scalX, scalY, scalZ);
+		}
+		if (glfwGetKey(windows->GetWindowsPtr(), GLFW_KEY_DOWN) == GLFW_PRESS)
+		{
+			scalX = scalX - speedScale;
+			scalY = scalY - speedScale;
+			scalZ = scalZ - speedScale;
+			tri->SetScale(scalX, scalY, scalZ);
+		}
+		//---------------------//
 		glfwPollEvents();
 	}
 

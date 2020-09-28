@@ -50,6 +50,10 @@ void Windows::SetFullscreen(bool _fullscreen)
 {
 	//HARIA QUE LA PANTALLA SEA FULL.
 }
+GLFWwindow* Windows::GetWindowsPtr()
+{
+	return RefWindow;
+}
 int Windows::CheckCreateWindows()
 {
 	if (!RefWindow)

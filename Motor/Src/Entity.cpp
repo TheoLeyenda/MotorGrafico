@@ -9,6 +9,13 @@ Entity::Entity(Renderer * _renderer)
 {
 	renderer = _renderer;
 
+	internalData.model = glm::mat4(1.0f);
+	internalData.rotateX = glm::mat4(1.0f);
+	internalData.rotateY = glm::mat4(1.0f);
+	internalData.rotateZ = glm::mat4(1.0f);
+	internalData.scale = glm::mat4(1.0f);
+	internalData.translate = glm::mat4(1.0f);
+
 	SetPosition(0, 0, 0);
 	SetRotationX(0);
 	SetRotationY(0);
@@ -22,8 +29,15 @@ Renderer * Entity::GetRenderer(){
 	return renderer;
 }
 
+InternalData Entity::GetInternalData()
+{
+	return internalData;
+}
+
 void Entity::SetPosition(float x, float y, float z)
 {
+	//if (z <= 0) z = 1;
+
 	transform.position[0] = x;
 	transform.position[1] = y;
 	transform.position[2] = z;
@@ -34,6 +48,10 @@ void Entity::SetPosition(float x, float y, float z)
 
 void Entity::SetScale(float x, float y, float z)
 {
+	//if (z <= 0) z = 1;
+	//if (y <= 0) y = 1;
+	//if (x <= 0) x = 1;
+
 	transform.scale[0] = x;
 	transform.scale[1] = y;
 	transform.scale[2] = z;

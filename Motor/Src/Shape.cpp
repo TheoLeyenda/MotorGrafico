@@ -135,13 +135,13 @@ void Shape::SetVertexMaterial(glm::vec4* materials, float* VBA, int start, int o
 		std::cout << std::endl;
 	}
 }
-void Shape::Draw(GLenum figura,int vertexs, unsigned int& shaderProg, Windows* refWindow)
+void Shape::Draw(GLenum figura,int vertexs, unsigned int& shaderProg, Windows* refWindow, glm::mat4 model)
 {
 	if (renderer != NULL)
 	{
 		renderer->BeignDraw();
 
-		renderer->Draw(figura, vertexs, GetVbo(), shaderProg,GetPosAttrib(),GetColAttrib());
+		renderer->Draw(figura, vertexs, GetVbo(), shaderProg,GetPosAttrib(),GetColAttrib(), model);
 
 		renderer->EndDraw(refWindow);
 	}

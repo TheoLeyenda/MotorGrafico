@@ -25,7 +25,7 @@ public:
 	unsigned int GetColAttrib();
 	void SetVertexMaterial(glm::vec4 material,float* VBA, int start,int offset, int repeticiones);
 	void SetVertexMaterial(glm::vec4* materials, float* VBA, int start, int offset, int repeticiones, int countElementsForRepe);
-	void Draw(GLenum figura, int vertexs, unsigned int& shaderProg, Windows* refWindow);
+	void Draw(GLenum figura, int vertexs, unsigned int& shaderProg, Windows* refWindow, glm::mat4 model);
 	void SetSolidColor(float r, float g, float b, float a, const std::string& vertexShader, const std::string& fragmentShader);
 };
 #endif
