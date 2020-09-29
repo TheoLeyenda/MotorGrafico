@@ -5,6 +5,8 @@
 #include "Windows.h"
 #include "Renderer.h"
 #include "Shape.h"
+#include <stdlib.h>
+#include <time.h>
 
 class ENGINE_API GameBase {
 private:

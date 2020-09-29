@@ -61,9 +61,33 @@ int GameBase::Init()
 	float scalZ = 0;
 	float speedScale = 0.05f;
 
+	float r = 1.0f;
+	float g = 0.0f;
+	float b = 0.0f;
+	float a = 1.0f;
+	bool enableSetSolidColor = true;
+	//---------------------//
+
+	//CONTROLES
+	//WASD = Movimiento.
+	//FLECHA ARRIBA = Aumentar Escala.
+	//FLECHA ABAJO = Disminuir Escala.
+	//FLECHA IZQUIERDA = Rotacion hacia la izquierda.
+	//FLECHA DERECHA = Rotacion hacia la derecha.
+	//ENTER = Cambio de color.
 	while (!windows->CheckGLFWwindowShouldClose()) 
 	{	
-		tri->SetSolidColor(1.0f, 0.0f, 0.0f, 1.0f, vertexShader, fragmentShader);
+		if (enableSetSolidColor) 
+		{
+			tri->SetSolidColor(r, g, b, a, vertexShader, fragmentShader);
+			if (glfwGetKey(windows->GetWindowsPtr(), GLFW_KEY_ENTER) == GLFW_PRESS) 
+			{
+				r = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
+				g = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
+				b = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
+				a = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
+			}
+		}
 
 		tri->Draw(GL_TRIANGLES, 3, render->GetShader(), windows, tri->GetInternalData().model);
 		
