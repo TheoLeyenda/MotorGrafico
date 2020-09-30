@@ -116,7 +116,7 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)\Lib\GLFW\include;$(ProjectDir)\Lib\GLEW\Include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)Lib\GLFW\include;$(ProjectDir)Lib;$(ProjectDir)Lib\GLEW\Include</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>GLEW_STATIC;_WINDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>

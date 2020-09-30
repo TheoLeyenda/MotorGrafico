@@ -3,9 +3,9 @@
 #define TAM 100
 
 #include "PrivateClass/Export.h"
-#include <glew.h>
-#include <GLFW/glfw3.h>
+
 //#include "GLFW/glfw3.h"
+struct GLFWwindow;
 
 class ENGINE_API Windows{
 private:

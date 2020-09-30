@@ -34,8 +34,6 @@ Renderer* GetRenderer();
 #include "PrivateClass/Export.h"
 #include "Renderer.h"
 
-
-
 #define ENTITY_2DIMENTIONS 1
 #define ENTITY_3DIMENTIONS 2
 //using namespace glm;

@@ -1,6 +1,12 @@
 
 #include "Renderer.h"
 #include <iostream>
+
+#include <glew.h>
+#include <GLFW/glfw3.h>
+
+
+
 Renderer::Renderer() {
 	//Nada
 }
@@ -46,7 +52,7 @@ void Renderer::UseProgram(unsigned int& shader, glm::mat4 model){
 	//unsigned int projectionLocation = glGetUniformLocation(shader, "projection");
 	glUseProgram(shader);
 
-	glUniformMatrix4fv(modelLocation, 1, GL_FALSE, glm::value_ptr(model));
+	glUniformMatrix4fv(modelLocation, 1, GL_FALSE, value_ptr(model));
 	//glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view));
 	//glUniformMatrix4fv(projectionLoc, 1, GL_FALSE, glm::value_ptr(projection));
 }
@@ -72,7 +78,7 @@ void Renderer::BeignDraw(){
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 }
 
-void Renderer::Draw(GLenum figura, int vertexs, unsigned int vbo, unsigned int& shaderProg, unsigned int posAttrib, unsigned int colAttrib, glm::mat4 model){
+void Renderer::Draw(unsigned int figura, int vertexs, unsigned int vbo, unsigned int& shaderProg, unsigned int posAttrib, unsigned int colAttrib, glm::mat4 model){
 	
 	BindBuffer(vbo, posAttrib, colAttrib);
 

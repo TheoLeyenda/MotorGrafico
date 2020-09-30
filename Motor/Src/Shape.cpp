@@ -1,6 +1,7 @@
 #include <iostream>
 #include "Shape.h"
-
+#include <glew.h>
+#include <GLFW/glfw3.h>
 
 
 float vertexBufferTri[] = {
@@ -9,6 +10,7 @@ float vertexBufferTri[] = {
 	 0.5f , -0.5f , 0.0f, 0.0f , 0.0f ,0.0f, 1.0f,
 	 0.0f ,  0.5f , 0.0f, 0.0f , 0.0f, 0.0f, 1.0f
 };
+
 float vertexBufferQuad[] = {
 	//X		  Y		 Z		R	  G	    B	  A
 	-0.5f ,  0.5f , 0.0f, 0.0f , 0.0f , 0.0f, 1.0f,
@@ -16,12 +18,14 @@ float vertexBufferQuad[] = {
 	 0.5f , -0.5f , 0.0f, 0.0f , 0.0f , 0.0f, 1.0f,
 	 0.5f ,  0.5f , 0.0f, 0.0f , 0.0f , 0.0f, 1.0f
 };
+
 float ColorTri[]
 {
 	1.0f,0.0f,0.0f,1.0f,
 	0.0f,1.0f,0.0f,1.0f,
 	0.0f,0.0f,1.0f,1.0f,
 };
+
 float ColorQuad[]
 {
 	1.0f,0.0f,0.0f,1.0f,
@@ -29,6 +33,7 @@ float ColorQuad[]
 	0.0f,0.0f,1.0f,1.0f,
 	1.0f,0.0f,1.0f,1.0f,
 };
+
 Shape::Shape(Renderer *_renderer): Entity2D(_renderer)
 {
 	renderer = _renderer;
@@ -42,7 +47,7 @@ Shape::Shape(Renderer * _renderer, Material * _material) : Entity2D(_renderer, _
 
 Shape::~Shape(){}
 
-void Shape::InitShape(GLenum typeShape)
+void Shape::InitShape(unsigned int typeShape)
 {
 	//material->SetMaterialValue()
 	_currentShape = typeShape;
@@ -135,7 +140,7 @@ void Shape::SetVertexMaterial(glm::vec4* materials, float* VBA, int start, int o
 		std::cout << std::endl;
 	}
 }
-void Shape::Draw(GLenum figura,int vertexs, unsigned int& shaderProg, Windows* refWindow, glm::mat4 model)
+void Shape::Draw(unsigned int figura,int vertexs, unsigned int& shaderProg, Windows* refWindow, glm::mat4 model)
 {
 	if (renderer != NULL)
 	{
