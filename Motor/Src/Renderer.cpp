@@ -47,12 +47,14 @@ bool Renderer::GLLogCall(){
 void Renderer::UseProgram(unsigned int& shader, glm::mat4 model){
 
 	unsigned int modelLocation = glGetUniformLocation(shader, "model");
-	std::cout << "model location: "<<modelLocation << std::endl;
+	///std::cout << "model location: "<<modelLocation << std::endl;
 	//unsigned int viewLocation = glGetUniformLocation(shader, "view");
 	//unsigned int projectionLocation = glGetUniformLocation(shader, "projection");
 	glUseProgram(shader);
 
-	glUniformMatrix4fv(modelLocation, 1, GL_FALSE, value_ptr(model));
+	glUniformMatrix4fv(modelLocation, 1, GL_FALSE, value_ptr(model)); // toma la localizacion de la matrix4 a actualizar 
+																      // y la modifica con la nueva informacion que se encuentra dentro
+																	  // de "model".
 	//glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view));
 	//glUniformMatrix4fv(projectionLoc, 1, GL_FALSE, glm::value_ptr(projection));
 }
