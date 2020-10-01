@@ -6,7 +6,6 @@
 #include "../Lib/glm/vec4.hpp"
 
 //typedef unsigned int GLenum;
-
 class ENGINE_API Shape : public Entity2D
 {
 private:
@@ -28,7 +27,7 @@ public:
 	unsigned int GetColAttrib();
 	void SetVertexMaterial(glm::vec4 material,float* VBA, int start,int offset, int repeticiones);
 	void SetVertexMaterial(glm::vec4* materials, float* VBA, int start, int offset, int repeticiones, int countElementsForRepe);
-	void Draw(unsigned int figura, int vertexs, unsigned int& shaderProg, Windows* refWindow, glm::mat4 model);
+	void Draw(unsigned int figura, int vertexs, unsigned int& shaderProg, Windows* refWindow, glm::mat4 model, glm::mat4 view, glm::mat4 proj);
 	void SetSolidColor(float r, float g, float b, float a, const std::string& vertexShader, const std::string& fragmentShader);
 };
 #endif

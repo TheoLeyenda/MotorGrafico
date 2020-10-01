@@ -9,7 +9,8 @@
 #include <sstream>
 
 Renderer::Renderer() {
-	//Nada
+	_MVP.view = glm::mat4(1.0f);
+	_MVP.projection = glm::mat4(1.0f);
 }
 Renderer::~Renderer() {
 	//DeleteShaders();
@@ -18,6 +19,14 @@ Renderer::~Renderer() {
 unsigned int& Renderer::GetShader()
 {
 	return _shaderProgram;
+}
+glm::mat4 Renderer::getViewMat()
+{
+	return _MVP.view;
+}
+glm::mat4 Renderer::getProjMat()
+{
+	return _MVP.projection;
 }
 void Renderer::SetShader()
 {
@@ -45,17 +54,17 @@ bool Renderer::GLLogCall() {
 	return true;
 }
 
-void Renderer::UseProgram(unsigned int& shader, glm::mat4 model) {
+void Renderer::UseProgram(unsigned int& shader, glm::mat4 model, glm::mat4 view, glm::mat4 projection) {
 
 	unsigned int modelLocation = glGetUniformLocation(shader, "model");
 	//std::cout << "model location: "<<modelLocation << std::endl;
-	//unsigned int viewLocation = glGetUniformLocation(shader, "view");
-	//unsigned int projectionLocation = glGetUniformLocation(shader, "projection");
+	unsigned int viewLocation = glGetUniformLocation(shader, "view");
+	unsigned int projectionLocation = glGetUniformLocation(shader, "projection");
 	glUseProgram(shader);
 
 	glUniformMatrix4fv(modelLocation, 1, GL_FALSE, value_ptr(model));
-	//glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view));
-	//glUniformMatrix4fv(projectionLoc, 1, GL_FALSE, glm::value_ptr(projection));
+	glUniformMatrix4fv(viewLocation, 1, GL_FALSE, glm::value_ptr(view));
+	glUniformMatrix4fv(projectionLocation, 1, GL_FALSE, glm::value_ptr(projection));
 }
 
 void Renderer::ClearShader() {
@@ -78,11 +87,11 @@ void Renderer::BeignDraw() {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
-void Renderer::Draw(unsigned int figura, int vertexs, unsigned int vbo, unsigned int& shaderProg, unsigned int posAttrib, unsigned int colAttrib, glm::mat4 model) {
+void Renderer::Draw(unsigned int figura, int vertexs, unsigned int vbo, unsigned int& shaderProg, unsigned int posAttrib, unsigned int colAttrib, glm::mat4 model, glm::mat4 view, glm::mat4 proj) {
 
 	BindBuffer(vbo, posAttrib, colAttrib);
 
-	UseProgram(shaderProg, model);
+	UseProgram(shaderProg, model,view,proj);
 
 	glDrawArrays(figura, 0, vertexs);
 

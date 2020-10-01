@@ -33,14 +33,14 @@ int GameBase::Init()
 	windows->CreateContextWindows();
 	render->GLEWInit();
 	
-	tri->InitShape(GL_TRIANGLES);
-	//quad->InitShape(GL_QUADS);
+	//tri->InitShape(GL_TRIANGLES);
+	quad->InitShape(GL_QUADS);
 
 	render->SetShader();
 
-	tri->SetVertexsAttrib(render->GetShader());
+	//tri->SetVertexsAttrib(render->GetShader());
 
-	//quad->SetVertexsAttrib(render->GetShader());
+	quad->SetVertexsAttrib(render->GetShader());
 
 	glUseProgram(render->GetShader());
 
@@ -68,7 +68,7 @@ int GameBase::Init()
 	float g = 0.0f;
 	float b = 0.0f;
 	float a = 1.0f;
-	bool enableSetSolidColor = true;
+	bool enableSetSolidColor = false;
 	//---------------------//
 
 	//CONTROLES
@@ -78,7 +78,8 @@ int GameBase::Init()
 	//FLECHA IZQUIERDA = Rotacion hacia la izquierda.
 	//FLECHA DERECHA = Rotacion hacia la derecha.
 	//ENTER = Cambio de color.
-	
+	//H = Rotate on Y AXIS
+	//G = Rotate on X AXIS
 	
 	while (!windows->CheckGLFWwindowShouldClose()) 
 	{	
@@ -87,8 +88,8 @@ int GameBase::Init()
 		//std::cout << "Y: " << posY << std::endl;
 		if (enableSetSolidColor) 
 		{
-			tri->SetSolidColor(r, g, b, a, vertexShader, fragmentShader);
-			//quad->SetSolidColor(r, g, b, a, vertexShader, fragmentShader);
+			//tri->SetSolidColor(r, g, b, a, vertexShader, fragmentShader);
+			quad->SetSolidColor(r, g, b, a, vertexShader, fragmentShader);
 			if (glfwGetKey(windows->GetWindowsPtr(), GLFW_KEY_ENTER) == GLFW_PRESS) 
 			{
 				r = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
@@ -98,32 +99,32 @@ int GameBase::Init()
 			}
 		}
 
-		tri->Draw(GL_TRIANGLES, 3, render->GetShader(), windows, tri->GetInternalData().model);
-		//quad->Draw(GL_QUADS, 4, render->GetShader(), windows, quad->GetInternalData().model);
+		//tri->Draw(GL_TRIANGLES, 3, render->GetShader(), windows, tri->GetInternalData().model);
+		quad->Draw(GL_QUADS, 4, render->GetShader(), windows, quad->GetInternalData().model,render->getViewMat(),render->getProjMat());
 		//INPUT DE MOVIMIENTO
 		if (glfwGetKey(windows->GetWindowsPtr(), GLFW_KEY_W) == GLFW_PRESS)
 		{
 			posY = posY + speed;
-			tri->SetPosition(posX, posY, posZ);
-			//quad->SetPosition(posX, posY, posZ);
+			//tri->SetPosition(posX, posY, posZ);
+			quad->SetPosition(posX, posY, posZ);
 		}
 		if (glfwGetKey(windows->GetWindowsPtr(), GLFW_KEY_S) == GLFW_PRESS)
 		{
 			posY = posY - speed;
-			tri->SetPosition(posX, posY, posZ);
-			//quad->SetPosition(posX, posY, posZ);
+			//tri->SetPosition(posX, posY, posZ);
+			quad->SetPosition(posX, posY, posZ);
 		}
 		if (glfwGetKey(windows->GetWindowsPtr(), GLFW_KEY_D) == GLFW_PRESS)
 		{
 			posX = posX + speed;
-			tri->SetPosition(posX, posY, posZ);
-			//quad->SetPosition(posX, posY, posZ);
+			//tri->SetPosition(posX, posY, posZ);
+			quad->SetPosition(posX, posY, posZ);
 		}
 		if (glfwGetKey(windows->GetWindowsPtr(), GLFW_KEY_A) == GLFW_PRESS)
 		{
 			posX = posX - speed;
-			tri->SetPosition(posX, posY, posZ);
-			//quad->SetPosition(posX, posY, posZ);
+			//tri->SetPosition(posX, posY, posZ);
+			quad->SetPosition(posX, posY, posZ);
 		}
 		//-------------------//
 
@@ -131,14 +132,27 @@ int GameBase::Init()
 		if (glfwGetKey(windows->GetWindowsPtr(), GLFW_KEY_LEFT) == GLFW_PRESS)
 		{
 			rotZ = rotZ + speedRotation;
-			tri->SetRotationZ(rotZ);
-			//quad->SetRotationZ(rotZ);
+			//tri->SetRotationZ(rotZ);
+			quad->SetRotationZ(rotZ);
 		}
 		if (glfwGetKey(windows->GetWindowsPtr(), GLFW_KEY_RIGHT) == GLFW_PRESS)
 		{
 			rotZ = rotZ - speedRotation;
-			tri->SetRotationZ(rotZ);
-			//quad->SetRotationZ(rotZ);
+			//tri->SetRotationZ(rotZ);
+			quad->SetRotationZ(rotZ);
+		}
+
+		if (glfwGetKey(windows->GetWindowsPtr(), GLFW_KEY_G) == GLFW_PRESS)
+		{
+			rotX = rotX - speedRotation;
+			//tri->SetRotationZ(rotZ);
+			quad->SetRotationX(rotX);
+		}
+		if (glfwGetKey(windows->GetWindowsPtr(), GLFW_KEY_H) == GLFW_PRESS)
+		{
+			rotY = rotY - speedRotation;
+			//tri->SetRotationZ(rotZ);
+			quad->SetRotationY(rotY);
 		}
 		//------------------//
 
@@ -148,16 +162,16 @@ int GameBase::Init()
 			scalX = scalX + speedScale;
 			scalY = scalY + speedScale;
 			scalZ = scalZ + speedScale;
-			tri->SetScale(scalX, scalY, scalZ);
-			//quad->SetScale(scalX, scalY, scalZ);
+			//tri->SetScale(scalX, scalY, scalZ);
+			quad->SetScale(scalX, scalY, scalZ);
 		}
 		if (glfwGetKey(windows->GetWindowsPtr(), GLFW_KEY_DOWN) == GLFW_PRESS)
 		{
 			scalX = scalX - speedScale;
 			scalY = scalY - speedScale;
 			scalZ = scalZ - speedScale;
-			tri->SetScale(scalX, scalY, scalZ);
-			//quad->SetScale(scalX, scalY, scalZ);
+			//tri->SetScale(scalX, scalY, scalZ);
+			quad->SetScale(scalX, scalY, scalZ);
 		}
 		//---------------------//
 		glfwPollEvents();

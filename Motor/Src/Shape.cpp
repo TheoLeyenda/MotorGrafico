@@ -114,11 +114,11 @@ unsigned int Shape::GetColAttrib(){
 	return _colorAttrib;
 }
 
-void Shape::SetVertexMaterial(glm::vec4 material, float* VBA, int start, int offset, int repeticiones){
+void Shape::SetVertexMaterial(glm::vec4 material, float* VBA, int offset, int stride, int repeticiones){
 	
 	for (int i = 0; i < repeticiones; i++){
-		for (int j = start; j < offset+start; j++){
-			VBA[j + (start + offset) * i] = material[j-start];
+		for (int j = offset; j < stride+offset; j++){
+			VBA[j + (offset + stride) * i] = material[j-offset];
 		}
 	}
 }
@@ -140,13 +140,13 @@ void Shape::SetVertexMaterial(glm::vec4* materials, float* VBA, int start, int o
 		std::cout << std::endl;
 	}
 }
-void Shape::Draw(unsigned int figura,int vertexs, unsigned int& shaderProg, Windows* refWindow, glm::mat4 model)
+void Shape::Draw(unsigned int figura,int vertexs, unsigned int& shaderProg, Windows* refWindow, glm::mat4 model, glm::mat4 view, glm::mat4 proj)
 {
 	if (renderer != NULL)
 	{
 		renderer->BeignDraw();
 
-		renderer->Draw(figura, vertexs, GetVbo(), shaderProg,GetPosAttrib(),GetColAttrib(), model);
+		renderer->Draw(figura, vertexs, GetVbo(), shaderProg,GetPosAttrib(),GetColAttrib(), model,view,proj);
 
 		renderer->EndDraw(refWindow);
 	}

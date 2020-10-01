@@ -18,7 +18,6 @@ Material::Material(float* arrayRGBA, int tamArrayRGBA, int repeticiones)
 	_vertexColorRGBA = NULL;
 }
 
-
 Material::~Material()
 {
 	if (_vertexColorRGBA != NULL) 
