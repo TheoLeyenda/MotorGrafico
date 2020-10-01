@@ -74,8 +74,7 @@ void Renderer::UnbindBuffer(){
 }
 
 void Renderer::BeignDraw(){
-	glClear(GL_COLOR_BUFFER_BIT);
-	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
 void Renderer::Draw(unsigned int figura, int vertexs, unsigned int vbo, unsigned int& shaderProg, unsigned int posAttrib, unsigned int colAttrib, glm::mat4 model){
