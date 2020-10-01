@@ -18,7 +18,7 @@ public:
 	Renderer();
 	~Renderer();
 	unsigned int& GetShader();
-	void SetShader(const std::string& vertexShader, const std::string& fragmentShader);
+	void SetShader();
 	void GLEWInit();
 	void GLClearError();
 	bool GLLogCall();
@@ -29,7 +29,7 @@ public:
 	void BeignDraw();
 	void Draw(unsigned int figura, int vertexs, unsigned int vbo, unsigned int& shaderProg, unsigned int posAttrib, unsigned int colAttrib, glm::mat4 model);
 	void EndDraw(Windows* refWindow);
-	unsigned int CompileShader(unsigned int type, const std::string& source);
-	int CreateShaderProgram(const std::string& vertexShader, const std::string& fragmentShader);
+	unsigned int CompileShader(unsigned int type, const char* source);
+	int CreateShaderProgram(const char* vertexShader, const char* fragmentShader);
 };
 #endif // !RENDERER_H

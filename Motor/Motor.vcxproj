@@ -21,13 +21,11 @@
   <ItemGroup>
     <ClInclude Include="Src\Entity.h" />
     <ClInclude Include="Src\Entity2D.h" />
-    <ClInclude Include="Src\fragmentShader.h" />
     <ClInclude Include="Src\GameBase.h" />
     <ClInclude Include="Src\Material.h" />
     <ClInclude Include="Src\PrivateClass\Export.h" />
     <ClInclude Include="Src\Renderer.h" />
     <ClInclude Include="Src\Shape.h" />
-    <ClInclude Include="Src\vertexShader.h" />
     <ClInclude Include="Src\Windows.h" />
   </ItemGroup>
   <ItemGroup>
@@ -38,6 +36,10 @@
     <ClCompile Include="Src\Renderer.cpp" />
     <ClCompile Include="Src\Shape.cpp" />
     <ClCompile Include="Src\Windows.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="res\shaders\Fragment.shader" />
+    <None Include="res\shaders\Vertex.shader" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>

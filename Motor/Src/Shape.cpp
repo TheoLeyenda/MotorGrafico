@@ -171,7 +171,7 @@ void Shape::SetSolidColor(float r, float g, float b, float a, const std::string&
 		tam++;
 	}
 	glBufferData(GL_ARRAY_BUFFER, tam * sizeof(float), _vertexBuffer, GL_DYNAMIC_DRAW);
-	renderer->SetShader(vertexShader,fragmentShader);
+	renderer->SetShader();
 }
 //float vertexBufferTri[] = {
 //	//X		  Y		 Z		R	  G	    B	  A

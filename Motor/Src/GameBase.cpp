@@ -34,10 +34,9 @@ int GameBase::Init()
 	render->GLEWInit();
 	
 	tri->InitShape(GL_TRIANGLES);
-
 	//quad->InitShape(GL_QUADS);
 
-	render->SetShader(vertexShader, fragmentShader);
+	render->SetShader();
 
 	tri->SetVertexsAttrib(render->GetShader());
 
