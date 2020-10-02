@@ -19,5 +19,6 @@ public:
 	GameBase();
 	~GameBase();
 	int Init();
+	void TempInputs(Windows* windows, Shape* tri);
 };
 #endif
