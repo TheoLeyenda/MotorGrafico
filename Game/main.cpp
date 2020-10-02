@@ -10,6 +10,5 @@ int main()
 
 	if (game != NULL)
 		delete game;
-
 	return 0;
 }

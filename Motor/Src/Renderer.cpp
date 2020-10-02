@@ -13,7 +13,7 @@ Renderer::Renderer() {
 	_MVP.projection = glm::mat4(1.0f);
 }
 Renderer::~Renderer() {
-	//DeleteShaders();
+	//glDeleteProgram(_shaderProgram);
 }
 
 unsigned int& Renderer::GetShader()
@@ -57,9 +57,9 @@ bool Renderer::GLLogCall() {
 void Renderer::UseProgram(unsigned int& shader, glm::mat4 model, glm::mat4 view, glm::mat4 projection) {
 
 	unsigned int modelLocation = glGetUniformLocation(shader, "model");
-	//std::cout << "model location: "<<modelLocation << std::endl;
 	unsigned int viewLocation = glGetUniformLocation(shader, "view");
 	unsigned int projectionLocation = glGetUniformLocation(shader, "projection");
+
 	glUseProgram(shader);
 
 	glUniformMatrix4fv(modelLocation, 1, GL_FALSE, value_ptr(model));
@@ -99,6 +99,7 @@ void Renderer::Draw(unsigned int figura, int vertexs, unsigned int vbo, unsigned
 }
 
 void Renderer::EndDraw(Windows* refWindow) {
+	ClearShader();
 	refWindow->SwapBuffersWindows();
 }
 

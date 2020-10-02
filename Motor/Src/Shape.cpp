@@ -146,7 +146,7 @@ void Shape::Draw(unsigned int figura,int vertexs, unsigned int& shaderProg, Wind
 	{
 		renderer->BeignDraw();
 
-		renderer->Draw(figura, vertexs, GetVbo(), shaderProg,GetPosAttrib(),GetColAttrib(), model,view,proj);
+		renderer->Draw(figura, vertexs, GetVbo(), shaderProg,GetPosAttrib(),GetColAttrib(), model ,view , proj);
 
 		renderer->EndDraw(refWindow);
 	}
