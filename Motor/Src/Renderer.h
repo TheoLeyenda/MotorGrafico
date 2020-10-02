@@ -37,7 +37,7 @@ public:
 	void BindBuffer(unsigned int vbo, unsigned int posAttrib, unsigned int colAttrib);
 	void UnbindBuffer();
 	void BeignDraw();
-	void Draw(unsigned int figura, int vertexs, unsigned int vbo, unsigned int& shaderProg, unsigned int posAttrib, unsigned int colAttrib, glm::mat4 model, glm::mat4 view, glm::mat4 proj);
+	void Draw(unsigned int figura, int vertexs, unsigned int vbo, unsigned int& shaderProg, unsigned int posAttrib, unsigned int colAttrib, glm::mat4 model);
 	void EndDraw(Windows* refWindow);
 	unsigned int CompileShader(unsigned int type, const char* source);
 	int CreateShaderProgram(const char* vertexShader, const char* fragmentShader);

@@ -87,11 +87,11 @@ void Renderer::BeignDraw() {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
-void Renderer::Draw(unsigned int figura, int vertexs, unsigned int vbo, unsigned int& shaderProg, unsigned int posAttrib, unsigned int colAttrib, glm::mat4 model, glm::mat4 view, glm::mat4 proj) {
+void Renderer::Draw(unsigned int figura, int vertexs, unsigned int vbo, unsigned int& shaderProg, unsigned int posAttrib, unsigned int colAttrib, glm::mat4 model) {
 
 	BindBuffer(vbo, posAttrib, colAttrib);
 
-	UseProgram(shaderProg, model,view,proj);
+	UseProgram(shaderProg, model,_MVP.view, _MVP.projection);
 
 	glDrawArrays(figura, 0, vertexs);
 

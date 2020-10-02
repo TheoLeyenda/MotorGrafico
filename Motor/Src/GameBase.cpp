@@ -170,6 +170,7 @@ int GameBase::Init()
 	// KP4 & KP6  = Rotate on Y AXIS
 	// KP1 & KP3  = Rotate on Z AXIS
 	
+
 	while (!windows->CheckGLFWwindowShouldClose()) 
 	{
 		//---------------------//
@@ -188,7 +189,7 @@ int GameBase::Init()
 		//---------------------//
 		TempInputs(windows,tri);
 		//---------------------//
-		tri->Draw(GL_TRIANGLES, 3, render->GetShader(), windows, tri->GetInternalData().model, render->getViewMat(), render->getProjMat());
+		tri->Draw(GL_TRIANGLES, 3, render->GetShader(), windows, tri->GetInternalData().model);
 		//---------------------//
 		glfwPollEvents();
 		//---------------------//
