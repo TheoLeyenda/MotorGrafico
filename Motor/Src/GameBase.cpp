@@ -72,9 +72,8 @@ int GameBase::Init()
 	//---------------------//
 	//CONTROLES
 	//WASD = Movimiento.
-	//FLECHA ARRIBA = Aumentar Escala.
-	//FLECHA ABAJO = Disminuir Escala.
 	//ENTER = Cambio de color.
+	// KP7 & KP9 = Escala
 	// KP7 & KP9  = Rotate on X AXIS
 	// KP4 & KP6  = Rotate on Y AXIS
 	// KP1 & KP3  = Rotate on Z AXIS
@@ -127,13 +126,13 @@ int GameBase::Init()
 		//-------------------//
 
 		//INPUT DE ROTACION
-		if (glfwGetKey(windows->GetWindowsPtr(), GLFW_KEY_KP_3) == GLFW_PRESS)
+		if (glfwGetKey(windows->GetWindowsPtr(), GLFW_KEY_KP_1) == GLFW_PRESS)
 		{
 			rotZ = rotZ + speedRotation;
 			tri->SetRotationZ(rotZ);
 			//quad->SetRotationZ(rotZ);
 		}
-		if (glfwGetKey(windows->GetWindowsPtr(), GLFW_KEY_KP_1) == GLFW_PRESS)
+		if (glfwGetKey(windows->GetWindowsPtr(), GLFW_KEY_KP_3) == GLFW_PRESS)
 		{
 			rotZ = rotZ - speedRotation;
 			tri->SetRotationZ(rotZ);
@@ -168,7 +167,7 @@ int GameBase::Init()
 		//------------------//
 
 		//INPUT DE ESCALA
-		if (glfwGetKey(windows->GetWindowsPtr(), GLFW_KEY_UP) == GLFW_PRESS)
+		if (glfwGetKey(windows->GetWindowsPtr(), GLFW_KEY_KP_8) == GLFW_PRESS)
 		{
 			scalX = scalX + speedScale;
 			scalY = scalY + speedScale;
@@ -176,7 +175,7 @@ int GameBase::Init()
 			tri->SetScale(scalX, scalY, scalZ);
 			//quad->SetScale(scalX, scalY, scalZ);
 		}
-		if (glfwGetKey(windows->GetWindowsPtr(), GLFW_KEY_DOWN) == GLFW_PRESS)
+		if (glfwGetKey(windows->GetWindowsPtr(), GLFW_KEY_KP_2) == GLFW_PRESS)
 		{
 			scalX = scalX - speedScale;
 			scalY = scalY - speedScale;
