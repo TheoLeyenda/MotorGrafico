@@ -22,6 +22,7 @@
     <ClInclude Include="Src\Entity.h" />
     <ClInclude Include="Src\Entity2D.h" />
     <ClInclude Include="Src\GameBase.h" />
+    <ClInclude Include="Src\Input.h" />
     <ClInclude Include="Src\Material.h" />
     <ClInclude Include="Src\PrivateClass\Export.h" />
     <ClInclude Include="Src\Renderer.h" />
@@ -32,6 +33,7 @@
     <ClCompile Include="Src\Entity.cpp" />
     <ClCompile Include="Src\Entity2D.cpp" />
     <ClCompile Include="Src\GameBase.cpp" />
+    <ClCompile Include="Src\Input.cpp" />
     <ClCompile Include="Src\Material.cpp" />
     <ClCompile Include="Src\Renderer.cpp" />
     <ClCompile Include="Src\Shape.cpp" />

@@ -4,26 +4,9 @@
 //#define ASSERT(x) if (!(x)) __debugbreak();
 #include "fragmentShader.h"
 #include "vertexShader.h"
-GameBase::GameBase()
-{
-	glfwInit();
 
-	windows = new Windows(1080, 680, "MOTORASO");
-	render = new Renderer();
-	quad = new Shape(render);
-	tri = new Shape(render);
-}
-GameBase::~GameBase() 
-{
-	if (windows != NULL) 
-		delete windows;
-	if (quad != NULL)
-		delete quad;
-	if (tri != NULL)
-		delete tri;
-	if (render != NULL)
-		delete render;
-}
+GameBase::GameBase(){}
+GameBase::~GameBase(){}
 
 //VALORES DE TESTEO
 float posX = 0;
@@ -47,29 +30,28 @@ float b = 0.0f;
 float a = 1.0f;
 bool enableSetSolidColor = false;
 
-void GameBase::TempInputs(Windows* windows, Shape* tri) {
-
-	//quad->Draw(GL_QUADS, 4, render->GetShader(), windows, quad->GetInternalData().model,render->getViewMat(),render->getProjMat());
+void GameBase::TempInputs(Windows* windows, Shape* tri) 
+{
 	//INPUT DE MOVIMIENTO
-	if (glfwGetKey(windows->GetWindowsPtr(), GLFW_KEY_W) == GLFW_PRESS)
+	if (input->GetKey(windows->GetWindowsPtr(), KeyBoard::KEY_W)) 
 	{
 		posY = posY + speed;
 		tri->SetPosition(posX, posY, posZ);
 		//quad->SetPosition(posX, posY, posZ);
 	}
-	if (glfwGetKey(windows->GetWindowsPtr(), GLFW_KEY_S) == GLFW_PRESS)
+	if (glfwGetKey(windows->GetWindowsPtr(), KeyBoard::KEY_S))
 	{
 		posY = posY - speed;
 		tri->SetPosition(posX, posY, posZ);
 		//quad->SetPosition(posX, posY, posZ);
 	}
-	if (glfwGetKey(windows->GetWindowsPtr(), GLFW_KEY_D) == GLFW_PRESS)
+	if (glfwGetKey(windows->GetWindowsPtr(), KeyBoard::KEY_D))
 	{
 		posX = posX + speed;
 		tri->SetPosition(posX, posY, posZ);
 		//quad->SetPosition(posX, posY, posZ);
 	}
-	if (glfwGetKey(windows->GetWindowsPtr(), GLFW_KEY_A) == GLFW_PRESS)
+	if (glfwGetKey(windows->GetWindowsPtr(), KeyBoard::KEY_A))
 	{
 		posX = posX - speed;
 		tri->SetPosition(posX, posY, posZ);
@@ -78,39 +60,39 @@ void GameBase::TempInputs(Windows* windows, Shape* tri) {
 	//-------------------//
 
 	//INPUT DE ROTACION
-	if (glfwGetKey(windows->GetWindowsPtr(), GLFW_KEY_KP_1) == GLFW_PRESS)
+	if (glfwGetKey(windows->GetWindowsPtr(), KeyBoard::KEY_KP_4))
 	{
 		rotZ = rotZ + speedRotation;
 		tri->SetRotationZ(rotZ);
 		//quad->SetRotationZ(rotZ);
 	}
-	if (glfwGetKey(windows->GetWindowsPtr(), GLFW_KEY_KP_3) == GLFW_PRESS)
+	if (glfwGetKey(windows->GetWindowsPtr(), KeyBoard::KEY_KP_6))
 	{
 		rotZ = rotZ - speedRotation;
 		tri->SetRotationZ(rotZ);
 		//quad->SetRotationZ(rotZ);
 	}
 
-	if (glfwGetKey(windows->GetWindowsPtr(), GLFW_KEY_KP_4) == GLFW_PRESS)
+	if (glfwGetKey(windows->GetWindowsPtr(), KeyBoard::KEY_KP_1))
 	{
 		rotY = rotY + speedRotation;
 		tri->SetRotationY(rotY);
 		//quad->SetRotationY(rotY);
 	}
-	if (glfwGetKey(windows->GetWindowsPtr(), GLFW_KEY_KP_6) == GLFW_PRESS)
+	if (glfwGetKey(windows->GetWindowsPtr(), KeyBoard::KEY_KP_3))
 	{
 		rotY = rotY - speedRotation;
 		tri->SetRotationY(rotY);
 		//quad->SetRotationY(rotY);
 	}
 
-	if (glfwGetKey(windows->GetWindowsPtr(), GLFW_KEY_KP_7) == GLFW_PRESS)
+	if (glfwGetKey(windows->GetWindowsPtr(), KeyBoard::KEY_KP_7))
 	{
 		rotX = rotX + speedRotation;
 		tri->SetRotationX(rotX);
 		//quad->SetRotationX(rotX);
 	}
-	if (glfwGetKey(windows->GetWindowsPtr(), GLFW_KEY_KP_9) == GLFW_PRESS)
+	if (glfwGetKey(windows->GetWindowsPtr(), KeyBoard::KEY_KP_9))
 	{
 		rotX = rotX - speedRotation;
 		tri->SetRotationX(rotX);
@@ -119,7 +101,7 @@ void GameBase::TempInputs(Windows* windows, Shape* tri) {
 	//------------------//
 
 	//INPUT DE ESCALA
-	if (glfwGetKey(windows->GetWindowsPtr(), GLFW_KEY_KP_8) == GLFW_PRESS)
+	if (glfwGetKey(windows->GetWindowsPtr(), KeyBoard::KEY_KP_8))
 	{
 		scalX = scalX + speedScale;
 		scalY = scalY + speedScale;
@@ -127,7 +109,7 @@ void GameBase::TempInputs(Windows* windows, Shape* tri) {
 		tri->SetScale(scalX, scalY, scalZ);
 		//quad->SetScale(scalX, scalY, scalZ);
 	}
-	if (glfwGetKey(windows->GetWindowsPtr(), GLFW_KEY_KP_2) == GLFW_PRESS)
+	if (glfwGetKey(windows->GetWindowsPtr(), KeyBoard::KEY_KP_2))
 	{
 		scalX = scalX - speedScale;
 		scalY = scalY - speedScale;
@@ -137,8 +119,18 @@ void GameBase::TempInputs(Windows* windows, Shape* tri) {
 	}
 }
 
-int GameBase::Init()
+int GameBase::InitGame()
 { 
+	glfwInit();
+
+	windows = new Windows(1080, 680, "MOTORASO");
+	render = new Renderer();
+	input = new Input();
+
+	quad = new Shape(render);
+	tri = new Shape(render);
+
+
 	if (!glfwInit() || windows == NULL)
 		return -1;
 
@@ -169,9 +161,12 @@ int GameBase::Init()
 	// KP7 & KP9  = Rotate on X AXIS
 	// KP4 & KP6  = Rotate on Y AXIS
 	// KP1 & KP3  = Rotate on Z AXIS
-	
+	return 0;
+}
 
-	while (!windows->CheckGLFWwindowShouldClose()) 
+void GameBase::Update()
+{
+	while (!windows->CheckGLFWwindowShouldClose())
 	{
 		//---------------------//
 		if (enableSetSolidColor)
@@ -187,15 +182,29 @@ int GameBase::Init()
 			}
 		}
 		//---------------------//
-		TempInputs(windows,tri);
+		TempInputs(windows, tri);
 		//---------------------//
 		tri->Draw(GL_TRIANGLES, 3, render->GetShader(), windows, tri->GetInternalData().model);
 		//---------------------//
 		glfwPollEvents();
 		//---------------------//
 	}
+}
 
+void GameBase::DestroyGame()
+{
 	glDeleteProgram(render->GetShader());
 	glfwTerminate();
-	return 0; 
+
+	if (windows != NULL)
+		delete windows;
+	if (input != NULL)
+		delete input;
+	if (render != NULL)
+		delete render;
+
+	if (quad != NULL)
+		delete quad;
+	if (tri != NULL)
+		delete tri;
 }

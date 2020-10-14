@@ -1,16 +1,27 @@
 #include "Game.h"
 
-Game::Game()
-{
+Game::Game(){}
 
-}
-
-Game::~Game()
-{
-
-}
+Game::~Game(){}
 
 void Game::Play()
 {
-	Init();
+	Game::Update();
+}
+
+int Game::InitGame()
+{
+	resultInit = GameBase::InitGame();
+	return resultInit;
+	//return 0;
+}
+
+void Game::Update()
+{
+	GameBase::Update();
+}
+
+void Game::DestroyGame()
+{
+	GameBase::DestroyGame();
 }

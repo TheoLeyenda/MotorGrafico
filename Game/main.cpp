@@ -5,10 +5,13 @@ int main()
 	srand(time(NULL));
 	Game* game = new Game();
 
-	if(game != NULL)
+	if (game != NULL) 
+	{
+		game->InitGame();
 		game->Play();
-
-	if (game != NULL)
+		game->DestroyGame();
 		delete game;
+	}
+
 	return 0;
 }
