@@ -130,13 +130,14 @@ struct GLFWwindow;
 class ENGINE_API Input
 {
 private:
-	bool CheckKeyPress(GLFWwindow* contextWindow, KeyBoard _keyBoard, unsigned int type);
+	bool CheckKeyPress(KeyBoard _keyBoard, unsigned int type);
+	GLFWwindow *contextWindows;
 public:
-
-	Input();
+	Input(GLFWwindow *_contextWindows);
 	~Input();
-	bool GetKeyDown(GLFWwindow* contextWindow, KeyBoard _keyBoard);
-	bool GetKey(GLFWwindow* contextWindow, KeyBoard _keyBoard);
-	bool GetKeyUp(GLFWwindow* contextWindow, KeyBoard _keyBoard);
+	bool GetKeyDown(KeyBoard _keyBoard);
+	bool GetKey(KeyBoard _keyBoard);
+	bool GetKeyUp(KeyBoard _keyBoard);
+	void SetContextWindows(GLFWwindow *_contextWindows);
 };
 #endif

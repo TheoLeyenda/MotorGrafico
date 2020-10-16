@@ -9,26 +9,30 @@
 #include <time.h>
 #include "Input.h"
 
+#define INIT_ERROR -1
+
 class ENGINE_API GameBase {
 private:
 	Windows* windows;
 	Renderer* render;
 	Input* input;
-	Shape* quad; //no tiene que ir xd
-	Shape* tri;
 public:
 	GameBase();
 	~GameBase();
 
-	
-	int InitGame();
-	void Update(); 
-	void DestroyGame();
+	int InitEngine();
+	void UpdateEngine();
+	void DestroyEngine();
 
-	//virtual int InitGame(); //Inicializa todos las variables del juego.
-	//virtual void Update(); //Update del juego
-	//virtual void DestroyGame(); //Funcion que se debe llamar al finalizar el juego (Destruye correctamente todos las funciones internas del juego)
+	virtual void InitGame() = 0; //Inicializa todos las variables del juego.
+	virtual void UpdateGame(Windows *_window, Renderer *_render, Input *_input) = 0; //Update del juego
+	virtual void DestroyGame() = 0; //Funcion que se debe llamar al finalizar el juego (Destruye correctamente todos las funciones internas del juego)
 	
+
 	void TempInputs(Windows* windows, Shape* tri);
+
+	Windows* GetWindows();
+	Renderer* GetRenderer();
+	Input* GetInput();
 };
 #endif

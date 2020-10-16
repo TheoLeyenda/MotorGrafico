@@ -5,21 +5,17 @@ class Game: public GameBase
 {
 private:
 	int resultInit;
+	Shape* quad; //no tiene que ir xd
+	Shape* tri;
 public:
 	Game();
 	~Game();
-	void Play();
 	bool isPlaying;
 
 	//Override Functions//
 
-	//int InitGame() override;
-	//void Update() override;
-	//void DestroyGame() override;
-
-
-	int InitGame();
-	void Update();
-	void DestroyGame();
+	void InitGame() override;
+	void UpdateGame(Windows *_window, Renderer *_render, Input *_input) override;
+	void DestroyGame() override;
 };
 #endif

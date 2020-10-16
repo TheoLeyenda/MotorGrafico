@@ -152,7 +152,7 @@ void Shape::Draw(unsigned int figura,int vertexs, unsigned int& shaderProg, Wind
 	}
 	_currentShape = figura;
 }
-void Shape::SetSolidColor(float r, float g, float b, float a, const std::string& vertexShader, const std::string& fragmentShader)
+void Shape::SetSolidColor(float r, float g, float b, float a)
 {
 	material->SetMaterialValue(r, g, b, a);
 	switch (_currentShape)

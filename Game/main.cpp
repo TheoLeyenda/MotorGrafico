@@ -4,13 +4,18 @@ int main()
 {
 	srand(time(NULL));
 	Game* game = new Game();
-
-	if (game != NULL) 
+	int result = game->InitEngine();
+	
+	if (result != INIT_ERROR) 
 	{
-		game->InitGame();
-		game->Play();
-		game->DestroyGame();
-		delete game;
+		if (game != NULL)
+		{
+			game->InitGame();
+			game->UpdateEngine();
+			game->DestroyGame();
+			game->DestroyEngine();
+			delete game;
+		}
 	}
 
 	return 0;
