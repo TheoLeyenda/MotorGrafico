@@ -27,7 +27,6 @@ public:
 	virtual void InitGame() = 0; //Inicializa todos las variables del juego.
 	virtual void UpdateGame(Windows *_window, Renderer *_render, Input *_input) = 0; //Update del juego
 	virtual void DestroyGame() = 0; //Funcion que se debe llamar al finalizar el juego (Destruye correctamente todos las funciones internas del juego)
-	
 
 	void TempInputs(Windows* windows, Shape* tri);
 

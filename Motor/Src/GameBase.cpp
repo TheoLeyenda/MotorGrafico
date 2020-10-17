@@ -64,10 +64,5 @@ void GameBase::DestroyEngine()
 	if (render != NULL)
 		delete render;
 }
-void GameBase::InitGame(){}
-
-void GameBase::UpdateGame(Windows *_window, Renderer *_render, Input *_input){}
-
-void GameBase::DestroyGame(){}
 
 
