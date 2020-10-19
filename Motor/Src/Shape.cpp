@@ -19,6 +19,15 @@ float vertexBufferQuad[] = {
 	 0.5f ,  0.5f , 0.0f, 0.0f , 0.0f , 0.0f, 1.0f
 };
 
+unsigned int indicesTri[] = {
+	0,1,2
+};
+
+unsigned int indicesQuad[]= {
+	0,1,2,
+	0,3,2
+};
+
 float ColorTri[]
 {
 	1.0f,0.0f,0.0f,1.0f,
@@ -51,10 +60,12 @@ void Shape::InitShape(unsigned int typeShape)
 {
 	//material->SetMaterialValue()
 	_currentShape = typeShape;
-	switch (typeShape)
+	switch (_currentShape)
 	{
 	case GL_TRIANGLES:
 		_vertexBuffer = vertexBufferTri;
+		_indexBuffer = indicesTri;
+		_countIndices = 3;
 		
 		//material->SetMaterialValue(0.5f, 0.3f, 0.2f, 1.0f);
 		//SetVertexMaterial(material->GetColorRGBA(), vertexBufferTri, 3, 4, 3);
@@ -63,9 +74,11 @@ void Shape::InitShape(unsigned int typeShape)
 		SetVertexMaterial(material->GetVertexColorRGBA(), vertexBufferTri, 3, 4, 3, 4);
 		
 		break;
-	case GL_QUADS:
+	case GL_TRIANGLE_STRIP:
 		_vertexBuffer = vertexBufferQuad;
-		
+		_indexBuffer = indicesQuad;
+		_countIndices = 6;
+
 		//material->SetMaterialValue(0.5f, 0.3f, 0.2f, 1.0f);
 		//SetVertexMaterial(material->GetColorRGBA(),vertexBufferQuad,3,4,4);
 		
@@ -75,6 +88,7 @@ void Shape::InitShape(unsigned int typeShape)
 		break;
 	}
 	CreateVbo(_vertexBuffer);
+	CreateIbo(_indexBuffer,_countIndices);
 }
 
 void Shape::CreateVbo(float* vertexBuffer){
@@ -88,8 +102,19 @@ void Shape::CreateVbo(float* vertexBuffer){
 	glBufferData(GL_ARRAY_BUFFER, tam * sizeof(float), vertexBuffer, GL_DYNAMIC_DRAW);
 }
 
+void Shape::CreateIbo(unsigned int* indeices, int tamIndices){
+
+	glGenBuffers(1, &_ibo);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _ibo);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, tamIndices * sizeof(unsigned int), indeices, GL_STATIC_DRAW);
+}
+
 unsigned int Shape::GetVbo(){
 	return _vbo;
+}
+
+unsigned int Shape::GetIbo(){
+	return _ibo;
 }
 
 float* Shape::GetVertexBuffer()
@@ -140,13 +165,13 @@ void Shape::SetVertexMaterial(glm::vec4* materials, float* VBA, int start, int o
 		std::cout << std::endl;
 	}
 }
-void Shape::Draw(unsigned int figura,int vertexs, unsigned int& shaderProg, Windows* refWindow, glm::mat4 model)
+void Shape::Draw(unsigned int figura,int indices, unsigned int& shaderProg, Windows* refWindow, glm::mat4 model)
 {
 	if (renderer != NULL)
 	{
 		renderer->BeignDraw();
 
-		renderer->Draw(figura, vertexs, GetVbo(), shaderProg,GetPosAttrib(),GetColAttrib(), model);
+		renderer->Draw(figura, indices, _ibo, _vbo,shaderProg,GetPosAttrib(),GetColAttrib(), model);
 
 		renderer->EndDraw(refWindow);
 	}
@@ -166,11 +191,17 @@ void Shape::SetSolidColor(float r, float g, float b, float a)
 		break;
 	}
 	glBindBuffer(GL_ARRAY_BUFFER, _vbo);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _ibo);
 	int tam = 0;
+	int tam2 = 0;
 	while (_vertexBuffer[tam] <= 1 && _vertexBuffer[tam] >= -1) {
 		tam++;
 	}
+	while (_indexBuffer[tam2] <= 1 && _indexBuffer[tam2] >= -1) {
+		tam2++;
+	}
 	glBufferData(GL_ARRAY_BUFFER, tam * sizeof(float), _vertexBuffer, GL_DYNAMIC_DRAW);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, tam2 * sizeof(unsigned int), _indexBuffer, GL_STATIC_DRAW);
 	renderer->SetShader();
 }
 //float vertexBufferTri[] = {

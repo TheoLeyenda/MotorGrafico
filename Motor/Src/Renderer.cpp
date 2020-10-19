@@ -71,7 +71,8 @@ void Renderer::ClearShader() {
 	glUseProgram(0);
 }
 
-void Renderer::BindBuffer(unsigned int vbo, unsigned int posAttrib, unsigned int colAttrib) {
+void Renderer::BindBuffer(unsigned int ibo, unsigned int vbo, unsigned int posAttrib, unsigned int colAttrib) {
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
 	glBindBuffer(GL_ARRAY_BUFFER, vbo);
 	glVertexAttribPointer(posAttrib, 3, GL_FLOAT, GL_FALSE, 7 * sizeof(float), 0);
 	glEnableVertexAttribArray(posAttrib);
@@ -81,19 +82,22 @@ void Renderer::BindBuffer(unsigned int vbo, unsigned int posAttrib, unsigned int
 
 void Renderer::UnbindBuffer() {
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 }
 
 void Renderer::BeignDraw() {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
-void Renderer::Draw(unsigned int figura, int vertexs, unsigned int vbo, unsigned int& shaderProg, unsigned int posAttrib, unsigned int colAttrib, glm::mat4 model) {
+void Renderer::Draw(unsigned int figura, int indices, unsigned int ibo, unsigned int vbo,unsigned int& shaderProg, unsigned int posAttrib, unsigned int colAttrib, glm::mat4 model) {
 
-	BindBuffer(vbo, posAttrib, colAttrib);
+	BindBuffer(ibo, vbo, posAttrib, colAttrib);
 
 	UseProgram(shaderProg, model,_MVP.view, _MVP.projection);
 
-	glDrawArrays(figura, 0, vertexs);
+	//glDrawArrays(figura, 0, indices);
+
+	glDrawElements(figura, indices, GL_UNSIGNED_INT , nullptr);
 
 	UnbindBuffer();
 }
