@@ -3,12 +3,12 @@
 #include <glew.h>
 #include <GLFW/glfw3.h>
 
-
+#define FINAL_ARRAY 5.0f
 float vertexBufferTri[] = {
 	//X		  Y		 Z		R	  G	    B	  A
 	-0.5f , -0.5f , 0.0f, 0.0f , 0.0f ,0.0f, 1.0f,
 	 0.5f , -0.5f , 0.0f, 0.0f , 0.0f ,0.0f, 1.0f,
-	 0.0f ,  0.5f , 0.0f, 0.0f , 0.0f, 0.0f, 1.0f
+	 0.0f ,  0.5f , 0.0f, 0.0f , 0.0f, 0.0f, 1.0f,FINAL_ARRAY
 };
 
 float vertexBufferQuad[] = {
@@ -16,7 +16,7 @@ float vertexBufferQuad[] = {
 	-0.5f ,  0.5f , 0.0f, 0.0f , 0.0f , 0.0f, 1.0f,
 	-0.5f , -0.5f , 0.0f, 0.0f , 0.0f , 0.0f, 1.0f,
 	 0.5f , -0.5f , 0.0f, 0.0f , 0.0f , 0.0f, 1.0f,
-	 0.5f ,  0.5f , 0.0f, 0.0f , 0.0f , 0.0f, 1.0f
+	 0.5f ,  0.5f , 0.0f, 0.0f , 0.0f , 0.0f, 1.0f,FINAL_ARRAY
 };
 
 unsigned int indicesTri[] = {
