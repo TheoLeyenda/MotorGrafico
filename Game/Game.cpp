@@ -29,7 +29,7 @@ float r = 1.0f;
 float g = 0.0f;
 float b = 0.0f;
 float a = 1.0f;
-TypeDrawShape typeDrawShape = TypeDrawShape::Tri;
+TypeDrawShape typeDrawShape = TypeDrawShape::Quad;
 TypeColorShape typeColorShape = TypeColorShape::SolidColor;
 Game::Game():GameBase(){}
 
@@ -84,6 +84,32 @@ void GameBase::TempInputs(Windows* windows, Shape* shape)
 		b = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
 		a = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
 		shape->SetSolidColor(r, g, b, a);
+	}
+	if (input->GetKey(KeyBoard::KEY_LEFT)) 
+	{
+		typeColorShape = TypeColorShape::SolidColor;
+		if (typeDrawShape == TypeDrawShape::Tri) {
+			shape->SetShape(TypeShape::TRIANGLE, typeColorShape);
+			shape->SetVertexsAttrib(GetRenderer()->GetShader());
+		}
+		else if (typeDrawShape == TypeDrawShape::Quad) 
+		{
+			shape->SetShape(TypeShape::QUAD, typeColorShape);
+			shape->SetVertexsAttrib(GetRenderer()->GetShader());
+		}
+	}
+	if (input->GetKey(KeyBoard::KEY_RIGHT)) 
+	{
+		typeColorShape = TypeColorShape::VertexColor;
+		if (typeDrawShape == TypeDrawShape::Tri) {
+			shape->SetShape(TypeShape::TRIANGLE, typeColorShape);
+			shape->SetVertexsAttrib(GetRenderer()->GetShader());
+		}
+		else if (typeDrawShape == TypeDrawShape::Quad)
+		{
+			shape->SetShape(TypeShape::QUAD, typeColorShape);
+			shape->SetVertexsAttrib(GetRenderer()->GetShader());
+		}
 	}
 	//INPUT DE MOVIMIENTO
 	if (input->GetKey(KeyBoard::KEY_W))

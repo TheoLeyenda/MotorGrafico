@@ -76,7 +76,6 @@ void Shape::SetShape(unsigned int typeShape, TypeColorShape typeColorShape)
 			material->SetMaterialValue(ColorQuad, 4, 4);
 			SetVertexMaterial(material->GetVertexColorRGBA(), vertexBufferQuad, 3, 4, 4, 4);
 		}
-		
 		break;
 	}
 	CreateVbo(_vertexBuffer);
