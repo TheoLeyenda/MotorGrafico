@@ -30,7 +30,7 @@ float g = 0.0f;
 float b = 0.0f;
 float a = 1.0f;
 TypeDrawShape typeDrawShape = TypeDrawShape::Tri;
-
+TypeColorShape typeColorShape = TypeColorShape::SolidColor;
 Game::Game():GameBase(){}
 
 Game::~Game(){}
@@ -41,13 +41,13 @@ void Game::InitGame()
 	if(typeDrawShape == TypeDrawShape::Tri)
 	{
 		tri = new Shape(GetRenderer());
-		tri->InitShape(TypeShape::TRIANGLE);
+		tri->SetShape(TypeShape::TRIANGLE, typeColorShape);
 		tri->SetVertexsAttrib(GetRenderer()->GetShader());
 	}
 	else if(typeDrawShape == TypeDrawShape::Quad)
 	{
 		quad = new Shape(GetRenderer());
-		quad->InitShape(TypeShape::QUAD);
+		quad->SetShape(TypeShape::QUAD, typeColorShape);
 		quad->SetVertexsAttrib(GetRenderer()->GetShader());
 	}
 	//---------------------//

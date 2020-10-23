@@ -47,30 +47,35 @@ Shape::Shape(Renderer * _renderer, Material * _material) : Entity2D(_renderer, _
 
 Shape::~Shape(){}
 
-void Shape::InitShape(unsigned int typeShape)
+void Shape::SetShape(unsigned int typeShape, TypeColorShape typeColorShape)
 {
 	//material->SetMaterialValue()
 	_currentShape = typeShape;
+	_typeColorShape = typeColorShape;
 	switch (typeShape)
 	{
 	case GL_TRIANGLES:
 		_vertexBuffer = vertexBufferTri;
 		
-		//material->SetMaterialValue(0.5f, 0.3f, 0.2f, 1.0f);
-		//SetVertexMaterial(material->GetColorRGBA(), vertexBufferTri, 3, 4, 3);
-
-		material->SetMaterialValue(ColorTri, 4,3);
-		SetVertexMaterial(material->GetVertexColorRGBA(), vertexBufferTri, 3, 4, 3, 4);
-		
+		if (_typeColorShape == TypeColorShape::SolidColor) {
+			material->SetMaterialValue(0.5f, 0.3f, 0.2f, 1.0f);
+			SetVertexMaterial(material->GetColorRGBA(), vertexBufferTri, 3, 4, 3);
+		}
+		else if (_typeColorShape == TypeColorShape::VertexColor) {
+			material->SetMaterialValue(ColorTri, 4, 3);
+			SetVertexMaterial(material->GetVertexColorRGBA(), vertexBufferTri, 3, 4, 3, 4);
+		}
 		break;
 	case GL_QUADS:
 		_vertexBuffer = vertexBufferQuad;
-		
-		//material->SetMaterialValue(0.5f, 0.3f, 0.2f, 1.0f);
-		//SetVertexMaterial(material->GetColorRGBA(),vertexBufferQuad,3,4,4);
-		
-		material->SetMaterialValue(ColorQuad, 4, 4);
-		SetVertexMaterial(material->GetVertexColorRGBA(), vertexBufferQuad, 3, 4, 4, 4);
+		if (_typeColorShape == TypeColorShape::SolidColor) {
+			material->SetMaterialValue(0.5f, 0.3f, 0.2f, 1.0f);
+			SetVertexMaterial(material->GetColorRGBA(),vertexBufferQuad,3,4,4);
+		}
+		else if (_typeColorShape == TypeColorShape::VertexColor) {
+			material->SetMaterialValue(ColorQuad, 4, 4);
+			SetVertexMaterial(material->GetVertexColorRGBA(), vertexBufferQuad, 3, 4, 4, 4);
+		}
 		
 		break;
 	}

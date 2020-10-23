@@ -10,6 +10,11 @@ static enum TypeShape
 	TRIANGLE = 0x0004,
 	QUAD = 0x0007,
 };
+static enum TypeColorShape 
+{
+	SolidColor,
+	VertexColor,
+};
 //typedef unsigned int GLenum;
 class ENGINE_API Shape : public Entity2D
 {
@@ -19,12 +24,13 @@ private:
 	unsigned int _currentShape;
 	unsigned int _posAttrib;
 	unsigned int _colorAttrib;
+	TypeColorShape _typeColorShape;
 public:
 
 	Shape(Renderer *_renderer);
 	Shape(Renderer *_renderer, Material* _material);
 	~Shape();
-	void InitShape(unsigned int typeShape);
+	void SetShape(unsigned int typeShape, TypeColorShape typeColorShape);
 	void CreateVbo(float* vertexBuffer);
 	unsigned int GetVbo();
 	float* GetVertexBuffer();
@@ -35,5 +41,7 @@ public:
 	void SetVertexMaterial(glm::vec4* materials, float* VBA, int start, int offset, int repeticiones, int countElementsForRepe);
 	void Draw(unsigned int figura, int vertexs, unsigned int& shaderProg, Windows* refWindow, glm::mat4 model);
 	void SetSolidColor(float r, float g, float b, float a);
+	void SetTypeColorShape(TypeColorShape typeColorShape) { _typeColorShape = typeColorShape; }
+	TypeColorShape GetTypeColorShape() { return _typeColorShape; }
 };
 #endif
