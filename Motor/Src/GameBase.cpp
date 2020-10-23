@@ -64,3 +64,5 @@ void GameBase::DestroyEngine()
 	if (render != NULL)
 		delete render;
 }
+
+
