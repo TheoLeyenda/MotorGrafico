@@ -3,6 +3,12 @@
 #include "..\Motor\Src\GameBase.h"
 #include "Game.h"
 
+enum TypeDrawShape 
+{
+	Tri,
+	Quad,
+};
+
 //VALORES DE TESTEO
 float posX = 0;
 float posY = 0;
@@ -23,29 +29,41 @@ float r = 1.0f;
 float g = 0.0f;
 float b = 0.0f;
 float a = 1.0f;
-bool enableSetSolidColor = false;
+TypeDrawShape typeDrawShape = TypeDrawShape::Tri;
 
 Game::Game():GameBase(){}
 
 Game::~Game(){}
 
 
-
 void Game::InitGame()
 {
-	quad = new Shape(GetRenderer());
-	tri = new Shape(GetRenderer());
-
-	tri->InitShape(TypeShape::TRIANGLE);
-
-	tri->SetVertexsAttrib(GetRenderer()->GetShader());
+	if(typeDrawShape == TypeDrawShape::Tri)
+	{
+		tri = new Shape(GetRenderer());
+		tri->InitShape(TypeShape::TRIANGLE);
+		tri->SetVertexsAttrib(GetRenderer()->GetShader());
+	}
+	else if(typeDrawShape == TypeDrawShape::Quad)
+	{
+		quad = new Shape(GetRenderer());
+		quad->InitShape(TypeShape::QUAD);
+		quad->SetVertexsAttrib(GetRenderer()->GetShader());
+	}
 	//---------------------//
 }
 
 void Game::UpdateGame(Windows *_window, Renderer *_render, Input *_input)
 {
-	tri->Draw(TypeShape::TRIANGLE, 3, _render->GetShader(), _window, tri->GetInternalData().model);
-	TempInputs(_window, tri);
+	if (typeDrawShape == TypeDrawShape::Tri) {
+		tri->Draw(TypeShape::TRIANGLE, 3, _render->GetShader(), _window, tri->GetInternalData().model);
+		TempInputs(_window, tri);
+	}
+	else if (typeDrawShape == TypeDrawShape::Quad) 
+	{
+		quad->Draw(TypeShape::QUAD, 6, _render->GetShader(), _window, quad->GetInternalData().model);
+		TempInputs(_window, quad);
+	}
 }
 
 void Game::DestroyGame()
@@ -57,40 +75,36 @@ void Game::DestroyGame()
 }
 
 
-void GameBase::TempInputs(Windows* windows, Shape* tri)
+void GameBase::TempInputs(Windows* windows, Shape* shape)
 {
-	if (enableSetSolidColor)
+	if (input->GetKey(KeyBoard::KEY_ENTER))
 	{
-		tri->SetSolidColor(r, g, b, a);
-		//quad->SetSolidColor(r, g, b, a, vertexShader, fragmentShader);
-		if (input->GetKey(KeyBoard::KEY_ENTER))
-		{
-			r = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
-			g = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
-			b = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
-			a = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
-		}
+		r = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
+		g = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
+		b = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
+		a = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
+		shape->SetSolidColor(r, g, b, a);
 	}
 	//INPUT DE MOVIMIENTO
 	if (input->GetKey(KeyBoard::KEY_W))
 	{
 		posY = posY + speed;
-		tri->SetPosition(posX, posY, posZ);
+		shape->SetPosition(posX, posY, posZ);
 	}
 	if (input->GetKey(KeyBoard::KEY_S))
 	{
 		posY = posY - speed;
-		tri->SetPosition(posX, posY, posZ);
+		shape->SetPosition(posX, posY, posZ);
 	}
 	if (input->GetKey(KeyBoard::KEY_D))
 	{
 		posX = posX + speed;
-		tri->SetPosition(posX, posY, posZ);
+		shape->SetPosition(posX, posY, posZ);
 	}
 	if (input->GetKey(KeyBoard::KEY_A))
 	{
 		posX = posX - speed;
-		tri->SetPosition(posX, posY, posZ);
+		shape->SetPosition(posX, posY, posZ);
 	}
 	//-------------------//
 
@@ -98,34 +112,34 @@ void GameBase::TempInputs(Windows* windows, Shape* tri)
 	if (input->GetKey(KeyBoard::KEY_KP_4))
 	{
 		rotZ = rotZ + speedRotation;
-		tri->SetRotationZ(rotZ);
+		shape->SetRotationZ(rotZ);
 	}
 	if (input->GetKey(KeyBoard::KEY_KP_6))
 	{
 		rotZ = rotZ - speedRotation;
-		tri->SetRotationZ(rotZ);
+		shape->SetRotationZ(rotZ);
 	}
 
 	if (input->GetKey(KeyBoard::KEY_KP_1))
 	{
 		rotY = rotY + speedRotation;
-		tri->SetRotationY(rotY);
+		shape->SetRotationY(rotY);
 	}
 	if (input->GetKey(KeyBoard::KEY_KP_3))
 	{
 		rotY = rotY - speedRotation;
-		tri->SetRotationY(rotY);
+		shape->SetRotationY(rotY);
 	}
 
 	if (input->GetKey(KeyBoard::KEY_KP_7))
 	{
 		rotX = rotX + speedRotation;
-		tri->SetRotationX(rotX);
+		shape->SetRotationX(rotX);
 	}
 	if (input->GetKey(KeyBoard::KEY_KP_9))
 	{
 		rotX = rotX - speedRotation;
-		tri->SetRotationX(rotX);
+		shape->SetRotationX(rotX);
 	}
 	//------------------//
 
@@ -135,14 +149,14 @@ void GameBase::TempInputs(Windows* windows, Shape* tri)
 		scalX = scalX + speedScale;
 		scalY = scalY + speedScale;
 		scalZ = scalZ + speedScale;
-		tri->SetScale(scalX, scalY, scalZ);
+		shape->SetScale(scalX, scalY, scalZ);
 	}
 	if (input->GetKey(KeyBoard::KEY_KP_2))
 	{
 		scalX = scalX - speedScale;
 		scalY = scalY - speedScale;
 		scalZ = scalZ - speedScale;
-		tri->SetScale(scalX, scalY, scalZ);
+		shape->SetScale(scalX, scalY, scalZ);
 	}
 }
 
