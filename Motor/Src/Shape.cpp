@@ -7,17 +7,17 @@
 
 float vertexBufferTri[] = {
 	//X		  Y		 Z		R	  G	    B  	  S	    T
-	-0.5f , -0.5f , 0.0f, 0.0f , 0.0f ,0.0f, 1.0f, 1.0f,
+	-0.5f , -0.5f , 0.0f, 0.0f , 0.0f ,0.0f, 0.0f, 0.0f,
 	 0.5f , -0.5f , 0.0f, 0.0f , 0.0f ,0.0f, 1.0f, 0.0f,
-	 0.0f ,  0.5f , 0.0f, 0.0f , 0.0f, 0.0f, 0.0f, 0.0f, FINALARRAY
+	 0.0f ,  0.5f , 0.0f, 0.0f , 0.0f, 0.0f, 0.5f, 1.0f, FINALARRAY
 };
 
 float vertexBufferQuad[] = {
 	//X		  Y		 Z		R	  G	    B      S     T
-	-0.5f ,  0.5f , 0.0f, 0.0f , 0.0f , 0.0f, 1.0f, 1.0f,
-	-0.5f , -0.5f , 0.0f, 0.0f , 0.0f , 0.0f, 0.0f, 1.0f,
-	 0.5f , -0.5f , 0.0f, 0.0f , 0.0f , 0.0f, 0.0f, 0.0f,
-	 0.5f ,  0.5f , 0.0f, 0.0f , 0.0f , 0.0f, 1.0f, 0.0f,FINALARRAY
+	-0.5f ,  0.5f , 0.0f, 0.0f , 0.0f , 0.0f, 0.0f, 1.0f,
+	-0.5f , -0.5f , 0.0f, 0.0f , 0.0f , 0.0f, 0.0f, 0.0f,
+	 0.5f , -0.5f , 0.0f, 0.0f , 0.0f , 0.0f, 1.0f, 0.0f,
+	 0.5f ,  0.5f , 0.0f, 0.0f , 0.0f , 0.0f, 1.0f, 1.0f,FINALARRAY
 };
 
 float ColorTri[]
@@ -61,23 +61,23 @@ void Shape::SetShape(unsigned int typeShape, TypeColorShape typeColorShape)
 		_vertexBuffer = vertexBufferTri;
 		
 		/*if (_typeColorShape == TypeColorShape::SolidColor) {
-			material->SetMaterialValue(1.0f, 1.0f, 1.0f, 1.0f);
-			SetVertexMaterial(material->GetColorRGBA(), vertexBufferTri, 3, 3, 3);
+			material->SetMaterialValue(1.0f, 1.0f, 1.0f);
+			SetVertexMaterial(material->GetColorRGB(), vertexBufferTri, 3, 4, 3);
 		}
 		else if (_typeColorShape == TypeColorShape::VertexColor) {
 			material->SetMaterialValue(ColorTri, 4, 3);
-			SetVertexMaterial(material->GetVertexColorRGBA(), vertexBufferTri, 3, 3, 3, 3);
+			SetVertexMaterial(material->GetVertexColorRGB(), vertexBufferTri, 3, 4, 3, 3);
 		}*/
 		break;
 	case GL_QUADS:
 		_vertexBuffer = vertexBufferQuad;
 		/*if (_typeColorShape == TypeColorShape::SolidColor) {
-			material->SetMaterialValue(1.0f, 1.0f, 1.0f, 1.0f);
-			//SetVertexMaterial(material->GetColorRGBA(),vertexBufferQuad,3,3,4);
+			material->SetMaterialValue(1.0f, 1.0f, 1.0f);
+			SetVertexMaterial(material->GetColorRGB(),vertexBufferQuad,3,4,4);
 		}
 		else if (_typeColorShape == TypeColorShape::VertexColor) {
 			material->SetMaterialValue(ColorQuad, 4, 4);
-			SetVertexMaterial(material->GetVertexColorRGBA(), vertexBufferQuad, 3, 3, 3, 4);
+			SetVertexMaterial(material->GetVertexColorRGB(), vertexBufferQuad, 3, 4, 3, 4);
 		}*/
 		break;
 	}
@@ -131,8 +131,8 @@ unsigned int Shape::GetPosAttrib(){
 unsigned int Shape::GetColAttrib(){
 	return _colorAttrib;
 }
-
-void Shape::SetVertexMaterial(glm::vec4 material, float* VBA, int offset, int stride, int repeticiones){
+															//     3            5             4
+void Shape::SetVertexMaterial(glm::vec3 material, float* VBA, int offset, int stride, int repeticiones){
 	
 	for (int i = 0; i < repeticiones; i++){
 		for (int j = offset; j < stride+offset; j++){
@@ -140,7 +140,14 @@ void Shape::SetVertexMaterial(glm::vec4 material, float* VBA, int offset, int st
 		}
 	}
 }
-void Shape::SetVertexMaterial(glm::vec4* materials, float* VBA, int start, int offset, int repeticiones, int countElementsForRepe)
+/*float vertexBufferQuad[] = {
+	//X		  Y		 Z		R	  G	    B      S     T
+	-0.5f ,  0.5f , 0.0f, 0.0f , 0.0f , 0.0f, 1.0f, 1.0f,
+	-0.5f , -0.5f , 0.0f, 0.0f , 0.0f , 0.0f, 0.0f, 1.0f,
+	 0.5f , -0.5f , 0.0f, 0.0f , 0.0f , 0.0f, 0.0f, 0.0f,
+	 0.5f ,  0.5f , 0.0f, 0.0f , 0.0f , 0.0f, 1.0f, 0.0f,FINALARRAY
+};*/
+void Shape::SetVertexMaterial(glm::vec3* materials, float* VBA, int start, int offset, int repeticiones, int countElementsForRepe)
 {
 	//SetVertexMaterial(material->GetVertexColorRGBA(), 4, vertexBufferTri, 3, 4, 3);
 	int k = 0;
@@ -170,17 +177,17 @@ void Shape::Draw(unsigned int figura,int vertexs, unsigned int& shaderProg, Wind
 	}
 	_currentShape = figura;
 }
-void Shape::SetSolidColor(float r, float g, float b, float a)
+void Shape::SetSolidColor(float r, float g, float b)
 {
-	material->SetMaterialValue(r, g, b, a);
+	material->SetMaterialValue(r, g, b);
 	switch (_currentShape)
 	{
 	case GL_TRIANGLES:
 
-		SetVertexMaterial(material->GetColorRGBA(), vertexBufferTri, 3, 4, 3);
+		SetVertexMaterial(material->GetColorRGB(), vertexBufferTri, 3, 4, 3);
 		break;
 	case GL_QUADS:
-		SetVertexMaterial(material->GetColorRGBA(), vertexBufferQuad, 3, 4, 4);
+		SetVertexMaterial(material->GetColorRGB(), vertexBufferQuad, 3, 4, 4);
 		break;
 	}
 	glBindBuffer(GL_ARRAY_BUFFER, _vbo);

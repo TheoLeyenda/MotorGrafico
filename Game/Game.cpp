@@ -29,7 +29,7 @@ float r = 1.0f;
 float g = 0.0f;
 float b = 0.0f;
 float a = 1.0f;
-TypeDrawShape typeDrawShape = TypeDrawShape::Quad;
+TypeDrawShape typeDrawShape = TypeDrawShape::Tri;
 TypeColorShape typeColorShape = TypeColorShape::SolidColor;
 Game::Game():GameBase(){}
 
@@ -92,8 +92,7 @@ void GameBase::TempInputs(Windows* windows, Shape* shape)
 		r = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
 		g = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
 		b = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
-		a = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
-		shape->SetSolidColor(r, g, b, a);
+		shape->SetSolidColor(r, g, b);
 	}
 	if (input->GetKey(KeyBoard::KEY_LEFT)) 
 	{
