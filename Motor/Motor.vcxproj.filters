@@ -54,6 +54,12 @@
     <ClInclude Include="Src\stb_image.h">
       <Filter>res\CargadorDeTexturas</Filter>
     </ClInclude>
+    <ClInclude Include="Src\Sprite.h">
+      <Filter>Archivos de encabezado</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\TextureImporter.h">
+      <Filter>Archivos de encabezado</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Src\GameBase.cpp">
@@ -83,6 +89,17 @@
     <ClCompile Include="Src\stb_image.cpp">
       <Filter>res\CargadorDeTexturas</Filter>
     </ClCompile>
+    <ClCompile Include="Src\Sprite.cpp">
+      <Filter>Archivos de origen</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\TextureImporter.cpp">
+      <Filter>Archivos de origen</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="res\texturas\bokitaElMasGrandePapa.png">
+      <Filter>Archivos de recursos</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <None Include="res\shaders\Fragment.shader">

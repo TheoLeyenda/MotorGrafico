@@ -8,6 +8,7 @@
 #include <fstream>
 #include <sstream>
 
+
 Renderer::Renderer() {
 	_MVP.view = glm::mat4(1.0f);
 	_MVP.projection = glm::mat4(1.0f);
@@ -30,7 +31,7 @@ glm::mat4 Renderer::getProjMat()
 }
 void Renderer::SetShader()
 {
-	_shaderProgram = CreateShaderProgram("res/shaders/Vertex.shader", "res/shaders/Fragment.shader");
+	_shaderProgram = CreateShaderProgram("../Motor/res/shaders/Vertex.shader", "../Motor/res/shaders/Fragment.shader");
 }
 
 void Renderer::GLEWInit() {
@@ -71,12 +72,19 @@ void Renderer::ClearShader() {
 	glUseProgram(0);
 }
 
-void Renderer::BindBuffer(unsigned int vbo, unsigned int posAttrib, unsigned int colAttrib) {
+void Renderer::BindBuffer(unsigned int vbo, unsigned int posAttrib, unsigned int colAttrib, bool useTexture, unsigned int textureAttrib) {
+	
+	unsigned int countElementsForVertex = 8;
+
 	glBindBuffer(GL_ARRAY_BUFFER, vbo);
-	glVertexAttribPointer(posAttrib, 3, GL_FLOAT, GL_FALSE, 7 * sizeof(float), 0);
+	glVertexAttribPointer(posAttrib, 3, GL_FLOAT, GL_FALSE, countElementsForVertex * sizeof(float), 0);
 	glEnableVertexAttribArray(posAttrib);
-	glVertexAttribPointer(colAttrib, 4, GL_FLOAT, GL_FALSE, 7 * sizeof(float), (void*)(3 * sizeof(float)));
+	glVertexAttribPointer(colAttrib, 3, GL_FLOAT, GL_FALSE, countElementsForVertex * sizeof(float), (void*)(3 * sizeof(float)));
 	glEnableVertexAttribArray(colAttrib);
+	glVertexAttribPointer(textureAttrib, 2, GL_FLOAT, GL_FALSE, countElementsForVertex * sizeof(float), (void*)(6 * sizeof(float)));
+	glEnableVertexAttribArray(textureAttrib);
+
+
 }
 
 void Renderer::UnbindBuffer() {
@@ -84,12 +92,14 @@ void Renderer::UnbindBuffer() {
 }
 
 void Renderer::BeignDraw() {
+	glClearColor(0.0f, 1.0, 0.0f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
-void Renderer::Draw(unsigned int figura, int vertexs, unsigned int vbo, unsigned int& shaderProg, unsigned int posAttrib, unsigned int colAttrib, glm::mat4 model) {
+void Renderer::Draw(unsigned int figura, int vertexs, unsigned int vbo, unsigned int& shaderProg, unsigned int posAttrib, unsigned int colAttrib,unsigned int textureAttrib, glm::mat4 model, bool useTexture) 
+{
 
-	BindBuffer(vbo, posAttrib, colAttrib);
+	BindBuffer(vbo, posAttrib, colAttrib, useTexture, textureAttrib);
 
 	UseProgram(shaderProg, model,_MVP.view, _MVP.projection);
 

@@ -34,10 +34,10 @@ public:
 	bool GLLogCall();
 	void UseProgram(unsigned int& shader, glm::mat4 model, glm::mat4 view, glm::mat4 projection);
 	void ClearShader();
-	void BindBuffer(unsigned int vbo, unsigned int posAttrib, unsigned int colAttrib);
+	void BindBuffer(unsigned int vbo, unsigned int posAttrib, unsigned int colAttrib, bool useTexture, unsigned int textureAttrib);
 	void UnbindBuffer();
 	void BeignDraw();
-	void Draw(unsigned int figura, int vertexs, unsigned int vbo, unsigned int& shaderProg, unsigned int posAttrib, unsigned int colAttrib, glm::mat4 model);
+	void Draw(unsigned int figura, int vertexs, unsigned int vbo, unsigned int& shaderProg, unsigned int posAttrib, unsigned int colAttrib, unsigned int textureAttrib, glm::mat4 model, bool useTexture);
 	void EndDraw(Windows* refWindow);
 	unsigned int CompileShader(unsigned int type, const char* source);
 	int CreateShaderProgram(const char* vertexShader, const char* fragmentShader);

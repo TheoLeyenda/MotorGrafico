@@ -7,6 +7,8 @@ private:
 	int resultInit;
 	Shape* quad; //no tiene que ir xd
 	Shape* tri;
+	Sprite* spriteTri;
+	Sprite* spriteQuad;
 public:
 	Game();
 	~Game();

@@ -8,6 +8,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include "Input.h"
+#include "Sprite.h"
 
 #define INIT_ERROR -1
 

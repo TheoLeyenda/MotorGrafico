@@ -3,20 +3,21 @@
 #include <glew.h>
 #include <GLFW/glfw3.h>
 
+#define FINALARRAY 5
 
 float vertexBufferTri[] = {
-	//X		  Y		 Z		R	  G	    B	  A
-	-0.5f , -0.5f , 0.0f, 0.0f , 0.0f ,0.0f, 1.0f,
-	 0.5f , -0.5f , 0.0f, 0.0f , 0.0f ,0.0f, 1.0f,
-	 0.0f ,  0.5f , 0.0f, 0.0f , 0.0f, 0.0f, 1.0f
+	//X		  Y		 Z		R	  G	    B  	  S	    T
+	-0.5f , -0.5f , 0.0f, 0.0f , 0.0f ,0.0f, 1.0f, 1.0f,
+	 0.5f , -0.5f , 0.0f, 0.0f , 0.0f ,0.0f, 1.0f, 0.0f,
+	 0.0f ,  0.5f , 0.0f, 0.0f , 0.0f, 0.0f, 0.0f, 0.0f, FINALARRAY
 };
 
 float vertexBufferQuad[] = {
-	//X		  Y		 Z		R	  G	    B	  A
-	-0.5f ,  0.5f , 0.0f, 0.0f , 0.0f , 0.0f, 1.0f,
-	-0.5f , -0.5f , 0.0f, 0.0f , 0.0f , 0.0f, 1.0f,
-	 0.5f , -0.5f , 0.0f, 0.0f , 0.0f , 0.0f, 1.0f,
-	 0.5f ,  0.5f , 0.0f, 0.0f , 0.0f , 0.0f, 1.0f
+	//X		  Y		 Z		R	  G	    B      S     T
+	-0.5f ,  0.5f , 0.0f, 0.0f , 0.0f , 0.0f, 1.0f, 1.0f,
+	-0.5f , -0.5f , 0.0f, 0.0f , 0.0f , 0.0f, 0.0f, 1.0f,
+	 0.5f , -0.5f , 0.0f, 0.0f , 0.0f , 0.0f, 0.0f, 0.0f,
+	 0.5f ,  0.5f , 0.0f, 0.0f , 0.0f , 0.0f, 1.0f, 0.0f,FINALARRAY
 };
 
 float ColorTri[]
@@ -34,15 +35,17 @@ float ColorQuad[]
 	1.0f,0.0f,1.0f,1.0f,
 };
 
-Shape::Shape(Renderer *_renderer): Entity2D(_renderer)
+Shape::Shape(Renderer *_renderer, bool _useTexture): Entity2D(_renderer)
 {
 	renderer = _renderer;
+	useTexture = _useTexture;
 }
 
-Shape::Shape(Renderer * _renderer, Material * _material) : Entity2D(_renderer, _material)
+Shape::Shape(Renderer * _renderer, Material * _material, bool _useTexture) : Entity2D(_renderer, _material)
 {
 	renderer = _renderer;
 	material = _material;
+	useTexture = _useTexture;
 }
 
 Shape::~Shape(){}
@@ -57,25 +60,25 @@ void Shape::SetShape(unsigned int typeShape, TypeColorShape typeColorShape)
 	case GL_TRIANGLES:
 		_vertexBuffer = vertexBufferTri;
 		
-		if (_typeColorShape == TypeColorShape::SolidColor) {
-			material->SetMaterialValue(0.5f, 0.3f, 0.2f, 1.0f);
-			SetVertexMaterial(material->GetColorRGBA(), vertexBufferTri, 3, 4, 3);
+		/*if (_typeColorShape == TypeColorShape::SolidColor) {
+			material->SetMaterialValue(1.0f, 1.0f, 1.0f, 1.0f);
+			SetVertexMaterial(material->GetColorRGBA(), vertexBufferTri, 3, 3, 3);
 		}
 		else if (_typeColorShape == TypeColorShape::VertexColor) {
 			material->SetMaterialValue(ColorTri, 4, 3);
-			SetVertexMaterial(material->GetVertexColorRGBA(), vertexBufferTri, 3, 4, 3, 4);
-		}
+			SetVertexMaterial(material->GetVertexColorRGBA(), vertexBufferTri, 3, 3, 3, 3);
+		}*/
 		break;
 	case GL_QUADS:
 		_vertexBuffer = vertexBufferQuad;
-		if (_typeColorShape == TypeColorShape::SolidColor) {
-			material->SetMaterialValue(0.5f, 0.3f, 0.2f, 1.0f);
-			SetVertexMaterial(material->GetColorRGBA(),vertexBufferQuad,3,4,4);
+		/*if (_typeColorShape == TypeColorShape::SolidColor) {
+			material->SetMaterialValue(1.0f, 1.0f, 1.0f, 1.0f);
+			//SetVertexMaterial(material->GetColorRGBA(),vertexBufferQuad,3,3,4);
 		}
 		else if (_typeColorShape == TypeColorShape::VertexColor) {
 			material->SetMaterialValue(ColorQuad, 4, 4);
-			SetVertexMaterial(material->GetVertexColorRGBA(), vertexBufferQuad, 3, 4, 4, 4);
-		}
+			SetVertexMaterial(material->GetVertexColorRGBA(), vertexBufferQuad, 3, 3, 3, 4);
+		}*/
 		break;
 	}
 	CreateVbo(_vertexBuffer);
@@ -102,12 +105,23 @@ float* Shape::GetVertexBuffer()
 }
 
 void Shape::SetVertexsAttrib(unsigned int & shaderId){
+
+	int countElementsForVertex = 8;
+
+
 	_posAttrib = glGetAttribLocation(shaderId, "position");
-	glVertexAttribPointer(_posAttrib, 3, GL_FLOAT, GL_FALSE, 7 * sizeof(float), 0);
+	glVertexAttribPointer(_posAttrib, 3, GL_FLOAT, GL_FALSE, countElementsForVertex * sizeof(float), 0);
 	glEnableVertexAttribArray(_posAttrib);
 	_colorAttrib = glGetAttribLocation(shaderId, "customColor");
-	glVertexAttribPointer(_colorAttrib, 4, GL_FLOAT, GL_FALSE, 7 * sizeof(float), (void*)(3 * sizeof(float)));
+	glVertexAttribPointer(_colorAttrib, 3, GL_FLOAT, GL_FALSE, countElementsForVertex * sizeof(float), (void*)(3 * sizeof(float)));
 	glEnableVertexAttribArray(_colorAttrib);
+
+	if (useTexture)
+	{
+		glUniform1i(_textureAttrib = glGetUniformLocation(shaderId, "ourTexture"), 0);
+		glVertexAttribPointer(_textureAttrib, 2, GL_FLOAT, GL_FALSE, countElementsForVertex * sizeof(float), (void*)(6 * sizeof(float)));
+		glEnableVertexAttribArray(_textureAttrib);
+	}
 }
 
 unsigned int Shape::GetPosAttrib(){
@@ -150,7 +164,7 @@ void Shape::Draw(unsigned int figura,int vertexs, unsigned int& shaderProg, Wind
 	{
 		renderer->BeignDraw();
 
-		renderer->Draw(figura, vertexs, GetVbo(), shaderProg,GetPosAttrib(),GetColAttrib(), model);
+		renderer->Draw(figura, vertexs, GetVbo(), shaderProg,GetPosAttrib(),GetColAttrib(), GetTextureAttrib(), model, useTexture);
 
 		renderer->EndDraw(refWindow);
 	}

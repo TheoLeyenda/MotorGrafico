@@ -40,13 +40,17 @@ void Game::InitGame()
 {
 	if(typeDrawShape == TypeDrawShape::Tri)
 	{
-		tri = new Shape(GetRenderer());
+		spriteTri = new Sprite(GetRenderer());
+		spriteTri->GenerateTexture("res/texturas/bokitaElMasGrandePapa.png");
+		tri = new Shape(GetRenderer(), true);
 		tri->SetShape(TypeShape::TRIANGLE, typeColorShape);
 		tri->SetVertexsAttrib(GetRenderer()->GetShader());
 	}
 	else if(typeDrawShape == TypeDrawShape::Quad)
 	{
-		quad = new Shape(GetRenderer());
+		spriteQuad = new Sprite(GetRenderer());
+		spriteQuad->GenerateTexture("res/texturas/bokitaElMasGrandePapa.png");
+		quad = new Shape(GetRenderer(), true);
 		quad->SetShape(TypeShape::QUAD, typeColorShape);
 		quad->SetVertexsAttrib(GetRenderer()->GetShader());
 	}
@@ -58,11 +62,13 @@ void Game::UpdateGame(Windows *_window, Renderer *_render, Input *_input)
 	if (typeDrawShape == TypeDrawShape::Tri) {
 		tri->Draw(TypeShape::TRIANGLE, 3, _render->GetShader(), _window, tri->GetInternalData().model);
 		TempInputs(_window, tri);
+		spriteTri->BindTexture();
 	}
 	else if (typeDrawShape == TypeDrawShape::Quad) 
 	{
-		quad->Draw(TypeShape::QUAD, 6, _render->GetShader(), _window, quad->GetInternalData().model);
+		quad->Draw(TypeShape::QUAD, 4, _render->GetShader(), _window, quad->GetInternalData().model);
 		TempInputs(_window, quad);
+		spriteQuad->BindTexture();
 	}
 }
 
@@ -72,6 +78,10 @@ void Game::DestroyGame()
 		delete quad;
 	if (tri != NULL)
 		delete tri;
+	if (spriteTri != NULL)
+		delete spriteTri;
+	if (spriteQuad != NULL)
+		delete spriteQuad;
 }
 
 

@@ -27,8 +27,10 @@
     <ClInclude Include="Src\PrivateClass\Export.h" />
     <ClInclude Include="Src\Renderer.h" />
     <ClInclude Include="Src\Shape.h" />
+    <ClInclude Include="Src\Sprite.h" />
     <ClInclude Include="Src\stb_image.h" />
     <ClInclude Include="Src\Windows.h" />
+    <ClInclude Include="Src\TextureImporter.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Src\Entity.cpp" />
@@ -38,8 +40,13 @@
     <ClCompile Include="Src\Material.cpp" />
     <ClCompile Include="Src\Renderer.cpp" />
     <ClCompile Include="Src\Shape.cpp" />
+    <ClCompile Include="Src\Sprite.cpp" />
     <ClCompile Include="Src\stb_image.cpp" />
     <ClCompile Include="Src\Windows.cpp" />
+    <ClCompile Include="Src\TextureImporter.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="res\texturas\bokitaElMasGrandePapa.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="res\shaders\Fragment.shader" />

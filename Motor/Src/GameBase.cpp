@@ -2,10 +2,10 @@
 //#include <GLFW/glfw3.h>
 #include "GameBase.h"
 //#define ASSERT(x) if (!(x)) __debugbreak();
-#include "fragmentShader.h"
-#include "vertexShader.h"
-
-
+//#include "fragmentShader.h"
+//#include "vertexShader.h"
+#include "glew.h"
+#include "GLFW/glfw3.h"
 
 GameBase::GameBase() {}
 GameBase::~GameBase() {}
