@@ -15,6 +15,11 @@ static enum TypeColorShape
 	SolidColor,
 	VertexColor,
 };
+static enum TypeMaterial 
+{
+	Texture,
+	Color,
+};
 //typedef unsigned int GLenum;
 class ENGINE_API Shape : public Entity2D
 {
@@ -26,11 +31,12 @@ private:
 	unsigned int _colorAttrib;
 	unsigned int _textureAttrib;
 	TypeColorShape _typeColorShape;
-	bool useTexture;
+	TypeMaterial _typeMaterial;
+
 public:
 
-	Shape(Renderer *_renderer, bool _useTexture);
-	Shape(Renderer *_renderer, Material* _material, bool _useTexture);
+	Shape(Renderer *_renderer, TypeMaterial typeMaterial);
+	Shape(Renderer *_renderer, Material* _material, TypeMaterial typeMaterial);
 	~Shape();
 	void SetShape(unsigned int typeShape, TypeColorShape typeColorShape);
 	void CreateVbo(float* vertexBuffer);
@@ -40,8 +46,8 @@ public:
 	unsigned int GetPosAttrib();
 	unsigned int GetColAttrib();
 	unsigned int GetTextureAttrib() { return _textureAttrib; }
-	void SetVertexMaterial(glm::vec3 material,float* VBA, int start,int offset, int repeticiones);
-	void SetVertexMaterial(glm::vec3* materials, float* VBA, int start, int offset, int repeticiones, int countElementsForRepe);
+	void SetVertexMaterial(glm::vec4 material,float* VBA, int start,int offset, int repeticiones);
+	void SetVertexMaterial(glm::vec4* materials, float* VBA, int start, int offset, int repeticiones, int countElementsForRepe);
 	void Draw(unsigned int figura, int vertexs, unsigned int& shaderProg, Windows* refWindow, glm::mat4 model);
 	void SetSolidColor(float r, float g, float b);
 	void SetTypeColorShape(TypeColorShape typeColorShape) { _typeColorShape = typeColorShape; }

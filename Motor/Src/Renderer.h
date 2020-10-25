@@ -11,17 +11,24 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
+#include <string>
+
 struct matrixMVP
 {
 	glm::mat4 view;
 	glm::mat4 projection;
 };
-
+static enum TypeShader 
+{
+	FragmentTexture,
+	FragmentColor,
+};
 class ENGINE_API Renderer {
 private:
 	//nothing
 	unsigned int _shaderProgram;
 	matrixMVP _MVP;
+	TypeShader _typeShader;
 public:
 	Renderer();
 	~Renderer();
@@ -41,5 +48,6 @@ public:
 	void EndDraw(Windows* refWindow);
 	unsigned int CompileShader(unsigned int type, const char* source);
 	int CreateShaderProgram(const char* vertexShader, const char* fragmentShader);
+	void SetTypeShader(TypeShader typeShader) { _typeShader = typeShader; }
 };
 #endif // !RENDERER_H

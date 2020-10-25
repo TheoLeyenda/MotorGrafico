@@ -49,7 +49,8 @@
     <Image Include="res\texturas\bokitaElMasGrandePapa.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="res\shaders\Fragment.shader" />
+    <None Include="res\shaders\FragmentColor.shader" />
+    <None Include="res\shaders\FragmentTexture.shader" />
     <None Include="res\shaders\Vertex.shader" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

@@ -12,6 +12,7 @@
 Renderer::Renderer() {
 	_MVP.view = glm::mat4(1.0f);
 	_MVP.projection = glm::mat4(1.0f);
+	_typeShader = TypeShader::FragmentColor;
 }
 Renderer::~Renderer() {
 	//glDeleteProgram(_shaderProgram);
@@ -31,7 +32,10 @@ glm::mat4 Renderer::getProjMat()
 }
 void Renderer::SetShader()
 {
-	_shaderProgram = CreateShaderProgram("../Motor/res/shaders/Vertex.shader", "../Motor/res/shaders/Fragment.shader");
+	if(_typeShader == TypeShader::FragmentColor)
+		_shaderProgram = CreateShaderProgram("../Motor/res/shaders/Vertex.shader", "../Motor/res/shaders/FragmentColor.shader");
+	else if (_typeShader == TypeShader::FragmentTexture) 
+		_shaderProgram = CreateShaderProgram("../Motor/res/shaders/Vertex.shader", "../Motor/res/shaders/FragmentTexture.shader");
 }
 
 void Renderer::GLEWInit() {
@@ -75,15 +79,24 @@ void Renderer::ClearShader() {
 void Renderer::BindBuffer(unsigned int vbo, unsigned int posAttrib, unsigned int colAttrib, bool useTexture, unsigned int textureAttrib) {
 	
 	unsigned int countElementsForVertex = 8;
-
-	glBindBuffer(GL_ARRAY_BUFFER, vbo);
-	glVertexAttribPointer(posAttrib, 3, GL_FLOAT, GL_FALSE, countElementsForVertex * sizeof(float), 0);
-	glEnableVertexAttribArray(posAttrib);
-	glVertexAttribPointer(colAttrib, 3, GL_FLOAT, GL_FALSE, countElementsForVertex * sizeof(float), (void*)(3 * sizeof(float)));
-	glEnableVertexAttribArray(colAttrib);
-	glVertexAttribPointer(textureAttrib, 2, GL_FLOAT, GL_FALSE, countElementsForVertex * sizeof(float), (void*)(6 * sizeof(float)));
-	glEnableVertexAttribArray(textureAttrib);
-
+	
+	if (useTexture) {
+		glBindBuffer(GL_ARRAY_BUFFER, vbo);
+		glVertexAttribPointer(posAttrib, 3, GL_FLOAT, GL_FALSE, countElementsForVertex * sizeof(float), 0);
+		glEnableVertexAttribArray(posAttrib);
+		glVertexAttribPointer(colAttrib, 3, GL_FLOAT, GL_FALSE, countElementsForVertex * sizeof(float), (void*)(3 * sizeof(float)));
+		glEnableVertexAttribArray(colAttrib);
+		glVertexAttribPointer(textureAttrib, 2, GL_FLOAT, GL_FALSE, countElementsForVertex * sizeof(float), (void*)(6 * sizeof(float)));
+		glEnableVertexAttribArray(textureAttrib);
+	}
+	else 
+	{
+		glBindBuffer(GL_ARRAY_BUFFER, vbo);
+		glVertexAttribPointer(posAttrib, 3, GL_FLOAT, GL_FALSE, 7 * sizeof(float), 0);
+		glEnableVertexAttribArray(posAttrib);
+		glVertexAttribPointer(colAttrib, 4, GL_FLOAT, GL_FALSE, 7 * sizeof(float), (void*)(3 * sizeof(float)));
+		glEnableVertexAttribArray(colAttrib);
+	}
 
 }
 
@@ -92,7 +105,7 @@ void Renderer::UnbindBuffer() {
 }
 
 void Renderer::BeignDraw() {
-	glClearColor(0.0f, 1.0, 0.0f, 1.0f);
+	//glClearColor(0.0f, 1.0, 0.0f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 

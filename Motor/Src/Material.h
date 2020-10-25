@@ -7,16 +7,16 @@
 class ENGINE_API Material
 {
 private:
-	glm::vec3 _colorRGB;
-	glm::vec3* _vertexColorRGB;
+	glm::vec4 _colorRGBA;
+	glm::vec4* _vertexColorRGBA;
 public:
 	Material();
-	Material(float r, float g, float b);
+	Material(float r, float g, float b, float a);
 	Material(float* arrayRGBA, int tamArrayRGBA, int repeticiones);
 	~Material();
-	void SetMaterialValue(float r, float g, float b);
+	void SetMaterialValue(float r, float g, float b, float a);
 	void SetMaterialValue(float* arrayRGBA, int tamArrayRGBA, int repeticiones);
-	glm::vec3 GetColorRGB();
-	glm::vec3* GetVertexColorRGB();
+	glm::vec4 GetColorRGBA();
+	glm::vec4* GetVertexColorRGBA();
 };
 #endif

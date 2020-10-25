@@ -29,8 +29,9 @@ float r = 1.0f;
 float g = 0.0f;
 float b = 0.0f;
 float a = 1.0f;
-TypeDrawShape typeDrawShape = TypeDrawShape::Tri;
+TypeDrawShape typeDrawShape = TypeDrawShape::Quad;
 TypeColorShape typeColorShape = TypeColorShape::SolidColor;
+TypeMaterial typeMaterialShape = TypeMaterial::Texture;
 Game::Game():GameBase(){}
 
 Game::~Game(){}
@@ -42,7 +43,7 @@ void Game::InitGame()
 	{
 		spriteTri = new Sprite(GetRenderer());
 		spriteTri->GenerateTexture("res/texturas/bokitaElMasGrandePapa.png");
-		tri = new Shape(GetRenderer(), true);
+		tri = new Shape(GetRenderer(), typeMaterialShape);
 		tri->SetShape(TypeShape::TRIANGLE, typeColorShape);
 		tri->SetVertexsAttrib(GetRenderer()->GetShader());
 	}
@@ -50,7 +51,7 @@ void Game::InitGame()
 	{
 		spriteQuad = new Sprite(GetRenderer());
 		spriteQuad->GenerateTexture("res/texturas/bokitaElMasGrandePapa.png");
-		quad = new Shape(GetRenderer(), true);
+		quad = new Shape(GetRenderer(), typeMaterialShape);
 		quad->SetShape(TypeShape::QUAD, typeColorShape);
 		quad->SetVertexsAttrib(GetRenderer()->GetShader());
 	}
@@ -62,13 +63,15 @@ void Game::UpdateGame(Windows *_window, Renderer *_render, Input *_input)
 	if (typeDrawShape == TypeDrawShape::Tri) {
 		tri->Draw(TypeShape::TRIANGLE, 3, _render->GetShader(), _window, tri->GetInternalData().model);
 		TempInputs(_window, tri);
-		spriteTri->BindTexture();
+		if (typeColorShape == TypeMaterial::Texture) 
+			spriteTri->BindTexture();
 	}
 	else if (typeDrawShape == TypeDrawShape::Quad) 
 	{
 		quad->Draw(TypeShape::QUAD, 4, _render->GetShader(), _window, quad->GetInternalData().model);
 		TempInputs(_window, quad);
-		spriteQuad->BindTexture();
+		if (typeColorShape == TypeMaterial::Texture)
+			spriteQuad->BindTexture();
 	}
 }
 
@@ -87,37 +90,39 @@ void Game::DestroyGame()
 
 void GameBase::TempInputs(Windows* windows, Shape* shape)
 {
-	if (input->GetKey(KeyBoard::KEY_ENTER))
-	{
-		r = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
-		g = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
-		b = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
-		shape->SetSolidColor(r, g, b);
-	}
-	if (input->GetKey(KeyBoard::KEY_LEFT)) 
-	{
-		typeColorShape = TypeColorShape::SolidColor;
-		if (typeDrawShape == TypeDrawShape::Tri) {
-			shape->SetShape(TypeShape::TRIANGLE, typeColorShape);
-			shape->SetVertexsAttrib(GetRenderer()->GetShader());
-		}
-		else if (typeDrawShape == TypeDrawShape::Quad) 
+	if (typeMaterialShape == TypeMaterial::Color) {
+		if (input->GetKey(KeyBoard::KEY_ENTER))
 		{
-			shape->SetShape(TypeShape::QUAD, typeColorShape);
-			shape->SetVertexsAttrib(GetRenderer()->GetShader());
+			r = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
+			g = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
+			b = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
+			shape->SetSolidColor(r, g, b);
 		}
-	}
-	if (input->GetKey(KeyBoard::KEY_RIGHT)) 
-	{
-		typeColorShape = TypeColorShape::VertexColor;
-		if (typeDrawShape == TypeDrawShape::Tri) {
-			shape->SetShape(TypeShape::TRIANGLE, typeColorShape);
-			shape->SetVertexsAttrib(GetRenderer()->GetShader());
-		}
-		else if (typeDrawShape == TypeDrawShape::Quad)
+		if (input->GetKey(KeyBoard::KEY_LEFT))
 		{
-			shape->SetShape(TypeShape::QUAD, typeColorShape);
-			shape->SetVertexsAttrib(GetRenderer()->GetShader());
+			typeColorShape = TypeColorShape::SolidColor;
+			if (typeDrawShape == TypeDrawShape::Tri) {
+				shape->SetShape(TypeShape::TRIANGLE, typeColorShape);
+				shape->SetVertexsAttrib(GetRenderer()->GetShader());
+			}
+			else if (typeDrawShape == TypeDrawShape::Quad)
+			{
+				shape->SetShape(TypeShape::QUAD, typeColorShape);
+				shape->SetVertexsAttrib(GetRenderer()->GetShader());
+			}
+		}
+		if (input->GetKey(KeyBoard::KEY_RIGHT))
+		{
+			typeColorShape = TypeColorShape::VertexColor;
+			if (typeDrawShape == TypeDrawShape::Tri) {
+				shape->SetShape(TypeShape::TRIANGLE, typeColorShape);
+				shape->SetVertexsAttrib(GetRenderer()->GetShader());
+			}
+			else if (typeDrawShape == TypeDrawShape::Quad)
+			{
+				shape->SetShape(TypeShape::QUAD, typeColorShape);
+				shape->SetVertexsAttrib(GetRenderer()->GetShader());
+			}
 		}
 	}
 	//INPUT DE MOVIMIENTO
