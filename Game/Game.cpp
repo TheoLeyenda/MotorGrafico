@@ -9,6 +9,7 @@ enum TypeDrawShape
 	Quad,
 };
 
+//---------------------//
 //VALORES DE TESTEO
 float posX = 0;
 float posY = 0;
@@ -29,23 +30,29 @@ float r = 1.0f;
 float g = 0.0f;
 float b = 0.0f;
 float a = 1.0f;
+//---------------------//
+
 TypeDrawShape typeDrawShape = TypeDrawShape::Quad;
-TypeColorShape typeColorShape = TypeColorShape::SolidColor;
+TypeColorShape typeColorShape = TypeColorShape::VertexColor;
 TypeMaterial typeMaterialShape = TypeMaterial::Texture;
 Game::Game():GameBase(){}
 
+//---------------------//
+
 Game::~Game(){}
 
+//---------------------//
 
 void Game::InitGame()
 {
+	//---------------------//
 	if(typeDrawShape == TypeDrawShape::Tri)
 	{
 		spriteTri = new Sprite(GetRenderer());
 		spriteTri->GenerateTexture("res/texturas/bokitaElMasGrandePapa.png");
 		tri = new Shape(GetRenderer(), typeMaterialShape);
 		tri->SetShape(TypeShape::TRIANGLE, typeColorShape);
-		tri->SetVertexsAttrib(GetRenderer()->GetShader());
+		tri->GetRenderer()->SetVertexsAttrib( typeMaterialShape );
 	}
 	else if(typeDrawShape == TypeDrawShape::Quad)
 	{
@@ -53,13 +60,14 @@ void Game::InitGame()
 		spriteQuad->GenerateTexture("res/texturas/bokitaElMasGrandePapa.png");
 		quad = new Shape(GetRenderer(), typeMaterialShape);
 		quad->SetShape(TypeShape::QUAD, typeColorShape);
-		quad->SetVertexsAttrib(GetRenderer()->GetShader());
+		quad->GetRenderer()->SetVertexsAttrib(typeMaterialShape);
 	}
 	//---------------------//
 }
 
 void Game::UpdateGame(Windows *_window, Renderer *_render, Input *_input)
 {
+	//---------------------//
 	if (typeDrawShape == TypeDrawShape::Tri) {
 		tri->Draw(TypeShape::TRIANGLE, 3, _render->GetShader(), _window, tri->GetInternalData().model);
 		TempInputs(_window, tri);
@@ -73,10 +81,12 @@ void Game::UpdateGame(Windows *_window, Renderer *_render, Input *_input)
 		if (typeColorShape == TypeMaterial::Texture)
 			spriteQuad->BindTexture();
 	}
+	//---------------------//
 }
 
 void Game::DestroyGame()
 {
+	//---------------------//
 	if (quad != NULL)
 		delete quad;
 	if (tri != NULL)
@@ -85,11 +95,13 @@ void Game::DestroyGame()
 		delete spriteTri;
 	if (spriteQuad != NULL)
 		delete spriteQuad;
+	//---------------------//
 }
 
 
 void GameBase::TempInputs(Windows* windows, Shape* shape)
 {
+	//---------------------//
 	if (typeMaterialShape == TypeMaterial::Color) {
 		if (input->GetKey(KeyBoard::KEY_ENTER))
 		{
@@ -103,12 +115,12 @@ void GameBase::TempInputs(Windows* windows, Shape* shape)
 			typeColorShape = TypeColorShape::SolidColor;
 			if (typeDrawShape == TypeDrawShape::Tri) {
 				shape->SetShape(TypeShape::TRIANGLE, typeColorShape);
-				shape->SetVertexsAttrib(GetRenderer()->GetShader());
+				shape->GetRenderer()->SetVertexsAttrib(typeMaterialShape);
 			}
 			else if (typeDrawShape == TypeDrawShape::Quad)
 			{
 				shape->SetShape(TypeShape::QUAD, typeColorShape);
-				shape->SetVertexsAttrib(GetRenderer()->GetShader());
+				shape->GetRenderer()->SetVertexsAttrib(typeMaterialShape);
 			}
 		}
 		if (input->GetKey(KeyBoard::KEY_RIGHT))
@@ -116,12 +128,12 @@ void GameBase::TempInputs(Windows* windows, Shape* shape)
 			typeColorShape = TypeColorShape::VertexColor;
 			if (typeDrawShape == TypeDrawShape::Tri) {
 				shape->SetShape(TypeShape::TRIANGLE, typeColorShape);
-				shape->SetVertexsAttrib(GetRenderer()->GetShader());
+				shape->GetRenderer()->SetVertexsAttrib(typeMaterialShape);
 			}
 			else if (typeDrawShape == TypeDrawShape::Quad)
 			{
 				shape->SetShape(TypeShape::QUAD, typeColorShape);
-				shape->SetVertexsAttrib(GetRenderer()->GetShader());
+				shape->GetRenderer()->SetVertexsAttrib(typeMaterialShape);
 			}
 		}
 	}
