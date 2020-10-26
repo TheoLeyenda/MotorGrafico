@@ -135,7 +135,7 @@ private:
 public:
 	Input(GLFWwindow *_contextWindows);
 	~Input();
-	bool GetKeyDown(KeyBoard _keyBoard);
+	//bool GetKeyDown(KeyBoard _keyBoard); <-----------------	NO FUNCA ARREGLAR MAS TARDE MASTER
 	bool GetKey(KeyBoard _keyBoard);
 	bool GetKeyUp(KeyBoard _keyBoard);
 	void SetContextWindows(GLFWwindow *_contextWindows);
