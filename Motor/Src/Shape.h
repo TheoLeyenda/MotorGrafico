@@ -17,8 +17,8 @@ static enum TypeColorShape
 };
 static enum TypeMaterial 
 {
-	Texture,
-	Color,
+	Texture = 1,
+	Color = 2,
 };
 //typedef unsigned int GLenum;
 class ENGINE_API Shape : public Entity2D
@@ -27,12 +27,8 @@ private:
 	float* _vertexBuffer;
 	unsigned int _vbo;
 	unsigned int _currentShape;
-	unsigned int _posAttrib;
-	unsigned int _colorAttrib;
-	unsigned int _textureAttrib;
 	TypeColorShape _typeColorShape;
 	TypeMaterial _typeMaterial;
-
 public:
 
 	Shape(Renderer *_renderer, TypeMaterial typeMaterial);
@@ -42,10 +38,6 @@ public:
 	void CreateVbo(float* vertexBuffer);
 	unsigned int GetVbo();
 	float* GetVertexBuffer();
-	void SetVertexsAttrib(unsigned int& shaderId);
-	unsigned int GetPosAttrib();
-	unsigned int GetColAttrib();
-	unsigned int GetTextureAttrib() { return _textureAttrib; }
 	void SetVertexMaterial(glm::vec4 material,float* VBA, int start,int offset, int repeticiones);
 	void SetVertexMaterial(glm::vec4* materials, float* VBA, int start, int offset, int repeticiones, int countElementsForRepe);
 	void Draw(unsigned int figura, int vertexs, unsigned int& shaderProg, Windows* refWindow, glm::mat4 model);

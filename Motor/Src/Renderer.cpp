@@ -30,6 +30,35 @@ glm::mat4 Renderer::getProjMat()
 {
 	return _MVP.projection;
 }
+void Renderer::SetVertexsAttrib(int typeMaterial) {
+
+	int countElementsForVertex = 8;
+	const int typeMaterialTexture = 1;
+	const int typeMaterialColor = 2;
+
+	if (typeMaterial == typeMaterialTexture)	//TEXTURE
+	{
+		_posAttrib = glGetAttribLocation(_shaderProgram, "position");
+		glVertexAttribPointer(_posAttrib, 3, GL_FLOAT, GL_FALSE, countElementsForVertex * sizeof(float), 0);
+		glEnableVertexAttribArray(_posAttrib);
+		_colorAttrib = glGetAttribLocation(_shaderProgram, "customColor");
+		glVertexAttribPointer(_colorAttrib, 3, GL_FLOAT, GL_FALSE, countElementsForVertex * sizeof(float), (void*)(3 * sizeof(float)));
+		glEnableVertexAttribArray(_colorAttrib);
+		glUniform1i(_textureAttrib = glGetUniformLocation(_shaderProgram, "ourTexture"), 0);
+		glVertexAttribPointer(_textureAttrib, 2, GL_FLOAT, GL_FALSE, countElementsForVertex * sizeof(float), (void*)(6 * sizeof(float)));
+		glEnableVertexAttribArray(_textureAttrib);
+	}
+	else if (typeMaterial == typeMaterialColor) //COLOR
+	{
+		_posAttrib = glGetAttribLocation(_shaderProgram, "position");
+		glVertexAttribPointer(_posAttrib, 3, GL_FLOAT, GL_FALSE, 7 * sizeof(float), 0);
+		glEnableVertexAttribArray(_posAttrib);
+		_colorAttrib = glGetAttribLocation(_shaderProgram, "customColor");
+		glVertexAttribPointer(_colorAttrib, 4, GL_FLOAT, GL_FALSE, 7 * sizeof(float), (void*)(3 * sizeof(float)));
+		glEnableVertexAttribArray(_colorAttrib);
+	}
+}
+
 void Renderer::SetShader()
 {
 	if(_typeShader == TypeShader::FragmentColor)
@@ -76,28 +105,27 @@ void Renderer::ClearShader() {
 	glUseProgram(0);
 }
 
-void Renderer::BindBuffer(unsigned int vbo, unsigned int posAttrib, unsigned int colAttrib, bool useTexture, unsigned int textureAttrib) {
+void Renderer::BindBuffer(unsigned int vbo, bool useTexture) {
 	
 	unsigned int countElementsForVertex = 8;
 	
 	if (useTexture) {
 		glBindBuffer(GL_ARRAY_BUFFER, vbo);
-		glVertexAttribPointer(posAttrib, 3, GL_FLOAT, GL_FALSE, countElementsForVertex * sizeof(float), 0);
-		glEnableVertexAttribArray(posAttrib);
-		glVertexAttribPointer(colAttrib, 3, GL_FLOAT, GL_FALSE, countElementsForVertex * sizeof(float), (void*)(3 * sizeof(float)));
-		glEnableVertexAttribArray(colAttrib);
-		glVertexAttribPointer(textureAttrib, 2, GL_FLOAT, GL_FALSE, countElementsForVertex * sizeof(float), (void*)(6 * sizeof(float)));
-		glEnableVertexAttribArray(textureAttrib);
+		glVertexAttribPointer(_posAttrib, 3, GL_FLOAT, GL_FALSE, countElementsForVertex * sizeof(float), 0);
+		glEnableVertexAttribArray(_posAttrib);
+		glVertexAttribPointer(_colorAttrib, 3, GL_FLOAT, GL_FALSE, countElementsForVertex * sizeof(float), (void*)(3 * sizeof(float)));
+		glEnableVertexAttribArray(_colorAttrib);
+		glVertexAttribPointer(_textureAttrib, 2, GL_FLOAT, GL_FALSE, countElementsForVertex * sizeof(float), (void*)(6 * sizeof(float)));
+		glEnableVertexAttribArray(_textureAttrib);
 	}
 	else 
 	{
 		glBindBuffer(GL_ARRAY_BUFFER, vbo);
-		glVertexAttribPointer(posAttrib, 3, GL_FLOAT, GL_FALSE, 7 * sizeof(float), 0);
-		glEnableVertexAttribArray(posAttrib);
-		glVertexAttribPointer(colAttrib, 4, GL_FLOAT, GL_FALSE, 7 * sizeof(float), (void*)(3 * sizeof(float)));
-		glEnableVertexAttribArray(colAttrib);
+		glVertexAttribPointer(_posAttrib, 3, GL_FLOAT, GL_FALSE, 7 * sizeof(float), 0);
+		glEnableVertexAttribArray(_posAttrib);
+		glVertexAttribPointer(_colorAttrib, 4, GL_FLOAT, GL_FALSE, 7 * sizeof(float), (void*)(3 * sizeof(float)));
+		glEnableVertexAttribArray(_colorAttrib);
 	}
-
 }
 
 void Renderer::UnbindBuffer() {
@@ -109,10 +137,9 @@ void Renderer::BeignDraw() {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
-void Renderer::Draw(unsigned int figura, int vertexs, unsigned int vbo, unsigned int& shaderProg, unsigned int posAttrib, unsigned int colAttrib,unsigned int textureAttrib, glm::mat4 model, bool useTexture) 
+void Renderer::Draw(unsigned int figura, int vertexs, unsigned int vbo, unsigned int& shaderProg, glm::mat4 model, bool useTexture) 
 {
-
-	BindBuffer(vbo, posAttrib, colAttrib, useTexture, textureAttrib);
+	BindBuffer(vbo, useTexture);
 
 	UseProgram(shaderProg, model,_MVP.view, _MVP.projection);
 
