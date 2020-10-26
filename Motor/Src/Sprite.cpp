@@ -1,47 +1,41 @@
 #include "Sprite.h"
 #include "glew.h"
 
-
-Sprite::Sprite(Renderer *_renderer, Material* _material):Entity2D(_renderer, _material)
+//============================================
+Sprite::Sprite(Renderer *_renderer, Material* _material, const char* filePath):Entity2D(_renderer, _material)
 {
 	renderer = _renderer;
 	material = _material;
+	textureImporter.GenerateTexture(filePath, 1, texture, data, width, height, nrChannels);
 }
-
-Sprite::Sprite(Renderer * _renderer):Entity2D(_renderer)
+//============================================
+Sprite::Sprite(Renderer * _renderer, const char* filePath):Entity2D(_renderer)
 {
 	renderer = _renderer;
+	textureImporter.GenerateTexture(filePath, 1, texture, data, width, height, nrChannels);
 }
-
+//============================================
 Sprite::~Sprite() {
 	glDeleteTextures(1, &texture);
 }
-
-void Sprite::GenerateTexture(const char* filePath)
+//============================================
+int Sprite::getWidth()
 {
-	GenTexture();
-	BindTexture();
-	SetParametrer();
-	SetTexture(filePath);
+	return width;
 }
-
-void Sprite::GenTexture() {
-	stbi_set_flip_vertically_on_load(1);
-	glGenTextures(1, &texture);
-	glActiveTexture(GL_TEXTURE0);
+//============================================
+int Sprite::getHeigth()
+{
+	return height;
 }
-
-void Sprite::BindTexture() {
-	glBindTexture(GL_TEXTURE_2D, texture);
+//============================================
+int Sprite::getNrChannels()
+{
+	return nrChannels;
 }
-
-void Sprite::SetParametrer() {
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_CLAMP_TO_EDGE);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_CLAMP_TO_EDGE);
+//============================================
+void Sprite::BindSprite()
+{
+	textureImporter.BindTexture(texture);
 }
-
-void Sprite::SetTexture(const char* filePath) {
-	textureImporter.LoadTexture(filePath, data, width, height, nrChannels);
-}
+//============================================

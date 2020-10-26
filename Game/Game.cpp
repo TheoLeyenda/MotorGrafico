@@ -35,12 +35,11 @@ float a = 1.0f;
 TypeDrawShape typeDrawShape = TypeDrawShape::Quad;
 TypeColorShape typeColorShape = TypeColorShape::VertexColor;
 TypeMaterial typeMaterialShape = TypeMaterial::Texture;
+
 Game::Game():GameBase(){}
 
 //---------------------//
-
 Game::~Game(){}
-
 //---------------------//
 
 void Game::InitGame()
@@ -48,16 +47,14 @@ void Game::InitGame()
 	//---------------------//
 	if(typeDrawShape == TypeDrawShape::Tri)
 	{
-		spriteTri = new Sprite(GetRenderer());
-		spriteTri->GenerateTexture("res/texturas/bokitaElMasGrandePapa.png");
+		spriteTri = new Sprite(GetRenderer(), "res/texturas/bokitaElMasGrandePapa.png");
 		tri = new Shape(GetRenderer(), typeMaterialShape);
 		tri->SetShape(TypeShape::TRIANGLE, typeColorShape);
 		tri->GetRenderer()->SetVertexsAttrib( typeMaterialShape );
 	}
 	else if(typeDrawShape == TypeDrawShape::Quad)
 	{
-		spriteQuad = new Sprite(GetRenderer());
-		spriteQuad->GenerateTexture("res/texturas/bokitaElMasGrandePapa.png");
+		spriteQuad = new Sprite(GetRenderer(), "res/texturas/bokitaElMasGrandePapa.png");
 		quad = new Shape(GetRenderer(), typeMaterialShape);
 		quad->SetShape(TypeShape::QUAD, typeColorShape);
 		quad->GetRenderer()->SetVertexsAttrib(typeMaterialShape);
@@ -72,14 +69,14 @@ void Game::UpdateGame(Windows *_window, Renderer *_render, Input *_input)
 		tri->Draw(TypeShape::TRIANGLE, 3, _render->GetShader(), _window, tri->GetInternalData().model);
 		TempInputs(_window, tri);
 		if (typeColorShape == TypeMaterial::Texture) 
-			spriteTri->BindTexture();
+			spriteTri->BindSprite();
 	}
 	else if (typeDrawShape == TypeDrawShape::Quad) 
 	{
 		quad->Draw(TypeShape::QUAD, 4, _render->GetShader(), _window, quad->GetInternalData().model);
 		TempInputs(_window, quad);
 		if (typeColorShape == TypeMaterial::Texture)
-			spriteQuad->BindTexture();
+			spriteQuad->BindSprite();
 	}
 	//---------------------//
 }
