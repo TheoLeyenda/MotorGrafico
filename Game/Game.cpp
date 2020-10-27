@@ -32,8 +32,8 @@ float b = 0.0f;
 float a = 1.0f;
 //---------------------//
 
-TypeDrawShape typeDrawShape = TypeDrawShape::Quad;
-TypeColorShape typeColorShape = TypeColorShape::VertexColor;
+TypeDrawShape typeDrawShape = TypeDrawShape::Tri;
+TypeColorShape typeColorShape = TypeColorShape::SolidColor;
 TypeMaterial typeMaterialShape = TypeMaterial::Texture;
 
 Game::Game():GameBase(){}
@@ -54,7 +54,7 @@ void Game::InitGame()
 	}
 	else if(typeDrawShape == TypeDrawShape::Quad)
 	{
-		spriteQuad = new Sprite(GetRenderer(), "res/texturas/bokitaElMasGrandePapa.png");
+		spriteQuad = new Sprite(GetRenderer(), "res/texturas/Facharda.jpg");
 		quad = new Shape(GetRenderer(), typeMaterialShape);
 		quad->SetShape(TypeShape::QUAD, typeColorShape);
 		quad->GetRenderer()->SetVertexsAttrib(typeMaterialShape);

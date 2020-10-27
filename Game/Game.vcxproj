@@ -176,6 +176,7 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\texturas\bokitaElMasGrandePapa.png" />
+    <Image Include="res\texturas\Facharda.jpg" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
