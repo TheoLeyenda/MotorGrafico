@@ -44,6 +44,8 @@ void GameBase::UpdateEngine()
 {
 	while (!windows->CheckGLFWwindowShouldClose())
 	{
+		timeClock.CalcGlobalTime();
+		//std::cout << "Time in SECONDS = " << timeClock.GetGlobalTime() << std::endl;
 		//---------------------//
 		UpdateGame(windows, render, input);
 		//---------------------//

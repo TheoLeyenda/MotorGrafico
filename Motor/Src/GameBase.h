@@ -9,6 +9,7 @@
 #include <time.h>
 #include "Input.h"
 #include "Sprite.h"
+#include "Timer.h"
 
 #define INIT_ERROR -1
 
@@ -17,6 +18,7 @@ private:
 	Windows* windows;
 	Renderer* render;
 	Input* input;
+	Timer timeClock;
 public:
 	GameBase();
 	~GameBase();
