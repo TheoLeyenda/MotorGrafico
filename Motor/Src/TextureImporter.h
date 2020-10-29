@@ -2,6 +2,15 @@
 #define TEXTUREIMPORTER_H
 #include "PrivateClass/Export.h"
 
+struct TextureVertex 
+{
+	float x;
+	float y;
+	float z;
+	float u;
+	float v;
+};
+
 class ENGINE_API TextureImporter
 {
 private:
