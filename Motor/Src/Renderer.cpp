@@ -8,6 +8,7 @@
 #include <fstream>
 #include <sstream>
 
+#include "CompilationController.h"
 
 Renderer::Renderer() {
 	_MVP.view = glm::mat4(1.0f);
@@ -61,10 +62,21 @@ void Renderer::SetVertexsAttrib(int typeMaterial) {
 
 void Renderer::SetShader()
 {
-	if(_typeShader == TypeShader::FragmentColor)
-		_shaderProgram = CreateShaderProgram("../Motor/res/shaders/Vertex.shader", "../Motor/res/shaders/FragmentColor.shader");
-	else if (_typeShader == TypeShader::FragmentTexture) 
-		_shaderProgram = CreateShaderProgram("../Motor/res/shaders/Vertex.shader", "../Motor/res/shaders/FragmentTexture.shader");
+
+	if (typeCompilation == TypeCompilation::Debug) 
+	{
+		if (_typeShader == TypeShader::FragmentColor)
+			_shaderProgram = CreateShaderProgram("../Motor/res/shaders/Vertex.shader", "../Motor/res/shaders/FragmentColor.shader");
+		else if (_typeShader == TypeShader::FragmentTexture)
+			_shaderProgram = CreateShaderProgram("../Motor/res/shaders/Vertex.shader", "../Motor/res/shaders/FragmentTexture.shader");
+	}
+	else if (typeCompilation == TypeCompilation::Exe) 
+	{
+		if (_typeShader == TypeShader::FragmentColor)
+			_shaderProgram = CreateShaderProgram("res/shaders/Vertex.shader", "res/shaders/FragmentColor.shader");
+		else if (_typeShader == TypeShader::FragmentTexture)
+			_shaderProgram = CreateShaderProgram("res/shaders/Vertex.shader", "res/shaders/FragmentTexture.shader");
+	}
 }
 
 void Renderer::GLEWInit() {
