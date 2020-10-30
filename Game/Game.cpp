@@ -34,9 +34,9 @@ float b = 0.0f;
 float a = 1.0f;
 //---------------------//
 
-TypeDrawShape typeDrawShape = TypeDrawShape::Spri;
-TypeColorShape typeColorShape = TypeColorShape::SolidColor;
-TypeMaterial typeMaterialShape = TypeMaterial::Texture;
+TypeDrawShape typeDrawShape = TypeDrawShape::Quad;
+TypeColorShape typeColorShape = TypeColorShape::VertexColor;
+TypeMaterial typeMaterialShape = TypeMaterial::Color;
 
 Game::Game():GameBase(){}
 
@@ -56,7 +56,7 @@ void Game::InitGame()
 	}
 	else if(typeDrawShape == TypeDrawShape::Quad)
 	{
-		spriteQuad = new Sprite(GetRenderer(), "res/texturas/spriteTest.png");
+		spriteQuad = new Sprite(GetRenderer(), "res/texturas/Facharda.jpg");
 		quad = new Shape(GetRenderer(), typeMaterialShape);
 		quad->SetShape(TypeShape::QUAD, typeColorShape);
 		quad->GetRenderer()->SetVertexsAttrib(typeMaterialShape);
@@ -93,10 +93,9 @@ void Game::UpdateGame(Windows *_window, Renderer *_render, Input *_input)
 	}
 	else if (typeDrawShape == TypeDrawShape::Spri)
 	{
-		//player->UpdateSprite(GetTimeClock());
+		player->UpdateSprite(GetTimeClock());
 		player->Draw(_window);
 		player->BindSprite();
-		//if (typeColorShape == TypeMaterial::Texture)
 	}
 	//---------------------//
 }
@@ -230,24 +229,4 @@ void GameBase::TempInputs(Windows* windows, Shape* shape)
 		scalZ = scalZ - speedScale;
 		shape->SetScale(scalX, scalY, scalZ);
 	}
-}
-
-Timer& GameBase::GetTimeClock()
-{
-	return timeClock;
-}
-
-Windows * GameBase::GetWindows()
-{
-	return windows;
-}
-
-Renderer * GameBase::GetRenderer()
-{
-	return render;
-}
-
-Input * GameBase::GetInput()
-{
-	return input;
 }

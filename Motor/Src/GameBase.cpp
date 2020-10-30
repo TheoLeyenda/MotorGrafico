@@ -67,4 +67,22 @@ void GameBase::DestroyEngine()
 		delete render;
 }
 
+Timer& GameBase::GetTimeClock()
+{
+	return timeClock;
+}
 
+Windows * GameBase::GetWindows()
+{
+	return windows;
+}
+
+Renderer * GameBase::GetRenderer()
+{
+	return render;
+}
+
+Input * GameBase::GetInput()
+{
+	return input;
+}

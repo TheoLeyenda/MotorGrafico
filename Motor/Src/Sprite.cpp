@@ -8,6 +8,9 @@ Sprite::Sprite(Renderer *_renderer, Material* _material, const char* filePath):E
 	material = _material;
 	textureImporter.GenerateTexture(filePath, 1, texture, data, width, height, nrChannels);
 
+	renderer->SetTypeShader(TypeShader::FragmentTexture);
+	renderer->SetShader();
+
 	InitTextureVertexCoord();
 }
 //============================================
@@ -15,6 +18,9 @@ Sprite::Sprite(Renderer * _renderer, const char* filePath):Entity2D(_renderer)
 {
 	renderer = _renderer;
 	textureImporter.GenerateTexture(filePath, 1, texture, data, width, height, nrChannels);
+
+	renderer->SetTypeShader(TypeShader::FragmentTexture);
+	renderer->SetShader();
 
 	InitTextureVertexCoord();
 }
@@ -54,7 +60,7 @@ void Sprite::SetCurrentTexture(const char* filePath)
 //============================================
 void Sprite::SetAnimation(Animation * _animation)
 {
-	_animation = animation;
+	animation = _animation;
 	_previusFrame = std::numeric_limits<unsigned int>::max_digits10;
 }
 //============================================

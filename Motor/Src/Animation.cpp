@@ -1,4 +1,5 @@
 #include "Animation.h"
+#include <iostream>
 
 Animation::Animation()
 {
@@ -13,11 +14,13 @@ Animation::~Animation()
 
 void Animation::Update(Timer & timer)
 {
-	_currentTime += 0.2f;
+	_currentTime += timer.GetGlobalTime();
 	 
 	while (_currentTime > _length){
 		_currentTime -= _length;
 	}
+
+	std::cout << "CurrenTime anim: "<<_currentTime << std::endl;
 
 	float frameLength = _length / _frames.size();
 	_currentFrame = static_cast<int>(_currentTime / frameLength);
@@ -49,8 +52,6 @@ void Animation::AddFrame(float u, float v, int width, int heigth, int spriteWidt
 void Animation::AddFrame(float u, float v, int width, int heigth, int spriteWidth, int spriteHeigth, int timeToAnim, int frames)
 {
 	_length = timeToAnim * 1000;
-
-	Frame frame;
 
 	float index = 0;
 
