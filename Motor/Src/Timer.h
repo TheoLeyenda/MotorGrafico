@@ -13,6 +13,6 @@ public:
 	Timer();
 	~Timer();
 	void CalcGlobalTime();
-	double GetGlobalTime();
+	double GetGlobalTime() const;
 };
 #endif // !TIMER_H

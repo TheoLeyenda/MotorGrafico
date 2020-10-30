@@ -1,12 +1,14 @@
 #include "..\Motor\Src\GameBase.h"
 #include "..\Motor\Src\GameBase.h"
 #include "..\Motor\Src\GameBase.h"
+#include "..\Motor\Src\GameBase.h"
 #include "Game.h"
 
 enum TypeDrawShape 
 {
 	Tri,
 	Quad,
+	Spri,
 };
 
 //---------------------//
@@ -32,7 +34,7 @@ float b = 0.0f;
 float a = 1.0f;
 //---------------------//
 
-TypeDrawShape typeDrawShape = TypeDrawShape::Quad;
+TypeDrawShape typeDrawShape = TypeDrawShape::Spri;
 TypeColorShape typeColorShape = TypeColorShape::SolidColor;
 TypeMaterial typeMaterialShape = TypeMaterial::Texture;
 
@@ -54,10 +56,21 @@ void Game::InitGame()
 	}
 	else if(typeDrawShape == TypeDrawShape::Quad)
 	{
-		spriteQuad = new Sprite(GetRenderer(), "res/texturas/Facharda.jpg");
+		spriteQuad = new Sprite(GetRenderer(), "res/texturas/spriteTest.png");
 		quad = new Shape(GetRenderer(), typeMaterialShape);
 		quad->SetShape(TypeShape::QUAD, typeColorShape);
 		quad->GetRenderer()->SetVertexsAttrib(typeMaterialShape);
+	}
+	else if (typeDrawShape == TypeDrawShape::Spri) 
+	{
+		//-------------
+		player = new Sprite(GetRenderer(), "res/texturas/spriteTest.png");
+		//-------------
+		_runLeft = new Animation();
+		_runLeft->AddFrame(0.0f, 0.0f, 60.0f, 95.0f, 420.0f, 95.0f, 1.0f, 7);
+		player->SetAnimation(_runLeft);
+		//-------------
+		player->GetRenderer()->SetAttribsSprite();
 	}
 	//---------------------//
 }
@@ -78,6 +91,13 @@ void Game::UpdateGame(Windows *_window, Renderer *_render, Input *_input)
 		if (typeColorShape == TypeMaterial::Texture)
 			spriteQuad->BindSprite();
 	}
+	else if (typeDrawShape == TypeDrawShape::Spri)
+	{
+		//player->UpdateSprite(GetTimeClock());
+		player->Draw(_window);
+		player->BindSprite();
+		//if (typeColorShape == TypeMaterial::Texture)
+	}
 	//---------------------//
 }
 
@@ -92,9 +112,12 @@ void Game::DestroyGame()
 		delete spriteTri;
 	if (spriteQuad != NULL)
 		delete spriteQuad;
+	if (_runLeft != NULL)
+		delete _runLeft;
+	if (player != NULL)
+		delete player;
 	//---------------------//
 }
-
 
 void GameBase::TempInputs(Windows* windows, Shape* shape)
 {
@@ -209,6 +232,11 @@ void GameBase::TempInputs(Windows* windows, Shape* shape)
 	}
 }
 
+Timer& GameBase::GetTimeClock()
+{
+	return timeClock;
+}
+
 Windows * GameBase::GetWindows()
 {
 	return windows;
@@ -223,4 +251,3 @@ Input * GameBase::GetInput()
 {
 	return input;
 }
-

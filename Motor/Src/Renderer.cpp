@@ -60,9 +60,23 @@ void Renderer::SetVertexsAttrib(int typeMaterial) {
 	}
 }
 
+void Renderer::SetAttribsSprite()
+{
+	int countElementsForVertex = 5;
+
+	_posAttrib = glGetAttribLocation(_shaderProgram, "position");
+	glVertexAttribPointer(_posAttrib, 3, GL_FLOAT, GL_FALSE, countElementsForVertex * sizeof(float), 0);
+	glEnableVertexAttribArray(_posAttrib);
+	//_colorAttrib = glGetAttribLocation(_shaderProgram, "customColor");
+	//glVertexAttribPointer(_colorAttrib, 3, GL_FLOAT, GL_FALSE, countElementsForVertex * sizeof(float), (void*)(3 * sizeof(float)));
+	//glEnableVertexAttribArray(_colorAttrib);
+	glUniform1i(_textureAttrib = glGetUniformLocation(_shaderProgram, "ourTexture"), 0);
+	glVertexAttribPointer(_textureAttrib, 2, GL_FLOAT, GL_FALSE, countElementsForVertex * sizeof(float), (void*)(3 * sizeof(float)));
+	glEnableVertexAttribArray(_textureAttrib);
+}
+
 void Renderer::SetShader()
 {
-
 	if (typeCompilation == TypeCompilation::Debug) 
 	{
 		if (_typeShader == TypeShader::FragmentColor)
@@ -144,6 +158,17 @@ void Renderer::UnbindBuffer() {
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
+void Renderer::BindBufferSprite(unsigned int vbo)
+{
+	unsigned int countElementsForVertex = 5;
+
+	glBindBuffer(GL_ARRAY_BUFFER, vbo);
+	glVertexAttribPointer(_posAttrib, 3, GL_FLOAT, GL_FALSE, countElementsForVertex * sizeof(float), 0);
+	glEnableVertexAttribArray(_posAttrib);
+	glVertexAttribPointer(_textureAttrib, 2, GL_FLOAT, GL_FALSE, countElementsForVertex * sizeof(float), (void*)(3 * sizeof(float)));
+	glEnableVertexAttribArray(_textureAttrib);
+}
+
 void Renderer::BeignDraw() {
 	//glClearColor(0.0f, 1.0, 0.0f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -154,6 +179,17 @@ void Renderer::Draw(unsigned int figura, int vertexs, unsigned int vbo, unsigned
 	BindBuffer(vbo, useTexture);
 
 	UseProgram(shaderProg, model,_MVP.view, _MVP.projection);
+
+	glDrawArrays(figura, 0, vertexs);
+
+	UnbindBuffer();
+}
+
+void Renderer::DrawSprite(unsigned int figura, int vertexs, unsigned int vbo, unsigned int & shaderProg, glm::mat4 model)
+{
+	BindBufferSprite(vbo);
+
+	UseProgram(shaderProg, model, _MVP.view, _MVP.projection);
 
 	glDrawArrays(figura, 0, vertexs);
 

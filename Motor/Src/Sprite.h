@@ -18,14 +18,15 @@ private:
 	TextureImporter textureImporter;
 	Animation* animation;
 	TextureVertex textureVertexCoord[COUNT_TEXTURE_VERTEX_COORD];
-	int currentFrame;
-	int previusFrame;
+	int _currentFrame;
+	int _previusFrame;
+	unsigned int _vbo;
 
 	void InitTextureVertexCoord();
 public:
 	Sprite(Renderer *_renderer, Material* _material, const char* filePath);
 	Sprite(Renderer *_renderer, const char* filePath);
-	void Draw();
+	void Draw(Windows* refWindow);
 	void SetTextureCoordinates(float u0, float v0,
 							   float u1, float v1,
 							   float u2, float v2,

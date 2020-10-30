@@ -43,6 +43,7 @@ public:
 	glm::mat4 getProjMat();
 	//------------
 	void SetVertexsAttrib(int typeMaterial);
+	void SetAttribsSprite();
 	//------------
 	void SetShader();
 	void GLEWInit();
@@ -52,9 +53,15 @@ public:
 	void ClearShader();
 	void BindBuffer(unsigned int vbo, bool useTexture);
 	void UnbindBuffer();
+	//=====================
+	void BindBufferSprite(unsigned int vbo);
+	//void SetCurrentTexture(unsigned int& texture);
+	//=====================
 	void BeignDraw();
 	void Draw(unsigned int figura, int vertexs, unsigned int vbo, unsigned int& shaderProg,glm::mat4 model, bool useTexture);
+	void DrawSprite(unsigned int figura, int vertexs, unsigned int vbo, unsigned int & shaderProg, glm::mat4 model);
 	void EndDraw(Windows* refWindow);
+	//=====================
 	unsigned int CompileShader(unsigned int type, const char* source);
 	int CreateShaderProgram(const char* vertexShader, const char* fragmentShader);
 	void SetTypeShader(TypeShader typeShader) { _typeShader = typeShader; }

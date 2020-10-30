@@ -9,6 +9,9 @@ private:
 	Shape* tri;
 	Sprite* spriteTri;
 	Sprite* spriteQuad;
+	Sprite* player;
+
+	Animation* _runLeft;
 public:
 	Game();
 	~Game();

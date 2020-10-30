@@ -33,6 +33,8 @@ public:
 
 	void TempInputs(Windows* windows, Shape* tri);
 
+	Timer& GetTimeClock();
+
 	Windows* GetWindows();
 	Renderer* GetRenderer();
 	Input* GetInput();
