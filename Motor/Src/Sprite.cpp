@@ -1,6 +1,15 @@
 #include "Sprite.h"
 #include "glew.h"
 
+float textureVertex[] = {
+	//    x     y     z     u     v
+	   -0.5f,  0.5f, 0.0f, 0.0f, 1.0f,
+		0.5f,  0.5f, 0.0f, 1.0f, 1.0f,
+	    0.5f, -0.5f, 0.0f, 1.0f, 0.0f,
+	   -0.5f, -0.5f, 0.0f, 0.0f, 0.0f
+};
+
+
 //============================================
 Sprite::Sprite(Renderer *_renderer, Material* _material, const char* filePath):Entity2D(_renderer, _material)
 {
@@ -67,7 +76,7 @@ void Sprite::SetAnimation(Animation * _animation)
 //============================================
 void Sprite::InitTextureVertexCoord()
 {
-	textureVertexCoord[0].x = -0.5f;
+	/*textureVertexCoord[0].x = -0.5f;
 	textureVertexCoord[1].x = 0.5f;
 	textureVertexCoord[2].x = -0.5f;
 	textureVertexCoord[3].x = 0.5f;
@@ -90,16 +99,16 @@ void Sprite::InitTextureVertexCoord()
 	textureVertexCoord[0].v = 0.0f;
 	textureVertexCoord[1].v = 0.0f;
 	textureVertexCoord[2].v = 1.0f;
-	textureVertexCoord[3].v = 1.0f;
+	textureVertexCoord[3].v = 1.0f;*/
 
 	glGenBuffers(1, &_vbo);
 	glBindBuffer(GL_ARRAY_BUFFER, _vbo);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(textureVertexCoord), textureVertexCoord, GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, 20 * sizeof(float), textureVertex, GL_STATIC_DRAW);
 }
 //============================================
 void Sprite::SetTextureCoordinates(float u0, float v0, float u1, float v1, float u2, float v2, float u3, float v3)
 {
-	textureVertexCoord[0].u = u0;
+	/*textureVertexCoord[0].u = u0;
 	textureVertexCoord[1].u = u1;
 	textureVertexCoord[2].u = u2;
 	textureVertexCoord[3].u = u3;
@@ -107,7 +116,18 @@ void Sprite::SetTextureCoordinates(float u0, float v0, float u1, float v1, float
 	textureVertexCoord[0].v = v0;
 	textureVertexCoord[1].v = v1;
 	textureVertexCoord[2].v = v2;
-	textureVertexCoord[3].v = v3;
+	textureVertexCoord[3].v = v3;*/
+
+	textureVertex[3] = u0;
+	textureVertex[8] = u1;
+	textureVertex[13] = u2;
+	textureVertex[18] = u3;
+
+	textureVertex[4] = v0;
+	textureVertex[9] = v1;
+	textureVertex[14] = v2;
+	textureVertex[19] = v3;
+
 }
 //============================================
 Sprite::~Sprite() {

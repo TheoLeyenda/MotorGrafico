@@ -64,10 +64,10 @@ void Game::InitGame()
 	else if (typeDrawShape == TypeDrawShape::Spri) 
 	{
 		//-------------
-		player = new Sprite(GetRenderer(), "res/texturas/spriteTest.png");
+		player = new Sprite(GetRenderer(), "res/texturas/Facharda.jpg");
 		//-------------
 		_runLeft = new Animation();
-		_runLeft->AddFrame(0.0f, 0.0f, 60.0f, 95.0f, 420.0f, 95.0f, 1.0f, 7);
+		_runLeft->AddFrame(0.0f, 0.0f, (768.0f / 7), (1280.0f / 7), 768.0f, 1280.0f, 1.0f, 7);
 		player->SetAnimation(_runLeft);
 		//-------------
 		player->GetRenderer()->SetAttribsSprite();

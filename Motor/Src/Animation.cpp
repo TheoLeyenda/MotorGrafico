@@ -1,6 +1,8 @@
 #include "Animation.h"
 #include <iostream>
 
+
+
 Animation::Animation()
 {
 	_currentTime = 0;
@@ -21,7 +23,7 @@ void Animation::Update(Timer & timer)
 		_currentTime -= _length;
 	}
 
-	std::cout << "CurrenTime anim: "<<_currentTime << std::endl;
+	//std::cout << "CurrenTime anim: "<<_currentTime << std::endl;
 
 	float frameLength = _length / _frames.size();
 	_currentFrame = static_cast<int>(_currentTime / frameLength);

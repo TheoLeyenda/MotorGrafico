@@ -17,7 +17,7 @@ private:
 	int nrChannels;
 	TextureImporter textureImporter;
 	Animation* animation;
-	TextureVertex textureVertexCoord[COUNT_TEXTURE_VERTEX_COORD];
+	//TextureVertex textureVertexCoord[COUNT_TEXTURE_VERTEX_COORD];
 	int _currentFrame;
 	int _previusFrame;
 	unsigned int _vbo;
