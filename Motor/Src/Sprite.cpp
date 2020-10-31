@@ -61,7 +61,7 @@ void Sprite::UpdateSprite(Timer & timer)
 							  animation->GetFrames()[_currentFrame].frameCoords[3].U, animation->GetFrames()[_currentFrame].frameCoords[3].V);
 		_previusFrame = _currentFrame;
 	}
-	//SetAnimation(animation);
+	SetAnimation(animation);
 }
 //============================================
 void Sprite::SetCurrentTexture(const char* filePath)
@@ -128,7 +128,10 @@ void Sprite::SetTextureCoordinates(float u0, float v0, float u1, float v1, float
 	textureVertex[14] = v2;
 	textureVertex[19] = v3;
 
+	glBindBuffer(GL_ARRAY_BUFFER, _vbo);
+	glBufferData(GL_ARRAY_BUFFER, 20 * sizeof(float), textureVertex, GL_STATIC_DRAW);
 }
+
 //============================================
 Sprite::~Sprite() {
 	glDeleteTextures(1, &texture);

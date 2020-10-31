@@ -10,14 +10,12 @@ Animation::Animation()
 	_length = 1000;
 }
 
-Animation::~Animation()
-{
-}
+Animation::~Animation(){}
 
 void Animation::Update(Timer & timer)
 {
 	float deltaTime = timer.GetGlobalTime()/ _length;
-	_currentTime += deltaTime;
+	_currentTime += deltaTime * _length;
 	
 	while (_currentTime > _length){
 		_currentTime -= _length;
@@ -63,18 +61,31 @@ void Animation::AddFrame(float u, float v, int width, int heigth, int spriteWidt
 		frame.frameCoords[0].U = ((u + index) / spriteWidth);
 		frame.frameCoords[0].V = (v / spriteHeigth);
 		//--------
+		cout << frame.frameCoords[0].U << endl;
+		cout << frame.frameCoords[0].V << endl;
+
 		frame.frameCoords[1].U = (((u + index) + width) / spriteWidth);
 		frame.frameCoords[1].V = (v / spriteHeigth);
+
+		cout << frame.frameCoords[1].U << endl;
+		cout << frame.frameCoords[1].V << endl;
 		//--------
 		frame.frameCoords[2].U = ((u + index) / spriteWidth);
 		frame.frameCoords[2].V = ((v + heigth) / spriteHeigth);
+
+		cout << frame.frameCoords[2].U << endl;
+		cout << frame.frameCoords[2].V << endl;
 		//--------
 		frame.frameCoords[3].U = (((u + index) + width) / spriteWidth);
 		frame.frameCoords[3].V = ((v + heigth) / spriteHeigth);
+
+		cout << frame.frameCoords[3].U << endl;
+		cout << frame.frameCoords[3].V << endl;
 		//--------
 		_frames.push_back(frame);
 		index += width;
 	}
+
 }
 
 int Animation::GetCurrentFrame()
