@@ -22,7 +22,7 @@ public:
 	void AddFrame(float u, float v, int width, int heigth,
 		int spriteWidth, int spriteHeigth, int timeToAnim);
 	void AddFrame(float u, float v, int width, int heigth,
-		int spriteWidth, int spriteHeigth, int timeToAnim, int frames);
+		int spriteWidth, int spriteHeigth, int timeToAnim, int totalFrames, int countFilas);
 	int GetCurrentFrame();
 	vector<Frame>& GetFrames();
 };

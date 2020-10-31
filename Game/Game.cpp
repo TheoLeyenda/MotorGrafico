@@ -67,7 +67,7 @@ void Game::InitGame()
 		player = new Sprite(GetRenderer(), "res/texturas/caminataPiola.png");
 		//-------------
 		_runLeft = new Animation();
-		_runLeft->AddFrame(0.0f, 0.0f, (1536.0f / 6), 256.0f, 1536.0f, 256.0f, 1.0f, 6);
+		_runLeft->AddFrame(0.0f, 0.0f, (1536.0f / 6), 256.0f, 1536.0f, 256.0f, 1.0f, 6, 6);
 		player->SetAnimation(_runLeft);
 		//-------------
 		player->GetRenderer()->SetAttribsSprite();
