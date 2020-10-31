@@ -46,7 +46,7 @@ void Sprite::Draw(Windows* refWindow)
 	}
 }
 //============================================
-void Sprite::UpdateSprite(Timer & timer)
+void Sprite::UpdateSprite(Time & timer)
 {
 	if (!animation)
 		return;

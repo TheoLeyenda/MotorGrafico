@@ -18,7 +18,7 @@ private:
 	Windows* windows;
 	Renderer* render;
 	Input* input;
-	Timer timeClock;
+	Time timeClock;
 public:
 	GameBase();
 	~GameBase();
@@ -33,7 +33,7 @@ public:
 
 	void TempInputs(Windows* windows, Shape* tri);
 
-	Timer& GetTimeClock();
+	Time& GetTimeClock();
 
 	Windows* GetWindows();
 	Renderer* GetRenderer();

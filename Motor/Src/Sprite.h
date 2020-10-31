@@ -35,7 +35,7 @@ public:
 	TextureImporter GetTextureImporter() { return textureImporter; }
 	void SetAnimation(Animation* _animation);
 	Animation* GetAnimation() { return animation; }
-	void UpdateSprite(Timer& timer);
+	void UpdateSprite(Time& timer);
 	~Sprite();
 	int getWidth();
 	int getHeigth();

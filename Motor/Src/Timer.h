@@ -1,18 +1,28 @@
-#ifndef TIMER_H
-#define TIMER_H
-
+#ifndef TIME_H
+#define TIME_H
+#include "PrivateClass/Export.h"
+#include <chrono>
 #include <time.h>
 
-const clock_t _beign_time = clock();
-
-class Timer
-{
-private:
-	float timePassedOnSeconds;
+class ENGINE_API Time {
+	std::chrono::system_clock::time_point _startTime;
+	std::chrono::duration<float> _deltaTime;
+	float _timeScale;
+	float _elapsedTime = 0;
+	float _framesCounter;
+	int frames;
+	float fps = 0;
 public:
-	Timer();
-	~Timer();
-	void CalcGlobalTime();
-	double GetGlobalTime() const;
+	Time();
+	~Time();
+	void reset();
+	void setTimeScale(float t);
+	float getTimeScale();
+	float getSeconds();
+	void startTime();
+	void tick();
+	float deltaTime();
+	void calculateFps();
+	float getFPS();
 };
-#endif // !TIMER_H
+#endif // !TIME_H

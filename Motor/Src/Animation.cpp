@@ -12,16 +12,16 @@ Animation::Animation()
 
 Animation::~Animation(){}
 
-void Animation::Update(Timer & timer)
+void Animation::Update(Time & timer)
 {
-	float deltaTime = timer.GetGlobalTime()/ _length;
-	_currentTime += deltaTime * _length;
+	_currentTime += timer.deltaTime();
 	
 	while (_currentTime > _length){
 		_currentTime -= _length;
+		timer.reset();
 	}
 
-	//std::cout << "CurrenTime anim: "<<_currentTime << std::endl;
+	std::cout << "CurrenTime anim: "<<_currentTime << std::endl;
 
 	float frameLength = _length / _frames.size();
 	_currentFrame = static_cast<int>(_currentTime / frameLength);
@@ -85,7 +85,6 @@ void Animation::AddFrame(float u, float v, int width, int heigth, int spriteWidt
 		_frames.push_back(frame);
 		index += width;
 	}
-
 }
 
 int Animation::GetCurrentFrame()
