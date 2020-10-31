@@ -14,8 +14,9 @@ Animation::~Animation()
 
 void Animation::Update(Timer & timer)
 {
-	_currentTime += timer.GetGlobalTime();
-	 
+	float deltaTime = timer.GetGlobalTime()/ _length;
+	_currentTime += deltaTime;
+	
 	while (_currentTime > _length){
 		_currentTime -= _length;
 	}
@@ -54,7 +55,7 @@ void Animation::AddFrame(float u, float v, int width, int heigth, int spriteWidt
 	_length = timeToAnim * 1000;
 
 	float index = 0;
-
+	Frame frame;
 	for (int i = 0; i < frames; i++){
 		//--------
 		frame.frameCoords[0].U = ((u + index) / spriteWidth);

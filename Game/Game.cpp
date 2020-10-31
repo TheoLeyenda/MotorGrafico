@@ -34,9 +34,9 @@ float b = 0.0f;
 float a = 1.0f;
 //---------------------//
 
-TypeDrawShape typeDrawShape = TypeDrawShape::Quad;
+TypeDrawShape typeDrawShape = TypeDrawShape::Spri;
 TypeColorShape typeColorShape = TypeColorShape::VertexColor;
-TypeMaterial typeMaterialShape = TypeMaterial::Color;
+TypeMaterial typeMaterialShape = TypeMaterial::Texture;
 
 Game::Game():GameBase(){}
 

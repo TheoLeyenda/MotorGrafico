@@ -15,8 +15,6 @@ private:
 	float _currentTime;
 	float _length;
 	vector<Frame> _frames;
-
-	Frame frame;
 public:
 	Animation();
 	~Animation();

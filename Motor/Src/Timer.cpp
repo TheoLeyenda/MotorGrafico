@@ -1,7 +1,7 @@
 #include "Timer.h"
 
 //=================================
-Timer::Timer():timePassedOnSeconds(0){}
+Timer::Timer():timePassedOnSeconds(0.1f){}
 //=================================
 Timer::~Timer(){}
 //=================================

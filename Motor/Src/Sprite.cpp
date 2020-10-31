@@ -52,6 +52,7 @@ void Sprite::UpdateSprite(Timer & timer)
 							  animation->GetFrames()[_currentFrame].frameCoords[3].U, animation->GetFrames()[_currentFrame].frameCoords[3].V);
 		_previusFrame = _currentFrame;
 	}
+	//SetAnimation(animation);
 }
 //============================================
 void Sprite::SetCurrentTexture(const char* filePath)
@@ -103,10 +104,10 @@ void Sprite::SetTextureCoordinates(float u0, float v0, float u1, float v1, float
 	textureVertexCoord[2].u = u2;
 	textureVertexCoord[3].u = u3;
 
-	textureVertexCoord[0].v = u0;
-	textureVertexCoord[1].v = u1;
-	textureVertexCoord[2].v = u2;
-	textureVertexCoord[3].v = u3;
+	textureVertexCoord[0].v = v0;
+	textureVertexCoord[1].v = v1;
+	textureVertexCoord[2].v = v2;
+	textureVertexCoord[3].v = v3;
 }
 //============================================
 Sprite::~Sprite() {
