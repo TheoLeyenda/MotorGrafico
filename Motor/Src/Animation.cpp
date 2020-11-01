@@ -16,7 +16,7 @@ void Animation::Update(Time & timer)
 {
 	_currentTime = (timer.deltaTime() * _length);
 	
-	while (_currentTime > _length){
+	while (_currentTime >= _length){
 		_currentTime -= _length;
 	}
 
@@ -24,29 +24,6 @@ void Animation::Update(Time & timer)
 
 	float frameLength = _length / _frames.size();
 	_currentFrame = static_cast<int>(_currentTime / frameLength);
-}
-
-void Animation::AddFrame(float u, float v, int width, int heigth, int spriteWidth, int spriteHeigth, int timeToAnim)
-{
-	_length = timeToAnim * 1000;
-
-	Frame frame;
-
-	//--------
-	frame.frameCoords[0].U = (u / spriteWidth);
-	frame.frameCoords[0].V = (v / spriteHeigth);
-	//--------
-	frame.frameCoords[1].U = ((u + width) / spriteWidth);
-	frame.frameCoords[1].V = (v / spriteHeigth);
-	//--------
-	frame.frameCoords[2].U = (u / spriteWidth);
-	frame.frameCoords[2].V = ((v + heigth)/ spriteHeigth);
-	//--------
-	frame.frameCoords[3].U = ((u + width ) / spriteWidth);
-	frame.frameCoords[3].V = ((v + heigth) / spriteHeigth);
-	//--------
-
-	_frames.push_back(frame);
 }
 
 /*

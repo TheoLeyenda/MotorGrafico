@@ -20,8 +20,6 @@ public:
 	~Animation();
 	void Update(Time& time);
 	void AddFrame(float u, float v, int width, int heigth,
-		int spriteWidth, int spriteHeigth, int timeToAnim);
-	void AddFrame(float u, float v, int width, int heigth,
 		int spriteWidth, int spriteHeigth, int timeToAnim, int totalFrames, int countFilas);
 	int GetCurrentFrame();
 	vector<Frame>& GetFrames();

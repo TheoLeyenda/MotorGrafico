@@ -14,7 +14,7 @@
 #define INIT_ERROR -1
 
 class ENGINE_API GameBase {
-private:
+protected:
 	Windows* windows;
 	Renderer* render;
 	Input* input;
@@ -31,7 +31,7 @@ public:
 	virtual void UpdateGame(Windows *_window, Renderer *_render, Input *_input) = 0; //Update del juego
 	virtual void DestroyGame() = 0; //Funcion que se debe llamar al finalizar el juego (Destruye correctamente todos las funciones internas del juego)
 
-	void TempInputs(Windows* windows, Shape* tri);
+	
 
 	Time& GetTimeClock();
 

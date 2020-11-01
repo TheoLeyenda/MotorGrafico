@@ -22,5 +22,8 @@ public:
 	void InitGame() override;
 	void UpdateGame(Windows *_window, Renderer *_render, Input *_input) override;
 	void DestroyGame() override;
+
+	void TempInputs(Windows* windows, Shape* tri);
+	void TempInputs(Windows* windows, Sprite* tri);
 };
 #endif

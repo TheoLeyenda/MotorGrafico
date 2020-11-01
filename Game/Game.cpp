@@ -93,6 +93,7 @@ void Game::UpdateGame(Windows *_window, Renderer *_render, Input *_input)
 	}
 	else if (typeDrawShape == TypeDrawShape::Spri)
 	{
+		TempInputs(_window, player);
 		player->UpdateSprite(GetTimeClock());
 		player->Draw(_window);
 		player->BindSprite();
@@ -118,7 +119,7 @@ void Game::DestroyGame()
 	//---------------------//
 }
 
-void GameBase::TempInputs(Windows* windows, Shape* shape)
+void Game::TempInputs(Windows* windows, Shape* shape)
 {
 	//---------------------//
 	if (typeMaterialShape == TypeMaterial::Color) {
@@ -228,5 +229,82 @@ void GameBase::TempInputs(Windows* windows, Shape* shape)
 		scalY = scalY - speedScale;
 		scalZ = scalZ - speedScale;
 		shape->SetScale(scalX, scalY, scalZ);
+	}
+}
+void Game::TempInputs(Windows* windows, Sprite* sprite)
+{
+	
+	//INPUT DE MOVIMIENTO
+	if (input->GetKey(KeyBoard::KEY_W))
+	{
+		posY = posY + speed;
+		sprite->SetPosition(posX, posY, posZ);
+	}
+	if (input->GetKey(KeyBoard::KEY_S))
+	{
+		posY = posY - speed;
+		sprite->SetPosition(posX, posY, posZ);
+	}
+	if (input->GetKey(KeyBoard::KEY_D))
+	{
+		posX = posX + speed;
+		sprite->SetPosition(posX, posY, posZ);
+	}
+	if (input->GetKey(KeyBoard::KEY_A))
+	{
+		posX = posX - speed;
+		sprite->SetPosition(posX, posY, posZ);
+	}
+	//-------------------//
+
+	//INPUT DE ROTACION
+	if (input->GetKey(KeyBoard::KEY_KP_4))
+	{
+		rotZ = rotZ + speedRotation;
+		sprite->SetRotationZ(rotZ);
+	}
+	if (input->GetKey(KeyBoard::KEY_KP_6))
+	{
+		rotZ = rotZ - speedRotation;
+		sprite->SetRotationZ(rotZ);
+	}
+
+	if (input->GetKey(KeyBoard::KEY_KP_1))
+	{
+		rotY = rotY + speedRotation;
+		sprite->SetRotationY(rotY);
+	}
+	if (input->GetKey(KeyBoard::KEY_KP_3))
+	{
+		rotY = rotY - speedRotation;
+		sprite->SetRotationY(rotY);
+	}
+
+	if (input->GetKey(KeyBoard::KEY_KP_7))
+	{
+		rotX = rotX + speedRotation;
+		sprite->SetRotationX(rotX);
+	}
+	if (input->GetKey(KeyBoard::KEY_KP_9))
+	{
+		rotX = rotX - speedRotation;
+		sprite->SetRotationX(rotX);
+	}
+	//------------------//
+
+	//INPUT DE ESCALA
+	if (input->GetKey(KeyBoard::KEY_KP_8))
+	{
+		scalX = scalX + speedScale;
+		scalY = scalY + speedScale;
+		scalZ = scalZ + speedScale;
+		sprite->SetScale(scalX, scalY, scalZ);
+	}
+	if (input->GetKey(KeyBoard::KEY_KP_2))
+	{
+		scalX = scalX - speedScale;
+		scalY = scalY - speedScale;
+		scalZ = scalZ - speedScale;
+		sprite->SetScale(scalX, scalY, scalZ);
 	}
 }
