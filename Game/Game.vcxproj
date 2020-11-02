@@ -179,6 +179,11 @@
     <Image Include="res\texturas\caminataPiola.png" />
     <Image Include="res\texturas\Facharda.jpg" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="res\shaders\FragmentColor.shader" />
+    <None Include="res\shaders\FragmentTexture.shader" />
+    <None Include="res\shaders\Vertex.shader" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

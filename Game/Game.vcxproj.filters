@@ -38,4 +38,9 @@
       <Filter>Archivos de recursos</Filter>
     </Image>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="res\shaders\FragmentColor.shader" />
+    <None Include="res\shaders\FragmentTexture.shader" />
+    <None Include="res\shaders\Vertex.shader" />
+  </ItemGroup>
 </Project>

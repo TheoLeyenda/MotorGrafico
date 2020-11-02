@@ -7,7 +7,6 @@
 #include <string>
 #include <fstream>
 #include <sstream>
-
 #include "CompilationController.h"
 
 Renderer::Renderer() {
@@ -79,6 +78,7 @@ void Renderer::SetShader()
 {
 	if (typeCompilation == TypeCompilation::Debug) 
 	{
+		std::cout << "Entre al Debug" << std::endl;
 		if (_typeShader == TypeShader::FragmentColor)
 			_shaderProgram = CreateShaderProgram("../Motor/res/shaders/Vertex.shader", "../Motor/res/shaders/FragmentColor.shader");
 		else if (_typeShader == TypeShader::FragmentTexture)
@@ -86,10 +86,13 @@ void Renderer::SetShader()
 	}
 	else if (typeCompilation == TypeCompilation::Exe) 
 	{
+		std::cout << "Entre al Exe" << std::endl;
 		if (_typeShader == TypeShader::FragmentColor)
 			_shaderProgram = CreateShaderProgram("res/shaders/Vertex.shader", "res/shaders/FragmentColor.shader");
-		else if (_typeShader == TypeShader::FragmentTexture)
+		else if (_typeShader == TypeShader::FragmentTexture) {
+			std::cout << "Entre al Textura" << std::endl;
 			_shaderProgram = CreateShaderProgram("res/shaders/Vertex.shader", "res/shaders/FragmentTexture.shader");
+		}
 	}
 }
 
