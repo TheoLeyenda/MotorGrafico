@@ -30,7 +30,7 @@ glm::mat4 Renderer::getProjMat()
 {
 	return _MVP.projection;
 }
-void Renderer::SetVertexsAttrib(int typeMaterial) {
+void Renderer::SetVertexsAttribShape(int typeMaterial) {
 
 	int countElementsForVertex = 8;
 	const int typeMaterialTexture = 1;
@@ -38,21 +38,21 @@ void Renderer::SetVertexsAttrib(int typeMaterial) {
 
 	if (typeMaterial == typeMaterialTexture)	//TEXTURE
 	{
-		_posAttrib = glGetAttribLocation(_shaderProgram, "position");
-		glVertexAttribPointer(_posAttrib, 3, GL_FLOAT, GL_FALSE, countElementsForVertex * sizeof(float), 0);
-		glEnableVertexAttribArray(_posAttrib);
+		_posAttribShape = glGetAttribLocation(_shaderProgram, "position");
+		glVertexAttribPointer(_posAttribShape, 3, GL_FLOAT, GL_FALSE, countElementsForVertex * sizeof(float), 0);
+		glEnableVertexAttribArray(_posAttribShape);
 		_colorAttrib = glGetAttribLocation(_shaderProgram, "customColor");
 		glVertexAttribPointer(_colorAttrib, 3, GL_FLOAT, GL_FALSE, countElementsForVertex * sizeof(float), (void*)(3 * sizeof(float)));
 		glEnableVertexAttribArray(_colorAttrib);
-		glUniform1i(_textureAttrib = glGetUniformLocation(_shaderProgram, "ourTexture"), 0);
-		glVertexAttribPointer(_textureAttrib, 2, GL_FLOAT, GL_FALSE, countElementsForVertex * sizeof(float), (void*)(6 * sizeof(float)));
-		glEnableVertexAttribArray(_textureAttrib);
+		glUniform1i(_textureAttribShape = glGetUniformLocation(_shaderProgram, "ourTexture"), 0);
+		glVertexAttribPointer(_textureAttribShape, 2, GL_FLOAT, GL_FALSE, countElementsForVertex * sizeof(float), (void*)(6 * sizeof(float)));
+		glEnableVertexAttribArray(_textureAttribShape);
 	}
 	else if (typeMaterial == typeMaterialColor) //COLOR
 	{
-		_posAttrib = glGetAttribLocation(_shaderProgram, "position");
-		glVertexAttribPointer(_posAttrib, 3, GL_FLOAT, GL_FALSE, 7 * sizeof(float), 0);
-		glEnableVertexAttribArray(_posAttrib);
+		_posAttribShape = glGetAttribLocation(_shaderProgram, "position");
+		glVertexAttribPointer(_posAttribShape, 3, GL_FLOAT, GL_FALSE, 7 * sizeof(float), 0);
+		glEnableVertexAttribArray(_posAttribShape);
 		_colorAttrib = glGetAttribLocation(_shaderProgram, "customColor");
 		glVertexAttribPointer(_colorAttrib, 4, GL_FLOAT, GL_FALSE, 7 * sizeof(float), (void*)(3 * sizeof(float)));
 		glEnableVertexAttribArray(_colorAttrib);
@@ -63,15 +63,15 @@ void Renderer::SetAttribsSprite()
 {
 	int countElementsForVertex = 5;
 
-	_posAttrib = glGetAttribLocation(_shaderProgram, "position");
-	glVertexAttribPointer(_posAttrib, 3, GL_FLOAT, GL_FALSE, countElementsForVertex * sizeof(float), 0);
-	glEnableVertexAttribArray(_posAttrib);
+	_posAttribSprite = glGetAttribLocation(_shaderProgram, "position");
+	glVertexAttribPointer(_posAttribSprite, 3, GL_FLOAT, GL_FALSE, countElementsForVertex * sizeof(float), 0);
+	glEnableVertexAttribArray(_posAttribSprite);
 	//_colorAttrib = glGetAttribLocation(_shaderProgram, "customColor");
 	//glVertexAttribPointer(_colorAttrib, 3, GL_FLOAT, GL_FALSE, countElementsForVertex * sizeof(float), (void*)(3 * sizeof(float)));
 	//glEnableVertexAttribArray(_colorAttrib);
-	glUniform1i(_textureAttrib = glGetUniformLocation(_shaderProgram, "ourTexture"), 0);
-	glVertexAttribPointer(_textureAttrib, 2, GL_FLOAT, GL_FALSE, countElementsForVertex * sizeof(float), (void*)(3 * sizeof(float)));
-	glEnableVertexAttribArray(_textureAttrib);
+	glUniform1i(_textureAttribSprite = glGetUniformLocation(_shaderProgram, "ourTexture"), 0);
+	glVertexAttribPointer(_textureAttribSprite, 2, GL_FLOAT, GL_FALSE, countElementsForVertex * sizeof(float), (void*)(3 * sizeof(float)));
+	glEnableVertexAttribArray(_textureAttribSprite);
 }
 
 void Renderer::SetShader()
@@ -134,24 +134,24 @@ void Renderer::ClearShader() {
 	glUseProgram(0);
 }
 
-void Renderer::BindBuffer(unsigned int vbo, bool useTexture) {
+void Renderer::BindBufferShape(unsigned int vbo, bool useTexture) {
 	
 	unsigned int countElementsForVertex = 8;
 	
 	if (useTexture) {
 		glBindBuffer(GL_ARRAY_BUFFER, vbo);
-		glVertexAttribPointer(_posAttrib, 3, GL_FLOAT, GL_FALSE, countElementsForVertex * sizeof(float), 0);
-		glEnableVertexAttribArray(_posAttrib);
+		glVertexAttribPointer(_posAttribShape, 3, GL_FLOAT, GL_FALSE, countElementsForVertex * sizeof(float), 0);
+		glEnableVertexAttribArray(_posAttribShape);
 		glVertexAttribPointer(_colorAttrib, 3, GL_FLOAT, GL_FALSE, countElementsForVertex * sizeof(float), (void*)(3 * sizeof(float)));
 		glEnableVertexAttribArray(_colorAttrib);
-		glVertexAttribPointer(_textureAttrib, 2, GL_FLOAT, GL_FALSE, countElementsForVertex * sizeof(float), (void*)(6 * sizeof(float)));
-		glEnableVertexAttribArray(_textureAttrib);
+		glVertexAttribPointer(_textureAttribShape, 2, GL_FLOAT, GL_FALSE, countElementsForVertex * sizeof(float), (void*)(6 * sizeof(float)));
+		glEnableVertexAttribArray(_textureAttribShape);
 	}
 	else 
 	{
 		glBindBuffer(GL_ARRAY_BUFFER, vbo);
-		glVertexAttribPointer(_posAttrib, 3, GL_FLOAT, GL_FALSE, 7 * sizeof(float), 0);
-		glEnableVertexAttribArray(_posAttrib);
+		glVertexAttribPointer(_posAttribShape, 3, GL_FLOAT, GL_FALSE, 7 * sizeof(float), 0);
+		glEnableVertexAttribArray(_posAttribShape);
 		glVertexAttribPointer(_colorAttrib, 4, GL_FLOAT, GL_FALSE, 7 * sizeof(float), (void*)(3 * sizeof(float)));
 		glEnableVertexAttribArray(_colorAttrib);
 	}
@@ -166,10 +166,10 @@ void Renderer::BindBufferSprite(unsigned int vbo)
 	unsigned int countElementsForVertex = 5;
 
 	glBindBuffer(GL_ARRAY_BUFFER, vbo);
-	glVertexAttribPointer(_posAttrib, 3, GL_FLOAT, GL_FALSE, countElementsForVertex * sizeof(float), 0);
-	glEnableVertexAttribArray(_posAttrib);
-	glVertexAttribPointer(_textureAttrib, 2, GL_FLOAT, GL_FALSE, countElementsForVertex * sizeof(float), (void*)(3 * sizeof(float)));
-	glEnableVertexAttribArray(_textureAttrib);
+	glVertexAttribPointer(_posAttribSprite, 3, GL_FLOAT, GL_FALSE, countElementsForVertex * sizeof(float), 0);
+	glEnableVertexAttribArray(_posAttribSprite);
+	glVertexAttribPointer(_textureAttribSprite, 2, GL_FLOAT, GL_FALSE, countElementsForVertex * sizeof(float), (void*)(3 * sizeof(float)));
+	glEnableVertexAttribArray(_textureAttribSprite);
 }
 
 void Renderer::BeignDraw() {
@@ -177,9 +177,9 @@ void Renderer::BeignDraw() {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
-void Renderer::Draw(unsigned int figura, int vertexs, unsigned int vbo, unsigned int& shaderProg, glm::mat4 model, bool useTexture) 
+void Renderer::DrawShape(unsigned int figura, int vertexs, unsigned int vbo, unsigned int& shaderProg, glm::mat4 model, bool useTexture) 
 {
-	BindBuffer(vbo, useTexture);
+	BindBufferShape(vbo, useTexture);
 
 	UseProgram(shaderProg, model,_MVP.view, _MVP.projection);
 
@@ -202,6 +202,7 @@ void Renderer::DrawSprite(unsigned int figura, int vertexs, unsigned int vbo, un
 void Renderer::EndDraw(Windows* refWindow) {
 	ClearShader();
 	refWindow->SwapBuffersWindows();
+	//std::cin.get();
 }
 
 unsigned int Renderer::CompileShader(unsigned int type, const char* source) {

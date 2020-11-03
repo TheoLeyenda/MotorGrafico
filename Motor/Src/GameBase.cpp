@@ -44,6 +44,7 @@ void GameBase::UpdateEngine()
 {
 	while (!windows->CheckGLFWwindowShouldClose())
 	{
+		render->BeignDraw();
 		timeClock.tick();
 		//std::cout << "Time in SECONDS = " << timeClock.GetGlobalTime() << std::endl;
 		//---------------------//
@@ -51,6 +52,8 @@ void GameBase::UpdateEngine()
 		//---------------------//
 		glfwPollEvents();
 		//---------------------//
+
+		render->EndDraw(windows);
 	}
 }
 

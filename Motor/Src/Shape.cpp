@@ -4,7 +4,6 @@
 #include <GLFW/glfw3.h>
 
 #define FINALARRAY 5
-
 //==============================================
 float vertexBufferTextureTri[] = {
 	//X		  Y		 Z		R	  G	    B  	  S	    T
@@ -50,6 +49,8 @@ float ColorQuad[]
 	0.0f,0.0f,1.0f,1.0f,
 	1.0f,0.0f,1.0f,1.0f,
 };
+
+
 //==============================================
 Shape::Shape(Renderer *_renderer, TypeMaterial typeMaterial): Entity2D(_renderer)
 {
@@ -185,18 +186,18 @@ void Shape::Draw(unsigned int figura,int vertexs, unsigned int& shaderProg, Wind
 {
 	if (renderer != NULL)
 	{
-		renderer->BeignDraw();
+		//renderer->BeignDraw();
 
 		if (_typeMaterial == TypeMaterial::Texture) 
 		{
-			renderer->Draw(figura, vertexs, GetVbo(), shaderProg, model, true);
+			renderer->DrawShape(figura, vertexs, GetVbo(), shaderProg, model, true);
 		}
 		else
 		{
-			renderer->Draw(figura, vertexs, GetVbo(), shaderProg, model, false);
+			renderer->DrawShape(figura, vertexs, GetVbo(), shaderProg, model, false);
 		}
 
-		renderer->EndDraw(refWindow);
+		//renderer->EndDraw(refWindow);
 	}
 	_currentShape = figura;
 }

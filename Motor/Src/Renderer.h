@@ -31,9 +31,12 @@ private:
 	TypeShader _typeShader;
 
 	//---------
-	unsigned int _posAttrib;
+	unsigned int _posAttribShape;
 	unsigned int _colorAttrib;
-	unsigned int _textureAttrib;
+	unsigned int _textureAttribShape;
+
+	unsigned int _posAttribSprite;
+	unsigned int _textureAttribSprite;
 	//---------
 public:
 	Renderer();
@@ -42,7 +45,7 @@ public:
 	glm::mat4 getViewMat();
 	glm::mat4 getProjMat();
 	//------------
-	void SetVertexsAttrib(int typeMaterial);
+	void SetVertexsAttribShape(int typeMaterial);
 	void SetAttribsSprite();
 	//------------
 	void SetShader();
@@ -51,14 +54,14 @@ public:
 	bool GLLogCall();
 	void UseProgram(unsigned int& shader, glm::mat4 model, glm::mat4 view, glm::mat4 projection);
 	void ClearShader();
-	void BindBuffer(unsigned int vbo, bool useTexture);
+	void BindBufferShape(unsigned int vbo, bool useTexture);
 	void UnbindBuffer();
 	//=====================
 	void BindBufferSprite(unsigned int vbo);
 	//void SetCurrentTexture(unsigned int& texture);
 	//=====================
 	void BeignDraw();
-	void Draw(unsigned int figura, int vertexs, unsigned int vbo, unsigned int& shaderProg,glm::mat4 model, bool useTexture);
+	void DrawShape(unsigned int figura, int vertexs, unsigned int vbo, unsigned int& shaderProg,glm::mat4 model, bool useTexture);
 	void DrawSprite(unsigned int figura, int vertexs, unsigned int vbo, unsigned int & shaderProg, glm::mat4 model);
 	void EndDraw(Windows* refWindow);
 	//=====================

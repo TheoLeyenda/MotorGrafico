@@ -10,6 +10,13 @@
 class ENGINE_API Sprite : public Entity2D
 {
 private:
+	float textureVertex[20] = {
+		//    x     y     z     u     v
+		   -0.5f,  0.5f, 0.0f, 0.0f, 1.0f,
+			0.5f,  0.5f, 0.0f, 1.0f, 1.0f,
+			0.5f, -0.5f, 0.0f, 1.0f, 0.0f,
+		   -0.5f, -0.5f, 0.0f, 0.0f, 0.0f
+	};
 	unsigned int texture;
 	unsigned char* data;
 	int width;

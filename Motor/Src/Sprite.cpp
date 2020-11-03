@@ -1,13 +1,7 @@
 #include "Sprite.h"
 #include "glew.h"
 
-float textureVertex[] = {
-	//    x     y     z     u     v
-	   -0.5f,  0.5f, 0.0f, 0.0f, 1.0f,
-		0.5f,  0.5f, 0.0f, 1.0f, 1.0f,
-	    0.5f, -0.5f, 0.0f, 1.0f, 0.0f,
-	   -0.5f, -0.5f, 0.0f, 0.0f, 0.0f
-};
+
 
 
 //============================================
@@ -38,11 +32,11 @@ void Sprite::Draw(Windows* refWindow)
 {
 	if (renderer != NULL) 
 	{
-		renderer->BeignDraw();
+		//renderer->BeignDraw();
 
 		renderer->DrawSprite(GL_QUADS, 4, _vbo, renderer->GetShader(), internalData.model);
 
-		renderer->EndDraw(refWindow);
+		//renderer->EndDraw(refWindow);
 	}
 }
 //============================================

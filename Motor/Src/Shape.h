@@ -5,6 +5,7 @@
 #include "Entity2D.h"
 #include "../Lib/glm/vec4.hpp"
 
+
 static enum TypeShape 
 {
 	TRIANGLE = 0x0004,
@@ -44,5 +45,6 @@ public:
 	void SetSolidColor(float r, float g, float b);
 	void SetTypeColorShape(TypeColorShape typeColorShape) { _typeColorShape = typeColorShape; }
 	TypeColorShape GetTypeColorShape() { return _typeColorShape; }
+	unsigned int GetCurrentShape() { return _currentShape; }
 };
 #endif

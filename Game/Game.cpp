@@ -1,31 +1,18 @@
 #include "..\Motor\Src\GameBase.h"
-#include "..\Motor\Src\GameBase.h"
-#include "..\Motor\Src\GameBase.h"
-#include "..\Motor\Src\GameBase.h"
 #include "Game.h"
 
-enum TypeDrawShape 
+enum TypeDrawShape
 {
 	Tri,
 	Quad,
 	Spri,
+	MultiplayObjects,
 };
 
 //---------------------//
 //VALORES DE TESTEO
-float posX = 0;
-float posY = 0;
 float speed = 0.05f;
-const float posZ = 0;
-
-float rotX = 0;
-float rotY = 0;
-float rotZ = 0;
 float speedRotation = 0.05f;
-
-float scalX = 1;
-float scalY = 1;
-float scalZ = 1;
 float speedScale = 0.05f;
 
 float r = 1.0f;
@@ -34,7 +21,7 @@ float b = 0.0f;
 float a = 1.0f;
 //---------------------//
 
-TypeDrawShape typeDrawShape = TypeDrawShape::Spri;
+TypeDrawShape typeDrawShape = TypeDrawShape::Quad;
 TypeColorShape typeColorShape = TypeColorShape::VertexColor;
 TypeMaterial typeMaterialShape = TypeMaterial::Texture;
 
@@ -49,17 +36,18 @@ void Game::InitGame()
 	//---------------------//
 	if(typeDrawShape == TypeDrawShape::Tri)
 	{
+
 		spriteTri = new Sprite(GetRenderer(), "res/texturas/bokitaElMasGrandePapa.png");
 		tri = new Shape(GetRenderer(), typeMaterialShape);
 		tri->SetShape(TypeShape::TRIANGLE, typeColorShape);
-		tri->GetRenderer()->SetVertexsAttrib( typeMaterialShape );
+		tri->GetRenderer()->SetVertexsAttribShape( typeMaterialShape );
 	}
 	else if(typeDrawShape == TypeDrawShape::Quad)
 	{
 		spriteQuad = new Sprite(GetRenderer(), "res/texturas/Facharda.jpg");
 		quad = new Shape(GetRenderer(), typeMaterialShape);
 		quad->SetShape(TypeShape::QUAD, typeColorShape);
-		quad->GetRenderer()->SetVertexsAttrib(typeMaterialShape);
+		quad->GetRenderer()->SetVertexsAttribShape(typeMaterialShape);
 	}
 	else if (typeDrawShape == TypeDrawShape::Spri) 
 	{
@@ -71,6 +59,36 @@ void Game::InitGame()
 		player->SetAnimation(_runLeft);
 		//-------------
 		player->GetRenderer()->SetAttribsSprite();
+	}
+	else if (typeDrawShape == TypeDrawShape::MultiplayObjects) 
+	{
+		spriteTri = new Sprite(GetRenderer(), "res/texturas/bokitaElMasGrandePapa.png");
+		tri = new Shape(GetRenderer(), typeMaterialShape);
+		tri->SetShape(TypeShape::TRIANGLE, typeColorShape);
+		tri->GetRenderer()->SetVertexsAttribShape(typeMaterialShape);
+
+		tri->SetPosition(-0.5, 0.5f, 0.0f);
+		tri->SetScale(0.5f, 0.5f, 0.5f);
+
+		spriteQuad = new Sprite(GetRenderer(), "res/texturas/Facharda.jpg");
+		quad = new Shape(GetRenderer(), typeMaterialShape);
+		quad->SetShape(TypeShape::QUAD, typeColorShape);
+		quad->GetRenderer()->SetVertexsAttribShape(typeMaterialShape);
+
+		quad->SetPosition(0.5, 0.5f, 0.0f);
+		quad->SetScale(0.5f, 0.5f, 0.5f);
+
+		/*player = new Sprite(GetRenderer(), "res/texturas/caminataPiola.png");
+		//-------------
+		_runLeft = new Animation();
+		_runLeft->AddFrame(0.0f, 0.0f, (1536.0f / 6), 256.0f, 1536.0f, 256.0f, 1.0f, 6, 6);
+		player->SetAnimation(_runLeft);
+		//-------------
+		player->GetRenderer()->SetAttribsSprite();
+		
+		player->SetPosition(0.0f, -0.5f, 0.0f);
+		player->SetScale(0.5f, 0.5f, 0.5f);*/
+
 	}
 	//---------------------//
 }
@@ -97,6 +115,23 @@ void Game::UpdateGame(Windows *_window, Renderer *_render, Input *_input)
 		player->UpdateSprite(GetTimeClock());
 		player->Draw(_window);
 		player->BindSprite();
+	}
+	else if (typeDrawShape == TypeDrawShape::MultiplayObjects) 
+	{
+		tri->Draw(TypeShape::TRIANGLE, 3, _render->GetShader(), _window, tri->GetInternalData().model);
+		TempInputs(_window, tri);
+		if (typeColorShape == TypeMaterial::Texture)
+			spriteTri->BindSprite();
+
+		quad->Draw(TypeShape::QUAD, 4, _render->GetShader(), _window, quad->GetInternalData().model);
+		TempInputs(_window, quad);
+		if (typeColorShape == TypeMaterial::Texture)
+			spriteQuad->BindSprite();
+
+		/*TempInputs(_window, player);
+		player->UpdateSprite(GetTimeClock());
+		player->Draw(_window);
+		player->BindSprite();*/
 	}
 	//---------------------//
 }
@@ -133,102 +168,86 @@ void Game::TempInputs(Windows* windows, Shape* shape)
 		if (input->GetKey(KeyBoard::KEY_LEFT))
 		{
 			typeColorShape = TypeColorShape::SolidColor;
-			if (typeDrawShape == TypeDrawShape::Tri) {
+			if (shape->GetCurrentShape() == TypeShape::TRIANGLE) {
 				shape->SetShape(TypeShape::TRIANGLE, typeColorShape);
-				shape->GetRenderer()->SetVertexsAttrib(typeMaterialShape);
+				shape->GetRenderer()->SetVertexsAttribShape(typeMaterialShape);
 			}
-			else if (typeDrawShape == TypeDrawShape::Quad)
+			else if (shape->GetCurrentShape() == TypeShape::QUAD)
 			{
 				shape->SetShape(TypeShape::QUAD, typeColorShape);
-				shape->GetRenderer()->SetVertexsAttrib(typeMaterialShape);
+				shape->GetRenderer()->SetVertexsAttribShape(typeMaterialShape);
 			}
 		}
 		if (input->GetKey(KeyBoard::KEY_RIGHT))
 		{
 			typeColorShape = TypeColorShape::VertexColor;
-			if (typeDrawShape == TypeDrawShape::Tri) {
+			if (shape->GetCurrentShape() == TypeShape::TRIANGLE) {
 				shape->SetShape(TypeShape::TRIANGLE, typeColorShape);
-				shape->GetRenderer()->SetVertexsAttrib(typeMaterialShape);
+				shape->GetRenderer()->SetVertexsAttribShape(typeMaterialShape);
 			}
-			else if (typeDrawShape == TypeDrawShape::Quad)
+			else if (shape->GetCurrentShape() == TypeShape::QUAD)
 			{
 				shape->SetShape(TypeShape::QUAD, typeColorShape);
-				shape->GetRenderer()->SetVertexsAttrib(typeMaterialShape);
+				shape->GetRenderer()->SetVertexsAttribShape(typeMaterialShape);
 			}
 		}
 	}
 	//INPUT DE MOVIMIENTO
 	if (input->GetKey(KeyBoard::KEY_W))
 	{
-		posY = posY + speed;
-		shape->SetPosition(posX, posY, posZ);
+		shape->SetPosition(shape->transform.position.x, shape->transform.position.y + speed , shape->transform.position.z);
 	}
 	if (input->GetKey(KeyBoard::KEY_S))
 	{
-		posY = posY - speed;
-		shape->SetPosition(posX, posY, posZ);
+		shape->SetPosition(shape->transform.position.x, shape->transform.position.y - speed, shape->transform.position.z);
 	}
 	if (input->GetKey(KeyBoard::KEY_D))
 	{
-		posX = posX + speed;
-		shape->SetPosition(posX, posY, posZ);
+		shape->SetPosition(shape->transform.position.x + speed, shape->transform.position.y, shape->transform.position.z);
 	}
 	if (input->GetKey(KeyBoard::KEY_A))
 	{
-		posX = posX - speed;
-		shape->SetPosition(posX, posY, posZ);
+		shape->SetPosition(shape->transform.position.x - speed, shape->transform.position.y, shape->transform.position.z);
 	}
 	//-------------------//
 
 	//INPUT DE ROTACION
 	if (input->GetKey(KeyBoard::KEY_KP_4))
 	{
-		rotZ = rotZ + speedRotation;
-		shape->SetRotationZ(rotZ);
+		shape->SetRotationZ(shape->transform.rotation.z + speedRotation);
 	}
 	if (input->GetKey(KeyBoard::KEY_KP_6))
 	{
-		rotZ = rotZ - speedRotation;
-		shape->SetRotationZ(rotZ);
+		shape->SetRotationZ(shape->transform.rotation.z - speedRotation);
 	}
 
 	if (input->GetKey(KeyBoard::KEY_KP_1))
 	{
-		rotY = rotY + speedRotation;
-		shape->SetRotationY(rotY);
+		shape->SetRotationY(shape->transform.rotation.y + speedRotation);
 	}
 	if (input->GetKey(KeyBoard::KEY_KP_3))
 	{
-		rotY = rotY - speedRotation;
-		shape->SetRotationY(rotY);
+		shape->SetRotationY(shape->transform.rotation.y - speedRotation);
 	}
 
 	if (input->GetKey(KeyBoard::KEY_KP_7))
 	{
-		rotX = rotX + speedRotation;
-		shape->SetRotationX(rotX);
+		shape->SetRotationX(shape->transform.rotation.x + speedRotation);
 	}
 	if (input->GetKey(KeyBoard::KEY_KP_9))
 	{
-		rotX = rotX - speedRotation;
-		shape->SetRotationX(rotX);
+		shape->SetRotationX(shape->transform.rotation.x - speedRotation);
 	}
 	//------------------//
 
 	//INPUT DE ESCALA
 	if (input->GetKey(KeyBoard::KEY_KP_8))
 	{
-		scalX = scalX + speedScale;
-		scalY = scalY + speedScale;
-		scalZ = scalZ + speedScale;
-		shape->SetScale(scalX, scalY, scalZ);
+		shape->SetScale(shape->transform.scale.x + speedScale, shape->transform.scale.y + speedScale, shape->transform.scale.z + speedScale);
 	}
 	if (input->GetKey(KeyBoard::KEY_KP_2))
 	{
-		scalX = scalX - speedScale;
-		scalY = scalY - speedScale;
-		scalZ = scalZ - speedScale;
-		shape->SetScale(scalX, scalY, scalZ);
+		shape->SetScale(shape->transform.scale.x - speedScale, shape->transform.scale.y - speedScale, shape->transform.scale.z - speedScale);
 	}
 }
 void Game::TempInputs(Windows* windows, Sprite* sprite)
@@ -237,74 +256,58 @@ void Game::TempInputs(Windows* windows, Sprite* sprite)
 	//INPUT DE MOVIMIENTO
 	if (input->GetKey(KeyBoard::KEY_W))
 	{
-		posY = posY + speed;
-		sprite->SetPosition(posX, posY, posZ);
+		sprite->SetPosition(sprite->transform.position.x, sprite->transform.position.y + speed, sprite->transform.position.z);
 	}
 	if (input->GetKey(KeyBoard::KEY_S))
 	{
-		posY = posY - speed;
-		sprite->SetPosition(posX, posY, posZ);
+		sprite->SetPosition(sprite->transform.position.x, sprite->transform.position.y - speed, sprite->transform.position.z);
 	}
 	if (input->GetKey(KeyBoard::KEY_D))
 	{
-		posX = posX + speed;
-		sprite->SetPosition(posX, posY, posZ);
+		sprite->SetPosition(sprite->transform.position.x + speed, sprite->transform.position.y, sprite->transform.position.z);
 	}
 	if (input->GetKey(KeyBoard::KEY_A))
 	{
-		posX = posX - speed;
-		sprite->SetPosition(posX, posY, posZ);
+		sprite->SetPosition(sprite->transform.position.x - speed, sprite->transform.position.y, sprite->transform.position.z);
 	}
 	//-------------------//
 
 	//INPUT DE ROTACION
 	if (input->GetKey(KeyBoard::KEY_KP_4))
 	{
-		rotZ = rotZ + speedRotation;
-		sprite->SetRotationZ(rotZ);
+		sprite->SetRotationZ(sprite->transform.rotation.z + speedRotation);
 	}
 	if (input->GetKey(KeyBoard::KEY_KP_6))
 	{
-		rotZ = rotZ - speedRotation;
-		sprite->SetRotationZ(rotZ);
+		sprite->SetRotationZ(sprite->transform.rotation.z - speedRotation);
 	}
 
 	if (input->GetKey(KeyBoard::KEY_KP_1))
 	{
-		rotY = rotY + speedRotation;
-		sprite->SetRotationY(rotY);
+		sprite->SetRotationY(sprite->transform.rotation.y + speedRotation);
 	}
 	if (input->GetKey(KeyBoard::KEY_KP_3))
 	{
-		rotY = rotY - speedRotation;
-		sprite->SetRotationY(rotY);
+		sprite->SetRotationY(sprite->transform.rotation.y - speedRotation);
 	}
 
 	if (input->GetKey(KeyBoard::KEY_KP_7))
 	{
-		rotX = rotX + speedRotation;
-		sprite->SetRotationX(rotX);
+		sprite->SetRotationX(sprite->transform.rotation.x + speedRotation);
 	}
 	if (input->GetKey(KeyBoard::KEY_KP_9))
 	{
-		rotX = rotX - speedRotation;
-		sprite->SetRotationX(rotX);
+		sprite->SetRotationX(sprite->transform.rotation.x - speedRotation);
 	}
 	//------------------//
 
 	//INPUT DE ESCALA
 	if (input->GetKey(KeyBoard::KEY_KP_8))
 	{
-		scalX = scalX + speedScale;
-		scalY = scalY + speedScale;
-		scalZ = scalZ + speedScale;
-		sprite->SetScale(scalX, scalY, scalZ);
+		sprite->SetScale(sprite->transform.scale.x + speedScale, sprite->transform.scale.y + speedScale, sprite->transform.scale.z + speedScale);
 	}
 	if (input->GetKey(KeyBoard::KEY_KP_2))
 	{
-		scalX = scalX - speedScale;
-		scalY = scalY - speedScale;
-		scalZ = scalZ - speedScale;
-		sprite->SetScale(scalX, scalY, scalZ);
+		sprite->SetScale(sprite->transform.scale.x - speedScale, sprite->transform.scale.y - speedScale, sprite->transform.scale.z - speedScale);
 	}
 }
