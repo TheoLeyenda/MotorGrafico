@@ -136,9 +136,9 @@ void Game::UpdateGame(Windows *_window, Renderer *_render, Input *_input)
 			spriteTri->BindSprite();
 
 		if(typeCollisionCheck == TypeCollisionCheck::Collision)
-			collisionManager->CheckCollision2D(tri, quad, speed);
+			collisionManager->CheckCollision2D(tri, quad, speed, tri->transform.scale, quad->transform.scale);
 		else if(typeCollisionCheck == TypeCollisionCheck::Trigger)
-			collisionManager->CheckTrigger2D(tri, quad);
+			collisionManager->CheckTrigger2D(tri, quad, tri->transform.scale, quad->transform.scale);
 
 		/*TempInputs(_window, player);
 		player->UpdateSprite(GetTimeClock());

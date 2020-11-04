@@ -18,13 +18,13 @@ class ENGINE_API CollisionManager
 {
 
 private:
-	CollisionResult2D ParcialCollisionDetection2D(Entity2D* myEntity, Entity2D* toCheckTrigger2D);
+	CollisionResult2D ParcialCollisionDetection2D(Entity2D* myEntity, Entity2D* toCheckTrigger2D, glm::vec3 myScale, glm::vec3 toCheckScale);
 public:
 	CollisionManager();
 	~CollisionManager();
 
-	bool CheckTrigger2D(Entity2D* myEntity, Entity2D* toCheckTrigger2D);
-	bool CheckCollision2D(Entity2D * myEntity, Entity2D* toCheckCollision2D, float speedMyEntity);
+	bool CheckTrigger2D(Entity2D* myEntity, Entity2D* toCheckEntity2D, glm::vec3 myScale, glm::vec3 toCheckScale);
+	bool CheckCollision2D(Entity2D * myEntity, Entity2D* toCheckEntity2D, float speedMyEntity, glm::vec3 myScale, glm::vec3 toCheckScale);
 };
 
 #endif

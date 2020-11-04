@@ -6,19 +6,19 @@ CollisionManager::CollisionManager() {}
 CollisionManager::~CollisionManager(){}
 
 
-CollisionResult2D CollisionManager::ParcialCollisionDetection2D(Entity2D* myEntity, Entity2D* toCheckTrigger2D)
+CollisionResult2D CollisionManager::ParcialCollisionDetection2D(Entity2D* myEntity, Entity2D* toCheckTrigger2D, glm::vec3 myScale, glm::vec3 toCheckScale)
 {
 	float toCheckPosX = toCheckTrigger2D->transform.position.x;
 	float toCheckPosY = toCheckTrigger2D->transform.position.y;
 
-	float toCheckScaleX = toCheckTrigger2D->transform.scale.x;
-	float toCheckScaleY = toCheckTrigger2D->transform.scale.y;
+	float toCheckScaleX = toCheckScale.x;
+	float toCheckScaleY = toCheckScale.y;
 
 	float myPosX = myEntity->transform.position.x;
 	float myPosY = myEntity->transform.position.y;
 
-	float myScaleX = myEntity->transform.scale.x;
-	float myScaleY = myEntity->transform.scale.y;
+	float myScaleX = myScale.x;
+	float myScaleY = myScale.y;
 
 	float minOverlapX = 0.0f;
 	float maxOverlapX = glm::min(myPosX + fabs(myScaleX) / 2.0f, toCheckPosX + fabs(toCheckScaleX) / 2.0f) - glm::max(myPosX - fabs(myScaleX) / 2.0f, toCheckPosX - fabs(toCheckScaleX) / 2.0f);
@@ -58,9 +58,9 @@ CollisionResult2D CollisionManager::ParcialCollisionDetection2D(Entity2D* myEnti
 	return NoneCollision;
 }
 
-bool CollisionManager::CheckTrigger2D(Entity2D* myEntity, Entity2D* toCheckTrigger2D)
+bool CollisionManager::CheckTrigger2D(Entity2D* myEntity, Entity2D* toCheckEntity2D, glm::vec3 myScale, glm::vec3 toCheckScale)
 {
-	CollisionResult2D collisionResult = ParcialCollisionDetection2D(myEntity, toCheckTrigger2D);
+	CollisionResult2D collisionResult = ParcialCollisionDetection2D(myEntity, toCheckEntity2D, myScale, toCheckScale);
 
 	if (collisionResult != CollisionResult2D::NoneCollision)
 		return true;
@@ -68,12 +68,12 @@ bool CollisionManager::CheckTrigger2D(Entity2D* myEntity, Entity2D* toCheckTrigg
 	return false;
 }
 
-bool CollisionManager::CheckCollision2D(Entity2D * myEntity, Entity2D* toCheckCollision2D, float speedMyEntity)
+bool CollisionManager::CheckCollision2D(Entity2D * myEntity, Entity2D* toCheckEntity2D, float speedMyEntity, glm::vec3 myScale, glm::vec3 toCheckScale)
 {
 	if (speedMyEntity <= 0) 
 		 speedMyEntity = 0.05f;
 
-	CollisionResult2D collisionResult = ParcialCollisionDetection2D(myEntity, toCheckCollision2D);
+	CollisionResult2D collisionResult = ParcialCollisionDetection2D(myEntity, toCheckEntity2D, myScale, toCheckScale);
 	if (collisionResult != CollisionResult2D::NoneCollision) 
 	{
 		switch (collisionResult)
