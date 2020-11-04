@@ -10,6 +10,7 @@
 #include "Input.h"
 #include "Sprite.h"
 #include "Timer.h"
+#include "CollisionManager.h"
 
 #define INIT_ERROR -1
 
@@ -18,6 +19,7 @@ protected:
 	Windows* windows;
 	Renderer* render;
 	Input* input;
+	CollisionManager* collisionManager;
 	Time timeClock;
 public:
 	GameBase();
@@ -34,7 +36,7 @@ public:
 	
 
 	Time& GetTimeClock();
-
+	CollisionManager* GetCollisionManager() { return collisionManager; }
 	Windows* GetWindows();
 	Renderer* GetRenderer();
 	Input* GetInput();

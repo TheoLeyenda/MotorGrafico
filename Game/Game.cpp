@@ -62,6 +62,14 @@ void Game::InitGame()
 	}
 	else if (typeDrawShape == TypeDrawShape::MultiplayObjects) 
 	{
+		spriteQuad = new Sprite(GetRenderer(), "res/texturas/Facharda.jpg");
+		quad = new Shape(GetRenderer(), typeMaterialShape);
+		quad->SetShape(TypeShape::QUAD, typeColorShape);
+		quad->GetRenderer()->SetVertexsAttribShape(typeMaterialShape);
+
+		//quad->SetPosition(0.5, 0.5f, 0.0f);
+		quad->SetScale(0.5f, 0.5f, 0.5f);
+
 		spriteTri = new Sprite(GetRenderer(), "res/texturas/bokitaElMasGrandePapa.png");
 		tri = new Shape(GetRenderer(), typeMaterialShape);
 		tri->SetShape(TypeShape::TRIANGLE, typeColorShape);
@@ -69,14 +77,6 @@ void Game::InitGame()
 
 		tri->SetPosition(-0.5, 0.5f, 0.0f);
 		tri->SetScale(0.5f, 0.5f, 0.5f);
-
-		spriteQuad = new Sprite(GetRenderer(), "res/texturas/Facharda.jpg");
-		quad = new Shape(GetRenderer(), typeMaterialShape);
-		quad->SetShape(TypeShape::QUAD, typeColorShape);
-		quad->GetRenderer()->SetVertexsAttribShape(typeMaterialShape);
-
-		quad->SetPosition(0.5, 0.5f, 0.0f);
-		quad->SetScale(0.5f, 0.5f, 0.5f);
 
 		/*player = new Sprite(GetRenderer(), "res/texturas/caminataPiola.png");
 		//-------------
@@ -118,15 +118,19 @@ void Game::UpdateGame(Windows *_window, Renderer *_render, Input *_input)
 	}
 	else if (typeDrawShape == TypeDrawShape::MultiplayObjects) 
 	{
+
+
+		quad->Draw(TypeShape::QUAD, 4, _render->GetShader(), _window, quad->GetInternalData().model);
+		//TempInputs(_window, quad);
+		if (typeColorShape == TypeMaterial::Texture)
+			spriteQuad->BindSprite();
+
 		tri->Draw(TypeShape::TRIANGLE, 3, _render->GetShader(), _window, tri->GetInternalData().model);
 		TempInputs(_window, tri);
 		if (typeColorShape == TypeMaterial::Texture)
 			spriteTri->BindSprite();
 
-		quad->Draw(TypeShape::QUAD, 4, _render->GetShader(), _window, quad->GetInternalData().model);
-		TempInputs(_window, quad);
-		if (typeColorShape == TypeMaterial::Texture)
-			spriteQuad->BindSprite();
+		collisionManager->CheckParcialTrigger2D(tri, quad);
 
 		/*TempInputs(_window, player);
 		player->UpdateSprite(GetTimeClock());

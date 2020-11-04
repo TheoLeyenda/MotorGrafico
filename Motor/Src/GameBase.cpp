@@ -17,7 +17,7 @@ int GameBase::InitEngine()
 	windows = new Windows(1080, 680, "MOTORASO");
 	render = new Renderer();
 	input = new Input(windows->GetWindowsPtr());
-
+	collisionManager = new CollisionManager();
 	if (!glfwInit() || windows == NULL)
 		return INIT_ERROR;
 
@@ -68,6 +68,8 @@ void GameBase::DestroyEngine()
 		delete windows;
 	if (render != NULL)
 		delete render;
+	if (collisionManager != NULL)
+		delete collisionManager;
 }
 
 Time& GameBase::GetTimeClock()

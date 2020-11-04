@@ -20,6 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Src\Animation.h" />
+    <ClInclude Include="Src\CollisionManager.h" />
     <ClInclude Include="Src\CompilationController.h" />
     <ClInclude Include="Src\Entity.h" />
     <ClInclude Include="Src\Entity2D.h" />
@@ -38,6 +39,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Src\Animation.cpp" />
+    <ClCompile Include="Src\CollisionManager.cpp" />
     <ClCompile Include="Src\Entity.cpp" />
     <ClCompile Include="Src\Entity2D.cpp" />
     <ClCompile Include="Src\Frame.cpp" />
