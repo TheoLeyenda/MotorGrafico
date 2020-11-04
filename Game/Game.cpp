@@ -8,6 +8,11 @@ enum TypeDrawShape
 	Spri,
 	MultiplayObjects,
 };
+enum TypeCollisionCheck 
+{
+	Collision,
+	Trigger,
+};
 
 //---------------------//
 //VALORES DE TESTEO
@@ -24,6 +29,7 @@ float a = 1.0f;
 TypeDrawShape typeDrawShape = TypeDrawShape::MultiplayObjects;
 TypeColorShape typeColorShape = TypeColorShape::VertexColor;
 TypeMaterial typeMaterialShape = TypeMaterial::Texture;
+TypeCollisionCheck typeCollisionCheck = TypeCollisionCheck::Collision;
 
 Game::Game():GameBase(){}
 
@@ -119,7 +125,6 @@ void Game::UpdateGame(Windows *_window, Renderer *_render, Input *_input)
 	else if (typeDrawShape == TypeDrawShape::MultiplayObjects) 
 	{
 
-
 		quad->Draw(TypeShape::QUAD, 4, _render->GetShader(), _window, quad->GetInternalData().model);
 		//TempInputs(_window, quad);
 		if (typeColorShape == TypeMaterial::Texture)
@@ -130,7 +135,10 @@ void Game::UpdateGame(Windows *_window, Renderer *_render, Input *_input)
 		if (typeColorShape == TypeMaterial::Texture)
 			spriteTri->BindSprite();
 
-		collisionManager->CheckParcialTrigger2D(tri, quad);
+		if(typeCollisionCheck == TypeCollisionCheck::Collision)
+			collisionManager->CheckCollision2D(tri, quad, speed);
+		else if(typeCollisionCheck == TypeCollisionCheck::Trigger)
+			collisionManager->CheckTrigger2D(tri, quad);
 
 		/*TempInputs(_window, player);
 		player->UpdateSprite(GetTimeClock());

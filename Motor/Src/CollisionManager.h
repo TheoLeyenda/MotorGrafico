@@ -18,19 +18,13 @@ class ENGINE_API CollisionManager
 {
 
 private:
+	CollisionResult2D ParcialCollisionDetection2D(Entity2D* myEntity, Entity2D* toCheckTrigger2D);
 public:
 	CollisionManager();
-
-	void CheckCollision(Entity* myEntity,Entity* toCheckCollision);
-	void CheckTrigger(Entity* myEntity, Entity* toCheckTrigger);
-
-	
-	
-	CollisionResult2D CheckParcialTrigger2D(Entity2D* myEntity, Entity2D* toCheckTrigger2D);
-	CollisionResult2D CheckParcialCollision2D(Entity2D* myEntity, Entity2D* toCheckTrigger2D);
+	~CollisionManager();
 
 	bool CheckTrigger2D(Entity2D* myEntity, Entity2D* toCheckTrigger2D);
-	bool CheckCollision2D(Entity2D* myEntity, Entity2D& toCheckCollision2D);
+	bool CheckCollision2D(Entity2D * myEntity, Entity2D* toCheckCollision2D, float speedMyEntity);
 };
 
 #endif

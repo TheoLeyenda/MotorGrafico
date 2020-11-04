@@ -1,18 +1,12 @@
 #include "CollisionManager.h"
 
 
+CollisionManager::CollisionManager() {}
 
-CollisionManager::CollisionManager(){}
+CollisionManager::~CollisionManager(){}
 
-void CollisionManager::CheckCollision(Entity * myEntity, Entity * toCheckCollision)
-{
-}
 
-void CollisionManager::CheckTrigger(Entity * myEntity, Entity * toCheckTrigger)
-{
-}
-
-CollisionResult2D CollisionManager::CheckParcialTrigger2D(Entity2D* myEntity, Entity2D* toCheckTrigger2D)
+CollisionResult2D CollisionManager::ParcialCollisionDetection2D(Entity2D* myEntity, Entity2D* toCheckTrigger2D)
 {
 	float toCheckPosX = toCheckTrigger2D->transform.position.x;
 	float toCheckPosY = toCheckTrigger2D->transform.position.y;
@@ -28,7 +22,7 @@ CollisionResult2D CollisionManager::CheckParcialTrigger2D(Entity2D* myEntity, En
 
 	float minOverlapX = 0.0f;
 	float maxOverlapX = glm::min(myPosX + fabs(myScaleX) / 2.0f, toCheckPosX + fabs(toCheckScaleX) / 2.0f) - glm::max(myPosX - fabs(myScaleX) / 2.0f, toCheckPosX - fabs(toCheckScaleX) / 2.0f);
-	
+
 	float overlapX = glm::max(minOverlapX, maxOverlapX);
 
 	float minOverlapY = 0.0f;
@@ -36,7 +30,7 @@ CollisionResult2D CollisionManager::CheckParcialTrigger2D(Entity2D* myEntity, En
 
 	float overlapY = glm::max(minOverlapY, maxOverlapY);
 
-	if (overlapX != 0.0f && overlapY != 0.0f) 
+	if (overlapX != 0.0f && overlapY != 0.0f)
 	{
 		if (overlapX > overlapY)
 		{
@@ -49,7 +43,7 @@ CollisionResult2D CollisionManager::CheckParcialTrigger2D(Entity2D* myEntity, En
 				return CollisionDown;
 			}
 		}
-		else 
+		else
 		{
 			if (myPosX < 0 && myPosX < toCheckPosX || myPosX > 0 && myPosX < toCheckPosX) {
 				std::cout << "CollisionRight" << std::endl;
@@ -64,36 +58,50 @@ CollisionResult2D CollisionManager::CheckParcialTrigger2D(Entity2D* myEntity, En
 	return NoneCollision;
 }
 
-CollisionResult2D CollisionManager::CheckParcialCollision2D(Entity2D * myEntity, Entity2D * toCheckTrigger2D)
+bool CollisionManager::CheckTrigger2D(Entity2D* myEntity, Entity2D* toCheckTrigger2D)
 {
-	return CollisionResult2D();
-}
+	CollisionResult2D collisionResult = ParcialCollisionDetection2D(myEntity, toCheckTrigger2D);
 
-bool CollisionManager::CheckTrigger2D(Entity2D * myEntity, Entity2D * toCheckTrigger2D)
-{
-	float toCheckPosX = toCheckTrigger2D->transform.position.x;
-	float toCheckPosY = toCheckTrigger2D->transform.position.y;
-
-	float toCheckScaleX = toCheckTrigger2D->transform.scale.x;
-	float toCheckScaleY = toCheckTrigger2D->transform.scale.y;
-
-	float myPosX = myEntity->transform.position.x;
-	float myPosY = myEntity->transform.position.y;
-
-	float myScaleX = myEntity->transform.scale.x;
-	float myScaleY = myEntity->transform.scale.y;
-
-	if ((myPosX + fabs(myScaleX) >= toCheckPosX && myPosX <= toCheckPosX + fabs(toCheckPosX) &&
-		 (myPosY + fabs(myScaleY) >= toCheckPosY && myPosY <= toCheckPosY + fabs(toCheckPosY))))
-	{
-		std::cout << "Colisione" << std::endl;
+	if (collisionResult != CollisionResult2D::NoneCollision)
 		return true;
-	}
 
 	return false;
 }
 
-bool CollisionManager::CheckCollision2D(Entity2D * myEntity, Entity2D & toCheckCollision2D)
+bool CollisionManager::CheckCollision2D(Entity2D * myEntity, Entity2D* toCheckCollision2D, float speedMyEntity)
 {
+	if (speedMyEntity <= 0) 
+		 speedMyEntity = 0.05f;
+
+	CollisionResult2D collisionResult = ParcialCollisionDetection2D(myEntity, toCheckCollision2D);
+	if (collisionResult != CollisionResult2D::NoneCollision) 
+	{
+		switch (collisionResult)
+		{
+		case CollisionResult2D::CollisionDown:
+			myEntity->SetPosition(myEntity->transform.position.x,
+								  myEntity->transform.position.y + speedMyEntity,
+								  myEntity->transform.position.z);
+			break;
+		case CollisionResult2D::CollisionLeft:
+			myEntity->SetPosition(myEntity->transform.position.x + speedMyEntity,
+								  myEntity->transform.position.y,
+								  myEntity->transform.position.z);
+			break;
+		case CollisionResult2D::CollisionRight:
+			myEntity->SetPosition(myEntity->transform.position.x - speedMyEntity,
+								  myEntity->transform.position.y,
+								  myEntity->transform.position.z);
+			break;
+		case CollisionResult2D::CollisionUp:
+			myEntity->SetPosition(myEntity->transform.position.x,
+								  myEntity->transform.position.y - speedMyEntity,
+								  myEntity->transform.position.z);
+			break;
+		}
+
+		return true;
+	}
+	
 	return false;
 }
