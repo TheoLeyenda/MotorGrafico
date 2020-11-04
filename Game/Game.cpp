@@ -21,7 +21,7 @@ float b = 0.0f;
 float a = 1.0f;
 //---------------------//
 
-TypeDrawShape typeDrawShape = TypeDrawShape::Quad;
+TypeDrawShape typeDrawShape = TypeDrawShape::MultiplayObjects;
 TypeColorShape typeColorShape = TypeColorShape::VertexColor;
 TypeMaterial typeMaterialShape = TypeMaterial::Texture;
 
