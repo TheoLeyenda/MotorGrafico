@@ -137,6 +137,7 @@ void Game::UpdateGame(Windows *_window, Renderer *_render, Input *_input)
 
 		if(typeCollisionCheck == TypeCollisionCheck::Collision)
 			collisionManager->CheckCollision2D(tri, quad, speed, tri->transform.scale, quad->transform.scale);
+			//collisionManager->CheckCollision2D(tri, quad, speed, glm::vec3(0.25f, 0.05f, 0.05f), quad->transform.scale);
 		else if(typeCollisionCheck == TypeCollisionCheck::Trigger)
 			collisionManager->CheckTrigger2D(tri, quad, tri->transform.scale, quad->transform.scale);
 
