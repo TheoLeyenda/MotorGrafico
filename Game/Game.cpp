@@ -140,7 +140,6 @@ void Game::UpdateGame(Windows *_window, Renderer *_render, Input *_input)
 			//collisionManager->CheckCollision2D(tri, quad, speed, glm::vec3(0.25f, 0.05f, 0.05f), quad->transform.scale);
 		else if(typeCollisionCheck == TypeCollisionCheck::Trigger)
 			collisionManager->CheckTrigger2D(tri, quad, tri->transform.scale, quad->transform.scale);
-			//collisionManager->CheckTrigger2D(tri, quad, glm::vec3(0.25f, 0.05f, 0.05f), quad->transform.scale);
 
 		/*TempInputs(_window, player);
 		player->UpdateSprite(GetTimeClock());
