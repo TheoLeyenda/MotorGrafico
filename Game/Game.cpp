@@ -42,16 +42,21 @@ void Game::InitGame()
 	//---------------------//
 	if(typeDrawShape == TypeDrawShape::Tri)
 	{
+		if (typeMaterialShape == TypeMaterial::Color) 
+			tri = new Shape(GetRenderer());
+		else if(typeMaterialShape == TypeMaterial::Texture)
+			tri = new Shape(GetRenderer(), "res/texturas/bokitaElMasGrandePapa.png");
 
-		spriteTri = new Sprite(GetRenderer(), "res/texturas/bokitaElMasGrandePapa.png");
-		tri = new Shape(GetRenderer(), typeMaterialShape);
 		tri->SetShape(TypeShape::TRIANGLE, typeColorShape);
-		tri->GetRenderer()->SetVertexsAttribShape( typeMaterialShape );
+		tri->GetRenderer()->SetVertexsAttribShape(typeMaterialShape);
 	}
 	else if(typeDrawShape == TypeDrawShape::Quad)
 	{
-		spriteQuad = new Sprite(GetRenderer(), "res/texturas/Facharda.jpg");
-		quad = new Shape(GetRenderer(), typeMaterialShape);
+		if (typeMaterialShape == TypeMaterial::Color)
+			quad = new Shape(GetRenderer());
+		else if (typeMaterialShape == TypeMaterial::Texture)
+			quad = new Shape(GetRenderer(), "res/texturas/Facharda.jpg");
+
 		quad->SetShape(TypeShape::QUAD, typeColorShape);
 		quad->GetRenderer()->SetVertexsAttribShape(typeMaterialShape);
 	}
@@ -68,16 +73,22 @@ void Game::InitGame()
 	}
 	else if (typeDrawShape == TypeDrawShape::MultiplayObjects) 
 	{
-		spriteQuad = new Sprite(GetRenderer(), "res/texturas/Facharda.jpg");
-		quad = new Shape(GetRenderer(), typeMaterialShape);
+		
+		if (typeMaterialShape == TypeMaterial::Color)
+			quad = new Shape(GetRenderer());
+		else if (typeMaterialShape == TypeMaterial::Texture)
+			quad = new Shape(GetRenderer(), "res/texturas/Facharda.jpg");
+
 		quad->SetShape(TypeShape::QUAD, typeColorShape);
 		quad->GetRenderer()->SetVertexsAttribShape(typeMaterialShape);
 
-		//quad->SetPosition(0.5, 0.5f, 0.0f);
 		quad->SetScale(0.5f, 0.5f, 0.5f);
 
-		spriteTri = new Sprite(GetRenderer(), "res/texturas/bokitaElMasGrandePapa.png");
-		tri = new Shape(GetRenderer(), typeMaterialShape);
+		if (typeMaterialShape == TypeMaterial::Color)
+			tri = new Shape(GetRenderer());
+		else if (typeMaterialShape == TypeMaterial::Texture)
+			tri = new Shape(GetRenderer(), "res/texturas/bokitaElMasGrandePapa.png");
+
 		tri->SetShape(TypeShape::TRIANGLE, typeColorShape);
 		tri->GetRenderer()->SetVertexsAttribShape(typeMaterialShape);
 
@@ -105,35 +116,26 @@ void Game::UpdateGame(Windows *_window, Renderer *_render, Input *_input)
 	if (typeDrawShape == TypeDrawShape::Tri) {
 		tri->Draw(TypeShape::TRIANGLE, 3, _render->GetShader(), _window, tri->GetInternalData().model);
 		TempInputs(_window, tri);
-		if (typeColorShape == TypeMaterial::Texture) 
-			spriteTri->BindSprite();
 	}
 	else if (typeDrawShape == TypeDrawShape::Quad) 
 	{
 		quad->Draw(TypeShape::QUAD, 4, _render->GetShader(), _window, quad->GetInternalData().model);
 		TempInputs(_window, quad);
-		if (typeColorShape == TypeMaterial::Texture)
-			spriteQuad->BindSprite();
 	}
 	else if (typeDrawShape == TypeDrawShape::Spri)
 	{
 		TempInputs(_window, player);
 		player->UpdateSprite(GetTimeClock());
 		player->Draw(_window);
-		player->BindSprite();
 	}
 	else if (typeDrawShape == TypeDrawShape::MultiplayObjects) 
 	{
 
 		quad->Draw(TypeShape::QUAD, 4, _render->GetShader(), _window, quad->GetInternalData().model);
 		//TempInputs(_window, quad);
-		if (typeColorShape == TypeMaterial::Texture)
-			spriteQuad->BindSprite();
 
 		tri->Draw(TypeShape::TRIANGLE, 3, _render->GetShader(), _window, tri->GetInternalData().model);
 		TempInputs(_window, tri);
-		if (typeColorShape == TypeMaterial::Texture)
-			spriteTri->BindSprite();
 
 		if(typeCollisionCheck == TypeCollisionCheck::Collision)
 			collisionManager->CheckCollision2D(tri, quad, speed, tri->transform.scale, quad->transform.scale);
@@ -144,7 +146,7 @@ void Game::UpdateGame(Windows *_window, Renderer *_render, Input *_input)
 		/*TempInputs(_window, player);
 		player->UpdateSprite(GetTimeClock());
 		player->Draw(_window);
-		player->BindSprite();*/
+		*/
 	}
 	//---------------------//
 }
@@ -156,10 +158,6 @@ void Game::DestroyGame()
 		delete quad;
 	if (tri != NULL)
 		delete tri;
-	if (spriteTri != NULL)
-		delete spriteTri;
-	if (spriteQuad != NULL)
-		delete spriteQuad;
 	if (_runLeft != NULL)
 		delete _runLeft;
 	if (player != NULL)

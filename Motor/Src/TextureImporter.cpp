@@ -14,6 +14,7 @@ void TextureImporter::LoadTexture(const char* filePath, unsigned char* data, int
 	if (data) {
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
 		glGenerateMipmap(GL_TEXTURE_2D);
+		//glBindTexture(GL_TEXTURE_2D, 0);
 	}
 	else
 		std::cout << "Failed to load texture" << std::endl;
@@ -21,7 +22,7 @@ void TextureImporter::LoadTexture(const char* filePath, unsigned char* data, int
 	stbi_image_free(data);
 }
 //===================================================
-void TextureImporter::GenTexture(int countTexture, unsigned int & texture)
+void TextureImporter::GenTexture(int countTexture, unsigned int& texture)
 {
 	stbi_set_flip_vertically_on_load(countTexture);
 	glGenTextures(countTexture, &texture);
@@ -41,7 +42,7 @@ void TextureImporter::SetTexture(const char * filePath, unsigned char * data, in
 	LoadTexture(filePath, data, width, heigth, nrChannels);
 }
 //===================================================
-void TextureImporter::BindTexture(unsigned int & texture)
+void TextureImporter::BindTexture(unsigned int& texture)
 {
 	glBindTexture(GL_TEXTURE_2D, texture);
 }
@@ -50,8 +51,9 @@ void TextureImporter::GenerateTexture(const char * filePath, int countTexture, u
 	unsigned char* data ,int width, int heigth, int nrChannels)
 {
 	GenTexture(countTexture , texture);
-	BindTexture( texture );
+	BindTexture(texture);
 	SetParametrer();
 	SetTexture(filePath ,data ,width ,heigth ,nrChannels);
+	glBindTexture(GL_TEXTURE_2D, 0);
 }
 //===================================================

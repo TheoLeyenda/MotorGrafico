@@ -37,6 +37,7 @@ void Sprite::Draw(Windows* refWindow)
 		renderer->DrawSprite(GL_QUADS, 4, _vbo, renderer->GetShader(), internalData.model);
 
 		//renderer->EndDraw(refWindow);
+		BindSprite();
 	}
 }
 //============================================

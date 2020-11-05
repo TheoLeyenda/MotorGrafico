@@ -4,7 +4,7 @@
 
 #include "Entity2D.h"
 #include "../Lib/glm/vec4.hpp"
-
+#include "TextureImporter.h"
 
 static enum TypeShape 
 {
@@ -30,10 +30,21 @@ private:
 	unsigned int _currentShape;
 	TypeColorShape _typeColorShape;
 	TypeMaterial _typeMaterial;
+
+	//Texture
+	unsigned int texture;
+	const char* _filePathTexture;
+	TextureImporter textureImporter;
+	unsigned char* data;
+	int width;
+	int height;
+	int nrChannels;
 public:
 
-	Shape(Renderer *_renderer, TypeMaterial typeMaterial);
-	Shape(Renderer *_renderer, Material* _material, TypeMaterial typeMaterial);
+	Shape(Renderer *_renderer, const char* filePath);
+	Shape(Renderer *_renderer, Material* _material, const char* filePath);
+	Shape(Renderer *_renderer);
+	Shape(Renderer *_renderer, Material* _material);
 	~Shape();
 	void SetShape(unsigned int typeShape, TypeColorShape typeColorShape);
 	void CreateVbo(float* vertexBuffer);
@@ -46,5 +57,7 @@ public:
 	void SetTypeColorShape(TypeColorShape typeColorShape) { _typeColorShape = typeColorShape; }
 	TypeColorShape GetTypeColorShape() { return _typeColorShape; }
 	unsigned int GetCurrentShape() { return _currentShape; }
+private:
+	void BindTexture();
 };
 #endif

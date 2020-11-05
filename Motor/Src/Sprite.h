@@ -47,7 +47,8 @@ public:
 	int getWidth();
 	int getHeigth();
 	int getNrChannels();
-	
+
+private:
 	void BindSprite();
 };
 #endif

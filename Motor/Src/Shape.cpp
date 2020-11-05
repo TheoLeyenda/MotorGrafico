@@ -51,43 +51,66 @@ float ColorQuad[]
 };
 
 
-//==============================================
-Shape::Shape(Renderer *_renderer, TypeMaterial typeMaterial): Entity2D(_renderer)
+Shape::Shape(Renderer * _renderer, const char * filePath): Entity2D(_renderer)
 {
 	renderer = _renderer;
-	_typeMaterial = typeMaterial;
+	textureImporter.GenerateTexture(filePath, 1, texture, data, width, height, nrChannels);
 	
-	if (_typeMaterial == TypeMaterial::Color)
-	{
-		renderer->SetTypeShader(TypeShader::FragmentColor);
-		renderer->SetShader();
-	}
-	else if (_typeMaterial == TypeMaterial::Texture)
-	{
-		renderer->SetTypeShader(TypeShader::FragmentTexture);
-		renderer->SetShader();
-	}
+	_typeMaterial = TypeMaterial::Texture;
+	
+
+	renderer->SetTypeShader(TypeShader::FragmentTexture);
+	renderer->SetShader();
+	_filePathTexture = filePath;
+
+	//BindTexture();
+
+}
+
+Shape::Shape(Renderer * _renderer, Material * _material,  const char * filePath): Entity2D(_renderer, _material)
+{
+	renderer = _renderer;
+	textureImporter.GenerateTexture(filePath, 1, texture, data, width, height, nrChannels);
+
+	material = _material;
+	_typeMaterial = TypeMaterial::Color;
+
+	renderer->SetTypeShader(TypeShader::FragmentTexture);
+	renderer->SetShader();
+	_filePathTexture = filePath;
+
+	//BindTexture();
+}
+
+//==============================================
+Shape::Shape(Renderer *_renderer): Entity2D(_renderer)
+{
+	renderer = _renderer;
+	_typeMaterial = TypeMaterial::Color;
+	
+	renderer->SetTypeShader(TypeShader::FragmentColor);
+	renderer->SetShader();
+
+	_filePathTexture = "None Path";
 }
 //==============================================
-Shape::Shape(Renderer * _renderer, Material * _material, TypeMaterial typeMaterial) : Entity2D(_renderer, _material)
+Shape::Shape(Renderer * _renderer, Material * _material) : Entity2D(_renderer, _material)
 {
 	renderer = _renderer;
 	material = _material;
-	_typeMaterial = typeMaterial;
+	_typeMaterial = TypeMaterial::Color;
 
-	if (_typeMaterial == TypeMaterial::Color) 
-	{
-		renderer->SetTypeShader(TypeShader::FragmentColor);
-		renderer->SetShader();
-	}
-	else if(_typeMaterial == TypeMaterial::Texture)
-	{
-		renderer->SetTypeShader(TypeShader::FragmentTexture);
-		renderer->SetShader();
-	}
+	renderer->SetTypeShader(TypeShader::FragmentColor);
+	renderer->SetShader();
+
+	_filePathTexture = "None Path";
 }
 //==============================================
 Shape::~Shape(){}
+void Shape::BindTexture()
+{
+	textureImporter.BindTexture(texture);
+}
 //==============================================
 void Shape::SetShape(unsigned int typeShape, TypeColorShape typeColorShape)
 {
@@ -191,6 +214,11 @@ void Shape::Draw(unsigned int figura,int vertexs, unsigned int& shaderProg, Wind
 		if (_typeMaterial == TypeMaterial::Texture) 
 		{
 			renderer->DrawShape(figura, vertexs, GetVbo(), shaderProg, model, true);
+			BindTexture();
+			//if (figura == TypeShape::TRIANGLE)
+				//std::cout << "Tri:" << texture << std::endl;
+			//else if (figura == TypeShape::QUAD)
+				//std::cout << "Quad:" << texture << std::endl;
 		}
 		else
 		{
