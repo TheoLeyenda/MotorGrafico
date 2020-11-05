@@ -7,5 +7,5 @@ static enum TypeCompilation
 	Exe,
 };
 
-static TypeCompilation typeCompilation = TypeCompilation::Exe;
+static TypeCompilation typeCompilation = TypeCompilation::Debug;
 #endif
