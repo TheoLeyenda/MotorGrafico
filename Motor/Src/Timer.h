@@ -24,5 +24,6 @@ public:
 	float deltaTime();
 	void calculateFps();
 	float getFPS();
+	void FPS();
 };
 #endif // !TIME_H

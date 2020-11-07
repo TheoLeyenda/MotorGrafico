@@ -71,6 +71,9 @@ void Game::InitGame()
 
 void Game::UpdateGame(Windows *_window, Renderer *_render, Input *_input)
 {
+	timeClock.FPS();
+	//cout << "FPS: " << timeClock.getFPS() << endl;
+
 	shape2->Draw(TypeShape::TRIANGLE,3, render->GetShader(), windows, shape2->GetInternalData().model);
 	shape1->Draw(TypeShape::QUAD, 4, render->GetShader(), windows, shape1->GetInternalData().model);
 	

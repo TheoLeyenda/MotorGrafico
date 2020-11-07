@@ -230,8 +230,8 @@ void Shape::SetVertexMaterial(glm::vec4 material, float* VBA, int offset, int st
 void Shape::SetVertexMaterial(glm::vec4* materials, float* VBA, int start, int offset, int repeticiones, int countElementsForRepe)
 {
 	int k = 0;
-	std::cout << std::endl;
-	std::cout << std::endl;
+	//std::cout << std::endl;
+	//std::cout << std::endl;
 	for (int i = 0; i < repeticiones; i++) 
 	{
 		for (int j = start; j < offset + start; j++) 
@@ -241,7 +241,7 @@ void Shape::SetVertexMaterial(glm::vec4* materials, float* VBA, int start, int o
 			k++;
 		}
 		k = 0;
-		std::cout << std::endl;
+		//std::cout << std::endl;
 	}
 }
 
@@ -271,7 +271,7 @@ void Shape::Draw(unsigned int figura,int vertexs, unsigned int& shaderProg, Wind
 			if (_transparency)
 				UnBlendSprite();
 			
-			renderer->SetVertexsAttribShape(_typeMaterial);
+			//renderer->SetVertexsAttribShape(_typeMaterial);
 		}
 		else if(_typeMaterial == TypeMaterial::Color)
 		{

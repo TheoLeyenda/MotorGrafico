@@ -13,7 +13,13 @@ Time::~Time() {
 void Time::reset() {
 	_startTime = std::chrono::system_clock::now();
 }
-
+double oldT = clock();
+void Time::FPS() {
+	double t = clock();
+	float dt = (float)((t - oldT) / 1000.0f);
+	oldT = t;
+	std::cout <<"FPS: "<< 1.0f / dt << std::endl;
+}
 float Time::deltaTime() {
 	return  _deltaTime.count();
 }
