@@ -53,7 +53,7 @@ void Game::InitGame()
 	//-------------
 	player->GetRenderer()->SetAttribsSprite();
 
-	player->SetPosition(0.0f, -0.5f, 0.0f);
+	player->SetPosition(-0.6f, -0.5f, 0.0f);
 	player->SetScale(0.5f, 0.5f, 0.5f);
 	player->SetSizeCollider2D(glm::vec3(0.25f, 0.402f, 0.5f));
 
@@ -67,7 +67,7 @@ void Game::InitGame()
 	//-------------
 	player2->GetRenderer()->SetAttribsSprite();
 
-	player2->SetPosition(0.0f, -0.5f, 0.0f);
+	player2->SetPosition(0.6f, -0.5f, 0.0f);
 	player2->SetScale(0.5f, 0.5f, 0.5f);
 	player2->SetSizeCollider2D(glm::vec3(0.25f, 0.402f, 0.5f));
 
