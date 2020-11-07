@@ -73,6 +73,8 @@ Shape::Shape(Renderer * _renderer,TypeShape typeShape, const char * filePath): E
 
 	LoadTexture(_path, _transparency);
 	
+
+	
 }
 
 Shape::Shape(Renderer * _renderer, TypeShape typeShape, Material * _material,  const char * filePath): Entity2D(_renderer, _material)
@@ -245,7 +247,7 @@ void Shape::SetVertexMaterial(glm::vec4* materials, float* VBA, int start, int o
 	}
 }
 
-void Shape::Draw(unsigned int figura,int vertexs, unsigned int& shaderProg, Windows* refWindow, glm::mat4 model)
+void Shape::Draw(unsigned int figura,int vertexs)
 {
 	_currentShape = figura;
 	if (renderer != NULL)
@@ -258,12 +260,12 @@ void Shape::Draw(unsigned int figura,int vertexs, unsigned int& shaderProg, Wind
 				BlendSprite();
 			glEnable(GL_TEXTURE_2D);
 
-			renderer->UpdateModel(model);
+			renderer->UpdateModel(internalData.model);
 
 			glActiveTexture(GL_TEXTURE0);
 			glBindTexture(GL_TEXTURE_2D, _texture);
 
-			renderer->DrawShape(figura, vertexs, GetVbo(), shaderProg, model, true);
+			renderer->DrawShape(figura, vertexs, GetVbo(), renderer->GetShaderTexture(), internalData.model, true);
 
 			glBindBuffer(GL_ARRAY_BUFFER, 0);
 			glDisable(GL_TEXTURE_2D);
@@ -275,7 +277,7 @@ void Shape::Draw(unsigned int figura,int vertexs, unsigned int& shaderProg, Wind
 		}
 		else if(_typeMaterial == TypeMaterial::Color)
 		{
-			renderer->DrawShape(figura, vertexs, GetVbo(), shaderProg, model, false);
+			renderer->DrawShape(figura, vertexs, GetVbo(), renderer->GetShaderColor(), internalData.model, false);
 		}
 	}
 }

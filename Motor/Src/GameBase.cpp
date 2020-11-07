@@ -26,7 +26,7 @@ int GameBase::InitEngine()
 	render->GLEWInit();
 	render->SetShader();
 
-	glUseProgram(render->GetShader());
+	glUseProgram(render->GetShaderColor());
 
 	render->ClearShader();
 	render->UnbindBuffer();
@@ -61,7 +61,7 @@ void GameBase::UpdateEngine()
 
 void GameBase::DestroyEngine()
 {
-	glDeleteProgram(render->GetShader());
+	glDeleteProgram(render->GetShaderColor());
 	glfwTerminate();
 
 	if (input != NULL)

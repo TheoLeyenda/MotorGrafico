@@ -47,7 +47,7 @@ Sprite::~Sprite() {
 	if (texImporter != NULL)
 		delete texImporter;
 }
-void Sprite::Draw(Windows* refWindow)
+void Sprite::Draw()
 {
 	if (renderer != NULL) 
 	{
@@ -61,7 +61,7 @@ void Sprite::Draw(Windows* refWindow)
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, texture);
 
-		renderer->DrawSprite(GL_QUADS, 4, _vbo, renderer->GetShader(), internalData.model);
+		renderer->DrawSprite(GL_QUADS, 4, _vbo, renderer->GetShaderTexture(), internalData.model);
 
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 		glDisable(GL_TEXTURE_2D);

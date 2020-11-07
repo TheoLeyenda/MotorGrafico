@@ -26,7 +26,8 @@ static enum TypeShader
 class ENGINE_API Renderer {
 private:
 	//nothing
-	unsigned int _shaderProgram;
+	unsigned int _shaderProgramColor;
+	unsigned int _shaderProgramTexture;
 	matrixMVP _MVP;
 	TypeShader _typeShader;
 
@@ -41,7 +42,8 @@ private:
 public:
 	Renderer();
 	~Renderer();
-	unsigned int& GetShader();
+	unsigned int& GetShaderColor();
+	unsigned int& GetShaderTexture();
 	glm::mat4 getViewMat();
 	glm::mat4 getProjMat();
 	//------------

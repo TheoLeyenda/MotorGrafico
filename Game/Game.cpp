@@ -27,7 +27,7 @@ float a = 1.0f;
 //---------------------//
 
 TypeColorShape typeColorShape = TypeColorShape::SolidColor;
-TypeMaterial typeMaterialShape = TypeMaterial::Texture;
+TypeMaterial typeMaterialShape = TypeMaterial::Color;
 
 Game::Game():GameBase(){}
 
@@ -37,14 +37,11 @@ Game::~Game(){}
 
 void Game::InitGame()
 {
-	if(typeMaterialShape == TypeMaterial::Texture)
-		shape2 = new Shape(render, TypeShape::TRIANGLE, "res/texturas/bokitaElMasGrandePapa.png");
-	else
-		shape2 = new Shape(render, TypeShape::TRIANGLE, typeColorShape);
+	shape2 = new Shape(render, TypeShape::TRIANGLE, "res/texturas/bokitaElMasGrandePapa.png");
+	//shape2 = new Shape(render, TypeShape::TRIANGLE, typeColorShape);
 	shape2->SetPosition(-0.7, 0.0f, 0.0f);
 	shape2->SetScale(0.5f, 0.5f, 0.5f);
 
-	if (typeMaterialShape == TypeMaterial::Texture) {
 		player = new Sprite(GetRenderer(), "res/texturas/PlayerShit.png", true);
 		//-------------
 		_animations = new Animation();
@@ -58,12 +55,9 @@ void Game::InitGame()
 		player->SetPosition(0.0f, -0.5f, 0.0f);
 		player->SetScale(0.5f, 0.5f, 0.5f);
 		player->SetSizeCollider2D(glm::vec3(0.25f, 0.402f, 0.5f));
-	}
 
-	if (typeMaterialShape == TypeMaterial::Texture)
-		shape1 = new Shape(render, TypeShape::QUAD, "res/texturas/Facharda.jpg");
-	else
-		shape1 = new Shape(render, TypeShape::QUAD, typeColorShape);
+	//shape1 = new Shape(render, TypeShape::QUAD, "res/texturas/Facharda.jpg");
+	shape1 = new Shape(render, TypeShape::QUAD, typeColorShape);
 	shape1->SetPosition(0.7, 0.0f, 0.0f);
 	shape1->SetScale(0.5f, 0.5f, 0.5f);
 
@@ -74,18 +68,18 @@ void Game::UpdateGame(Windows *_window, Renderer *_render, Input *_input)
 	timeClock.FPS();
 	//cout << "FPS: " << timeClock.getFPS() << endl;
 
-	shape2->Draw(TypeShape::TRIANGLE,3, render->GetShader(), windows, shape2->GetInternalData().model);
-	shape1->Draw(TypeShape::QUAD, 4, render->GetShader(), windows, shape1->GetInternalData().model);
+	shape2->Draw(TypeShape::TRIANGLE,3);
+	shape1->Draw(TypeShape::QUAD, 4);
 	
-	if (typeMaterialShape == TypeMaterial::Texture) 
-	{
+	//if (typeMaterialShape == TypeMaterial::Texture) 
+	//{
 		player->UpdateSprite(GetTimeClock());
-		player->Draw(_window);
+		player->Draw();
 
 		TempInputs(windows, player);
 		collisionManager->CheckCollision2D(player, shape2, speed, player->GetBoxColliderSize2D(), shape2->GetBoxColliderSize2D());
 		collisionManager->CheckCollision2D(player, shape1, speed, player->GetBoxColliderSize2D(), shape1->GetBoxColliderSize2D());
-	}
+	//}
 	TempColorInput(windows, shape1);
 	TempColorInput(windows, shape2);
 	

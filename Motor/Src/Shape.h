@@ -65,7 +65,7 @@ public:
 	float* GetVertexBuffer();
 	void SetVertexMaterial(glm::vec4 material,float* VBA, int start,int offset, int repeticiones);
 	void SetVertexMaterial(glm::vec4* materials, float* VBA, int start, int offset, int repeticiones, int countElementsForRepe);
-	void Draw(unsigned int figura, int vertexs, unsigned int& shaderProg, Windows* refWindow, glm::mat4 model);
+	void Draw(unsigned int figura, int vertexs);
 	void SetSolidColor(float r, float g, float b);
 	void SetTypeColorShape(TypeColorShape typeColorShape) { _typeColorShape = typeColorShape; }
 	TypeColorShape GetTypeColorShape() { return _typeColorShape; }

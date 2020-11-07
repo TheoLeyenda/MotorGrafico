@@ -36,7 +36,7 @@ public:
 	Sprite(Renderer *_renderer, Material* _material, const char* filePath, bool transparency);
 	Sprite(Renderer * _renderer, const char* filePath, bool transparency);
 	~Sprite();
-	void Draw(Windows* refWindow);
+	void Draw();
 	void SetTextureCoordinates(float u0, float v0,
 							   float u1, float v1,
 							   float u2, float v2,
