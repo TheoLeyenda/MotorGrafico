@@ -8,10 +8,11 @@ private:
 	Shape* shape1; //no tiene que ir xd
 	Shape* shape2;
 	Sprite* player;
-	Sprite* ferchu;
+	Sprite* player2;
 	Sprite* bokita;
 
 	Animation* _animations;
+	Animation* _animations2;
 	
 public:
 	Game();
@@ -25,7 +26,8 @@ public:
 	void DestroyGame() override;
 
 	void TempInputs(Windows* windows, Shape* shape);
-	void TempInputs(Windows* windows, Sprite* sprite);
+	void TempInputsPlayer1(Windows* windows, Sprite* sprite);
+	void TempInputsPlayer2(Windows* windows, Sprite* sprite);
 	void TempColorInput(Windows* windows, Shape* shape);
 };
 #endif

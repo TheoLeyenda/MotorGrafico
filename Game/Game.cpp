@@ -24,10 +24,11 @@ float r = 1.0f;
 float g = 0.0f;
 float b = 0.0f;
 float a = 1.0f;
+
+bool enableVertexTexture = false;
 //---------------------//
 
 TypeColorShape typeColorShape = TypeColorShape::SolidColor;
-TypeMaterial typeMaterialShape = TypeMaterial::Color;
 
 Game::Game():GameBase(){}
 
@@ -37,29 +38,48 @@ Game::~Game(){}
 
 void Game::InitGame()
 {
-	shape2 = new Shape(render, TypeShape::TRIANGLE, "res/texturas/bokitaElMasGrandePapa.png");
+	shape2 = new Shape(render, TypeShape::TRIANGLE, "res/texturas/Facharda.jpg");
 	//shape2 = new Shape(render, TypeShape::TRIANGLE, typeColorShape);
 	shape2->SetPosition(-0.7, 0.0f, 0.0f);
 	shape2->SetScale(0.5f, 0.5f, 0.5f);
 
-		player = new Sprite(GetRenderer(), "res/texturas/PlayerShit.png", true);
-		//-------------
-		_animations = new Animation();
-		_animations->AddFrame(0.0f, 0.0f, (480 / 8), (240 / 4), 480, 240, 1.0f, 32, 8);
-		_animations->SetCurrentAnimation(1);
+	player = new Sprite(GetRenderer(), "res/texturas/PlayerShit.png", true);
+	//-------------
+	_animations = new Animation();
+	_animations->AddFrame(0.0f, 0.0f, (480 / 8), (240 / 4), 480, 240, 1.0f, 32, 8);
+	_animations->SetCurrentAnimation(1);
 
-		player->SetAnimation(_animations);
-		//-------------
-		player->GetRenderer()->SetAttribsSprite();
+	player->SetAnimation(_animations);
+	//-------------
+	player->GetRenderer()->SetAttribsSprite();
 
-		player->SetPosition(0.0f, -0.5f, 0.0f);
-		player->SetScale(0.5f, 0.5f, 0.5f);
-		player->SetSizeCollider2D(glm::vec3(0.25f, 0.402f, 0.5f));
+	player->SetPosition(0.0f, -0.5f, 0.0f);
+	player->SetScale(0.5f, 0.5f, 0.5f);
+	player->SetSizeCollider2D(glm::vec3(0.25f, 0.402f, 0.5f));
+
+	player2 = new Sprite(GetRenderer(), "res/texturas/PlayerShit.png", true);
+	//-------------
+	_animations2 = new Animation();
+	_animations2->AddFrame(0.0f, 0.0f, (480 / 8), (240 / 4), 480, 240, 1.0f, 32, 8);
+	_animations2->SetCurrentAnimation(1);
+
+	player2->SetAnimation(_animations2);
+	//-------------
+	player2->GetRenderer()->SetAttribsSprite();
+
+	player2->SetPosition(0.0f, -0.5f, 0.0f);
+	player2->SetScale(0.5f, 0.5f, 0.5f);
+	player2->SetSizeCollider2D(glm::vec3(0.25f, 0.402f, 0.5f));
 
 	//shape1 = new Shape(render, TypeShape::QUAD, "res/texturas/Facharda.jpg");
 	shape1 = new Shape(render, TypeShape::QUAD, typeColorShape);
 	shape1->SetPosition(0.7, 0.0f, 0.0f);
 	shape1->SetScale(0.5f, 0.5f, 0.5f);
+
+	bokita = new Sprite(GetRenderer(), "res/texturas/bokitaElMasGrandePapa.png", false);
+	bokita->GetRenderer()->SetAttribsSprite();
+	bokita->SetScale(3.0f, 3.0f, 3.0f);
+
 
 }
 
@@ -68,18 +88,30 @@ void Game::UpdateGame(Windows *_window, Renderer *_render, Input *_input)
 	timeClock.FPS();
 	//cout << "FPS: " << timeClock.getFPS() << endl;
 
+	bokita->Draw();
+
 	shape2->Draw(TypeShape::TRIANGLE,3);
 	shape1->Draw(TypeShape::QUAD, 4);
 	
-	//if (typeMaterialShape == TypeMaterial::Texture) 
-	//{
-		player->UpdateSprite(GetTimeClock());
-		player->Draw();
 
-		TempInputs(windows, player);
-		collisionManager->CheckCollision2D(player, shape2, speed, player->GetBoxColliderSize2D(), shape2->GetBoxColliderSize2D());
-		collisionManager->CheckCollision2D(player, shape1, speed, player->GetBoxColliderSize2D(), shape1->GetBoxColliderSize2D());
-	//}
+	player->UpdateSprite(GetTimeClock());
+	player->Draw();
+
+	player2->UpdateSprite(GetTimeClock());
+	player2->Draw();
+
+	TempInputsPlayer1(windows, player);
+	TempInputsPlayer2(windows, player2);
+	
+	collisionManager->CheckCollision2D(player, shape2, speed, player->GetBoxColliderSize2D(), shape2->GetBoxColliderSize2D());
+	collisionManager->CheckCollision2D(player, shape1, speed, player->GetBoxColliderSize2D(), shape1->GetBoxColliderSize2D());
+
+	collisionManager->CheckCollision2D(player2, shape2, speed, player2->GetBoxColliderSize2D(), shape2->GetBoxColliderSize2D());
+	collisionManager->CheckCollision2D(player2, shape1, speed, player2->GetBoxColliderSize2D(), shape1->GetBoxColliderSize2D());
+
+	collisionManager->CheckCollision2D(player, player2, speed, player->GetBoxColliderSize2D(), player2->GetBoxColliderSize2D());
+	collisionManager->CheckCollision2D(player2, player, speed, player2->GetBoxColliderSize2D(), player->GetBoxColliderSize2D());
+
 	TempColorInput(windows, shape1);
 	TempColorInput(windows, shape2);
 	
@@ -98,10 +130,9 @@ void Game::DestroyGame()
 		delete player;
 	//---------------------//
 }
-void Game::TempColorInput(Windows* windows, Shape* shape) 
+void Game::TempColorInput(Windows* windows, Shape* shape)
 {
 	//---------------------//
-	if (typeMaterialShape == TypeMaterial::Color) {
 		if (input->GetKey(KeyBoard::KEY_ENTER))
 		{
 			r = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
@@ -109,33 +140,33 @@ void Game::TempColorInput(Windows* windows, Shape* shape)
 			b = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
 			shape->SetSolidColor(r, g, b);
 		}
-		if (input->GetKey(KeyBoard::KEY_LEFT))
+
+		if (input->GetKey(KeyBoard::KEY_KP_0))
 		{
 			typeColorShape = TypeColorShape::SolidColor;
 			if (shape->GetCurrentShape() == TypeShape::TRIANGLE) {
 				shape->SetShape(TypeShape::TRIANGLE, typeColorShape);
-				shape->SetVertexsAttribShape(typeMaterialShape);
+				shape->SetVertexsAttribShape(TypeMaterial::Color);
 			}
 			else if (shape->GetCurrentShape() == TypeShape::QUAD)
 			{
 				shape->SetShape(TypeShape::QUAD, typeColorShape);
-				shape->SetVertexsAttribShape(typeMaterialShape);
+				shape->SetVertexsAttribShape(TypeMaterial::Color);
 			}
 		}
-		if (input->GetKey(KeyBoard::KEY_RIGHT))
+		if (input->GetKey(KeyBoard::KEY_KP_ENTER))
 		{
 			typeColorShape = TypeColorShape::VertexColor;
 			if (shape->GetCurrentShape() == TypeShape::TRIANGLE) {
 				shape->SetShape(TypeShape::TRIANGLE, typeColorShape);
-				shape->SetVertexsAttribShape(typeMaterialShape);
+				shape->SetVertexsAttribShape(TypeMaterial::Color);
 			}
 			else if (shape->GetCurrentShape() == TypeShape::QUAD)
 			{
 				shape->SetShape(TypeShape::QUAD, typeColorShape);
-				shape->SetVertexsAttribShape(typeMaterialShape);
+				shape->SetVertexsAttribShape(TypeMaterial::Color);
 			}
 		}
-	}
 
 }
 void Game::TempInputs(Windows* windows, Shape* shape)
@@ -201,14 +232,14 @@ void Game::TempInputs(Windows* windows, Shape* shape)
 		shape->SetScale(shape->transform.scale.x - speedScale, shape->transform.scale.y - speedScale, shape->transform.scale.z - speedScale);
 	}
 }
-void Game::TempInputs(Windows* windows, Sprite* sprite)
+void Game::TempInputsPlayer1(Windows* windows, Sprite* sprite)
 {
 	
 	//INPUT DE MOVIMIENTO
 	if (input->GetKey(KeyBoard::KEY_W))
 	{
 		sprite->SetPosition(sprite->transform.position.x, sprite->transform.position.y + speed, sprite->transform.position.z);
-		_animations->SetCurrentAnimation(0);
+		player->SetCurrentAnimationIndex(0);
 	}
 	if (input->GetKey(KeyBoard::KEY_S))
 	{
@@ -218,7 +249,7 @@ void Game::TempInputs(Windows* windows, Sprite* sprite)
 	if (input->GetKey(KeyBoard::KEY_D))
 	{
 		sprite->SetPosition(sprite->transform.position.x + speed, sprite->transform.position.y, sprite->transform.position.z);
-		_animations->SetCurrentAnimation(1);
+		player->SetCurrentAnimationIndex(1);
 	}
 	if (input->GetKey(KeyBoard::KEY_A))
 	{
@@ -265,4 +296,70 @@ void Game::TempInputs(Windows* windows, Sprite* sprite)
 	{
 		sprite->SetScale(sprite->transform.scale.x - speedScale, sprite->transform.scale.y - speedScale, sprite->transform.scale.z - speedScale);
 	}
+}
+
+void Game::TempInputsPlayer2(Windows * windows, Sprite * sprite)
+{
+	//INPUT DE MOVIMIENTO
+	if (input->GetKey(KeyBoard::KEY_UP))
+	{
+		sprite->SetPosition(sprite->transform.position.x, sprite->transform.position.y + speed, sprite->transform.position.z);
+		player2->SetCurrentAnimationIndex(0);
+	}
+	if (input->GetKey(KeyBoard::KEY_DOWN))
+	{
+		sprite->SetPosition(sprite->transform.position.x, sprite->transform.position.y - speed, sprite->transform.position.z);
+		player2->SetCurrentAnimationIndex(3);
+	}
+	if (input->GetKey(KeyBoard::KEY_RIGHT))
+	{
+		sprite->SetPosition(sprite->transform.position.x + speed, sprite->transform.position.y, sprite->transform.position.z);
+		player2->SetCurrentAnimationIndex(1);
+	}
+	if (input->GetKey(KeyBoard::KEY_LEFT))
+	{
+		sprite->SetPosition(sprite->transform.position.x - speed, sprite->transform.position.y, sprite->transform.position.z);
+		player2->SetCurrentAnimationIndex(2);
+	}
+	//-------------------//
+
+	//INPUT DE ROTACION
+	if (input->GetKey(KeyBoard::KEY_KP_4))
+	{
+		sprite->SetRotationZ(sprite->transform.rotation.z + speedRotation);
+	}
+	if (input->GetKey(KeyBoard::KEY_KP_6))
+	{
+		sprite->SetRotationZ(sprite->transform.rotation.z - speedRotation);
+	}
+
+	if (input->GetKey(KeyBoard::KEY_KP_1))
+	{
+		sprite->SetRotationY(sprite->transform.rotation.y + speedRotation);
+	}
+	if (input->GetKey(KeyBoard::KEY_KP_3))
+	{
+		sprite->SetRotationY(sprite->transform.rotation.y - speedRotation);
+	}
+
+	if (input->GetKey(KeyBoard::KEY_KP_7))
+	{
+		sprite->SetRotationX(sprite->transform.rotation.x + speedRotation);
+	}
+	if (input->GetKey(KeyBoard::KEY_KP_9))
+	{
+		sprite->SetRotationX(sprite->transform.rotation.x - speedRotation);
+	}
+	//------------------//
+
+	//INPUT DE ESCALA
+	if (input->GetKey(KeyBoard::KEY_KP_8))
+	{
+		sprite->SetScale(sprite->transform.scale.x + speedScale, sprite->transform.scale.y + speedScale, sprite->transform.scale.z + speedScale);
+	}
+	if (input->GetKey(KeyBoard::KEY_KP_2))
+	{
+		sprite->SetScale(sprite->transform.scale.x - speedScale, sprite->transform.scale.y - speedScale, sprite->transform.scale.z - speedScale);
+	}
+
 }
