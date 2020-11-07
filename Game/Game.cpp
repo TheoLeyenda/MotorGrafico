@@ -78,7 +78,7 @@ void Game::InitGame()
 
 	bokita = new Sprite(GetRenderer(), "res/texturas/bokitaElMasGrandePapa.png", false);
 	bokita->GetRenderer()->SetAttribsSprite();
-	bokita->SetScale(3.0f, 3.0f, 3.0f);
+	bokita->SetScale(2.0f, 3.0f, 2.0f);
 
 
 }
@@ -86,7 +86,6 @@ void Game::InitGame()
 void Game::UpdateGame(Windows *_window, Renderer *_render, Input *_input)
 {
 	timeClock.FPS();
-	//cout << "FPS: " << timeClock.getFPS() << endl;
 
 	bokita->Draw();
 

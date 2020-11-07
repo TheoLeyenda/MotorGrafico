@@ -68,7 +68,7 @@ bool CollisionManager::CheckTrigger2D(Entity2D* myEntity, Entity2D* toCheckEntit
 	return false;
 }
 
-bool CollisionManager::CheckCollision2D(Entity2D * myEntity, Entity2D* toCheckEntity2D, float speedMyEntity, glm::vec3 myScale, glm::vec3 toCheckScale)
+bool CollisionManager::CheckCollision2D(Entity2D* myEntity, Entity2D* toCheckEntity2D, float speedMyEntity, glm::vec3 myScale, glm::vec3 toCheckScale)
 {
 	if (speedMyEntity <= 0) 
 		 speedMyEntity = 0.05f;
