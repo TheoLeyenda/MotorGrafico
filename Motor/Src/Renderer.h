@@ -54,6 +54,7 @@ public:
 	bool GLLogCall();
 	void UseProgram(unsigned int& shader, glm::mat4 model, glm::mat4 view, glm::mat4 projection);
 	void ClearShader();
+	void UpdateModel(glm::mat4 model);
 	void BindBufferShape(unsigned int vbo, bool useTexture);
 	void UnbindBuffer();
 	//=====================
@@ -61,12 +62,13 @@ public:
 	//void SetCurrentTexture(unsigned int& texture);
 	//=====================
 	void BeignDraw();
-	void DrawShape(unsigned int figura, int vertexs, unsigned int vbo, unsigned int& shaderProg,glm::mat4 model, bool useTexture);
-	void DrawSprite(unsigned int figura, int vertexs, unsigned int vbo, unsigned int & shaderProg, glm::mat4 model);
+	void DrawShape(unsigned int figura, int vertexs, unsigned int vbo, unsigned int& shaderProg, glm::mat4 model, bool useTexture);
+	void DrawSprite(unsigned int figura, int vertexs, unsigned int vbo, unsigned int& shaderProg, glm::mat4 model);
 	void EndDraw(Windows* refWindow);
 	//=====================
 	unsigned int CompileShader(unsigned int type, const char* source);
 	int CreateShaderProgram(const char* vertexShader, const char* fragmentShader);
 	void SetTypeShader(TypeShader typeShader) { _typeShader = typeShader; }
+
 };
 #endif // !RENDERER_H

@@ -32,20 +32,33 @@ private:
 	TypeMaterial _typeMaterial;
 
 	//Texture
-	unsigned int texture;
-	const char* _filePathTexture;
-	TextureImporter textureImporter;
 	unsigned char* data;
-	int width;
-	int height;
-	int nrChannels;
-public:
+	int _height;
+	int _width;
+	int _nrChannels;
+	const char* _path;
+	bool _transparency;
+	TextureImporter* texImporter;
 
-	Shape(Renderer *_renderer, const char* filePath);
-	Shape(Renderer *_renderer, Material* _material, const char* filePath);
-	Shape(Renderer *_renderer);
-	Shape(Renderer *_renderer, Material* _material);
+	//Texture
+	//unsigned int texture;
+	//const char* _filePathTexture;
+	//TextureImporter textureImporter;
+	//unsigned char* data;
+	//int width;
+	//int height;
+	//int nrChannels;
+public:
+	unsigned int _texture;
+
+	Shape(Renderer *_renderer, TypeShape typeShape, const char* filePath);
+	Shape(Renderer *_renderer, TypeShape typeShape, Material* _material, const char* filePath);
+	Shape(Renderer *_renderer, TypeShape typeShape, TypeColorShape typeColorShape);
+	Shape(Renderer *_renderer, Material* _material, TypeShape typeShape, TypeColorShape typeColorShape);
 	~Shape();
+
+	//Textures
+
 	void SetShape(unsigned int typeShape, TypeColorShape typeColorShape);
 	void CreateVbo(float* vertexBuffer);
 	unsigned int GetVbo();
@@ -57,7 +70,10 @@ public:
 	void SetTypeColorShape(TypeColorShape typeColorShape) { _typeColorShape = typeColorShape; }
 	TypeColorShape GetTypeColorShape() { return _typeColorShape; }
 	unsigned int GetCurrentShape() { return _currentShape; }
-private:
-	void BindTexture();
+	void SetVertexsAttribShape(TypeMaterial typeMaterial);
+	
+	void BlendSprite();
+	void UnBlendSprite();
+	void LoadTexture(const char* path, bool transparent);
 };
 #endif

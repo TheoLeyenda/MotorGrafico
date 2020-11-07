@@ -5,11 +5,14 @@ class Game: public GameBase
 {
 private:
 	int resultInit;
-	Shape* quad; //no tiene que ir xd
-	Shape* tri;
+	Shape* shape1; //no tiene que ir xd
+	Shape* shape2;
 	Sprite* player;
+	Sprite* ferchu;
+	Sprite* bokita;
 
-	Animation* _runLeft;
+	Animation* _animations;
+	
 public:
 	Game();
 	~Game();
@@ -21,7 +24,8 @@ public:
 	void UpdateGame(Windows *_window, Renderer *_render, Input *_input) override;
 	void DestroyGame() override;
 
-	void TempInputs(Windows* windows, Shape* tri);
-	void TempInputs(Windows* windows, Sprite* tri);
+	void TempInputs(Windows* windows, Shape* shape);
+	void TempInputs(Windows* windows, Sprite* sprite);
+	void TempColorInput(Windows* windows, Shape* shape);
 };
 #endif

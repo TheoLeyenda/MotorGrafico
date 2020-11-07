@@ -41,9 +41,11 @@ void Renderer::SetVertexsAttribShape(int typeMaterial) {
 		_posAttribShape = glGetAttribLocation(_shaderProgram, "position");
 		glVertexAttribPointer(_posAttribShape, 3, GL_FLOAT, GL_FALSE, countElementsForVertex * sizeof(float), 0);
 		glEnableVertexAttribArray(_posAttribShape);
+
 		_colorAttrib = glGetAttribLocation(_shaderProgram, "customColor");
 		glVertexAttribPointer(_colorAttrib, 3, GL_FLOAT, GL_FALSE, countElementsForVertex * sizeof(float), (void*)(3 * sizeof(float)));
 		glEnableVertexAttribArray(_colorAttrib);
+
 		glUniform1i(_textureAttribShape = glGetUniformLocation(_shaderProgram, "ourTexture"), 0);
 		glVertexAttribPointer(_textureAttribShape, 2, GL_FLOAT, GL_FALSE, countElementsForVertex * sizeof(float), (void*)(6 * sizeof(float)));
 		glEnableVertexAttribArray(_textureAttribShape);
@@ -78,7 +80,7 @@ void Renderer::SetShader()
 {
 	if (typeCompilation == TypeCompilation::Debug) 
 	{
-		std::cout << "Entre al Debug" << std::endl;
+		//std::cout << "Entre al Debug" << std::endl;
 		if (_typeShader == TypeShader::FragmentColor)
 			_shaderProgram = CreateShaderProgram("../Motor/res/shaders/Vertex.shader", "../Motor/res/shaders/FragmentColor.shader");
 		else if (_typeShader == TypeShader::FragmentTexture)
@@ -86,11 +88,11 @@ void Renderer::SetShader()
 	}
 	else if (typeCompilation == TypeCompilation::Exe) 
 	{
-		std::cout << "Entre al Exe" << std::endl;
+		//std::cout << "Entre al Exe" << std::endl;
 		if (_typeShader == TypeShader::FragmentColor)
 			_shaderProgram = CreateShaderProgram("res/shaders/Vertex.shader", "res/shaders/FragmentColor.shader");
 		else if (_typeShader == TypeShader::FragmentTexture) {
-			std::cout << "Entre al Textura" << std::endl;
+			//std::cout << "Entre al Textura" << std::endl;
 			_shaderProgram = CreateShaderProgram("res/shaders/Vertex.shader", "res/shaders/FragmentTexture.shader");
 		}
 	}
@@ -134,6 +136,12 @@ void Renderer::ClearShader() {
 	glUseProgram(0);
 }
 
+void Renderer::UpdateModel(glm::mat4 model) {
+	unsigned int modelLocation = glGetUniformLocation(GetShader(), "model");
+	glUseProgram(GetShader());
+	glUniformMatrix4fv(modelLocation, 1, GL_FALSE, glm::value_ptr(model));
+}
+
 void Renderer::BindBufferShape(unsigned int vbo, bool useTexture) {
 	
 	unsigned int countElementsForVertex = 8;
@@ -158,7 +166,9 @@ void Renderer::BindBufferShape(unsigned int vbo, bool useTexture) {
 }
 
 void Renderer::UnbindBuffer() {
+	glBindVertexArray(0);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	glUseProgram(0);
 }
 
 void Renderer::BindBufferSprite(unsigned int vbo)
@@ -173,15 +183,17 @@ void Renderer::BindBufferSprite(unsigned int vbo)
 }
 
 void Renderer::BeignDraw() {
-	//glClearColor(0.0f, 1.0, 0.0f, 1.0f);
+	glClearColor(0.0f, 1.0, 0.0f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
-void Renderer::DrawShape(unsigned int figura, int vertexs, unsigned int vbo, unsigned int& shaderProg, glm::mat4 model, bool useTexture) 
+void Renderer::DrawShape(unsigned int figura, int vertexs, unsigned int vbo, unsigned int& shaderProg, glm::mat4 model, bool useTexture)
 {
 	BindBufferShape(vbo, useTexture);
 
 	UseProgram(shaderProg, model,_MVP.view, _MVP.projection);
+
+	//shape->BindTexture();
 
 	glDrawArrays(figura, 0, vertexs);
 

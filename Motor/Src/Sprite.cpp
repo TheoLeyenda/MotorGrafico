@@ -5,39 +5,71 @@
 
 
 //============================================
-Sprite::Sprite(Renderer *_renderer, Material* _material, const char* filePath):Entity2D(_renderer, _material)
+Sprite::Sprite(Renderer *_renderer, Material* _material, const char* filePath, bool transparency):Entity2D(_renderer, _material)
 {
 	renderer = _renderer;
 	material = _material;
-	textureImporter.GenerateTexture(filePath, 1, texture, data, width, height, nrChannels);
+	
+	_transparency = transparency;
+	//texture = textureImporter.GenerateTexture(filePath, 1, texture, data, width, height, nrChannels);
+
+	texImporter = new TextureImporter();
 
 	renderer->SetTypeShader(TypeShader::FragmentTexture);
 	renderer->SetShader();
+	renderer->SetAttribsSprite();
 
 	InitTextureVertexCoord();
+
+	LoadTexture(filePath, _transparency);
 }
 //============================================
-Sprite::Sprite(Renderer * _renderer, const char* filePath):Entity2D(_renderer)
+Sprite::Sprite(Renderer * _renderer, const char* filePath, bool transparency):Entity2D(_renderer)
 {
 	renderer = _renderer;
-	textureImporter.GenerateTexture(filePath, 1, texture, data, width, height, nrChannels);
+	//texture = textureImporter.GenerateTexture(filePath, 1, texture, data, width, height, nrChannels);
+	_transparency = transparency;
+
+	texImporter = new TextureImporter();
 
 	renderer->SetTypeShader(TypeShader::FragmentTexture);
 	renderer->SetShader();
+	renderer->SetAttribsSprite();
 
 	InitTextureVertexCoord();
+
+	LoadTexture(filePath, _transparency);
+
 }
 //============================================
+Sprite::~Sprite() {
+	glDeleteTextures(1, &texture);
+	if (texImporter != NULL)
+		delete texImporter;
+}
 void Sprite::Draw(Windows* refWindow)
 {
 	if (renderer != NULL) 
 	{
-		//renderer->BeignDraw();
+
+		if (_transparency)
+			BlendSprite();
+		glEnable(GL_TEXTURE_2D);
+
+		renderer->UpdateModel(internalData.model);
+
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, texture);
 
 		renderer->DrawSprite(GL_QUADS, 4, _vbo, renderer->GetShader(), internalData.model);
 
+		glBindBuffer(GL_ARRAY_BUFFER, 0);
+		glDisable(GL_TEXTURE_2D);
+
+		if (_transparency)
+			UnBlendSprite();
+
 		//renderer->EndDraw(refWindow);
-		BindSprite();
 	}
 }
 //============================================
@@ -50,23 +82,31 @@ void Sprite::UpdateSprite(Time & timer)
 
 	_currentFrame = animation->GetCurrentFrame();
 	if (_currentFrame != _previusFrame) {
-		SetTextureCoordinates(animation->GetFrames()[_currentFrame].frameCoords[0].U, animation->GetFrames()[_currentFrame].frameCoords[0].V,
-							  animation->GetFrames()[_currentFrame].frameCoords[1].U, animation->GetFrames()[_currentFrame].frameCoords[1].V,
-							  animation->GetFrames()[_currentFrame].frameCoords[2].U, animation->GetFrames()[_currentFrame].frameCoords[2].V,
-							  animation->GetFrames()[_currentFrame].frameCoords[3].U, animation->GetFrames()[_currentFrame].frameCoords[3].V);
+		SetTextureCoordinates(animation->GetAnimation()[_currentFrame].frameCoords[0].U, animation->GetAnimation()[_currentFrame].frameCoords[0].V,
+							  animation->GetAnimation()[_currentFrame].frameCoords[1].U, animation->GetAnimation()[_currentFrame].frameCoords[1].V,
+							  animation->GetAnimation()[_currentFrame].frameCoords[2].U, animation->GetAnimation()[_currentFrame].frameCoords[2].V,
+							  animation->GetAnimation()[_currentFrame].frameCoords[3].U, animation->GetAnimation()[_currentFrame].frameCoords[3].V);
 		_previusFrame = _currentFrame;
 	}
 	SetAnimation(animation);
 }
 //============================================
-void Sprite::SetCurrentTexture(const char* filePath)
-{
-}
 //============================================
 void Sprite::SetAnimation(Animation * _animation)
 {
 	animation = _animation;
 	_previusFrame = std::numeric_limits<unsigned int>::max_digits10;
+}
+void Sprite::BlendSprite() {
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+}
+void Sprite::UnBlendSprite() {
+	glDisable(GL_BLEND);
+}
+void Sprite::LoadTexture(const char* path, bool transparent) {
+	_transparency = transparent;
+	texImporter->LoadTexture(path, data, texture, width, height, nrChannels, _transparency);
 }
 //============================================
 void Sprite::InitTextureVertexCoord()
@@ -128,9 +168,7 @@ void Sprite::SetTextureCoordinates(float u0, float v0, float u1, float v1, float
 }
 
 //============================================
-Sprite::~Sprite() {
-	glDeleteTextures(1, &texture);
-}
+
 //============================================
 int Sprite::getWidth()
 {
@@ -146,9 +184,10 @@ int Sprite::getNrChannels()
 {
 	return nrChannels;
 }
-//============================================
-void Sprite::BindSprite()
+void Sprite::SetAttribsSprite()
 {
-	textureImporter.BindTexture(texture);
+	renderer->SetAttribsSprite();
 }
+//============================================
+
 //============================================

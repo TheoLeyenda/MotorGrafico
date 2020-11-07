@@ -1,59 +1,43 @@
 #include "TextureImporter.h"
-#include "glew.h"
-#include "stb_image.h"
+
 #include <iostream>
 
-//===================================================
-TextureImporter::TextureImporter(){}
-//===================================================
-TextureImporter::~TextureImporter(){}
-//===================================================
-void TextureImporter::LoadTexture(const char* filePath, unsigned char* data, int width, int height, int nrChannels)
-{
-	data = stbi_load(filePath, &width, &height, &nrChannels, 0);
-	if (data) {
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
-		glGenerateMipmap(GL_TEXTURE_2D);
-		//glBindTexture(GL_TEXTURE_2D, 0);
+#include <glew.h>
+#include <GLFW/glfw3.h>
+#include "stb_image.h"
+#define STB_IMAGE_IMPLEMENTATION
+
+
+TextureImporter::TextureImporter() {
+
+}
+TextureImporter::~TextureImporter() {
+}
+void TextureImporter::LoadTexture(const char* path, unsigned char* data, unsigned int& texture, int width, int height, int channels, bool transparent) {
+	stbi_set_flip_vertically_on_load(true);
+
+	data = stbi_load(path, &width, &height, &channels, 0);
+	if (!data) {
+		std::cout << "No Carga Textura" << std::endl;
+		return;
 	}
+
+	glGenTextures(1, &texture);
+	glBindTexture(GL_TEXTURE_2D, texture);
+
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+	if (transparent)
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
 	else
-		std::cout << "Failed to load texture" << std::endl;
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+
+	glGenerateMipmap(GL_TEXTURE_2D);
+
+	glBindTexture(GL_TEXTURE_2D, 0);
 
 	stbi_image_free(data);
 }
-//===================================================
-void TextureImporter::GenTexture(int countTexture, unsigned int& texture)
-{
-	stbi_set_flip_vertically_on_load(countTexture);
-	glGenTextures(countTexture, &texture);
-	glActiveTexture(GL_TEXTURE0);
-}
-//===================================================
-void TextureImporter::SetParametrer()
-{
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_CLAMP_TO_EDGE);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_CLAMP_TO_EDGE);
-}
-//===================================================
-void TextureImporter::SetTexture(const char * filePath, unsigned char * data, int width, int heigth, int nrChannels)
-{
-	LoadTexture(filePath, data, width, heigth, nrChannels);
-}
-//===================================================
-void TextureImporter::BindTexture(unsigned int& texture)
-{
-	glBindTexture(GL_TEXTURE_2D, texture);
-}
-//===================================================
-void TextureImporter::GenerateTexture(const char * filePath, int countTexture, unsigned int& texture,
-	unsigned char* data ,int width, int heigth, int nrChannels)
-{
-	GenTexture(countTexture , texture);
-	BindTexture(texture);
-	SetParametrer();
-	SetTexture(filePath ,data ,width ,heigth ,nrChannels);
-	glBindTexture(GL_TEXTURE_2D, 0);
-}
-//===================================================

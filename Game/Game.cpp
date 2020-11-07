@@ -26,10 +26,8 @@ float b = 0.0f;
 float a = 1.0f;
 //---------------------//
 
-TypeDrawShape typeDrawShape = TypeDrawShape::MultiplayObjects;
-TypeColorShape typeColorShape = TypeColorShape::VertexColor;
+TypeColorShape typeColorShape = TypeColorShape::SolidColor;
 TypeMaterial typeMaterialShape = TypeMaterial::Texture;
-TypeCollisionCheck typeCollisionCheck = TypeCollisionCheck::Collision;
 
 Game::Game():GameBase(){}
 
@@ -39,133 +37,71 @@ Game::~Game(){}
 
 void Game::InitGame()
 {
-	//---------------------//
-	if(typeDrawShape == TypeDrawShape::Tri)
-	{
-		if (typeMaterialShape == TypeMaterial::Color) 
-			tri = new Shape(GetRenderer());
-		else if(typeMaterialShape == TypeMaterial::Texture)
-			tri = new Shape(GetRenderer(), "res/texturas/bokitaElMasGrandePapa.png");
+	if(typeMaterialShape == TypeMaterial::Texture)
+		shape2 = new Shape(render, TypeShape::TRIANGLE, "res/texturas/bokitaElMasGrandePapa.png");
+	else
+		shape2 = new Shape(render, TypeShape::TRIANGLE, typeColorShape);
+	shape2->SetPosition(-0.7, 0.0f, 0.0f);
+	shape2->SetScale(0.5f, 0.5f, 0.5f);
 
-		tri->SetShape(TypeShape::TRIANGLE, typeColorShape);
-		tri->GetRenderer()->SetVertexsAttribShape(typeMaterialShape);
-	}
-	else if(typeDrawShape == TypeDrawShape::Quad)
-	{
-		if (typeMaterialShape == TypeMaterial::Color)
-			quad = new Shape(GetRenderer());
-		else if (typeMaterialShape == TypeMaterial::Texture)
-			quad = new Shape(GetRenderer(), "res/texturas/Facharda.jpg");
+	if (typeMaterialShape == TypeMaterial::Texture) {
+		player = new Sprite(GetRenderer(), "res/texturas/PlayerShit.png", true);
+		//-------------
+		_animations = new Animation();
+		_animations->AddFrame(0.0f, 0.0f, (480 / 8), (240 / 4), 480, 240, 1.0f, 32, 8);
+		_animations->SetCurrentAnimation(1);
 
-		quad->SetShape(TypeShape::QUAD, typeColorShape);
-		quad->GetRenderer()->SetVertexsAttribShape(typeMaterialShape);
-	}
-	else if (typeDrawShape == TypeDrawShape::Spri) 
-	{
-		//-------------
-		player = new Sprite(GetRenderer(), "res/texturas/caminataPiola.png");
-		//-------------
-		_runLeft = new Animation();
-		_runLeft->AddFrame(0.0f, 0.0f, (1536.0f / 6), 256.0f, 1536.0f, 256.0f, 1.0f, 6, 6);
-		player->SetAnimation(_runLeft);
+		player->SetAnimation(_animations);
 		//-------------
 		player->GetRenderer()->SetAttribsSprite();
-	}
-	else if (typeDrawShape == TypeDrawShape::MultiplayObjects) 
-	{
-		
-		if (typeMaterialShape == TypeMaterial::Color)
-			quad = new Shape(GetRenderer());
-		else if (typeMaterialShape == TypeMaterial::Texture)
-			quad = new Shape(GetRenderer(), "res/texturas/Facharda.jpg");
 
-		quad->SetShape(TypeShape::QUAD, typeColorShape);
-		quad->GetRenderer()->SetVertexsAttribShape(typeMaterialShape);
-
-		quad->SetScale(0.5f, 0.5f, 0.5f);
-
-		if (typeMaterialShape == TypeMaterial::Color)
-			tri = new Shape(GetRenderer());
-		else if (typeMaterialShape == TypeMaterial::Texture)
-			tri = new Shape(GetRenderer(), "res/texturas/bokitaElMasGrandePapa.png");
-
-		tri->SetShape(TypeShape::TRIANGLE, typeColorShape);
-		tri->GetRenderer()->SetVertexsAttribShape(typeMaterialShape);
-
-		tri->SetPosition(-0.5, 0.5f, 0.0f);
-		tri->SetScale(0.5f, 0.5f, 0.5f);
-
-		/*player = new Sprite(GetRenderer(), "res/texturas/caminataPiola.png");
-		//-------------
-		_runLeft = new Animation();
-		_runLeft->AddFrame(0.0f, 0.0f, (1536.0f / 6), 256.0f, 1536.0f, 256.0f, 1.0f, 6, 6);
-		player->SetAnimation(_runLeft);
-		//-------------
-		player->GetRenderer()->SetAttribsSprite();
-		
 		player->SetPosition(0.0f, -0.5f, 0.0f);
-		player->SetScale(0.5f, 0.5f, 0.5f);*/
-
+		player->SetScale(0.5f, 0.5f, 0.5f);
+		player->SetSizeCollider2D(glm::vec3(0.25f, 0.402f, 0.5f));
 	}
-	//---------------------//
+
+	if (typeMaterialShape == TypeMaterial::Texture)
+		shape1 = new Shape(render, TypeShape::QUAD, "res/texturas/Facharda.jpg");
+	else
+		shape1 = new Shape(render, TypeShape::QUAD, typeColorShape);
+	shape1->SetPosition(0.7, 0.0f, 0.0f);
+	shape1->SetScale(0.5f, 0.5f, 0.5f);
+
 }
 
 void Game::UpdateGame(Windows *_window, Renderer *_render, Input *_input)
 {
-	//---------------------//
-	if (typeDrawShape == TypeDrawShape::Tri) {
-		tri->Draw(TypeShape::TRIANGLE, 3, _render->GetShader(), _window, tri->GetInternalData().model);
-		TempInputs(_window, tri);
-	}
-	else if (typeDrawShape == TypeDrawShape::Quad) 
+	shape2->Draw(TypeShape::TRIANGLE,3, render->GetShader(), windows, shape2->GetInternalData().model);
+	shape1->Draw(TypeShape::QUAD, 4, render->GetShader(), windows, shape1->GetInternalData().model);
+	
+	if (typeMaterialShape == TypeMaterial::Texture) 
 	{
-		quad->Draw(TypeShape::QUAD, 4, _render->GetShader(), _window, quad->GetInternalData().model);
-		TempInputs(_window, quad);
-	}
-	else if (typeDrawShape == TypeDrawShape::Spri)
-	{
-		TempInputs(_window, player);
 		player->UpdateSprite(GetTimeClock());
 		player->Draw(_window);
+
+		TempInputs(windows, player);
+		collisionManager->CheckCollision2D(player, shape2, speed, player->GetBoxColliderSize2D(), shape2->GetBoxColliderSize2D());
+		collisionManager->CheckCollision2D(player, shape1, speed, player->GetBoxColliderSize2D(), shape1->GetBoxColliderSize2D());
 	}
-	else if (typeDrawShape == TypeDrawShape::MultiplayObjects) 
-	{
-
-		quad->Draw(TypeShape::QUAD, 4, _render->GetShader(), _window, quad->GetInternalData().model);
-		//TempInputs(_window, quad);
-
-		tri->Draw(TypeShape::TRIANGLE, 3, _render->GetShader(), _window, tri->GetInternalData().model);
-		TempInputs(_window, tri);
-
-		if(typeCollisionCheck == TypeCollisionCheck::Collision)
-			collisionManager->CheckCollision2D(tri, quad, speed, tri->transform.scale, quad->transform.scale);
-			//collisionManager->CheckCollision2D(tri, quad, speed, glm::vec3(0.25f, 0.05f, 0.05f), quad->transform.scale);
-		else if(typeCollisionCheck == TypeCollisionCheck::Trigger)
-			collisionManager->CheckTrigger2D(tri, quad, tri->transform.scale, quad->transform.scale);
-
-		/*TempInputs(_window, player);
-		player->UpdateSprite(GetTimeClock());
-		player->Draw(_window);
-		*/
-	}
-	//---------------------//
+	TempColorInput(windows, shape1);
+	TempColorInput(windows, shape2);
+	
 }
 
 void Game::DestroyGame()
 {
 	//---------------------//
-	if (quad != NULL)
-		delete quad;
-	if (tri != NULL)
-		delete tri;
-	if (_runLeft != NULL)
-		delete _runLeft;
+	if (shape1 != NULL)
+		delete shape1;
+	if (shape2 != NULL)
+		delete shape2;
+	if (_animations != NULL)
+		delete _animations;
 	if (player != NULL)
 		delete player;
 	//---------------------//
 }
-
-void Game::TempInputs(Windows* windows, Shape* shape)
+void Game::TempColorInput(Windows* windows, Shape* shape) 
 {
 	//---------------------//
 	if (typeMaterialShape == TypeMaterial::Color) {
@@ -181,12 +117,12 @@ void Game::TempInputs(Windows* windows, Shape* shape)
 			typeColorShape = TypeColorShape::SolidColor;
 			if (shape->GetCurrentShape() == TypeShape::TRIANGLE) {
 				shape->SetShape(TypeShape::TRIANGLE, typeColorShape);
-				shape->GetRenderer()->SetVertexsAttribShape(typeMaterialShape);
+				shape->SetVertexsAttribShape(typeMaterialShape);
 			}
 			else if (shape->GetCurrentShape() == TypeShape::QUAD)
 			{
 				shape->SetShape(TypeShape::QUAD, typeColorShape);
-				shape->GetRenderer()->SetVertexsAttribShape(typeMaterialShape);
+				shape->SetVertexsAttribShape(typeMaterialShape);
 			}
 		}
 		if (input->GetKey(KeyBoard::KEY_RIGHT))
@@ -194,19 +130,25 @@ void Game::TempInputs(Windows* windows, Shape* shape)
 			typeColorShape = TypeColorShape::VertexColor;
 			if (shape->GetCurrentShape() == TypeShape::TRIANGLE) {
 				shape->SetShape(TypeShape::TRIANGLE, typeColorShape);
-				shape->GetRenderer()->SetVertexsAttribShape(typeMaterialShape);
+				shape->SetVertexsAttribShape(typeMaterialShape);
 			}
 			else if (shape->GetCurrentShape() == TypeShape::QUAD)
 			{
 				shape->SetShape(TypeShape::QUAD, typeColorShape);
-				shape->GetRenderer()->SetVertexsAttribShape(typeMaterialShape);
+				shape->SetVertexsAttribShape(typeMaterialShape);
 			}
 		}
 	}
+
+}
+void Game::TempInputs(Windows* windows, Shape* shape)
+{
+	
 	//INPUT DE MOVIMIENTO
 	if (input->GetKey(KeyBoard::KEY_W))
 	{
 		shape->SetPosition(shape->transform.position.x, shape->transform.position.y + speed , shape->transform.position.z);
+		
 	}
 	if (input->GetKey(KeyBoard::KEY_S))
 	{
@@ -219,6 +161,7 @@ void Game::TempInputs(Windows* windows, Shape* shape)
 	if (input->GetKey(KeyBoard::KEY_A))
 	{
 		shape->SetPosition(shape->transform.position.x - speed, shape->transform.position.y, shape->transform.position.z);
+		
 	}
 	//-------------------//
 
@@ -268,18 +211,22 @@ void Game::TempInputs(Windows* windows, Sprite* sprite)
 	if (input->GetKey(KeyBoard::KEY_W))
 	{
 		sprite->SetPosition(sprite->transform.position.x, sprite->transform.position.y + speed, sprite->transform.position.z);
+		_animations->SetCurrentAnimation(0);
 	}
 	if (input->GetKey(KeyBoard::KEY_S))
 	{
 		sprite->SetPosition(sprite->transform.position.x, sprite->transform.position.y - speed, sprite->transform.position.z);
+		player->SetCurrentAnimationIndex(3);
 	}
 	if (input->GetKey(KeyBoard::KEY_D))
 	{
 		sprite->SetPosition(sprite->transform.position.x + speed, sprite->transform.position.y, sprite->transform.position.z);
+		_animations->SetCurrentAnimation(1);
 	}
 	if (input->GetKey(KeyBoard::KEY_A))
 	{
 		sprite->SetPosition(sprite->transform.position.x - speed, sprite->transform.position.y, sprite->transform.position.z);
+		player->SetCurrentAnimationIndex(2);
 	}
 	//-------------------//
 

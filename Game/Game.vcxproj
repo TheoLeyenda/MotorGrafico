@@ -178,6 +178,7 @@
     <Image Include="res\texturas\bokitaElMasGrandePapa.png" />
     <Image Include="res\texturas\caminataPiola.png" />
     <Image Include="res\texturas\Facharda.jpg" />
+    <Image Include="res\texturas\PlayerShit.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="res\shaders\FragmentColor.shader" />

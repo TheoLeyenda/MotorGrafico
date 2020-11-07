@@ -49,11 +49,13 @@ void GameBase::UpdateEngine()
 		//std::cout << "Time in SECONDS = " << timeClock.GetGlobalTime() << std::endl;
 		//---------------------//
 		UpdateGame(windows, render, input);
+		//cin.get();
 		//---------------------//
 		glfwPollEvents();
 		//---------------------//
 
 		render->EndDraw(windows);
+		//cin.get();
 	}
 }
 

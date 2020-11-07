@@ -17,12 +17,14 @@ private:
 			0.5f, -0.5f, 0.0f, 1.0f, 0.0f,
 		   -0.5f, -0.5f, 0.0f, 0.0f, 0.0f
 	};
+
 	unsigned int texture;
 	unsigned char* data;
 	int width;
 	int height;
 	int nrChannels;
-	TextureImporter textureImporter;
+	TextureImporter* texImporter;
+	bool _transparency;
 	Animation* animation;
 	//TextureVertex textureVertexCoord[COUNT_TEXTURE_VERTEX_COORD];
 	int _currentFrame;
@@ -31,24 +33,27 @@ private:
 
 	void InitTextureVertexCoord();
 public:
-	Sprite(Renderer *_renderer, Material* _material, const char* filePath);
-	Sprite(Renderer *_renderer, const char* filePath);
+	Sprite(Renderer *_renderer, Material* _material, const char* filePath, bool transparency);
+	Sprite(Renderer * _renderer, const char* filePath, bool transparency);
+	~Sprite();
 	void Draw(Windows* refWindow);
 	void SetTextureCoordinates(float u0, float v0,
 							   float u1, float v1,
 							   float u2, float v2,
 		                       float u3, float v3);
-	void SetCurrentTexture(const char* filePath);
-	TextureImporter GetTextureImporter() { return textureImporter; }
+	TextureImporter* GetTextureImporter() { return texImporter; }
 	void SetAnimation(Animation* _animation);
 	Animation* GetAnimation() { return animation; }
 	void UpdateSprite(Time& timer);
-	~Sprite();
 	int getWidth();
 	int getHeigth();
 	int getNrChannels();
+	void SetAttribsSprite();
+	void SetCurrentAnimationIndex(int currentAnimation) { if (animation != NULL) animation->SetCurrentAnimation(currentAnimation); }
 
 private:
-	void BindSprite();
+	void BlendSprite();
+	void UnBlendSprite();
+	void LoadTexture(const char* path, bool transparent);
 };
 #endif

@@ -68,7 +68,7 @@ public:
 	Renderer* GetRenderer();
 	InternalData GetInternalData();
 	void SetPosition(float x, float y, float z);
-	void SetScale(float x, float y, float z);
+	virtual void SetScale(float x, float y, float z);
 	void SetRotationX(float x);
 	void SetRotationY(float y);
 	void SetRotationZ(float z);
