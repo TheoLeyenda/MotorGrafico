@@ -125,8 +125,14 @@ void Game::DestroyGame()
 		delete shape2;
 	if (_animations != NULL)
 		delete _animations;
+	if (_animations2 != NULL)
+		delete _animations2;
 	if (player != NULL)
 		delete player;
+	if (player2 != NULL)
+		delete player2;
+	if (bokita != NULL)
+		delete bokita;
 	//---------------------//
 }
 void Game::TempColorInput(Windows* windows, Shape* shape)
