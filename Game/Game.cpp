@@ -80,7 +80,12 @@ void Game::InitGame()
 	bokita->GetRenderer()->SetAttribsSprite();
 	bokita->SetScale(2.0f, 3.0f, 2.0f);
 
-
+	//int scaledTextureX = bokita->transform.scale.x + 100;
+	//int scaledTextureY = bokita->transform.scale.y + 100;
+	//bokita->SetTextureCoordinates(0.0f + scaledTextureX, 1.0f + scaledTextureY,
+	//							  1.0f + scaledTextureX, 1.0f + scaledTextureY,
+	//							  1.0f + scaledTextureX, 0.0f + scaledTextureY,
+	//							  0.0f + scaledTextureX, 0.0f + scaledTextureY);
 }
 
 void Game::UpdateGame(Windows *_window, Renderer *_render, Input *_input)

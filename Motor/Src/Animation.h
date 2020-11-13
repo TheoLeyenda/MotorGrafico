@@ -26,6 +26,8 @@ public:
 	int GetCurrentFrame();
 	vector<Frame>& GetAnimation();
 	void SetCurrentAnimation(int currentAnimation) { _currentAnimation = currentAnimation; }
+	void AddFrame(float u, float v, int width, int heigth, int spriteWidth, int spriteHeigth, float timeToAnim);
+	void AddAnimation();
 };
 
 #endif

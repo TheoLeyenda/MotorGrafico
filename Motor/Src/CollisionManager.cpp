@@ -55,6 +55,7 @@ CollisionResult2D CollisionManager::ParcialCollisionDetection2D(Entity2D* myEnti
 			}
 		}
 	}
+
 	return NoneCollision;
 }
 
