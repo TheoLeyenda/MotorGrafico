@@ -75,8 +75,10 @@ void Sprite::Draw()
 //============================================
 void Sprite::UpdateSprite(Time & timer)
 {
-	if (!animation)
+	if (!animation) {
+		cout << "ANIMACION NULA" << endl;
 		return;
+	}
 
 	animation->Update(timer);
 

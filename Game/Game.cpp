@@ -46,10 +46,54 @@ void Game::InitGame()
 	player = new Sprite(GetRenderer(), "res/texturas/PlayerShit.png", true);
 	//-------------
 	_animations = new Animation();
-	_animations->AddFrame(0.0f, 0.0f, (480 / 8), (240 / 4), 480, 240, 1.0f, 32, 8);
-	_animations->SetCurrentAnimation(1);
+	
+	// ANIMACION CAMINATA HACIA ARRIBA
+	_animations->AddFrame((480 - 60 * 8), 0.0f, 60, 60, 480, 240, 1.0f);
+	_animations->AddFrame((480 - 60 * 7), 0.0f, 60, 60, 480, 240, 1.0f);
+	_animations->AddFrame((480 - 60 * 6), 0.0f, 60, 60, 480, 240, 1.0f);
+	_animations->AddFrame((480 - 60 * 5), 0.0f, 60, 60, 480, 240, 1.0f);
+	_animations->AddFrame((480 - 60 * 4), 0.0f, 60, 60, 480, 240, 1.0f);
+	_animations->AddFrame((480 - 60 * 3), 0.0f, 60, 60, 480, 240, 1.0f);
+	_animations->AddFrame((480 - 60 * 2), 0.0f, 60, 60, 480, 240, 1.0f);
+	_animations->AddFrame((480 - 60 * 1), 0.0f, 60, 60, 480, 240, 1.0f);
+	_animations->AddAnimation();
+
+	// ANIMACION CAMINATA HACIA DERECHA
+	_animations->AddFrame((480 - 60*8), 60, 60, 60, 480, 240, 1.0f);
+	_animations->AddFrame((480 - 60*7), 60, 60, 60, 480, 240, 1.0f);
+	_animations->AddFrame((480 - 60*6), 60, 60, 60, 480, 240, 1.0f);
+	_animations->AddFrame((480 - 60*5), 60, 60, 60, 480, 240, 1.0f);
+	_animations->AddFrame((480 - 60*4), 60, 60, 60, 480, 240, 1.0f);
+	_animations->AddFrame((480 - 60*3), 60, 60, 60, 480, 240, 1.0f);
+	_animations->AddFrame((480 - 60*2), 60, 60, 60, 480, 240, 1.0f);
+	_animations->AddFrame((480 - 60*1), 60, 60, 60, 480, 240, 1.0f);
+	_animations->AddAnimation();
+
+	// ANIMACION CAMINATA HACIA IZQUIERDA
+	_animations->AddFrame((480 - 60 * 8), 120, 60, 60, 480, 240, 1.0f);
+	_animations->AddFrame((480 - 60 * 7), 120, 60, 60, 480, 240, 1.0f);
+	_animations->AddFrame((480 - 60 * 6), 120, 60, 60, 480, 240, 1.0f);
+	_animations->AddFrame((480 - 60 * 5), 120, 60, 60, 480, 240, 1.0f);
+	_animations->AddFrame((480 - 60 * 4), 120, 60, 60, 480, 240, 1.0f);
+	_animations->AddFrame((480 - 60 * 3), 120, 60, 60, 480, 240, 1.0f);
+	_animations->AddFrame((480 - 60 * 2), 120, 60, 60, 480, 240, 1.0f);
+	_animations->AddFrame((480 - 60 * 1), 120, 60, 60, 480, 240, 1.0f);
+	_animations->AddAnimation();
+
+	// ANIMACION CAMINATA HACIA ABAJO
+	_animations->AddFrame((480 - 60 * 8), 180, 60, 60, 480, 240, 1.0f);
+	_animations->AddFrame((480 - 60 * 7), 180, 60, 60, 480, 240, 1.0f);
+	_animations->AddFrame((480 - 60 * 6), 180, 60, 60, 480, 240, 1.0f);
+	_animations->AddFrame((480 - 60 * 5), 180, 60, 60, 480, 240, 1.0f);
+	_animations->AddFrame((480 - 60 * 4), 180, 60, 60, 480, 240, 1.0f);
+	_animations->AddFrame((480 - 60 * 3), 180, 60, 60, 480, 240, 1.0f);
+	_animations->AddFrame((480 - 60 * 2), 180, 60, 60, 480, 240, 1.0f);
+	_animations->AddFrame((480 - 60 * 1), 180, 60, 60, 480, 240, 1.0f);
+	_animations->AddAnimation();
 
 	player->SetAnimation(_animations);
+
+	
 	//-------------
 	player->GetRenderer()->SetAttribsSprite();
 

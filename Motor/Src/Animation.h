@@ -14,6 +14,8 @@ private:
 	int _currentFrame;
 	float _currentTime;
 	float _length;
+	int _acumulationWidth;
+	int _acumulationHeighth;
 	vector<Frame> _totalFrames;
 	vector<vector<Frame>> _animations;
 	int _currentAnimation = 0;
@@ -21,12 +23,11 @@ public:
 	Animation();
 	~Animation();
 	void Update(Time& time);
-	void AddFrame(float u, float v, int width, int heigth,
-		int spriteWidth, int spriteHeigth, float timeToAnim, int totalFrames, int countFilas);
+	void AddFrame(float frameX, float frameY, int spriteWidth, int spriteHeigth, int textureWidth, int textureHeigth, float timeToAnim, int totalFrames, int countFilas);
 	int GetCurrentFrame();
 	vector<Frame>& GetAnimation();
 	void SetCurrentAnimation(int currentAnimation) { _currentAnimation = currentAnimation; }
-	void AddFrame(float u, float v, int width, int heigth, int spriteWidth, int spriteHeigth, float timeToAnim);
+	void AddFrame(float frameX, float frameY, int spriteWidth, int spriteHeigth, int textureWidth, int textureHeigth, float timeToAnim);
 	void AddAnimation();
 };
 

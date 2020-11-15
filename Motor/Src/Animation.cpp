@@ -22,7 +22,7 @@ void Animation::Update(Time & timer)
 
 	//std::cout << "CurrenTime time anim: "<<_currentTime << std::endl;
 
-	float frameLength = _length / _totalFrames.size();
+	float frameLength = _length / _animations[_currentAnimation].size();
 	_currentFrame = static_cast<int>(_currentTime / frameLength);
 }
 
@@ -35,7 +35,7 @@ float textureVertex[] = {
 	   -0.5f, -0.5f, 0.0f, 0.0f, 0.0f
 };
 */
-void Animation::AddFrame(float u, float v, int width, int heigth, int spriteWidth, int spriteHeigth, float timeToAnim, int totalFrames, int countFramesForFilas)
+void Animation::AddFrame(float frameX, float frameY, int spriteWidth, int spriteHeigth, int textureWidth, int textureHeigth, float timeToAnim, int totalFrames, int countFramesForFilas)
 {
 	_length = timeToAnim * 200;
 
@@ -45,70 +45,70 @@ void Animation::AddFrame(float u, float v, int width, int heigth, int spriteWidt
 	Frame frame;
 	for (int i = 0; i < totalFrames; i++) {
 		//--------
-		frame.frameCoords[0].U = ((u + index_X) / spriteWidth);
-		frame.frameCoords[0].V = ((heigth + index_Y) / spriteHeigth);
+		frame.frameCoords[0].U = ((frameX + index_X) / textureWidth);
+		frame.frameCoords[0].V = ((spriteHeigth + index_Y) / textureHeigth);
 		//--------
 		//cout << frame.frameCoords[0].U << endl;
 		//cout << frame.frameCoords[0].V << endl;
 
-		frame.frameCoords[1].U = (((u + index_X) + width) / spriteWidth);
-		frame.frameCoords[1].V = ((heigth + index_Y) / spriteHeigth);
+		frame.frameCoords[1].U = (((frameX + index_X) + spriteWidth) / textureWidth);
+		frame.frameCoords[1].V = ((spriteHeigth + index_Y) / textureHeigth);
 
 		//cout << frame.frameCoords[1].U << endl;
 		//cout << frame.frameCoords[1].V << endl;
 		//--------
-		frame.frameCoords[2].U = (((u + index_X) + width) / spriteWidth);
-		frame.frameCoords[2].V = ((v + index_Y) / spriteHeigth);
+		frame.frameCoords[2].U = (((frameX + index_X) + spriteWidth) / textureWidth);
+		frame.frameCoords[2].V = ((frameY + index_Y) / textureHeigth);
 
 		//cout << frame.frameCoords[2].U << endl;
 		//cout << frame.frameCoords[2].V << endl;
 		//--------
-		frame.frameCoords[3].U = ((u + index_X) / spriteWidth);
-		frame.frameCoords[3].V = ((v + index_Y) / spriteHeigth);
+		frame.frameCoords[3].U = ((frameX + index_X) / textureWidth);
+		frame.frameCoords[3].V = ((frameY + index_Y) / textureHeigth);
 
 		//cout << frame.frameCoords[3].U << endl;
 		//cout << frame.frameCoords[3].V << endl;
 		//--------
 		_totalFrames.push_back(frame);
-		index_X += width;
+		index_X += spriteWidth;
 
 		if (i > 0) 
 		{
 			if (i % countFramesForFilas == 0) 
 			{
-				index_Y += heigth;
+				index_Y += spriteHeigth;
 				_animations.push_back(_totalFrames);
 				_totalFrames.clear();
 			}
 		}
 	}
 }
-void Animation::AddFrame(float u, float v, int width, int heigth, int spriteWidth, int spriteHeigth, float timeToAnim)
+void Animation::AddFrame(float frameX, float frameY, int spriteWidth, int spriteHeigth, int textureWidth, int textureHeigth, float timeToAnim)
 {
 	_length = timeToAnim * 200;
 
 	Frame frame;
 	
-	frame.frameCoords[0].U = (u / spriteWidth);
-	frame.frameCoords[0].V = (heigth / spriteHeigth);
+	frame.frameCoords[0].U = ((frameX) / textureWidth);
+	frame.frameCoords[0].V = ((spriteHeigth + frameY) / textureHeigth);
 	//--------
 	//cout << frame.frameCoords[0].U << endl;
 	//cout << frame.frameCoords[0].V << endl;
 
-	frame.frameCoords[1].U = ((u + width) / spriteWidth);
-	frame.frameCoords[1].V = (heigth / spriteHeigth);
+	frame.frameCoords[1].U = (((frameX) + spriteWidth) / textureWidth);
+	frame.frameCoords[1].V = ((spriteHeigth + frameY) / textureHeigth);
 
 	//cout << frame.frameCoords[1].U << endl;
 	//cout << frame.frameCoords[1].V << endl;
 	//--------
-	frame.frameCoords[2].U = ((u + width) / spriteWidth);
-	frame.frameCoords[2].V = (v  / spriteHeigth);
+	frame.frameCoords[2].U = (((frameX) + spriteWidth) / textureWidth);
+	frame.frameCoords[2].V = ((frameY) / textureHeigth);
 
 	//cout << frame.frameCoords[2].U << endl;
 	//cout << frame.frameCoords[2].V << endl;
 	//--------
-	frame.frameCoords[3].U = (u / spriteWidth);
-	frame.frameCoords[3].V = (v / spriteHeigth);
+	frame.frameCoords[3].U = ((frameX) / textureWidth);
+	frame.frameCoords[3].V = ((frameY) / textureHeigth);
 
 	//cout << frame.frameCoords[3].U << endl;
 	//cout << frame.frameCoords[3].V << endl;
@@ -118,8 +118,13 @@ void Animation::AddFrame(float u, float v, int width, int heigth, int spriteWidt
 
 void Animation::AddAnimation() 
 {
-	_animations.push_back(_totalFrames);
-	_totalFrames.clear();
+	if (_totalFrames.size() > 0) 
+	{
+		//cout << "PUSHIE LA ANIMACION VIEJA" << endl;
+		_animations.push_back(_totalFrames);
+		_totalFrames.clear();
+		//cout << _animations.size() << endl;
+	}
 }
 int Animation::GetCurrentFrame()
 {
