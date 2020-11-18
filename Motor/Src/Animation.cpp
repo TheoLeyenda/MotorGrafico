@@ -41,11 +41,12 @@ void Animation::AddFrame(float frameX, float frameY, int spriteWidth, int sprite
 {
 	_length = timeToAnim;
 
-
+	cout << "total frames" << totalFrames << endl;
 	totalFrames = totalFrames + countFramesForFilas;
 	float index_X = 0;
 	float index_Y = 0;
 	Frame frame;
+	cout << "total frames" << totalFrames << endl;
 	for (int i = 0; i < totalFrames; i++) {
 		//--------
 		frame.frameCoords[0].U = ((frameX + index_X) / textureWidth);
@@ -74,7 +75,7 @@ void Animation::AddFrame(float frameX, float frameY, int spriteWidth, int sprite
 		//--------
 		_totalFrames.push_back(frame);
 		index_X += spriteWidth;
-		if (i > 0) 
+		if (i > 0)
 		{
 			if (i % countFramesForFilas == 0)
 			{
@@ -83,8 +84,13 @@ void Animation::AddFrame(float frameX, float frameY, int spriteWidth, int sprite
 				_totalFrames.clear();
 			}
 		}
-		//myvector.erase(myvector.begin() + 5);
 	}
+	_animations[0].resize(countFramesForFilas);
+
+	//for (int i = 0; i < _animations.size(); i++) 
+	//{
+		//cout << "TAM ANIM " << i<<":" << _animations[i].size() << endl;
+	//}
 }
 void Animation::AddFrame(float frameX, float frameY, int spriteWidth, int spriteHeigth, int textureWidth, int textureHeigth, float timeToAnim)
 {
