@@ -18,12 +18,14 @@ void Animation::Update(Time & timer)
 	
 	while (_currentTime >= _length){
 		_currentTime -= _length;
+		//std::cout << "NDEAAAAh" << std::endl;
 	}
-
-	//std::cout << "CurrenTime time anim: "<<_currentTime << std::endl;
+	//std::cout << std::endl;
 
 	float frameLength = _length / _animations[_currentAnimation].size();
 	_currentFrame = static_cast<int>(_currentTime / frameLength);
+
+	//std::cout << "CurrenTime frame anim: "<<_currentFrame << std::endl;
 }
 
 /*

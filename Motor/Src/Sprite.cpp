@@ -83,7 +83,9 @@ void Sprite::UpdateSprite(Time & timer)
 	animation->Update(timer);
 
 	_currentFrame = animation->GetCurrentFrame();
-	if (_currentFrame != _previusFrame) {
+	if (_currentFrame != _previusFrame 
+		|| _currentFrame == animation->GetAnimation().size() - 1
+		|| _currentFrame == 0) {
 		SetTextureCoordinates(animation->GetAnimation()[_currentFrame].frameCoords[0].U, animation->GetAnimation()[_currentFrame].frameCoords[0].V,
 							  animation->GetAnimation()[_currentFrame].frameCoords[1].U, animation->GetAnimation()[_currentFrame].frameCoords[1].V,
 							  animation->GetAnimation()[_currentFrame].frameCoords[2].U, animation->GetAnimation()[_currentFrame].frameCoords[2].V,
