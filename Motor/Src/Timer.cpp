@@ -4,7 +4,8 @@
 Time::Time() {
 	reset();
 	_timeScale = 1.0f;
-	_deltaTime = std::chrono::duration<float>(0.0f);
+	//_deltaTime = std::chrono::duration<float>(0.0f);
+	_deltaTime = 0;
 }
 Time::~Time() {
 
@@ -15,13 +16,10 @@ void Time::reset() {
 }
 double oldT = clock();
 void Time::FPS() {
-	double t = clock();
-	float dt = (float)((t - oldT) / 1000.0f);
-	oldT = t;
-	std::cout <<"FPS: "<< 1.0f / dt << std::endl;
+	std::cout <<"FPS: "<< 1.0f / deltaTime() << std::endl;
 }
 float Time::deltaTime() {
-	return  _deltaTime.count();
+	return _deltaTime;
 }
 
 void Time::setTimeScale(float t) {
@@ -40,7 +38,10 @@ float Time::getSeconds() {
 void Time::startTime() {
 }
 void Time::tick() {
-	_deltaTime = std::chrono::system_clock::now() - _startTime;
+	double t = clock();
+	_deltaTime = (float)((t - oldT) / 1000.0f);
+	oldT = t;
+
 }
 void Time::calculateFps() {
 	_elapsedTime += deltaTime();

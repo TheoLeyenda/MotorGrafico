@@ -14,15 +14,15 @@ Animation::~Animation(){}
 
 void Animation::Update(Time & timer)
 {
-	_currentTime = (timer.deltaTime() * _length);
+	_currentTime += (timer.deltaTime());
 	
+	//std::cout << _currentTime <<std::endl;
 	while (_currentTime >= _length){
 		_currentTime -= _length;
 		//std::cout << "NDEAAAAh" << std::endl;
 	}
-	//std::cout << std::endl;
 
-	float frameLength = _length / _animations[_currentAnimation].size();
+	 float frameLength = _length / _animations[_currentAnimation].size();
 	_currentFrame = static_cast<int>(_currentTime / frameLength);
 
 	//std::cout << "CurrenTime frame anim: "<<_currentFrame << std::endl;
@@ -39,7 +39,8 @@ float textureVertex[] = {
 */
 void Animation::AddFrame(float frameX, float frameY, int spriteWidth, int spriteHeigth, int textureWidth, int textureHeigth, float timeToAnim, int totalFrames, int countFramesForFilas)
 {
-	_length = timeToAnim * 200;
+	_length = timeToAnim;
+
 
 	totalFrames = totalFrames + countFramesForFilas;
 	float index_X = 0;
@@ -73,21 +74,21 @@ void Animation::AddFrame(float frameX, float frameY, int spriteWidth, int sprite
 		//--------
 		_totalFrames.push_back(frame);
 		index_X += spriteWidth;
-
 		if (i > 0) 
 		{
-			if (i % countFramesForFilas == 0) 
+			if (i % countFramesForFilas == 0)
 			{
 				index_Y += spriteHeigth;
 				_animations.push_back(_totalFrames);
 				_totalFrames.clear();
 			}
 		}
+		//myvector.erase(myvector.begin() + 5);
 	}
 }
 void Animation::AddFrame(float frameX, float frameY, int spriteWidth, int spriteHeigth, int textureWidth, int textureHeigth, float timeToAnim)
 {
-	_length = timeToAnim * 200;
+	_length = timeToAnim;
 
 	Frame frame;
 	
