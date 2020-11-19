@@ -126,6 +126,9 @@ void Game::InitGame()
 	bokita->GetRenderer()->SetAttribsSprite();
 	bokita->SetScale(2.0f, 3.0f, 2.0f);
 
+	bokita->SetTextureCoordinates(-4.0f, 4.0f, 4.0f, 4.0f, 4.0f, -4.0f, -4.0f, -4.0f);
+	//TURURURURUR TURURURUR
+
 	//int scaledTextureX = bokita->transform.scale.x + 100;
 	//int scaledTextureY = bokita->transform.scale.y + 100;
 	//bokita->SetTextureCoordinates(0.0f + scaledTextureX, 1.0f + scaledTextureY,
@@ -142,7 +145,6 @@ void Game::UpdateGame(Windows *_window, Renderer *_render, Input *_input)
 
 	shape2->Draw(TypeShape::TRIANGLE,3);
 	shape1->Draw(TypeShape::QUAD, 4);
-	
 
 	player->UpdateSprite(GetTimeClock());
 	player->Draw();
@@ -232,6 +234,7 @@ void Game::TempInputs(Windows* windows, Shape* shape)
 	if (input->GetKey(KeyBoard::KEY_W))
 	{
 		shape->SetPosition(shape->transform.position.x, shape->transform.position.y + speed , shape->transform.position.z);
+		
 	}
 	if (input->GetKey(KeyBoard::KEY_S))
 	{
@@ -244,6 +247,7 @@ void Game::TempInputs(Windows* windows, Shape* shape)
 	if (input->GetKey(KeyBoard::KEY_A))
 	{
 		shape->SetPosition(shape->transform.position.x - speed, shape->transform.position.y, shape->transform.position.z);
+		
 	}
 	//-------------------//
 
@@ -415,4 +419,5 @@ void Game::TempInputsPlayer2(Windows * windows, Sprite * sprite)
 	{
 		sprite->SetScale(sprite->transform.scale.x - speedScale, sprite->transform.scale.y - speedScale, sprite->transform.scale.z - speedScale);
 	}
+
 }
