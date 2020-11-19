@@ -25,8 +25,6 @@ float Time::deltaTime() {
 void Time::setTimeScale(float t) {
 	_timeScale = t;
 }
-
-
 float Time::getTimeScale() {
 	return _timeScale;
 }
@@ -41,7 +39,6 @@ void Time::tick() {
 	double t = clock();
 	_deltaTime = (float)((t - oldT) / 1000.0f);
 	oldT = t;
-
 }
 void Time::calculateFps() {
 	_elapsedTime += deltaTime();

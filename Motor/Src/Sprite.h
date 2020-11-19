@@ -26,7 +26,6 @@ private:
 	TextureImporter* texImporter;
 	bool _transparency;
 	Animation* animation;
-	//TextureVertex textureVertexCoord[COUNT_TEXTURE_VERTEX_COORD];
 	int _currentFrame;
 	int _previusFrame;
 	unsigned int _vbo;

@@ -1,9 +1,6 @@
 #include "Sprite.h"
 #include "glew.h"
 
-
-
-
 //============================================
 Sprite::Sprite(Renderer *_renderer, Material* _material, const char* filePath, bool transparency):Entity2D(_renderer, _material)
 {
@@ -39,7 +36,6 @@ Sprite::Sprite(Renderer * _renderer, const char* filePath, bool transparency):En
 	InitTextureVertexCoord();
 
 	LoadTexture(filePath, _transparency);
-
 }
 //============================================
 Sprite::~Sprite() {
@@ -47,6 +43,7 @@ Sprite::~Sprite() {
 	if (texImporter != NULL)
 		delete texImporter;
 }
+//============================================
 void Sprite::Draw()
 {
 	if (renderer != NULL) 
@@ -95,7 +92,6 @@ void Sprite::UpdateSprite(Time & timer)
 	SetAnimation(animation);
 }
 //============================================
-//============================================
 void Sprite::SetAnimation(Animation * _animation)
 {
 	animation = _animation;
@@ -115,31 +111,6 @@ void Sprite::LoadTexture(const char* path, bool transparent) {
 //============================================
 void Sprite::InitTextureVertexCoord()
 {
-	/*textureVertexCoord[0].x = -0.5f;
-	textureVertexCoord[1].x = 0.5f;
-	textureVertexCoord[2].x = -0.5f;
-	textureVertexCoord[3].x = 0.5f;
-
-	textureVertexCoord[0].y = 0.5f;
-	textureVertexCoord[1].y = 0.5f;
-	textureVertexCoord[2].y = -0.5f;
-	textureVertexCoord[3].y = -0.5f;
-
-	textureVertexCoord[0].z = 0.0f;
-	textureVertexCoord[1].z = 0.0f;
-	textureVertexCoord[2].z = 0.0f;
-	textureVertexCoord[3].z = 0.0f;
-
-	textureVertexCoord[0].u = 0.0f;
-	textureVertexCoord[1].u = 1.0f;
-	textureVertexCoord[2].u = 0.0f;
-	textureVertexCoord[3].u = 1.0f;
-
-	textureVertexCoord[0].v = 0.0f;
-	textureVertexCoord[1].v = 0.0f;
-	textureVertexCoord[2].v = 1.0f;
-	textureVertexCoord[3].v = 1.0f;*/
-
 	glGenBuffers(1, &_vbo);
 	glBindBuffer(GL_ARRAY_BUFFER, _vbo);
 	glBufferData(GL_ARRAY_BUFFER, 20 * sizeof(float), textureVertex, GL_STATIC_DRAW);
@@ -147,16 +118,6 @@ void Sprite::InitTextureVertexCoord()
 //============================================
 void Sprite::SetTextureCoordinates(float u0, float v0, float u1, float v1, float u2, float v2, float u3, float v3)
 {
-	/*textureVertexCoord[0].u = u0;
-	textureVertexCoord[1].u = u1;
-	textureVertexCoord[2].u = u2;
-	textureVertexCoord[3].u = u3;
-
-	textureVertexCoord[0].v = v0;
-	textureVertexCoord[1].v = v1;
-	textureVertexCoord[2].v = v2;
-	textureVertexCoord[3].v = v3;*/
-
 	textureVertex[3] = u0;
 	textureVertex[8] = u1;
 	textureVertex[13] = u2;
@@ -170,9 +131,6 @@ void Sprite::SetTextureCoordinates(float u0, float v0, float u1, float v1, float
 	glBindBuffer(GL_ARRAY_BUFFER, _vbo);
 	glBufferData(GL_ARRAY_BUFFER, 20 * sizeof(float), textureVertex, GL_STATIC_DRAW);
 }
-
-//============================================
-
 //============================================
 int Sprite::getWidth()
 {
@@ -188,10 +146,9 @@ int Sprite::getNrChannels()
 {
 	return nrChannels;
 }
+//============================================
 void Sprite::SetAttribsSprite()
 {
 	renderer->SetAttribsSprite();
 }
-//============================================
-
 //============================================

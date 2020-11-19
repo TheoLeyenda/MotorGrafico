@@ -10,7 +10,13 @@ Animation::Animation()
 	_length = 200;
 }
 
-Animation::~Animation(){}
+Animation::~Animation()
+{
+	if(_animations.size() > 0)
+		_animations.clear();
+	if (_totalFrames.size() > 0)
+		_totalFrames.clear();
+}
 
 void Animation::Update(Time & timer)
 {

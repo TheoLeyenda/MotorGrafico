@@ -232,7 +232,6 @@ void Game::TempInputs(Windows* windows, Shape* shape)
 	if (input->GetKey(KeyBoard::KEY_W))
 	{
 		shape->SetPosition(shape->transform.position.x, shape->transform.position.y + speed , shape->transform.position.z);
-		
 	}
 	if (input->GetKey(KeyBoard::KEY_S))
 	{
@@ -245,7 +244,6 @@ void Game::TempInputs(Windows* windows, Shape* shape)
 	if (input->GetKey(KeyBoard::KEY_A))
 	{
 		shape->SetPosition(shape->transform.position.x - speed, shape->transform.position.y, shape->transform.position.z);
-		
 	}
 	//-------------------//
 
@@ -417,5 +415,4 @@ void Game::TempInputsPlayer2(Windows * windows, Sprite * sprite)
 	{
 		sprite->SetScale(sprite->transform.scale.x - speedScale, sprite->transform.scale.y - speedScale, sprite->transform.scale.z - speedScale);
 	}
-
 }

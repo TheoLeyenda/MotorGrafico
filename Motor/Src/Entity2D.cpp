@@ -23,7 +23,6 @@ Entity2D::~Entity2D()
 
 void Entity2D::SetScale(float x, float y, float z)
 {
-
 	transform.scale[0] = x;
 	transform.scale[1] = y;
 	transform.scale[2] = z;
