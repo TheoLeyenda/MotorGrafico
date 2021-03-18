@@ -1,0 +1,4 @@
+Tareas para la semana que viene:
+-hacer que la cámara funcione con las posiciones de mundo
+-la perspectiva de la cámara
+-hacer que el renderer use el array elements

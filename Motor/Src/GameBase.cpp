@@ -12,13 +12,13 @@ GameBase::~GameBase() {}
 
 int GameBase::InitEngine()
 {
-	glfwInit();
+	bool initGLFW = glfwInit();
 
 	windows = new Windows(1080, 680, "MOTORASO");
 	render = new Renderer();
 	input = new Input(windows->GetWindowsPtr());
 	collisionManager = new CollisionManager();
-	if (!glfwInit() || windows == NULL)
+	if (!initGLFW || windows == NULL)
 		return INIT_ERROR;
 
 	windows->CheckCreateWindows();
