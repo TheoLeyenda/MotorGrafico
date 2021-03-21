@@ -1,21 +1,3 @@
-/*#version 330 core
-
-in vec4 position;
-in vec4 customColor;
-out vec4 color;
-uniform mat4 model;
-//uniform mat4 view;
-//uniform mat4 projection;
-
-layout(location = 2) in vec2 m_TexCoord;
-out vec2 texCoord;
-void main()
-{
-	gl_Position = model * vec4(position); 
-	color = customColor;
-	texCoord = m_TexCoord;
-};*/
-
 #version 330 core
 
 in vec4 position;
