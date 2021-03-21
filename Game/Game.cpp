@@ -16,9 +16,9 @@ enum TypeCollisionCheck
 
 //---------------------//
 //VALORES DE TESTEO
-float speed = 0.05f;
+float speed = 2.5f;
 float speedRotation = 0.05f;
-float speedScale = 0.05f;
+float speedScale = 2.5f;
 
 float r = 1.0f;
 float g = 0.0f;
@@ -40,8 +40,8 @@ void Game::InitGame()
 {
 	shape2 = new Shape(render, TypeShape::TRIANGLE, "res/texturas/Facharda.jpg");
 	//shape2 = new Shape(render, TypeShape::TRIANGLE, typeColorShape);
-	shape2->SetPosition(-0.7, 0.0f, 0.0f);
-	shape2->SetScale(0.5f, 0.5f, 0.5f);
+	shape2->SetPosition(500.7, 200.0f, -50.0f);
+	shape2->SetScale(100.5f, 100.5f, 0.5f);
 
 	player = new Sprite(GetRenderer(), "res/texturas/PlayerShit.png", true);
 	//-------------
@@ -119,8 +119,8 @@ void Game::InitGame()
 
 	//shape1 = new Shape(render, TypeShape::QUAD, "res/texturas/Facharda.jpg");
 	shape1 = new Shape(render, TypeShape::QUAD, typeColorShape);
-	shape1->SetPosition(0.7, 0.0f, 0.0f);
-	shape1->SetScale(0.5f, 0.5f, 0.5f);
+	shape1->SetPosition(200.0f, 200.0f, 0.0f);
+	shape1->SetScale(100.5f, 100.5f, 0.5f);
 
 	bokita = new Sprite(GetRenderer(), "res/texturas/bokitaElMasGrandePapa.png", false);
 	bokita->GetRenderer()->SetAttribsSprite();
@@ -139,12 +139,16 @@ void Game::InitGame()
 
 void Game::UpdateGame(Windows *_window, Renderer *_render, Input *_input)
 {
-	timeClock.FPS();
+	//timeClock.FPS();
 
 	bokita->Draw();
 
 	shape2->Draw(TypeShape::TRIANGLE,3);
 	shape1->Draw(TypeShape::QUAD, 4);
+
+	std::cout << "POS X:" << shape2->transform.position.x << std::endl;
+	std::cout << "POS Y:" << shape2->transform.position.y << std::endl;
+	std::cout << "POS Z:" << shape2->transform.position.z << std::endl;
 
 	player->UpdateSprite(GetTimeClock());
 	player->Draw();
@@ -164,6 +168,7 @@ void Game::UpdateGame(Windows *_window, Renderer *_render, Input *_input)
 	collisionManager->CheckCollision2D(player, player2, speed, player->GetBoxColliderSize2D(), player2->GetBoxColliderSize2D());
 	collisionManager->CheckCollision2D(player2, player, speed, player2->GetBoxColliderSize2D(), player->GetBoxColliderSize2D());
 
+	TempInputs(windows, shape2);
 	TempColorInput(windows, shape1);
 	TempColorInput(windows, shape2);
 	

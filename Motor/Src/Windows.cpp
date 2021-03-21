@@ -17,6 +17,7 @@ Windows::Windows(int x, int y, const char* name)
 //============================================
 Windows::~Windows()
 {
+	glfwDestroyWindow(RefWindow);
 	glfwTerminate();
 }
 //============================================

@@ -137,6 +137,13 @@ void Renderer::UseProgram(unsigned int& shader, glm::mat4 model, glm::mat4 view,
 	glUniformMatrix4fv(projectionLocation, 1, GL_FALSE, glm::value_ptr(projection));
 }
 
+void Renderer::UseShaderEnt(unsigned int & shader, glm::mat4 model)
+{
+	unsigned int modelLocation = glGetUniformLocation(shader, "model");
+	glUseProgram(GetShaderColor());
+	glUniformMatrix4fv(modelLocation, 1, GL_FALSE, glm::value_ptr(model));
+}
+
 void Renderer::ClearShader() {
 	glUseProgram(0);
 }
@@ -176,6 +183,34 @@ void Renderer::UnbindBuffer() {
 	glUseProgram(0);
 }
 
+void Renderer::SetView()
+{
+	_MVP.view = glm::lookAt(glm::vec3(0.0f, 0.0f, 1.0f), glm::vec3(0.0f, 0.0f, -1.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+}
+
+void Renderer::SetView(glm::vec3 posCamera)
+{
+	_MVP.view = glm::lookAt(posCamera, glm::vec3(0.0f, 0.0f, -1.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+}
+
+void Renderer::SetProjection()
+{
+	_MVP.projection = glm::ortho(0.0f, 1080.0f, 0.0f, 680.0f, 0.1f, 100.0f);
+	//                               FOV              Aspect      near  front
+	//projection = glm::perspective(glm::radians(90.0f), 800.0f / 600.0f, 0.1f, 100.0f);
+}
+
+void Renderer::drawCamera(unsigned int& shader)
+{
+	unsigned int transformLoc = glGetUniformLocation(shader, "model");
+	unsigned int projectionLoc = glGetUniformLocation(shader, "projection");
+	unsigned int viewLoc = glGetUniformLocation(shader, "view");
+	glUseProgram(shader);
+	glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(glm::mat4(1.0f)));
+	glUniformMatrix4fv(projectionLoc, 1, GL_FALSE, glm::value_ptr(_MVP.projection));
+	glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(_MVP.view));
+}
+
 void Renderer::BindBufferSprite(unsigned int vbo)
 {
 	unsigned int countElementsForVertex = 5;
@@ -196,9 +231,8 @@ void Renderer::DrawShape(unsigned int figura, int vertexs, unsigned int vbo, uns
 {
 	BindBufferShape(vbo, useTexture);
 
-	UseProgram(shaderProg, model,_MVP.view, _MVP.projection);
-
-	//shape->BindTexture();
+	//UseProgram(shaderProg, model,_MVP.view, _MVP.projection);
+	UseShaderEnt(shaderProg, model);
 
 	glDrawArrays(figura, 0, vertexs);
 
@@ -209,7 +243,8 @@ void Renderer::DrawSprite(unsigned int figura, int vertexs, unsigned int vbo, un
 {
 	BindBufferSprite(vbo);
 
-	UseProgram(shaderProg, model, _MVP.view, _MVP.projection);
+	//UseProgram(shaderProg, model, _MVP.view, _MVP.projection);
+	UseShaderEnt(shaderProg, model);
 
 	glDrawArrays(figura, 0, vertexs);
 
@@ -221,7 +256,9 @@ void Renderer::EndDraw(Windows* refWindow) {
 	refWindow->SwapBuffersWindows();
 	//std::cin.get();
 }
+/*
 
+*/
 unsigned int Renderer::CompileShader(unsigned int type, const char* source) {
 	unsigned int id = glCreateShader(type);
 	std::string shaderSourceCode;
@@ -266,4 +303,5 @@ int Renderer::CreateShaderProgram(const char* vertexShader, const char* fragment
 	glDeleteShader(fragment);
 
 	return sProgram;
+
 }

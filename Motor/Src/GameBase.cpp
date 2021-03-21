@@ -26,10 +26,11 @@ int GameBase::InitEngine()
 	render->GLEWInit();
 	render->SetShader();
 
-	glUseProgram(render->GetShaderColor());
+	render->SetProjection();
+	render->SetView(glm::vec3(0.0f, 0.0f, 1.0f));
 
-	render->ClearShader();
-	render->UnbindBuffer();
+	render->drawCamera(render->GetShaderColor());
+
 	return 0;
 	//CONTROLES
 	//WASD = Movimiento.
@@ -48,6 +49,8 @@ void GameBase::UpdateEngine()
 		timeClock.tick();
 		//std::cout << "Time in SECONDS = " << timeClock.GetGlobalTime() << std::endl;
 		//---------------------//
+		render->drawCamera(render->GetShaderColor());
+		render->drawCamera(render->GetShaderTexture());
 		UpdateGame(windows, render, input);
 		//cin.get();
 		//---------------------//
