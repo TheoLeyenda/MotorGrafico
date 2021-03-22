@@ -38,15 +38,13 @@ void GameBase::UpdateEngine()
 	while (!windows->CheckGLFWwindowShouldClose())
 	{
 		render->BeignDraw();
+		//---------------------//
 		timeClock.tick();
-		//std::cout << "Time in SECONDS = " << timeClock.GetGlobalTime() << std::endl;
 		//---------------------//
-		render->SetView(camera->transform.position);
-		render->drawCamera(render->GetShaderColor(), camera->GetInternalData().model);
-		render->drawCamera(render->GetShaderTexture(), camera->GetInternalData().model);
+		HandleCamera();
+		//---------------------//
 		UpdateGame(windows, render, input);
-		//---------------------//
-		
+		//---------------------//	
 		glfwPollEvents();
 		//---------------------//
 		render->EndDraw(windows);
@@ -65,6 +63,13 @@ void GameBase::DestroyEngine()
 		delete render;
 	if (collisionManager != NULL)
 		delete collisionManager;
+}
+
+void GameBase::HandleCamera()
+{
+	render->SetView(camera->transform.position);
+	render->drawCamera(render->GetShaderColor(), camera->GetInternalData().model);
+	render->drawCamera(render->GetShaderTexture(), camera->GetInternalData().model);
 }
 
 Time& GameBase::GetTimeClock()
