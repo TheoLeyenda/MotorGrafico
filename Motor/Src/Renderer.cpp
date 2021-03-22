@@ -12,19 +12,19 @@
 Renderer::Renderer() {
 	_MVP.view = glm::mat4(1.0f);
 	_MVP.projection = glm::mat4(1.0f);
-	_typeShader = TypeShader::FragmentColor;
 }
 Renderer::~Renderer() {
-	//glDeleteProgram(_shaderProgram);
+	_shaderColor.deleteShader();
+	_shaderTexture.deleteShader();
 }
 
-unsigned int& Renderer::GetShaderColor()
+Shader& Renderer::GetShaderColor()
 {
-	return _shaderProgramColor;
+	return _shaderColor;
 }
-unsigned int& Renderer::GetShaderTexture() 
+Shader& Renderer::GetShaderTexture()
 {
-	return _shaderProgramTexture;
+	return _shaderTexture;
 }
 
 glm::mat4 Renderer::getViewMat()
@@ -43,24 +43,24 @@ void Renderer::SetVertexsAttribShape(int typeMaterial) {
 
 	if (typeMaterial == typeMaterialTexture)	//TEXTURE
 	{
-		_posAttribShape = glGetAttribLocation(_shaderProgramTexture, "position");
+		_posAttribShape = glGetAttribLocation(_shaderTexture.getId(), "position");
 		glVertexAttribPointer(_posAttribShape, 3, GL_FLOAT, GL_FALSE, countElementsForVertex * sizeof(float), 0);
 		glEnableVertexAttribArray(_posAttribShape);
 
-		_colorAttrib = glGetAttribLocation(_shaderProgramTexture, "customColor");
+		_colorAttrib = glGetAttribLocation(_shaderTexture.getId(), "customColor");
 		glVertexAttribPointer(_colorAttrib, 3, GL_FLOAT, GL_FALSE, countElementsForVertex * sizeof(float), (void*)(3 * sizeof(float)));
 		glEnableVertexAttribArray(_colorAttrib);
 
-		glUniform1i(_textureAttribShape = glGetUniformLocation(_shaderProgramTexture, "ourTexture"), 0);
+		glUniform1i(_textureAttribShape = glGetUniformLocation(_shaderTexture.getId(), "ourTexture"), 0);
 		glVertexAttribPointer(_textureAttribShape, 2, GL_FLOAT, GL_FALSE, countElementsForVertex * sizeof(float), (void*)(6 * sizeof(float)));
 		glEnableVertexAttribArray(_textureAttribShape);
 	}
 	else if (typeMaterial == typeMaterialColor) //COLOR
 	{
-		_posAttribShape = glGetAttribLocation(_shaderProgramColor, "position");
+		_posAttribShape = glGetAttribLocation(_shaderColor.getId(), "position");
 		glVertexAttribPointer(_posAttribShape, 3, GL_FLOAT, GL_FALSE, 7 * sizeof(float), 0);
 		glEnableVertexAttribArray(_posAttribShape);
-		_colorAttrib = glGetAttribLocation(_shaderProgramColor, "customColor");
+		_colorAttrib = glGetAttribLocation(_shaderColor.getId(), "customColor");
 		glVertexAttribPointer(_colorAttrib, 4, GL_FLOAT, GL_FALSE, 7 * sizeof(float), (void*)(3 * sizeof(float)));
 		glEnableVertexAttribArray(_colorAttrib);
 	}
@@ -70,13 +70,13 @@ void Renderer::SetAttribsSprite()
 {
 	int countElementsForVertex = 5;
 
-	_posAttribSprite = glGetAttribLocation(_shaderProgramTexture, "position");
+	_posAttribSprite = glGetAttribLocation(_shaderTexture.getId(), "position");
 	glVertexAttribPointer(_posAttribSprite, 3, GL_FLOAT, GL_FALSE, countElementsForVertex * sizeof(float), 0);
 	glEnableVertexAttribArray(_posAttribSprite);
 	//_colorAttrib = glGetAttribLocation(_shaderProgram, "customColor");
 	//glVertexAttribPointer(_colorAttrib, 3, GL_FLOAT, GL_FALSE, countElementsForVertex * sizeof(float), (void*)(3 * sizeof(float)));
 	//glEnableVertexAttribArray(_colorAttrib);
-	glUniform1i(_textureAttribSprite = glGetUniformLocation(_shaderProgramTexture, "ourTexture"), 0);
+	glUniform1i(_textureAttribSprite = glGetUniformLocation(_shaderTexture.getId(), "ourTexture"), 0);
 	glVertexAttribPointer(_textureAttribSprite, 2, GL_FLOAT, GL_FALSE, countElementsForVertex * sizeof(float), (void*)(3 * sizeof(float)));
 	glEnableVertexAttribArray(_textureAttribSprite);
 }
@@ -85,21 +85,13 @@ void Renderer::SetShader()
 {
 	if (typeCompilation == TypeCompilation::Debug) 
 	{
-		//std::cout << "Entre al Debug" << std::endl;
-		if (_typeShader == TypeShader::FragmentColor)
-			_shaderProgramColor = CreateShaderProgram("../Motor/res/shaders/Vertex.shader", "../Motor/res/shaders/FragmentColor.shader");
-		else if (_typeShader == TypeShader::FragmentTexture)
-			_shaderProgramTexture = CreateShaderProgram("../Motor/res/shaders/Vertex.shader", "../Motor/res/shaders/FragmentTexture.shader");
+		_shaderColor.CreateShader("../Motor/res/shaders/Vertex.shader", "../Motor/res/shaders/FragmentColor.shader");
+		_shaderTexture.CreateShader("../Motor/res/shaders/Vertex.shader", "../Motor/res/shaders/FragmentTexture.shader");
 	}
 	else if (typeCompilation == TypeCompilation::Exe) 
 	{
-		//std::cout << "Entre al Exe" << std::endl;
-		if (_typeShader == TypeShader::FragmentColor)
-			_shaderProgramColor = CreateShaderProgram("res/shaders/Vertex.shader", "res/shaders/FragmentColor.shader");
-		else if (_typeShader == TypeShader::FragmentTexture) {
-			//std::cout << "Entre al Textura" << std::endl;
-			_shaderProgramTexture = CreateShaderProgram("res/shaders/Vertex.shader", "res/shaders/FragmentTexture.shader");
-		}
+		_shaderColor.CreateShader("res/shaders/Vertex.shader", "res/shaders/FragmentColor.shader");
+		_shaderTexture.CreateShader("res/shaders/Vertex.shader", "res/shaders/FragmentTexture.shader");
 	}
 }
 
@@ -124,6 +116,7 @@ bool Renderer::GLLogCall() {
 	return true;
 }
 
+/*
 void Renderer::UseProgram(unsigned int& shader, glm::mat4 model, glm::mat4 view, glm::mat4 projection) {
 
 	unsigned int modelLocation = glGetUniformLocation(shader, "model");
@@ -136,11 +129,12 @@ void Renderer::UseProgram(unsigned int& shader, glm::mat4 model, glm::mat4 view,
 	glUniformMatrix4fv(viewLocation, 1, GL_FALSE, glm::value_ptr(view));
 	glUniformMatrix4fv(projectionLocation, 1, GL_FALSE, glm::value_ptr(projection));
 }
+*/
 
-void Renderer::UseShaderEnt(unsigned int & shader, glm::mat4 model)
+void Renderer::UseShaderEnt(Shader& shader, glm::mat4 model)
 {
-	unsigned int modelLocation = glGetUniformLocation(shader, "model");
-	glUseProgram(GetShaderColor());
+	unsigned int modelLocation = glGetUniformLocation(shader.getId(), "model");
+	glUseProgram(shader.getId());
 	glUniformMatrix4fv(modelLocation, 1, GL_FALSE, glm::value_ptr(model));
 }
 
@@ -148,12 +142,14 @@ void Renderer::ClearShader() {
 	glUseProgram(0);
 }
 
+/*
 void Renderer::UpdateModel(glm::mat4 model) {
 	unsigned int modelLocation = glGetUniformLocation(GetShaderColor(), "model");
 	glUseProgram(GetShaderColor());
 	glUniformMatrix4fv(modelLocation, 1, GL_FALSE, glm::value_ptr(model));
 }
 
+*/
 void Renderer::BindBufferShape(unsigned int vbo, bool useTexture) {
 	
 	unsigned int countElementsForVertex = 8;
@@ -195,17 +191,17 @@ void Renderer::SetView(glm::vec3 posCamera)
 
 void Renderer::SetProjection()
 {
-	_MVP.projection = glm::ortho(0.0f, 1080.0f, 0.0f, 680.0f, 0.1f, 100.0f);
+	_MVP.projection = glm::ortho(0.0f, 1080.0f, 0.0f, 680.0f, 0.1f, 1000.0f);
 	//                               FOV              Aspect      near  front
 	//projection = glm::perspective(glm::radians(90.0f), 800.0f / 600.0f, 0.1f, 100.0f);
 }
 
-void Renderer::drawCamera(unsigned int& shader)
+void Renderer::drawCamera(Shader& shader)
 {
-	unsigned int transformLoc = glGetUniformLocation(shader, "model");
-	unsigned int projectionLoc = glGetUniformLocation(shader, "projection");
-	unsigned int viewLoc = glGetUniformLocation(shader, "view");
-	glUseProgram(shader);
+	unsigned int transformLoc = glGetUniformLocation(shader.getId(), "model");
+	unsigned int projectionLoc = glGetUniformLocation(shader.getId(), "projection");
+	unsigned int viewLoc = glGetUniformLocation(shader.getId(), "view");
+	glUseProgram(shader.getId());
 	glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(glm::mat4(1.0f)));
 	glUniformMatrix4fv(projectionLoc, 1, GL_FALSE, glm::value_ptr(_MVP.projection));
 	glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(_MVP.view));
@@ -223,15 +219,14 @@ void Renderer::BindBufferSprite(unsigned int vbo)
 }
 
 void Renderer::BeignDraw() {
-	glClearColor(0.0f, 1.0, 0.0f, 1.0f);
+	glClearColor(0.8f, 0.8f, 0.8f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
-void Renderer::DrawShape(unsigned int figura, int vertexs, unsigned int vbo, unsigned int& shaderProg, glm::mat4 model, bool useTexture)
+void Renderer::DrawShape(unsigned int figura, int vertexs, unsigned int vbo, Shader& shaderProg, glm::mat4 model, bool useTexture)
 {
 	BindBufferShape(vbo, useTexture);
 
-	//UseProgram(shaderProg, model,_MVP.view, _MVP.projection);
 	UseShaderEnt(shaderProg, model);
 
 	glDrawArrays(figura, 0, vertexs);
@@ -239,11 +234,10 @@ void Renderer::DrawShape(unsigned int figura, int vertexs, unsigned int vbo, uns
 	UnbindBuffer();
 }
 
-void Renderer::DrawSprite(unsigned int figura, int vertexs, unsigned int vbo, unsigned int & shaderProg, glm::mat4 model)
+void Renderer::DrawSprite(unsigned int figura, int vertexs, unsigned int vbo, Shader& shaderProg, glm::mat4 model)
 {
 	BindBufferSprite(vbo);
 
-	//UseProgram(shaderProg, model, _MVP.view, _MVP.projection);
 	UseShaderEnt(shaderProg, model);
 
 	glDrawArrays(figura, 0, vertexs);
@@ -254,54 +248,4 @@ void Renderer::DrawSprite(unsigned int figura, int vertexs, unsigned int vbo, un
 void Renderer::EndDraw(Windows* refWindow) {
 	ClearShader();
 	refWindow->SwapBuffersWindows();
-	//std::cin.get();
-}
-/*
-
-*/
-unsigned int Renderer::CompileShader(unsigned int type, const char* source) {
-	unsigned int id = glCreateShader(type);
-	std::string shaderSourceCode;
-	std::ifstream shaderSourceFile;
-
-	shaderSourceFile.exceptions(std::ifstream::failbit | std::ifstream::badbit);
-
-	try {
-		shaderSourceFile.open(source);
-		std::stringstream sourceShaderStream;
-
-		sourceShaderStream << shaderSourceFile.rdbuf();
-
-		shaderSourceFile.close();
-
-		shaderSourceCode = sourceShaderStream.str();
-	}
-	catch (std::ifstream::failure& e) {
-		std::cout << "ERROR::SHADER::FILE_NOT_SUCCESFULLY_OPEN" << std::endl;
-	}
-
-	const char* sourceCode = shaderSourceCode.c_str();
-
-	glShaderSource(id, 1, &sourceCode, nullptr);
-	glCompileShader(id);
-
-	return id;
-}
-
-int Renderer::CreateShaderProgram(const char* vertexShader, const char* fragmentShader)
-{
-	unsigned int sProgram = glCreateProgram();
-	unsigned int vertex = CompileShader(GL_VERTEX_SHADER, vertexShader);
-	unsigned int fragment = CompileShader(GL_FRAGMENT_SHADER, fragmentShader);
-
-	glAttachShader(sProgram, vertex);
-	glAttachShader(sProgram, fragment);
-	glLinkProgram(sProgram);
-	glValidateProgram(sProgram);
-
-	glDeleteShader(vertex);
-	glDeleteShader(fragment);
-
-	return sProgram;
-
 }

@@ -8,12 +8,9 @@ Sprite::Sprite(Renderer *_renderer, Material* _material, const char* filePath, b
 	material = _material;
 	
 	_transparency = transparency;
-	//texture = textureImporter.GenerateTexture(filePath, 1, texture, data, width, height, nrChannels);
 
 	texImporter = new TextureImporter();
 
-	renderer->SetTypeShader(TypeShader::FragmentTexture);
-	renderer->SetShader();
 	renderer->SetAttribsSprite();
 
 	InitTextureVertexCoord();
@@ -24,13 +21,10 @@ Sprite::Sprite(Renderer *_renderer, Material* _material, const char* filePath, b
 Sprite::Sprite(Renderer * _renderer, const char* filePath, bool transparency):Entity2D(_renderer)
 {
 	renderer = _renderer;
-	//texture = textureImporter.GenerateTexture(filePath, 1, texture, data, width, height, nrChannels);
 	_transparency = transparency;
 
 	texImporter = new TextureImporter();
 
-	renderer->SetTypeShader(TypeShader::FragmentTexture);
-	renderer->SetShader();
 	renderer->SetAttribsSprite();
 
 	InitTextureVertexCoord();
@@ -53,7 +47,7 @@ void Sprite::Draw()
 			BlendSprite();
 		glEnable(GL_TEXTURE_2D);
 
-		renderer->UpdateModel(internalData.model);
+		//renderer->UpdateModel(internalData.model);
 
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, texture);

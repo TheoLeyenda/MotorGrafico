@@ -7,13 +7,6 @@ private:
 	int resultInit;
 	Shape* shape1; //no tiene que ir xd
 	Shape* shape2;
-	Sprite* player;
-	Sprite* player2;
-	Sprite* bokita;
-
-	Animation* _animations;
-	Animation* _animations2;
-	
 public:
 	Game();
 	~Game();

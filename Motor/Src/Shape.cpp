@@ -61,10 +61,7 @@ Shape::Shape(Renderer * _renderer,TypeShape typeShape, const char * filePath): E
 	texImporter = new TextureImporter();
 
 	_typeMaterial = TypeMaterial::Texture;
-	
-	renderer->SetTypeShader(TypeShader::FragmentTexture);
-	renderer->SetShader();
-	
+
 	SetShape(_currentShape, _typeColorShape);
 	SetVertexsAttribShape(_typeMaterial);
 
@@ -72,9 +69,6 @@ Shape::Shape(Renderer * _renderer,TypeShape typeShape, const char * filePath): E
 		BlendSprite();
 
 	LoadTexture(_path, _transparency);
-	
-
-	
 }
 
 Shape::Shape(Renderer * _renderer, TypeShape typeShape, Material * _material,  const char * filePath): Entity2D(_renderer, _material)
@@ -88,9 +82,6 @@ Shape::Shape(Renderer * _renderer, TypeShape typeShape, Material * _material,  c
 
 	material = _material;
 	_typeMaterial = TypeMaterial::Texture;
-
-	renderer->SetTypeShader(TypeShader::FragmentTexture);
-	renderer->SetShader();
 
 	SetShape(_currentShape, _typeColorShape);
 	SetVertexsAttribShape(_typeMaterial);
@@ -107,9 +98,6 @@ Shape::Shape(Renderer *_renderer, TypeShape typeShape, TypeColorShape typeColorS
 	renderer = _renderer;
 	_typeMaterial = TypeMaterial::Color;
 	
-	renderer->SetTypeShader(TypeShader::FragmentColor);
-	renderer->SetShader();
-
 	_path = "None Path";
 	SetShape(_currentShape, _typeColorShape);
 	SetVertexsAttribShape(_typeMaterial);
@@ -124,9 +112,6 @@ Shape::Shape(Renderer * _renderer, Material * _material, TypeShape typeShape, Ty
 	material = _material;
 	_typeMaterial = TypeMaterial::Color;
 
-	renderer->SetTypeShader(TypeShader::FragmentColor);
-	renderer->SetShader();
-	
 	_path = "None Path";
 	SetShape(_currentShape, _typeColorShape);
 	SetVertexsAttribShape(_typeMaterial);
@@ -232,8 +217,6 @@ void Shape::SetVertexMaterial(glm::vec4 material, float* VBA, int offset, int st
 void Shape::SetVertexMaterial(glm::vec4* materials, float* VBA, int start, int offset, int repeticiones, int countElementsForRepe)
 {
 	int k = 0;
-	//std::cout << std::endl;
-	//std::cout << std::endl;
 	for (int i = 0; i < repeticiones; i++) 
 	{
 		for (int j = start; j < offset + start; j++) 
@@ -243,7 +226,6 @@ void Shape::SetVertexMaterial(glm::vec4* materials, float* VBA, int start, int o
 			k++;
 		}
 		k = 0;
-		//std::cout << std::endl;
 	}
 }
 
@@ -255,12 +237,9 @@ void Shape::Draw(unsigned int figura,int vertexs)
 
 		if (_typeMaterial == TypeMaterial::Texture)
 		{
-
 			if (_transparency)
 				BlendSprite();
 			glEnable(GL_TEXTURE_2D);
-
-			renderer->UpdateModel(internalData.model);
 
 			glActiveTexture(GL_TEXTURE0);
 			glBindTexture(GL_TEXTURE_2D, _texture);
@@ -273,7 +252,6 @@ void Shape::Draw(unsigned int figura,int vertexs)
 			if (_transparency)
 				UnBlendSprite();
 			
-			//renderer->SetVertexsAttribShape(_typeMaterial);
 		}
 		else if(_typeMaterial == TypeMaterial::Color)
 		{
@@ -300,5 +278,5 @@ void Shape::SetSolidColor(float r, float g, float b)
 		tam++;
 	}
 	glBufferData(GL_ARRAY_BUFFER, tam * sizeof(float), _vertexBuffer, GL_DYNAMIC_DRAW);
-	renderer->SetShader();
+	//renderer->SetShader();
 }

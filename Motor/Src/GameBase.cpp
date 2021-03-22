@@ -1,9 +1,5 @@
-//#include <glew.h>
-//#include <GLFW/glfw3.h>
 #include "GameBase.h"
-//#define ASSERT(x) if (!(x)) __debugbreak();
-//#include "fragmentShader.h"
-//#include "vertexShader.h"
+
 #include "glew.h"
 #include "GLFW/glfw3.h"
 
@@ -32,13 +28,6 @@ int GameBase::InitEngine()
 	render->drawCamera(render->GetShaderColor());
 
 	return 0;
-	//CONTROLES
-	//WASD = Movimiento.
-	//ENTER = Cambio de color.
-	// KP7 & KP9 = Escala
-	// KP7 & KP9  = Rotate on X AXIS
-	// KP4 & KP6  = Rotate on Y AXIS
-	// KP1 & KP3  = Rotate on Z AXIS
 }
 
 void GameBase::UpdateEngine()
@@ -52,19 +41,15 @@ void GameBase::UpdateEngine()
 		render->drawCamera(render->GetShaderColor());
 		render->drawCamera(render->GetShaderTexture());
 		UpdateGame(windows, render, input);
-		//cin.get();
 		//---------------------//
 		glfwPollEvents();
 		//---------------------//
-
 		render->EndDraw(windows);
-		//cin.get();
 	}
 }
 
 void GameBase::DestroyEngine()
 {
-	glDeleteProgram(render->GetShaderColor());
 	glfwTerminate();
 
 	if (input != NULL)

@@ -38,6 +38,11 @@ void Shader::use()
 	glUseProgram(id);
 }
 
+void Shader::deleteShader()
+{
+	glDeleteProgram(id);
+}
+
 unsigned int Shader::compileShader(unsigned int type, const char* source)
 {
 	unsigned int id = glCreateShader(type);
