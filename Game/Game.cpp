@@ -8,7 +8,7 @@ enum TypeDrawShape
 	Spri,
 	MultiplayObjects,
 };
-enum TypeCollisionCheck 
+enum TypeCollisionCheck
 {
 	Collision,
 	Trigger,
@@ -26,14 +26,18 @@ float b = 0.0f;
 float a = 1.0f;
 
 bool enableVertexTexture = false;
+float speedCamer = 0.5f;
+float newCamX = 0;
+float newCamY = 0;
+float newCamZ = 0;
 //---------------------//
 
 TypeColorShape typeColorShape = TypeColorShape::SolidColor;
 
-Game::Game():GameBase(){}
+Game::Game() :GameBase() {}
 
 //---------------------//
-Game::~Game(){}
+Game::~Game() {}
 //---------------------//
 
 void Game::InitGame()
@@ -45,13 +49,17 @@ void Game::InitGame()
 	shape1 = new Shape(render, TypeShape::QUAD, SolidColor);
 	shape1->SetPosition(500.0f, 400.0f, 0.0f);
 	shape1->SetScale(200.5f, 200.5f, 0.5f);
+
+	newCamX = camera->transform.position.x;
+	newCamY = camera->transform.position.y;
+	newCamZ = camera->transform.position.z;
 }
 
 void Game::UpdateGame(Windows *_window, Renderer *_render, Input *_input)
 {
 	//timeClock.FPS();
 
-	shape2->Draw(TypeShape::TRIANGLE,3);
+	shape2->Draw(TypeShape::TRIANGLE, 3);
 	shape1->Draw(TypeShape::QUAD, 4);
 
 	std::cout << "POS X:" << shape2->transform.position.x << std::endl;
@@ -81,6 +89,7 @@ void Game::DestroyGame()
 void Game::TempColorInput(Windows* windows, Shape* shape)
 {
 	//---------------------//
+	#pragma region COLOR REGION
 		if (input->GetKey(KeyBoard::KEY_ENTER))
 		{
 			r = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
@@ -88,7 +97,7 @@ void Game::TempColorInput(Windows* windows, Shape* shape)
 			b = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
 			shape->SetSolidColor(r, g, b);
 		}
-
+	
 		if (input->GetKey(KeyBoard::KEY_KP_0))
 		{
 			typeColorShape = TypeColorShape::SolidColor;
@@ -115,17 +124,40 @@ void Game::TempColorInput(Windows* windows, Shape* shape)
 				shape->SetVertexsAttribShape(TypeMaterial::Color);
 			}
 		}
+	#pragma endregion
 
+	#pragma region CAMERA MOVE
+		if (input->GetKey(KeyBoard::KEY_UP))
+		{
+			newCamZ += speedCamer * timeClock.deltaTime();
+			camera->SetPosition(newCamX, newCamY, newCamZ);
+		}
+		if (input->GetKey(KeyBoard::KEY_DOWN))
+		{
+			newCamZ -= speedCamer * timeClock.deltaTime();
+			camera->SetPosition(newCamX, newCamY, newCamZ);
+		}
+		if (input->GetKey(KeyBoard::KEY_LEFT))
+		{
+			newCamX -= speedCamer * timeClock.deltaTime();
+			camera->SetPosition(newCamX, newCamY, newCamZ);
+		}
+		if (input->GetKey(KeyBoard::KEY_RIGHT))
+		{
+			newCamX += speedCamer * timeClock.deltaTime();
+			camera->SetPosition(newCamX, newCamY, newCamZ);
+		}
+	#pragma endregion
 }
 
 void Game::TempInputs(Windows* windows, Shape* shape)
 {
-	
+
 	//INPUT DE MOVIMIENTO
 	if (input->GetKey(KeyBoard::KEY_W))
 	{
-		shape->SetPosition(shape->transform.position.x, shape->transform.position.y + speed , shape->transform.position.z);
-		
+		shape->SetPosition(shape->transform.position.x, shape->transform.position.y + speed, shape->transform.position.z);
+
 	}
 	if (input->GetKey(KeyBoard::KEY_S))
 	{
@@ -138,7 +170,7 @@ void Game::TempInputs(Windows* windows, Shape* shape)
 	if (input->GetKey(KeyBoard::KEY_A))
 	{
 		shape->SetPosition(shape->transform.position.x - speed, shape->transform.position.y, shape->transform.position.z);
-		
+
 	}
 	//-------------------//
 

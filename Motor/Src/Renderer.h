@@ -62,7 +62,7 @@ public:
 	void SetView();
 	void SetView(glm::vec3 posCamera);
 	void SetProjection();
-	void drawCamera(Shader& shader);
+	void drawCamera(Shader& shader, glm::mat4 trsCamera);
 	//=====================
 	void BindBufferSprite(unsigned int vbo);
 	//=====================

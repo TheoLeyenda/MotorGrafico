@@ -5,7 +5,7 @@ class Game: public GameBase
 {
 private:
 	int resultInit;
-	Shape* shape1; //no tiene que ir xd
+	Shape* shape1;
 	Shape* shape2;
 public:
 	Game();

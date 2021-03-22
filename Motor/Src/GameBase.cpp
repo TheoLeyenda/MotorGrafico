@@ -13,6 +13,7 @@ int GameBase::InitEngine()
 	windows = new Windows(1080, 680, "MOTORASO");
 	render = new Renderer();
 	input = new Input(windows->GetWindowsPtr());
+	camera = new Entity(render);
 	collisionManager = new CollisionManager();
 	if (!initGLFW || windows == NULL)
 		return INIT_ERROR;
@@ -23,9 +24,11 @@ int GameBase::InitEngine()
 	render->SetShader();
 
 	render->SetProjection();
-	render->SetView(glm::vec3(0.0f, 0.0f, 1.0f));
+	camera->SetPosition(0.0f, 0.0f, 1.0f);
+	render->SetView(camera->transform.position);
 
-	render->drawCamera(render->GetShaderColor());
+	
+	render->drawCamera(render->GetShaderColor(),camera->GetInternalData().model);
 
 	return 0;
 }
@@ -38,10 +41,12 @@ void GameBase::UpdateEngine()
 		timeClock.tick();
 		//std::cout << "Time in SECONDS = " << timeClock.GetGlobalTime() << std::endl;
 		//---------------------//
-		render->drawCamera(render->GetShaderColor());
-		render->drawCamera(render->GetShaderTexture());
+		render->SetView(camera->transform.position);
+		render->drawCamera(render->GetShaderColor(), camera->GetInternalData().model);
+		render->drawCamera(render->GetShaderTexture(), camera->GetInternalData().model);
 		UpdateGame(windows, render, input);
 		//---------------------//
+		
 		glfwPollEvents();
 		//---------------------//
 		render->EndDraw(windows);

@@ -196,13 +196,13 @@ void Renderer::SetProjection()
 	//projection = glm::perspective(glm::radians(90.0f), 800.0f / 600.0f, 0.1f, 100.0f);
 }
 
-void Renderer::drawCamera(Shader& shader)
+void Renderer::drawCamera(Shader& shader, glm::mat4 trsCamera)
 {
 	unsigned int transformLoc = glGetUniformLocation(shader.getId(), "model");
 	unsigned int projectionLoc = glGetUniformLocation(shader.getId(), "projection");
 	unsigned int viewLoc = glGetUniformLocation(shader.getId(), "view");
 	glUseProgram(shader.getId());
-	glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(glm::mat4(1.0f)));
+	glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(trsCamera));
 	glUniformMatrix4fv(projectionLoc, 1, GL_FALSE, glm::value_ptr(_MVP.projection));
 	glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(_MVP.view));
 }

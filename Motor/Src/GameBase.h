@@ -21,6 +21,7 @@ protected:
 	Input* input;
 	CollisionManager* collisionManager;
 	Time timeClock;
+	Entity* camera;
 public:
 	GameBase();
 	~GameBase();
