@@ -7,6 +7,7 @@ private:
 	int resultInit;
 	Shape* shape1;
 	Shape* shape2;
+	Model3D* pyramid;
 public:
 	Game();
 	~Game();

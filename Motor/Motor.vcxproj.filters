@@ -78,6 +78,9 @@
     <ClInclude Include="Src\shader.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
+    <ClInclude Include="Src\model.h">
+      <Filter>Archivos de encabezado</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Src\GameBase.cpp">
@@ -126,6 +129,9 @@
       <Filter>Archivos de origen</Filter>
     </ClCompile>
     <ClCompile Include="Src\shader.cpp">
+      <Filter>Archivos de origen</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\model.cpp">
       <Filter>Archivos de origen</Filter>
     </ClCompile>
   </ItemGroup>

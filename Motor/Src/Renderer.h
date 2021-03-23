@@ -24,6 +24,9 @@ static enum TypeShader
 	FragmentTexture,
 	FragmentColor,
 };
+
+const float toRadians = 3.14159265f / 180;
+
 class ENGINE_API Renderer {
 private:
 	//nothing
@@ -57,11 +60,13 @@ public:
 	void UseShaderEnt(Shader& shader, glm::mat4 model);
 	void ClearShader();
 	void BindBufferShape(unsigned int vbo, bool useTexture);
+	void BindBufferModel(unsigned int vbo, unsigned int ibo, unsigned int posAtt, unsigned int colAtt);
 	void UnbindBuffer();
 
 	void SetView();
 	void SetView(glm::vec3 posCamera);
 	void SetProjection();
+	void RotateCamera(float rotateVal,glm::mat4 trsCamera);
 	void drawCamera(Shader& shader, glm::mat4 trsCamera);
 	//=====================
 	void BindBufferSprite(unsigned int vbo);
@@ -69,6 +74,7 @@ public:
 	void BeignDraw();
 	void DrawShape(unsigned int figura, int vertexs, unsigned int vbo, Shader& shaderProg, glm::mat4 model, bool useTexture);
 	void DrawSprite(unsigned int figura, int vertexs, unsigned int vbo, Shader& shaderProg, glm::mat4 model);
+	void DrawModel(int indices, Shader& shaderProg, glm::mat4 model,unsigned int vbo, unsigned int ibo, unsigned int posAtt, unsigned int colAtt);
 	void EndDraw(Windows* refWindow);
 };
 #endif // !RENDERER_H

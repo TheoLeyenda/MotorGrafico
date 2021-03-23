@@ -28,6 +28,7 @@
     <ClInclude Include="Src\GameBase.h" />
     <ClInclude Include="Src\Input.h" />
     <ClInclude Include="Src\Material.h" />
+    <ClInclude Include="Src\model.h" />
     <ClInclude Include="Src\PrivateClass\Export.h" />
     <ClInclude Include="Src\Renderer.h" />
     <ClInclude Include="Src\shader.h" />
@@ -47,6 +48,7 @@
     <ClCompile Include="Src\GameBase.cpp" />
     <ClCompile Include="Src\Input.cpp" />
     <ClCompile Include="Src\Material.cpp" />
+    <ClCompile Include="Src\model.cpp" />
     <ClCompile Include="Src\Renderer.cpp" />
     <ClCompile Include="Src\shader.cpp" />
     <ClCompile Include="Src\Shape.cpp" />

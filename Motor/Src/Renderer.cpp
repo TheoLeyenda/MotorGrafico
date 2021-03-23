@@ -173,6 +173,16 @@ void Renderer::BindBufferShape(unsigned int vbo, bool useTexture) {
 	}
 }
 
+void Renderer::BindBufferModel(unsigned int vbo, unsigned int ibo, unsigned int posAtt, unsigned int colAtt)
+{
+	glBindBuffer(GL_ARRAY_BUFFER, vbo);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
+	glVertexAttribPointer(posAtt, 3, GL_FLOAT, GL_FALSE, 7 * sizeof(float), 0);
+	glEnableVertexAttribArray(posAtt);
+	glVertexAttribPointer(colAtt, 4, GL_FLOAT, GL_FALSE, 7 * sizeof(float), (void*)(3 * sizeof(float)));
+	glEnableVertexAttribArray(colAtt);
+}
+
 void Renderer::UnbindBuffer() {
 	glBindVertexArray(0);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
@@ -191,9 +201,14 @@ void Renderer::SetView(glm::vec3 posCamera)
 
 void Renderer::SetProjection()
 {
-	_MVP.projection = glm::ortho(0.0f, 1080.0f, 0.0f, 680.0f, 0.1f, 1000.0f);
+	_MVP.projection = glm::ortho(-300.0f, 1080.0f, -300.0f, 680.0f, -1.0f, 100.0f);
 	//                               FOV              Aspect      near  front
-	//projection = glm::perspective(glm::radians(90.0f), 800.0f / 600.0f, 0.1f, 100.0f);
+	//_MVP.projection = glm::perspective(glm::radians(90.0f), 1080.0f / 680.0f, -1.0f, 100.0f);
+}
+
+void Renderer::RotateCamera(float rotateVal,glm::mat4 trsCamera)
+{
+	trsCamera = glm::rotate(trsCamera, rotateVal * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 }
 
 void Renderer::drawCamera(Shader& shader, glm::mat4 trsCamera)
@@ -241,6 +256,18 @@ void Renderer::DrawSprite(unsigned int figura, int vertexs, unsigned int vbo, Sh
 	UseShaderEnt(shaderProg, model);
 
 	glDrawArrays(figura, 0, vertexs);
+
+	UnbindBuffer();
+}
+
+void Renderer::DrawModel(int indices,Shader& shaderProg, glm::mat4 model, 
+	unsigned int vbo, unsigned int ibo, unsigned int posAtt, unsigned int colAtt)
+{
+	BindBufferModel(vbo, ibo, posAtt, colAtt);
+
+	UseShaderEnt(shaderProg, model);
+
+	glDrawElements(GL_TRIANGLES, indices, GL_UNSIGNED_INT, 0);
 
 	UnbindBuffer();
 }

@@ -26,7 +26,7 @@ float b = 0.0f;
 float a = 1.0f;
 
 bool enableVertexTexture = false;
-float speedCamer = 0.5f;
+float speedCamer = 200.5f;
 float newCamX = 0;
 float newCamY = 0;
 float newCamZ = 0;
@@ -42,6 +42,7 @@ Game::~Game() {}
 
 void Game::InitGame()
 {
+	/*
 	shape2 = new Shape(render, TypeShape::TRIANGLE, VertexColor);
 	shape2->SetPosition(500.7, 200.0f, -500.0f);
 	shape2->SetScale(200.5f, 200.5f, 0.5f);
@@ -49,16 +50,22 @@ void Game::InitGame()
 	shape1 = new Shape(render, TypeShape::QUAD, SolidColor);
 	shape1->SetPosition(500.0f, 400.0f, 0.0f);
 	shape1->SetScale(200.5f, 200.5f, 0.5f);
+	*/
 
 	newCamX = camera->transform.position.x;
 	newCamY = camera->transform.position.y;
 	newCamZ = camera->transform.position.z;
+
+	pyramid = new Model3D(render,Pyramid);
+	pyramid->SetPosition(500.0f, 200.0f, -98.0f);
+	pyramid->SetScale(100.0f, 100.0f, 100.0f);
 }
 
 void Game::UpdateGame(Windows *_window, Renderer *_render, Input *_input)
 {
 	//timeClock.FPS();
 
+	/*
 	shape2->Draw(TypeShape::TRIANGLE, 3);
 	shape1->Draw(TypeShape::QUAD, 4);
 
@@ -73,8 +80,12 @@ void Game::UpdateGame(Windows *_window, Renderer *_render, Input *_input)
 	collisionManager->CheckCollision2D(shape2, shape1, speed, shape2->GetBoxColliderSize2D(), shape1->GetBoxColliderSize2D());
 
 	TempInputs(windows, shape2);
-	TempColorInput(windows, shape1);
 	TempColorInput(windows, shape2);
+	*/
+	pyramid->Draw();
+
+	TempColorInput(windows, shape1);
+
 }
 
 void Game::DestroyGame()
@@ -84,12 +95,16 @@ void Game::DestroyGame()
 		delete shape1;
 	if (shape2 != NULL)
 		delete shape2;
+	if (pyramid != NULL)
+		delete pyramid;
 	//---------------------//
 }
 void Game::TempColorInput(Windows* windows, Shape* shape)
 {
 	//---------------------//
 	#pragma region COLOR REGION
+	/*
+	
 		if (input->GetKey(KeyBoard::KEY_ENTER))
 		{
 			r = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
@@ -124,30 +139,33 @@ void Game::TempColorInput(Windows* windows, Shape* shape)
 				shape->SetVertexsAttribShape(TypeMaterial::Color);
 			}
 		}
+	*/
 	#pragma endregion
 
 	#pragma region CAMERA MOVE
 		if (input->GetKey(KeyBoard::KEY_UP))
 		{
 			newCamZ += speedCamer * timeClock.deltaTime();
-			camera->SetPosition(newCamX, newCamY, newCamZ);
 		}
 		if (input->GetKey(KeyBoard::KEY_DOWN))
 		{
 			newCamZ -= speedCamer * timeClock.deltaTime();
-			camera->SetPosition(newCamX, newCamY, newCamZ);
 		}
 		if (input->GetKey(KeyBoard::KEY_LEFT))
 		{
+			//newCamX -= speedCamer * timeClock.deltaTime();
+			//camera->SetPosition(newCamX, newCamY, newCamZ);
 			newCamX -= speedCamer * timeClock.deltaTime();
-			camera->SetPosition(newCamX, newCamY, newCamZ);
 		}
 		if (input->GetKey(KeyBoard::KEY_RIGHT))
 		{
+			//newCamX += speedCamer * timeClock.deltaTime();
+			//camera->SetPosition(newCamX, newCamY, newCamZ);
 			newCamX += speedCamer * timeClock.deltaTime();
-			camera->SetPosition(newCamX, newCamY, newCamZ);
 		}
-	#pragma endregion
+		camera->SetPosition(newCamX, newCamY, newCamZ);
+		render->RotateCamera(newCamX, camera->GetInternalData().model);
+#pragma endregion
 }
 
 void Game::TempInputs(Windows* windows, Shape* shape)
