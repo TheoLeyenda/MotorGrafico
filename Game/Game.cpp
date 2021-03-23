@@ -26,7 +26,7 @@ float b = 0.0f;
 float a = 1.0f;
 
 bool enableVertexTexture = false;
-float speedCamer = 200.5f;
+float speedCamer = 0.5f;
 float newCamX = 0;
 float newCamY = 0;
 float newCamZ = 0;
@@ -57,7 +57,7 @@ void Game::InitGame()
 	newCamZ = camera->transform.position.z;
 
 	pyramid = new Model3D(render,Pyramid);
-	pyramid->SetPosition(500.0f, 200.0f, -98.0f);
+	pyramid->SetPosition(500.0f, 200.0f, -30.0f);
 	pyramid->SetScale(100.0f, 100.0f, 100.0f);
 }
 
@@ -85,6 +85,7 @@ void Game::UpdateGame(Windows *_window, Renderer *_render, Input *_input)
 	pyramid->Draw();
 
 	TempColorInput(windows, shape1);
+	TempInputs(windows, pyramid);
 
 }
 
@@ -168,7 +169,7 @@ void Game::TempColorInput(Windows* windows, Shape* shape)
 #pragma endregion
 }
 
-void Game::TempInputs(Windows* windows, Shape* shape)
+void Game::TempInputs(Windows* windows, Entity* shape)
 {
 
 	//INPUT DE MOVIMIENTO

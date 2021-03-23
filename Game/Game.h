@@ -19,7 +19,7 @@ public:
 	void UpdateGame(Windows *_window, Renderer *_render, Input *_input) override;
 	void DestroyGame() override;
 
-	void TempInputs(Windows* windows, Shape* shape);
+	void TempInputs(Windows* windows, Entity* shape);
 	void TempInputsPlayer1(Windows* windows, Sprite* sprite);
 	void TempInputsPlayer2(Windows* windows, Sprite* sprite);
 	void TempColorInput(Windows* windows, Shape* shape);
