@@ -66,6 +66,8 @@ void GameBase::DestroyEngine()
 		delete render;
 	if (collisionManager != NULL)
 		delete collisionManager;
+	if (camera != NULL)
+		delete camera;
 }
 
 void GameBase::HandleCamera()

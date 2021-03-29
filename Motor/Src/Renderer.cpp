@@ -196,7 +196,8 @@ void Renderer::SetView()
 
 void Renderer::SetView(glm::vec3 posCamera)
 {
-	_MVP.view = glm::lookAt(posCamera, glm::vec3(0.0f, 0.0f, -1.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+	float frustrum = -1;
+	_MVP.view = glm::lookAt(posCamera, glm::vec3(posCamera.x, posCamera.y, posCamera.z + frustrum), glm::vec3(0.0f, 1.0f, 0.0f));
 }
 
 void Renderer::SetProjection()

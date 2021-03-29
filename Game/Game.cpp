@@ -26,10 +26,20 @@ float b = 0.0f;
 float a = 1.0f;
 
 bool enableVertexTexture = false;
-float speedCamer = 0.5f;
-float newCamX = 0;
-float newCamY = 0;
-float newCamZ = 0;
+
+float speedMovementCamera = 120.0f;
+float speedRotateCamera = 90.0f;
+
+float newPositionCamX = 0;
+float newPositionCamY = 0;
+float newPositionCamZ = 0;
+
+float newRotationCamX = 0;
+float newRotationCamY = 0;
+float newRotationCamZ = 0;
+
+bool useCamera = true;
+bool useModels = true;
 //---------------------//
 
 TypeColorShape typeColorShape = TypeColorShape::SolidColor;
@@ -52,9 +62,13 @@ void Game::InitGame()
 	shape1->SetScale(200.5f, 200.5f, 0.5f);
 	*/
 
-	newCamX = camera->transform.position.x;
-	newCamY = camera->transform.position.y;
-	newCamZ = camera->transform.position.z;
+	newPositionCamX = camera->transform.position.x;
+	newPositionCamY = camera->transform.position.y;
+	newPositionCamZ = camera->transform.position.z;
+
+	newRotationCamX = camera->transform.rotation.x;
+	newRotationCamY = camera->transform.rotation.y;
+	newRotationCamZ = camera->transform.rotation.z;
 
 	pyramid = new Model3D(render,Pyramid);
 	pyramid->SetPosition(300.0f, 200.0f, -30.0f);
@@ -89,10 +103,14 @@ void Game::UpdateGame(Windows *_window, Renderer *_render, Input *_input)
 	pyramid->Draw();
 
 	cube->Draw();
+	if (useCamera)
+		TempInputCamera();
 
-	TempColorInput(windows, shape1);
-	TempInputs(windows, pyramid);
-	TempInputs(windows, cube);
+	if (useModels) 
+	{
+		TempInputs(windows, pyramid);
+		TempInputs(windows, cube);
+	}
 
 }
 
@@ -115,69 +133,129 @@ void Game::DestroyGame()
 void Game::TempColorInput(Windows* windows, Shape* shape)
 {
 	//---------------------//
-	#pragma region COLOR REGION
-	/*
+#pragma region COLOR REGION
 	
-		if (input->GetKey(KeyBoard::KEY_ENTER))
-		{
-			r = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
-			g = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
-			b = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
-			shape->SetSolidColor(r, g, b);
-		}
+	if (input->GetKey(KeyBoard::KEY_ENTER))
+	{
+		r = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
+		g = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
+		b = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
+		shape->SetSolidColor(r, g, b);
+	}
 	
-		if (input->GetKey(KeyBoard::KEY_KP_0))
-		{
-			typeColorShape = TypeColorShape::SolidColor;
-			if (shape->GetCurrentShape() == TypeShape::TRIANGLE) {
-				shape->SetShape(TypeShape::TRIANGLE, typeColorShape);
-				shape->SetVertexsAttribShape(TypeMaterial::Color);
-			}
-			else if (shape->GetCurrentShape() == TypeShape::QUAD)
-			{
-				shape->SetShape(TypeShape::QUAD, typeColorShape);
-				shape->SetVertexsAttribShape(TypeMaterial::Color);
-			}
+	if (input->GetKey(KeyBoard::KEY_KP_0))
+	{
+		typeColorShape = TypeColorShape::SolidColor;
+		if (shape->GetCurrentShape() == TypeShape::TRIANGLE) {
+			shape->SetShape(TypeShape::TRIANGLE, typeColorShape);
+			shape->SetVertexsAttribShape(TypeMaterial::Color);
 		}
-		if (input->GetKey(KeyBoard::KEY_KP_ENTER))
+		else if (shape->GetCurrentShape() == TypeShape::QUAD)
 		{
-			typeColorShape = TypeColorShape::VertexColor;
-			if (shape->GetCurrentShape() == TypeShape::TRIANGLE) {
-				shape->SetShape(TypeShape::TRIANGLE, typeColorShape);
-				shape->SetVertexsAttribShape(TypeMaterial::Color);
-			}
-			else if (shape->GetCurrentShape() == TypeShape::QUAD)
-			{
-				shape->SetShape(TypeShape::QUAD, typeColorShape);
-				shape->SetVertexsAttribShape(TypeMaterial::Color);
-			}
+			shape->SetShape(TypeShape::QUAD, typeColorShape);
+			shape->SetVertexsAttribShape(TypeMaterial::Color);
 		}
-	*/
-	#pragma endregion
+	}
+	if (input->GetKey(KeyBoard::KEY_KP_ENTER))
+	{
+		typeColorShape = TypeColorShape::VertexColor;
+		if (shape->GetCurrentShape() == TypeShape::TRIANGLE) {
+			shape->SetShape(TypeShape::TRIANGLE, typeColorShape);
+			shape->SetVertexsAttribShape(TypeMaterial::Color);
+		}
+		else if (shape->GetCurrentShape() == TypeShape::QUAD)
+		{
+			shape->SetShape(TypeShape::QUAD, typeColorShape);
+			shape->SetVertexsAttribShape(TypeMaterial::Color);
+		}
+	}
+#pragma endregion
 
-	#pragma region CAMERA MOVE
-		if (input->GetKey(KeyBoard::KEY_UP))
-		{
-			newCamZ += speedCamer * timeClock.deltaTime();
-		}
-		if (input->GetKey(KeyBoard::KEY_DOWN))
-		{
-			newCamZ -= speedCamer * timeClock.deltaTime();
-		}
-		if (input->GetKey(KeyBoard::KEY_LEFT))
-		{
-			//newCamX -= speedCamer * timeClock.deltaTime();
-			//camera->SetPosition(newCamX, newCamY, newCamZ);
-			newCamX -= speedCamer * timeClock.deltaTime();
-		}
-		if (input->GetKey(KeyBoard::KEY_RIGHT))
-		{
-			//newCamX += speedCamer * timeClock.deltaTime();
-			//camera->SetPosition(newCamX, newCamY, newCamZ);
-			newCamX += speedCamer * timeClock.deltaTime();
-		}
-		camera->SetPosition(newCamX, newCamY, newCamZ);
-		render->RotateCamera(newCamX, camera->GetInternalData().model);
+	
+}
+
+void Game::TempInputCamera()
+{
+#pragma region CAMERA MOVE
+
+	//INPUTS
+	KeyBoard moveUpCamera = KeyBoard::KEY_W;
+	KeyBoard moveDownCamera = KeyBoard::KEY_S;
+	KeyBoard moveLeftCamera = KeyBoard::KEY_A;
+	KeyBoard moveRightCamera = KeyBoard::KEY_D;
+	KeyBoard moveForwardCamera = KeyBoard::KEY_UP;
+	KeyBoard moveBackCamera = KeyBoard::KEY_DOWN;
+
+	KeyBoard z_rotateLeft = KeyBoard::KEY_KP_7;
+	KeyBoard z_rotateRight = KeyBoard::KEY_KP_9;
+	KeyBoard y_rotateLeft = KeyBoard::KEY_KP_1;
+	KeyBoard y_rotateRight = KeyBoard::KEY_KP_3;
+	KeyBoard x_rotateLeft = KeyBoard::KEY_KP_8;
+	KeyBoard x_rotateRight = KeyBoard::KEY_KP_2;
+
+
+	//TRASLACION
+	if (input->GetKey(moveUpCamera))
+	{
+		newPositionCamY += speedMovementCamera * timeClock.deltaTime();
+	}
+	if (input->GetKey(moveDownCamera))
+	{
+		newPositionCamY -= speedMovementCamera * timeClock.deltaTime();
+	}
+	if (input->GetKey(moveLeftCamera))
+	{
+		newPositionCamX -= speedMovementCamera * timeClock.deltaTime();
+	}
+	if (input->GetKey(moveRightCamera))
+	{
+		newPositionCamX += speedMovementCamera * timeClock.deltaTime();
+	}
+	if (input->GetKey(moveForwardCamera)) 
+	{
+		newPositionCamZ += speedMovementCamera * timeClock.deltaTime();
+	}
+	if (input->GetKey(moveBackCamera)) 
+	{
+		newPositionCamZ -= speedMovementCamera * timeClock.deltaTime();
+	}
+
+	//ROTACION
+	if (input->GetKey(z_rotateLeft))
+	{
+		newRotationCamZ += speedRotateCamera * timeClock.deltaTime();
+	}
+	if (input->GetKey(z_rotateRight))
+	{
+		newRotationCamZ -= speedRotateCamera * timeClock.deltaTime();
+	}
+	if (input->GetKey(y_rotateLeft))
+	{
+		newRotationCamY += speedRotateCamera * timeClock.deltaTime();
+	}
+	if (input->GetKey(y_rotateRight))
+	{
+		newRotationCamY -= speedRotateCamera * timeClock.deltaTime();
+	}
+	if (input->GetKey(x_rotateLeft))
+	{
+		newRotationCamX += speedRotateCamera * timeClock.deltaTime();
+	}
+	if (input->GetKey(x_rotateRight))
+	{
+		newRotationCamX -= speedRotateCamera * timeClock.deltaTime();
+	}
+
+	//MANEJO DE DATOS
+	camera->SetRotationX(newRotationCamX);
+	camera->SetRotationY(newRotationCamY);
+	camera->SetRotationZ(newRotationCamZ);
+
+	camera->SetPosition(newPositionCamX, newPositionCamY, newPositionCamZ);
+	
+	render->SetView(camera->transform.position);
+	render->RotateCamera(newRotationCamZ, camera->GetInternalData().model);
+	
 #pragma endregion
 }
 
@@ -185,20 +263,20 @@ void Game::TempInputs(Windows* windows, Entity* shape)
 {
 
 	//INPUT DE MOVIMIENTO
-	if (input->GetKey(KeyBoard::KEY_W))
+	if (input->GetKey(KeyBoard::KEY_T))
 	{
 		shape->SetPosition(shape->transform.position.x, shape->transform.position.y + speed, shape->transform.position.z);
 
 	}
-	if (input->GetKey(KeyBoard::KEY_S))
+	if (input->GetKey(KeyBoard::KEY_G))
 	{
 		shape->SetPosition(shape->transform.position.x, shape->transform.position.y - speed, shape->transform.position.z);
 	}
-	if (input->GetKey(KeyBoard::KEY_D))
+	if (input->GetKey(KeyBoard::KEY_H))
 	{
 		shape->SetPosition(shape->transform.position.x + speed, shape->transform.position.y, shape->transform.position.z);
 	}
-	if (input->GetKey(KeyBoard::KEY_A))
+	if (input->GetKey(KeyBoard::KEY_F))
 	{
 		shape->SetPosition(shape->transform.position.x - speed, shape->transform.position.y, shape->transform.position.z);
 
@@ -206,40 +284,40 @@ void Game::TempInputs(Windows* windows, Entity* shape)
 	//-------------------//
 
 	//INPUT DE ROTACION
-	if (input->GetKey(KeyBoard::KEY_KP_4))
+	if (input->GetKey(KeyBoard::KEY_I))
 	{
 		shape->SetRotationZ(shape->transform.rotation.z + speedRotation);
 	}
-	if (input->GetKey(KeyBoard::KEY_KP_6))
+	if (input->GetKey(KeyBoard::KEY_O))
 	{
 		shape->SetRotationZ(shape->transform.rotation.z - speedRotation);
 	}
 
-	if (input->GetKey(KeyBoard::KEY_KP_1))
+	if (input->GetKey(KeyBoard::KEY_K))
 	{
 		shape->SetRotationY(shape->transform.rotation.y + speedRotation);
 	}
-	if (input->GetKey(KeyBoard::KEY_KP_3))
+	if (input->GetKey(KeyBoard::KEY_L))
 	{
 		shape->SetRotationY(shape->transform.rotation.y - speedRotation);
 	}
 
-	if (input->GetKey(KeyBoard::KEY_KP_7))
+	if (input->GetKey(KeyBoard::KEY_N))
 	{
 		shape->SetRotationX(shape->transform.rotation.x + speedRotation);
 	}
-	if (input->GetKey(KeyBoard::KEY_KP_9))
+	if (input->GetKey(KeyBoard::KEY_M))
 	{
 		shape->SetRotationX(shape->transform.rotation.x - speedRotation);
 	}
 	//------------------//
 
 	//INPUT DE ESCALA
-	if (input->GetKey(KeyBoard::KEY_KP_8))
+	if (input->GetKey(KeyBoard::KEY_9))
 	{
 		shape->SetScale(shape->transform.scale.x + speedScale, shape->transform.scale.y + speedScale, shape->transform.scale.z + speedScale);
 	}
-	if (input->GetKey(KeyBoard::KEY_KP_2))
+	if (input->GetKey(KeyBoard::KEY_0))
 	{
 		shape->SetScale(shape->transform.scale.x - speedScale, shape->transform.scale.y - speedScale, shape->transform.scale.z - speedScale);
 	}
@@ -247,30 +325,28 @@ void Game::TempInputs(Windows* windows, Entity* shape)
 
 void Game::TempInputsPlayer1(Windows* windows, Sprite* sprite)
 {
-	/*
 	//INPUT DE MOVIMIENTO
 	if (input->GetKey(KeyBoard::KEY_W))
 	{
 		sprite->SetPosition(sprite->transform.position.x, sprite->transform.position.y + speed, sprite->transform.position.z);
-		player->SetCurrentAnimationIndex(0);
+		sprite->SetCurrentAnimationIndex(0);
 	}
 	if (input->GetKey(KeyBoard::KEY_S))
 	{
 		sprite->SetPosition(sprite->transform.position.x, sprite->transform.position.y - speed, sprite->transform.position.z);
-		player->SetCurrentAnimationIndex(3);
+		sprite->SetCurrentAnimationIndex(3);
 	}
 	if (input->GetKey(KeyBoard::KEY_D))
 	{
 		sprite->SetPosition(sprite->transform.position.x + speed, sprite->transform.position.y, sprite->transform.position.z);
-		player->SetCurrentAnimationIndex(1);
+		sprite->SetCurrentAnimationIndex(1);
 	}
 	if (input->GetKey(KeyBoard::KEY_A))
 	{
 		sprite->SetPosition(sprite->transform.position.x - speed, sprite->transform.position.y, sprite->transform.position.z);
-		player->SetCurrentAnimationIndex(2);
+		sprite->SetCurrentAnimationIndex(2);
 	}
 	//-------------------//
-	*/
 
 	//INPUT DE ROTACION
 	if (input->GetKey(KeyBoard::KEY_KP_4))
@@ -314,30 +390,28 @@ void Game::TempInputsPlayer1(Windows* windows, Sprite* sprite)
 
 void Game::TempInputsPlayer2(Windows * windows, Sprite * sprite)
 {
-	/*
 	//INPUT DE MOVIMIENTO
 	if (input->GetKey(KeyBoard::KEY_UP))
 	{
 		sprite->SetPosition(sprite->transform.position.x, sprite->transform.position.y + speed, sprite->transform.position.z);
-		player2->SetCurrentAnimationIndex(0);
+		sprite->SetCurrentAnimationIndex(0);
 	}
 	if (input->GetKey(KeyBoard::KEY_DOWN))
 	{
 		sprite->SetPosition(sprite->transform.position.x, sprite->transform.position.y - speed, sprite->transform.position.z);
-		player2->SetCurrentAnimationIndex(3);
+		sprite->SetCurrentAnimationIndex(3);
 	}
 	if (input->GetKey(KeyBoard::KEY_RIGHT))
 	{
 		sprite->SetPosition(sprite->transform.position.x + speed, sprite->transform.position.y, sprite->transform.position.z);
-		player2->SetCurrentAnimationIndex(1);
+		sprite->SetCurrentAnimationIndex(1);
 	}
 	if (input->GetKey(KeyBoard::KEY_LEFT))
 	{
 		sprite->SetPosition(sprite->transform.position.x - speed, sprite->transform.position.y, sprite->transform.position.z);
-		player2->SetCurrentAnimationIndex(2);
+		sprite->SetCurrentAnimationIndex(2);
 	}
 	//-------------------//
-	*/
 	//INPUT DE ROTACION
 	if (input->GetKey(KeyBoard::KEY_KP_4))
 	{
