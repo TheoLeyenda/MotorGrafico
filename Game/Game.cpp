@@ -57,8 +57,12 @@ void Game::InitGame()
 	newCamZ = camera->transform.position.z;
 
 	pyramid = new Model3D(render,Pyramid);
-	pyramid->SetPosition(500.0f, 200.0f, -30.0f);
+	pyramid->SetPosition(300.0f, 200.0f, -30.0f);
 	pyramid->SetScale(100.0f, 100.0f, 100.0f);
+
+	cube = new Model3D(render, Cube);
+	cube->SetPosition(900.0f, 200.0f, -30.0f);
+	cube->SetScale(100.0f, 100.0f, 100.0f);
 }
 
 void Game::UpdateGame(Windows *_window, Renderer *_render, Input *_input)
@@ -84,18 +88,26 @@ void Game::UpdateGame(Windows *_window, Renderer *_render, Input *_input)
 	*/
 	pyramid->Draw();
 
+	cube->Draw();
+
 	TempColorInput(windows, shape1);
 	TempInputs(windows, pyramid);
+	TempInputs(windows, cube);
 
 }
 
 void Game::DestroyGame()
 {
 	//---------------------//
+#pragma region MOTOR 2D
 	if (shape1 != NULL)
 		delete shape1;
 	if (shape2 != NULL)
 		delete shape2;
+#pragma endregion
+
+	if (cube != NULL)
+		delete cube;
 	if (pyramid != NULL)
 		delete pyramid;
 	//---------------------//
