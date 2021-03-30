@@ -13,7 +13,7 @@ int GameBase::InitEngine()
 	windows = new Windows(1080, 680, "MOTORASO");
 	render = new Renderer();
 	input = new Input(windows->GetWindowsPtr());
-	camera = new Entity(render);
+	camera = new Camera(render);
 	collisionManager = new CollisionManager();
 	if (!initGLFW || windows == NULL)
 		return INIT_ERROR;
@@ -26,10 +26,14 @@ int GameBase::InitEngine()
 	glEnable(GL_DEPTH_TEST);
 
 	render->SetProjection();
+
+
 	camera->SetPosition(0.0f, 0.0f, 1.0f);
 	camera->SetScale(0.4f, 0.4f, 1.0f);
-	render->SetView(camera->transform.position);
-
+	
+	camera->InitCamera(camera->transform.position, glm::vec3(0.0f, 1.0f, 0.0f), -90, 0);
+	
+	render->SetView(camera);
 	
 	render->drawCamera(render->GetShaderColor(),camera->GetInternalData().model);
 
@@ -72,7 +76,7 @@ void GameBase::DestroyEngine()
 
 void GameBase::HandleCamera()
 {
-	render->SetView(camera->transform.position);
+	render->SetView(camera);
 	render->drawCamera(render->GetShaderColor(), camera->GetInternalData().model);
 	render->drawCamera(render->GetShaderTexture(), camera->GetInternalData().model);
 }

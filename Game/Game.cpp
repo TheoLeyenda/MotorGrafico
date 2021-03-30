@@ -27,16 +27,12 @@ float a = 1.0f;
 
 bool enableVertexTexture = false;
 
-float speedMovementCamera = 120.0f;
+float speedMovementCamera = 250.0f;
 float speedRotateCamera = 90.0f;
 
 float newPositionCamX = 0;
 float newPositionCamY = 0;
 float newPositionCamZ = 0;
-
-float newRotationCamX = 0;
-float newRotationCamY = 0;
-float newRotationCamZ = 0;
 
 bool useCamera = true;
 bool useModels = true;
@@ -64,18 +60,20 @@ void Game::InitGame()
 
 	newPositionCamX = camera->transform.position.x;
 	newPositionCamY = camera->transform.position.y;
-	newPositionCamZ = camera->transform.position.z;
-
-	newRotationCamX = camera->transform.rotation.x;
-	newRotationCamY = camera->transform.rotation.y;
-	newRotationCamZ = camera->transform.rotation.z;
+	newPositionCamZ = camera->transform.position.z + 55;
 
 	pyramid = new Model3D(render,Pyramid);
 	pyramid->SetPosition(300.0f, 200.0f, -30.0f);
+	pyramid->SetRotationZ(50);
+	pyramid->SetRotationX(60);
+	pyramid->SetRotationZ(45);
 	pyramid->SetScale(100.0f, 100.0f, 100.0f);
 
 	cube = new Model3D(render, Cube);
 	cube->SetPosition(900.0f, 200.0f, -30.0f);
+	cube->SetRotationZ(50);
+	cube->SetRotationX(60);
+	cube->SetRotationZ(45);
 	cube->SetScale(100.0f, 100.0f, 100.0f);
 }
 
@@ -177,7 +175,7 @@ void Game::TempColorInput(Windows* windows, Shape* shape)
 void Game::TempInputCamera()
 {
 #pragma region CAMERA MOVE
-
+	float speed = 0;
 	//INPUTS
 	KeyBoard moveUpCamera = KeyBoard::KEY_W;
 	KeyBoard moveDownCamera = KeyBoard::KEY_S;
@@ -186,10 +184,9 @@ void Game::TempInputCamera()
 	KeyBoard moveForwardCamera = KeyBoard::KEY_UP;
 	KeyBoard moveBackCamera = KeyBoard::KEY_DOWN;
 
-	KeyBoard z_rotateLeft = KeyBoard::KEY_KP_7;
-	KeyBoard z_rotateRight = KeyBoard::KEY_KP_9;
-	KeyBoard y_rotateLeft = KeyBoard::KEY_KP_1;
-	KeyBoard y_rotateRight = KeyBoard::KEY_KP_3;
+	//ROTACION EN Z NO DISPONIBLE AUN.
+	KeyBoard y_rotateLeft = KeyBoard::KEY_KP_4;
+	KeyBoard y_rotateRight = KeyBoard::KEY_KP_6;
 	KeyBoard x_rotateLeft = KeyBoard::KEY_KP_8;
 	KeyBoard x_rotateRight = KeyBoard::KEY_KP_2;
 
@@ -221,40 +218,33 @@ void Game::TempInputCamera()
 	}
 
 	//ROTACION
-	if (input->GetKey(z_rotateLeft))
-	{
-		newRotationCamZ += speedRotateCamera * timeClock.deltaTime();
-	}
-	if (input->GetKey(z_rotateRight))
-	{
-		newRotationCamZ -= speedRotateCamera * timeClock.deltaTime();
-	}
 	if (input->GetKey(y_rotateLeft))
 	{
-		newRotationCamY += speedRotateCamera * timeClock.deltaTime();
+		speed = speedRotateCamera * timeClock.deltaTime();
+		camera->RotateCameraY(speed);
 	}
 	if (input->GetKey(y_rotateRight))
 	{
-		newRotationCamY -= speedRotateCamera * timeClock.deltaTime();
+		speed = speedRotateCamera * timeClock.deltaTime();
+		camera->RotateCameraY(-speed);
 	}
 	if (input->GetKey(x_rotateLeft))
 	{
-		newRotationCamX += speedRotateCamera * timeClock.deltaTime();
+		speed = speedRotateCamera * timeClock.deltaTime();
+		camera->RotateCameraX(speed);
+
 	}
 	if (input->GetKey(x_rotateRight))
 	{
-		newRotationCamX -= speedRotateCamera * timeClock.deltaTime();
+		speed = speedRotateCamera * timeClock.deltaTime();
+		camera->RotateCameraX(-speed);
 	}
 
 	//MANEJO DE DATOS
-	camera->SetRotationX(newRotationCamX);
-	camera->SetRotationY(newRotationCamY);
-	camera->SetRotationZ(newRotationCamZ);
-
 	camera->SetPosition(newPositionCamX, newPositionCamY, newPositionCamZ);
-	
-	render->SetView(camera->transform.position);
-	render->RotateCamera(newRotationCamZ, camera->GetInternalData().model);
+
+	render->SetView(camera);
+	//render->RotateCamera(newRotationCamZ, camera->GetInternalData().model);
 	
 #pragma endregion
 }

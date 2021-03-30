@@ -12,6 +12,7 @@
 #include "Sprite.h"
 #include "Timer.h"
 #include "CollisionManager.h"
+#include "Camera.h"
 
 #define INIT_ERROR -1
 
@@ -22,7 +23,7 @@ protected:
 	Input* input;
 	CollisionManager* collisionManager;
 	Time timeClock;
-	Entity* camera;
+	Camera* camera;
 public:
 	GameBase();
 	~GameBase();
@@ -35,8 +36,6 @@ public:
 	virtual void InitGame() = 0; //Inicializa todos las variables del juego.
 	virtual void UpdateGame(Windows *_window, Renderer *_render, Input *_input) = 0; //Update del juego
 	virtual void DestroyGame() = 0; //Funcion que se debe llamar al finalizar el juego (Destruye correctamente todos las funciones internas del juego)
-
-	
 
 	Time& GetTimeClock();
 	CollisionManager* GetCollisionManager() { return collisionManager; }

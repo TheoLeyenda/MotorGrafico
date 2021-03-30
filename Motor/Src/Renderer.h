@@ -6,12 +6,10 @@
 #include "PrivateClass/Export.h"
 #include "Windows.h"
 #include <iostream>
-
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include "shader.h"
-
 #include <string>
 
 struct matrixMVP
@@ -24,6 +22,9 @@ static enum TypeShader
 	FragmentTexture,
 	FragmentColor,
 };
+
+
+class Camera;
 
 const float toRadians = 3.14159265f / 180;
 
@@ -63,11 +64,10 @@ public:
 	void BindBufferModel(unsigned int vbo, unsigned int ibo, unsigned int posAtt, unsigned int colAtt);
 	void UnbindBuffer();
 
-	void SetView();
-	void SetView(glm::vec3 posCamera);
+	void SetView(Camera* _camera);
 	void SetProjection();
-	void RotateCamera(float rotateVal,glm::mat4 trsCamera);
 	void drawCamera(Shader& shader, glm::mat4 trsCamera);
+
 	//=====================
 	void BindBufferSprite(unsigned int vbo);
 	//=====================

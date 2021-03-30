@@ -3,11 +3,12 @@
 
 #include <glew.h>
 #include <GLFW/glfw3.h>
-
 #include <string>
 #include <fstream>
 #include <sstream>
 #include "CompilationController.h"
+
+#include "Camera.h"
 
 Renderer::Renderer() {
 	_MVP.view = glm::mat4(1.0f);
@@ -189,15 +190,9 @@ void Renderer::UnbindBuffer() {
 	glUseProgram(0);
 }
 
-void Renderer::SetView()
+void Renderer::SetView(Camera * _camera)
 {
-	_MVP.view = glm::lookAt(glm::vec3(0.0f, 0.0f, 1.0f), glm::vec3(0.0f, 0.0f, -1.0f), glm::vec3(0.0f, 1.0f, 0.0f));
-}
-
-void Renderer::SetView(glm::vec3 posCamera)
-{
-	float frustrum = -1;
-	_MVP.view = glm::lookAt(posCamera, glm::vec3(posCamera.x, posCamera.y, posCamera.z + frustrum), glm::vec3(0.0f, 1.0f, 0.0f));
+	_MVP.view = _camera->CalculateViewMatrix();
 }
 
 void Renderer::SetProjection()
@@ -205,11 +200,6 @@ void Renderer::SetProjection()
 	_MVP.projection = glm::ortho(0.0f, 1080.0f, 0.0f, 680.0f, -100.0f, 1000.0f);
 	//                               FOV              Aspect      near  front
 	//_MVP.projection = glm::perspective(glm::radians(90.0f), 1080.0f / 680.0f, -1.0f, 100.0f);
-}
-
-void Renderer::RotateCamera(float rotateVal,glm::mat4 trsCamera)
-{
-	trsCamera = glm::rotate(trsCamera, rotateVal * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 }
 
 void Renderer::drawCamera(Shader& shader, glm::mat4 trsCamera)
