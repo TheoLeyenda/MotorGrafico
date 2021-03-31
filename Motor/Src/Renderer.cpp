@@ -197,9 +197,9 @@ void Renderer::SetView(Camera * _camera)
 
 void Renderer::SetProjection()
 {
-	_MVP.projection = glm::ortho(0.0f, 1080.0f, 0.0f, 680.0f, -100.0f, 1000.0f);
+	//_MVP.projection = glm::ortho(0.0f, 1080.0f, 0.0f, 680.0f, -100.0f, 1000.0f);
 	//                               FOV              Aspect      near  front
-	//_MVP.projection = glm::perspective(glm::radians(90.0f), 1080.0f / 680.0f, -1.0f, 100.0f);
+	_MVP.projection = glm::perspective(90.0f, 1080.0f / 680.0f, 0.1f, 1000.0f);
 }
 
 void Renderer::drawCamera(Shader& shader, glm::mat4 trsCamera)

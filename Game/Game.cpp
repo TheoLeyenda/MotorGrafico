@@ -63,18 +63,18 @@ void Game::InitGame()
 	newPositionCamZ = camera->transform.position.z + 55;
 
 	pyramid = new Model3D(render,Pyramid);
-	pyramid->SetPosition(300.0f, 200.0f, -30.0f);
-	pyramid->SetRotationZ(50);
-	pyramid->SetRotationX(60);
-	pyramid->SetRotationZ(45);
-	pyramid->SetScale(100.0f, 100.0f, 100.0f);
+	pyramid->SetPosition(300.0f, 200.0f, -50.0f);
+	//pyramid->SetRotationZ(50);
+	//pyramid->SetRotationX(60);
+	//pyramid->SetRotationZ(45);
+	pyramid->SetScale(50.0f, 50.0f, 50.0f);
 
 	cube = new Model3D(render, Cube);
-	cube->SetPosition(900.0f, 200.0f, -30.0f);
-	cube->SetRotationZ(50);
-	cube->SetRotationX(60);
-	cube->SetRotationZ(45);
-	cube->SetScale(100.0f, 100.0f, 100.0f);
+	cube->SetPosition(300.0f, 100.0f, -50.0f);
+	//cube->SetRotationZ(50);
+	//cube->SetRotationX(60);
+	//cube->SetRotationZ(45);
+	cube->SetScale(50.0f, 50.0f, 10.0f);
 }
 
 void Game::UpdateGame(Windows *_window, Renderer *_render, Input *_input)

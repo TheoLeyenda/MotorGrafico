@@ -28,7 +28,7 @@ int GameBase::InitEngine()
 	render->SetProjection();
 
 
-	camera->SetPosition(0.0f, 0.0f, 1.0f);
+	camera->SetPosition(300.0f, 0.0f, 1.0f);
 	camera->SetScale(0.4f, 0.4f, 1.0f);
 	
 	camera->InitCamera(camera->transform.position, glm::vec3(0.0f, 1.0f, 0.0f), -90, 0);
