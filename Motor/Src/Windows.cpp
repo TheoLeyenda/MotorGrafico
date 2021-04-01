@@ -8,11 +8,13 @@ GLFWwindow* RefWindow;
 Windows::Windows()
 {
 	RefWindow = glfwCreateWindow(640, 480, "Hello World", NULL, NULL);
+	SetSize(640, 480);
 }
 //============================================
 Windows::Windows(int x, int y, const char* name)
 {
 	RefWindow = glfwCreateWindow(x, y, name, NULL, NULL);
+	SetSize(x, y);
 }
 //============================================
 Windows::~Windows()

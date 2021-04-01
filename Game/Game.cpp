@@ -34,6 +34,7 @@ float newPositionCamX = 0;
 float newPositionCamY = 0;
 float newPositionCamZ = 0;
 
+bool ortho = false;
 bool useCamera = true;
 bool useModels = true;
 //---------------------//
@@ -63,7 +64,7 @@ void Game::InitGame()
 	newPositionCamZ = camera->transform.position.z + 55;
 
 	pyramid = new Model3D(render,Pyramid);
-	pyramid->SetPosition(300.0f, 200.0f, -50.0f);
+	pyramid->SetPosition(300.0f, 250.0f, -50.0f);
 	//pyramid->SetRotationZ(50);
 	//pyramid->SetRotationX(60);
 	//pyramid->SetRotationZ(45);
@@ -74,7 +75,7 @@ void Game::InitGame()
 	//cube->SetRotationZ(50);
 	//cube->SetRotationX(60);
 	//cube->SetRotationZ(45);
-	cube->SetScale(50.0f, 50.0f, 10.0f);
+	cube->SetScale(50.0f, 50.0f, 50.0f);
 }
 
 void Game::UpdateGame(Windows *_window, Renderer *_render, Input *_input)
@@ -215,6 +216,15 @@ void Game::TempInputCamera()
 	if (input->GetKey(moveBackCamera)) 
 	{
 		newPositionCamZ -= speedMovementCamera * timeClock.deltaTime();
+	}
+
+	if (input->GetKey(KeyBoard::KEY_LEFT)) 
+	{
+		camera->ChangePerspective(TypeProjectionCamera::Ortho);	
+	}
+	if (input->GetKey(KeyBoard::KEY_RIGHT)) 
+	{
+		camera->ChangePerspective(TypeProjectionCamera::Perspective);
 	}
 
 	//ROTACION

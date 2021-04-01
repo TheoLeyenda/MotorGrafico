@@ -23,7 +23,6 @@ static enum TypeShader
 	FragmentColor,
 };
 
-
 class Camera;
 
 const float toRadians = 3.14159265f / 180;
@@ -65,7 +64,8 @@ public:
 	void UnbindBuffer();
 
 	void SetView(Camera* _camera);
-	void SetProjection();
+	void SetProjectionPerspective(float FOV, float aspect, float near, float front);
+	void SetProjectionOrtho(float left, float right, float bottom, float top, float near, float front);
 	void drawCamera(Shader& shader, glm::mat4 trsCamera);
 
 	//=====================

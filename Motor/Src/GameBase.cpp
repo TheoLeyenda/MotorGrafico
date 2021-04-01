@@ -13,7 +13,7 @@ int GameBase::InitEngine()
 	windows = new Windows(1080, 680, "MOTORASO");
 	render = new Renderer();
 	input = new Input(windows->GetWindowsPtr());
-	camera = new Camera(render);
+	camera = new Camera(render, TypeProjectionCamera::Ortho);
 	collisionManager = new CollisionManager();
 	if (!initGLFW || windows == NULL)
 		return INIT_ERROR;
@@ -25,12 +25,15 @@ int GameBase::InitEngine()
 
 	glEnable(GL_DEPTH_TEST);
 
-	render->SetProjection();
+	//SETEO LA DATA DE VISTA DE LA CAMARA
+	camera->SetDataOrtho(0.0f, windows->GetSizeX(), 0.0f, windows->GetSizeY(), -100.0f, 1000.0f);
+	camera->SetDataPerspective(90.0f, windows->GetSizeX(), windows->GetSizeY(), 0.1f, 1000.0f);
+	camera->UseProjection();
 
-
-	camera->SetPosition(300.0f, 0.0f, 1.0f);
-	camera->SetScale(0.4f, 0.4f, 1.0f);
+	//SETEO POSICION DE LA CAMARA
+	camera->SetPosition(300.0f, 100.0f, 200.0f);
 	
+	//INICIALIZO LA CAMARA PARA PODER UTILIZARLA
 	camera->InitCamera(camera->transform.position, glm::vec3(0.0f, 1.0f, 0.0f), -90, 0);
 	
 	render->SetView(camera);

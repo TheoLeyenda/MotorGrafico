@@ -195,11 +195,15 @@ void Renderer::SetView(Camera * _camera)
 	_MVP.view = _camera->CalculateViewMatrix();
 }
 
-void Renderer::SetProjection()
+void Renderer::SetProjectionPerspective(float FOV, float aspect, float near, float front)
 {
-	//_MVP.projection = glm::ortho(0.0f, 1080.0f, 0.0f, 680.0f, -100.0f, 1000.0f);
-	//                               FOV              Aspect      near  front
-	_MVP.projection = glm::perspective(90.0f, 1080.0f / 680.0f, 0.1f, 1000.0f);
+	 //                                      FOV          Aspect  near   front
+	_MVP.projection = glm::perspective(glm::radians(FOV), aspect, near, front);
+}
+
+void Renderer::SetProjectionOrtho(float left, float right, float bottom, float top, float near, float front)
+{
+	_MVP.projection = glm::ortho(left, right, bottom, top, near, front);
 }
 
 void Renderer::drawCamera(Shader& shader, glm::mat4 trsCamera)
