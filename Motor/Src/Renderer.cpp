@@ -9,7 +9,7 @@
 #include "CompilationController.h"
 
 #include "Camera.h"
-
+#include "Light.h"
 Renderer::Renderer() {
 	_MVP.view = glm::mat4(1.0f);
 	_MVP.projection = glm::mat4(1.0f);
@@ -204,6 +204,25 @@ void Renderer::SetProjectionPerspective(float FOV, float aspect, float near, flo
 void Renderer::SetProjectionOrtho(float left, float right, float bottom, float top, float near, float front)
 {
 	_MVP.projection = glm::ortho(left, right, bottom, top, near, front);
+}
+
+void Renderer::SetLighting(Light * _light)
+{
+	_light->SetAmbientColourShaderColor(GetShaderColor());
+	_light->SetAmbientIntensityShaderColor(GetShaderColor());
+	_light->SetAmbientColourShaderTexture(GetShaderTexture());
+	_light->SetAmbientColourShaderTexture(GetShaderTexture());
+}
+
+void Renderer::DrawLighting(Light * _light)
+{
+	if (_light != NULL)
+	{
+		SetLighting(_light);
+
+		_light->UseLight(_light->GetAmbientIntensityLocationShaderColor(), _light->GetAmbientColorLocationShaderColor());
+		_light->UseLight(_light->GetAmbientIntensityLocationShaderTexture(), _light->GetAmbientColorLocationShaderTexture());
+	}
 }
 
 void Renderer::drawCamera(Shader& shader, glm::mat4 trsCamera)

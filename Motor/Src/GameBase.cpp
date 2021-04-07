@@ -15,6 +15,7 @@ int GameBase::InitEngine()
 	input = new Input(windows->GetWindowsPtr());
 	camera = new Camera(render, TypeProjectionCamera::Ortho);
 	collisionManager = new CollisionManager();
+	light = new Light(render,1.0f, 1.0f, 1.0f, 1.0f);
 	if (!initGLFW || windows == NULL)
 		return INIT_ERROR;
 
@@ -22,6 +23,8 @@ int GameBase::InitEngine()
 	windows->CreateContextWindows();
 	render->GLEWInit();
 	render->SetShader();
+
+	render->SetLighting(light);
 
 	glEnable(GL_DEPTH_TEST);
 
@@ -52,6 +55,7 @@ void GameBase::UpdateEngine()
 		timeClock.tick();
 		//---------------------//
 		HandleCamera();
+		HandleLight();
 		//---------------------//
 		UpdateGame(windows, render, input);
 		//---------------------//	
@@ -75,13 +79,26 @@ void GameBase::DestroyEngine()
 		delete collisionManager;
 	if (camera != NULL)
 		delete camera;
+	if (light != NULL)
+		delete light;
 }
 
 void GameBase::HandleCamera()
 {
 	render->SetView(camera);
 	render->drawCamera(render->GetShaderColor(), camera->GetInternalData().model);
-	render->drawCamera(render->GetShaderTexture(), camera->GetInternalData().model);
+
+	//HACER UN FRAGMENT SHADER QUE CONTENGA EL COLOR Y LA TEXTURA.
+
+	//render->drawCamera(render->GetShaderTexture(), camera->GetInternalData().model);
+}
+
+void GameBase::HandleLight()
+{
+	if (light != NULL)
+	{
+		render->DrawLighting(light);
+	}
 }
 
 Time& GameBase::GetTimeClock()

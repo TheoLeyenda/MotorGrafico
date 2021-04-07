@@ -13,6 +13,7 @@
 #include "Timer.h"
 #include "CollisionManager.h"
 #include "Camera.h"
+#include "Light.h"
 
 #define INIT_ERROR -1
 
@@ -24,6 +25,7 @@ protected:
 	CollisionManager* collisionManager;
 	Time timeClock;
 	Camera* camera;
+	Light* light;
 public:
 	GameBase();
 	~GameBase();
@@ -32,6 +34,7 @@ public:
 	void UpdateEngine();
 	void DestroyEngine();
 	void HandleCamera();
+	void HandleLight();
 
 	virtual void InitGame() = 0; //Inicializa todos las variables del juego.
 	virtual void UpdateGame(Windows *_window, Renderer *_render, Input *_input) = 0; //Update del juego
