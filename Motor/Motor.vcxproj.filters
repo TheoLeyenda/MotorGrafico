@@ -87,6 +87,9 @@
     <ClInclude Include="Src\Light.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
+    <ClInclude Include="Src\MyMathLibrary.h">
+      <Filter>Archivos de encabezado</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Src\GameBase.cpp">
@@ -144,6 +147,9 @@
       <Filter>Archivos de origen</Filter>
     </ClCompile>
     <ClCompile Include="Src\Light.cpp">
+      <Filter>Archivos de origen</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\MyMathLibrary.cpp">
       <Filter>Archivos de origen</Filter>
     </ClCompile>
   </ItemGroup>

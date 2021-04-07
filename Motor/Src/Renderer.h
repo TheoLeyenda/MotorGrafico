@@ -61,7 +61,7 @@ public:
 	void UseShaderEnt(Shader& shader, glm::mat4 model);
 	void ClearShader();
 	void BindBufferShape(unsigned int vbo, bool useTexture);
-	void BindBufferModel(unsigned int vbo, unsigned int ibo, unsigned int posAtt, unsigned int colAtt);
+	void BindBufferModel(unsigned int vbo, unsigned int ibo, unsigned int posAtt, unsigned int colAtt, unsigned int normalAtt);
 	void UnbindBuffer();
 
 	void SetView(Camera* _camera);
@@ -78,7 +78,7 @@ public:
 	void BeignDraw();
 	void DrawShape(unsigned int figura, int vertexs, unsigned int vbo, Shader& shaderProg, glm::mat4 model, bool useTexture);
 	void DrawSprite(unsigned int figura, int vertexs, unsigned int vbo, Shader& shaderProg, glm::mat4 model);
-	void DrawModel(int indices, Shader& shaderProg, glm::mat4 model,unsigned int vbo, unsigned int ibo, unsigned int posAtt, unsigned int colAtt);
+	void DrawModel(int indices, Shader& shaderProg, glm::mat4 model,unsigned int vbo, unsigned int ibo, unsigned int posAtt, unsigned int colAtt, unsigned int normalAtt);
 	void EndDraw(Windows* refWindow);
 };
 #endif // !RENDERER_H

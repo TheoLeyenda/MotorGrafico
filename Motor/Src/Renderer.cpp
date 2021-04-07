@@ -174,14 +174,16 @@ void Renderer::BindBufferShape(unsigned int vbo, bool useTexture) {
 	}
 }
 
-void Renderer::BindBufferModel(unsigned int vbo, unsigned int ibo, unsigned int posAtt, unsigned int colAtt)
+void Renderer::BindBufferModel(unsigned int vbo, unsigned int ibo, unsigned int posAtt, unsigned int colAtt, unsigned int normalAtt)
 {
 	glBindBuffer(GL_ARRAY_BUFFER, vbo);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
-	glVertexAttribPointer(posAtt, 3, GL_FLOAT, GL_FALSE, 7 * sizeof(float), 0);
+	glVertexAttribPointer(posAtt, 3, GL_FLOAT, GL_FALSE, 10 * sizeof(float), 0);
 	glEnableVertexAttribArray(posAtt);
-	glVertexAttribPointer(colAtt, 4, GL_FLOAT, GL_FALSE, 7 * sizeof(float), (void*)(3 * sizeof(float)));
+	glVertexAttribPointer(colAtt, 4, GL_FLOAT, GL_FALSE, 10 * sizeof(float), (void*)(3 * sizeof(float)));
 	glEnableVertexAttribArray(colAtt);
+	glVertexAttribPointer(normalAtt, 3, GL_FLOAT, GL_FALSE, 10 * sizeof(float), (void*)(7 * sizeof(float)));
+	glEnableVertexAttribArray(normalAtt);
 }
 
 void Renderer::UnbindBuffer() {
@@ -210,8 +212,12 @@ void Renderer::SetLighting(Light * _light)
 {
 	_light->SetAmbientColourShaderColor(GetShaderColor());
 	_light->SetAmbientIntensityShaderColor(GetShaderColor());
-	_light->SetAmbientColourShaderTexture(GetShaderTexture());
-	_light->SetAmbientColourShaderTexture(GetShaderTexture());
+	//_light->SetAmbientColourShaderTexture(GetShaderTexture());
+	//_light->SetAmbientColourShaderTexture(GetShaderTexture());
+	_light->SetDiffuseIntensityShaderColor(GetShaderColor());
+	_light->SetDirectionShaderColor(GetShaderColor());
+	//_light->SetDiffuseIntensityShaderTexture(GetShaderTexture());
+	//_light->SetDirectionShaderTexture(GetShaderTexture());
 }
 
 void Renderer::DrawLighting(Light * _light)
@@ -220,8 +226,11 @@ void Renderer::DrawLighting(Light * _light)
 	{
 		SetLighting(_light);
 
-		_light->UseLight(_light->GetAmbientIntensityLocationShaderColor(), _light->GetAmbientColorLocationShaderColor());
-		_light->UseLight(_light->GetAmbientIntensityLocationShaderTexture(), _light->GetAmbientColorLocationShaderTexture());
+		_light->UseLight(_light->GetAmbientIntensityLocationShaderColor(), _light->GetAmbientColorLocationShaderColor()
+			, _light->GetDiffuseIntensityLocationShaderColor(), _light->GetDirectionLocationShaderColor());
+
+		/*_light->UseLight(_light->GetAmbientIntensityLocationShaderTexture(), _light->GetAmbientColorLocationShaderTexture()
+			, _light->GetDiffuseIntensityLocationShaderTexture(), _light->GetDirectionLocationShaderTexture());*/
 	}
 }
 
@@ -275,9 +284,9 @@ void Renderer::DrawSprite(unsigned int figura, int vertexs, unsigned int vbo, Sh
 }
 
 void Renderer::DrawModel(int indices,Shader& shaderProg, glm::mat4 model, 
-	unsigned int vbo, unsigned int ibo, unsigned int posAtt, unsigned int colAtt)
+	unsigned int vbo, unsigned int ibo, unsigned int posAtt, unsigned int colAtt, unsigned int normalAtt)
 {
-	BindBufferModel(vbo, ibo, posAtt, colAtt);
+	BindBufferModel(vbo, ibo, posAtt, colAtt, normalAtt);
 
 	UseShaderEnt(shaderProg, model);
 

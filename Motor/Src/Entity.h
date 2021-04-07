@@ -32,6 +32,9 @@ Renderer* GetRenderer();
 #include "../Lib/glm/ext/matrix_clip_space.hpp"
 #include "../Lib/glm/ext/scalar_constants.hpp"
 #include "PrivateClass/Export.h"
+
+#include "MyMathLibrary.h"
+
 #include "Renderer.h"
 
 #include "stb_image.h"
@@ -61,6 +64,7 @@ protected:
 	Renderer* renderer;
 	InternalData internalData;
 	void UpdateMatrixModel();
+	MyMathLibrary myMathLibrary;
 public:
 	Entity(Renderer *_renderer);
 	~Entity();

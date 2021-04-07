@@ -6,12 +6,20 @@
 Model3D::Model3D(Renderer* renderer) : Entity(renderer)
 {
 	_type = Pyramid;
+	myMathLibrary.CalcAverageNormals(indexCube, indicesCubeCount, vertexCube, verticesCubeCount, elementsForVertexCubeCount, offsetNormalDataCube);
+	myMathLibrary.CalcAverageNormals(indexPyramid, indicesPyramidCount, vertexPyramid, verticesPyramidCount, elementsForVertexPyramidCount, offsetNormalDataPyramid);
+
 	CreateDataModel();
+
+	
 }
 
 Model3D::Model3D(Renderer * renderer, TypeModel typeModel) : Entity(renderer)
 {
 	_type = typeModel;
+	myMathLibrary.CalcAverageNormals(indexCube, indicesCubeCount, vertexCube, verticesCubeCount, elementsForVertexCubeCount, offsetNormalDataCube);
+	myMathLibrary.CalcAverageNormals(indexPyramid, indicesPyramidCount, vertexPyramid, verticesPyramidCount, elementsForVertexPyramidCount, offsetNormalDataPyramid);
+
 	CreateDataModel();
 }
 
@@ -39,11 +47,17 @@ void Model3D::SetVBO()
 		break;
 	}
 	_posAttrib = glGetAttribLocation(renderer->GetShaderColor().getId(),"position");
-	glVertexAttribPointer(_posAttrib, 3, GL_FLOAT, GL_FALSE, 7*sizeof(float), 0);
+	glVertexAttribPointer(_posAttrib, 3, GL_FLOAT, GL_FALSE, 10 *sizeof(float), 0);
 	glEnableVertexAttribArray(_posAttrib);
+	
 	_colAttrib = glGetAttribLocation(renderer->GetShaderColor().getId(), "customColor");
-	glVertexAttribPointer(_colAttrib, 4, GL_FLOAT, GL_FALSE, 7 * sizeof(float), (void*)(3 * sizeof(float)));
+	glVertexAttribPointer(_colAttrib, 4, GL_FLOAT, GL_FALSE, 10 * sizeof(float), (void*)(3 * sizeof(float)));
 	glEnableVertexAttribArray(_colAttrib);
+
+	_normalAttrib = glGetAttribLocation(renderer->GetShaderColor().getId(), "norm");
+	glVertexAttribPointer(_normalAttrib, 3, GL_FLOAT, GL_FALSE, 10 * sizeof(float), (void*)(7 * sizeof(float)));
+	glEnableVertexAttribArray(_normalAttrib);
+
 }
 
 void Model3D::SetIBO()
@@ -74,12 +88,18 @@ void Model3D::BindIBO()
 void Model3D::BindVBO()
 {
 	glBindBuffer(GL_ARRAY_BUFFER, _vbo);
+
 	_posAttrib = glGetAttribLocation(renderer->GetShaderColor().getId(), "position");
-	glVertexAttribPointer(_posAttrib, 3, GL_FLOAT, GL_FALSE, 7 * sizeof(float), 0);
+	glVertexAttribPointer(_posAttrib, 3, GL_FLOAT, GL_FALSE, 10 * sizeof(float), 0);
 	glEnableVertexAttribArray(_posAttrib);
+
 	_colAttrib = glGetAttribLocation(renderer->GetShaderColor().getId(), "customColor");
-	glVertexAttribPointer(_colAttrib, 4, GL_FLOAT, GL_FALSE, 7 * sizeof(float), (void*)(3 * sizeof(float)));
+	glVertexAttribPointer(_colAttrib, 4, GL_FLOAT, GL_FALSE, 10 * sizeof(float), (void*)(3 * sizeof(float)));
 	glEnableVertexAttribArray(_colAttrib);
+
+	_normalAttrib = glGetAttribLocation(renderer->GetShaderColor().getId(), "norm");
+	glVertexAttribPointer(_normalAttrib, 3, GL_FLOAT, GL_FALSE, 10 * sizeof(float), (void*)(7 * sizeof(float)));
+	glEnableVertexAttribArray(_normalAttrib);
 }
 
 void Model3D::UnbindBuffers()
@@ -118,12 +138,12 @@ void Model3D::Draw()
 	switch (_type)
 	{
 	case Cube:
-		renderer->DrawModel(indicesCube,renderer->GetShaderColor(),
-			internalData.model, _vbo, _ibo, _posAttrib,_colAttrib);
+		renderer->DrawModel(indicesCubeCount,renderer->GetShaderColor(),
+			internalData.model, _vbo, _ibo, _posAttrib,_colAttrib, _normalAttrib);
 		break;
 	case Pyramid:
-		renderer->DrawModel(indicesPyramid, renderer->GetShaderColor(),
-			internalData.model, _vbo, _ibo, _posAttrib, _colAttrib);
+		renderer->DrawModel(indicesPyramidCount, renderer->GetShaderColor(),
+			internalData.model, _vbo, _ibo, _posAttrib, _colAttrib, _normalAttrib);
 		break;
 	}
 	//----
