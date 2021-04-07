@@ -73,4 +73,24 @@ void Light::SetDirectionShaderTexture(Shader & shader)
 	uniformDirectionShaderTexture = glGetUniformLocation(shader.getId(), "directionalLight.direction");
 }
 
+void Light::SetColorLight(float r, float g, float b)
+{
+	colour = glm::vec3(r, g, b);
+}
+
+void Light::SetAmbientIntensity(float _ambientIntensity)
+{
+	ambientIntensity = _ambientIntensity;
+}
+
+void Light::SetDirectionLight(float xDir, float yDir, float zDir)
+{
+	direction = glm::vec3(xDir, yDir, zDir);
+}
+
+void Light::SetDiffuseIntensity(float _diffuseIntensity)
+{
+	diffuseIntensity = _diffuseIntensity;
+}
+
 Light::~Light() {}

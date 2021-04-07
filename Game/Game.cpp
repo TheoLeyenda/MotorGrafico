@@ -39,6 +39,10 @@ bool useCamera = true;
 bool useModels = true;
 //---------------------//
 
+//LIGHT
+float ambientIntensity;
+float diffuseIntensity;
+
 TypeColorShape typeColorShape = TypeColorShape::SolidColor;
 
 Game::Game() :GameBase() {}
@@ -76,6 +80,9 @@ void Game::InitGame()
 	//cube->SetRotationX(60);
 	//cube->SetRotationZ(45);
 	cube->SetScale(50.0f, 50.0f, 50.0f);
+
+	ambientIntensity = light->GetAmbientIntensity();
+	diffuseIntensity = light->GetDiffuseIntensity();
 }
 
 void Game::UpdateGame(Windows *_window, Renderer *_render, Input *_input)
@@ -110,6 +117,7 @@ void Game::UpdateGame(Windows *_window, Renderer *_render, Input *_input)
 		TempInputs(windows, pyramid);
 		TempInputs(windows, cube);
 	}
+	TempInputLight();
 
 }
 
@@ -259,6 +267,66 @@ void Game::TempInputCamera()
 #pragma endregion
 }
 
+void Game::TempInputLight()
+{
+	if (input->GetKey(KEY_1)) 
+	{
+		light->SetColorLight(1.0f, 0.0f, 0.0f);
+	}
+	if (input->GetKey(KEY_2)) 
+	{
+		light->SetColorLight(0.0f, 1.0f, 0.0f);
+	}
+	if (input->GetKey(KEY_3)) 
+	{
+		light->SetColorLight(0.0f, 0.0f, 1.0f);
+	}
+	if (input->GetKey(KEY_4)) 
+	{
+		ambientIntensity += 0.01f;
+		if (ambientIntensity >= 1.0f)
+			ambientIntensity = 1.0f;
+
+		light->SetAmbientIntensity(ambientIntensity);
+	}
+	if (input->GetKey(KEY_5)) 
+	{
+		ambientIntensity -= 0.01f;
+		if (ambientIntensity <= 0)
+			ambientIntensity = 0.0f;
+
+		light->SetAmbientIntensity(ambientIntensity);
+	}
+	if (input->GetKey(KEY_6)) 
+	{
+		diffuseIntensity += 0.01f;
+		if (diffuseIntensity >= 1.0f)
+			diffuseIntensity = 1.0f;
+
+		light->SetDiffuseIntensity(diffuseIntensity);
+	}
+	if (input->GetKey(KEY_7))
+	{
+		diffuseIntensity -= 0.01f;
+		if (diffuseIntensity <= 0.0f)
+			diffuseIntensity = 0.0f;
+
+		light->SetDiffuseIntensity(diffuseIntensity);
+	}
+	if (input->GetKey(KEY_8)) 
+	{
+		light->SetDirectionLight(2.0f, -1.0, -2.0f);
+	}
+	if (input->GetKey(KEY_9)) 
+	{
+		light->SetDirectionLight(-2.0f, -1.0, 2.0f);
+	}
+	if (input->GetKey(KEY_0)) 
+	{
+		light->SetDirectionLight(-2.0f, -1.0, -2.0f);
+	}
+}
+
 void Game::TempInputs(Windows* windows, Entity* shape)
 {
 
@@ -313,11 +381,11 @@ void Game::TempInputs(Windows* windows, Entity* shape)
 	//------------------//
 
 	//INPUT DE ESCALA
-	if (input->GetKey(KeyBoard::KEY_9))
+	if (input->GetKey(KeyBoard::KEY_V))
 	{
 		shape->SetScale(shape->transform.scale.x + speedScale, shape->transform.scale.y + speedScale, shape->transform.scale.z + speedScale);
 	}
-	if (input->GetKey(KeyBoard::KEY_0))
+	if (input->GetKey(KeyBoard::KEY_B))
 	{
 		shape->SetScale(shape->transform.scale.x - speedScale, shape->transform.scale.y - speedScale, shape->transform.scale.z - speedScale);
 	}

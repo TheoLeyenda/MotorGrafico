@@ -36,6 +36,14 @@ public:
 	void SetDirectionShaderColor(Shader& shader);
 	void SetDirectionShaderTexture(Shader& shader);
 
+	void SetColorLight(float r, float g, float b);
+	void SetAmbientIntensity(float _ambientIntensity);
+	
+	void SetDirectionLight(float xDir, float yDir, float zDir);
+	void SetDiffuseIntensity(float _diffuseIntensity);
+
+	float GetAmbientIntensity() { return ambientIntensity; }
+	float GetDiffuseIntensity() { return diffuseIntensity; }
 	~Light();
 private:
 	unsigned int uniformAmbientIntensityShaderColor;

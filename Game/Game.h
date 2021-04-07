@@ -25,5 +25,6 @@ public:
 	void TempInputsPlayer2(Windows* windows, Sprite* sprite);
 	void TempColorInput(Windows* windows, Shape* shape);
 	void TempInputCamera();
+	void TempInputLight();
 };
 #endif

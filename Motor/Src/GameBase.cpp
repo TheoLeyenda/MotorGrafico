@@ -15,7 +15,7 @@ int GameBase::InitEngine()
 	input = new Input(windows->GetWindowsPtr());
 	camera = new Camera(render, TypeProjectionCamera::Ortho);
 	collisionManager = new CollisionManager();
-	light = new Light(render,1.0f, 1.0f, 0.0f, 0.7f, 2.0f, -1.0, -2.0f, 1.0f);
+	light = new Light(render,1.0f, 1.0f, 1.0f, 1.0f, 2.0f, -1.0, -2.0f, 1.0f);
 	if (!initGLFW || windows == NULL)
 		return INIT_ERROR;
 
