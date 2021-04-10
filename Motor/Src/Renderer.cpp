@@ -210,27 +210,26 @@ void Renderer::SetProjectionOrtho(float left, float right, float bottom, float t
 
 void Renderer::SetLighting(Light * _light)
 {
+	_light->SetCameraPositionShaderColor(GetShaderColor());
+	//--
 	_light->SetAmbientColourShaderColor(GetShaderColor());
 	_light->SetAmbientIntensityShaderColor(GetShaderColor());
-	//_light->SetAmbientColourShaderTexture(GetShaderTexture());
-	//_light->SetAmbientColourShaderTexture(GetShaderTexture());
+
 	_light->SetDiffuseIntensityShaderColor(GetShaderColor());
 	_light->SetDirectionShaderColor(GetShaderColor());
-	//_light->SetDiffuseIntensityShaderTexture(GetShaderTexture());
-	//_light->SetDirectionShaderTexture(GetShaderTexture());
+
+	_light->SetSpecularIntensityShaderColor(GetShaderColor());
+	_light->SetShininessShaderColor(GetShaderColor());
 }
 
-void Renderer::DrawLighting(Light * _light)
+void Renderer::DrawLighting(Light * _light, Camera* camera)
 {
 	if (_light != NULL)
 	{
-		SetLighting(_light);
+		//SetLighting(_light);
 
-		_light->UseLight(_light->GetAmbientIntensityLocationShaderColor(), _light->GetAmbientColorLocationShaderColor()
-			, _light->GetDiffuseIntensityLocationShaderColor(), _light->GetDirectionLocationShaderColor());
-
-		/*_light->UseLight(_light->GetAmbientIntensityLocationShaderTexture(), _light->GetAmbientColorLocationShaderTexture()
-			, _light->GetDiffuseIntensityLocationShaderTexture(), _light->GetDirectionLocationShaderTexture());*/
+		_light->UseLight(_light->GetAmbientIntensityLocationShaderColor(),_light->GetAmbientColorLocationShaderColor(),
+			_light->GetDiffuseIntensityLocationShaderColor(),_light->GetDirectionLocationShaderColor(),camera);
 	}
 }
 
@@ -257,7 +256,7 @@ void Renderer::BindBufferSprite(unsigned int vbo)
 }
 
 void Renderer::BeignDraw() {
-	glClearColor(0.8f, 0.8f, 0.8f, 1.0f);
+	glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 

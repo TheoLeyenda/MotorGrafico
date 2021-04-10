@@ -26,6 +26,9 @@ protected:
 	Time timeClock;
 	Camera* camera;
 	Light* light;
+
+	Material* shinyMaterial;
+	Material* dullMaterial;
 public:
 	GameBase();
 	~GameBase();
@@ -34,7 +37,7 @@ public:
 	void UpdateEngine();
 	void DestroyEngine();
 	void HandleCamera();
-	void HandleLight();
+	void HandleLight(Camera* camera);
 
 	virtual void InitGame() = 0; //Inicializa todos las variables del juego.
 	virtual void UpdateGame(Windows *_window, Renderer *_render, Input *_input) = 0; //Update del juego

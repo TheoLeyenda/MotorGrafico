@@ -70,7 +70,7 @@ public:
 	void drawCamera(Shader& shader, glm::mat4 trsCamera);
 
 	void SetLighting(Light* _light);
-	void DrawLighting(Light* _light);
+	void DrawLighting(Light* _light, Camera* camera);
 
 	//=====================
 	void BindBufferSprite(unsigned int vbo);

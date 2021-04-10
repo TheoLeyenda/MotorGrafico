@@ -5,9 +5,8 @@ in vec2 texCoord;
 uniform sampler2D ourTexture;
 
 in vec4 color;
-out vec4 outColor;
-
 in vec3 Normal;
+in vec3 FragPos;
 
 struct DirectionLight
 {
@@ -17,7 +16,18 @@ struct DirectionLight
 	float diffuseIntensity;
 };
 
+struct Material 
+{
+	float specularIntensity;
+	float shininess;
+};
+
 uniform DirectionLight directionalLight;
+uniform Material material;
+
+uniform vec3 cameraPos;
+
+out vec4 outColor;
 
 void main()
 {
@@ -26,5 +36,20 @@ void main()
 	float diffuseFactor = max(dot(normalize(Normal), normalize(directionalLight.direction)), 0.0f);
 	vec4 diffuseColor = vec4(directionalLight.colour, 1.0f) * directionalLight.diffuseIntensity * diffuseFactor;
 
-	outColor = color * (ambientColour + diffuseColor);
+	vec4 specularColor = vec4(0, 0, 0, 0);
+	
+	if (diffuseFactor > 0.0f)
+	{
+		vec3 fragToCamera = normalize(cameraPos - FragPos);
+		vec3 reflectedVertex = normalize(reflect(directionalLight.direction, normalize(Normal)));
+		
+		float specularFactor = dot(fragToCamera, reflectedVertex);
+		if (specularFactor > 0.0f)
+		{
+			specularFactor = pow(specularFactor, material.shininess);
+			specularColor = vec4(directionalLight.colour * material.specularIntensity * specularFactor,1.0f);
+		}
+	}
+
+	outColor = color * (ambientColour + diffuseColor + specularColor);
 };

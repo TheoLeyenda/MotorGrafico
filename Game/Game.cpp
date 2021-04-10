@@ -67,12 +67,12 @@ void Game::InitGame()
 	newPositionCamY = camera->transform.position.y;
 	newPositionCamZ = camera->transform.position.z + 55;
 
-	pyramid = new Model3D(render,Pyramid);
-	pyramid->SetPosition(300.0f, 250.0f, -50.0f);
+	//pyramid = new Model3D(render,Pyramid);
+	//pyramid->SetPosition(300.0f, 250.0f, -50.0f);
 	//pyramid->SetRotationZ(50);
 	//pyramid->SetRotationX(60);
 	//pyramid->SetRotationZ(45);
-	pyramid->SetScale(50.0f, 50.0f, 50.0f);
+	//pyramid->SetScale(50.0f, 50.0f, 50.0f);
 
 	cube = new Model3D(render, Cube);
 	cube->SetPosition(300.0f, 100.0f, -50.0f);
@@ -106,7 +106,7 @@ void Game::UpdateGame(Windows *_window, Renderer *_render, Input *_input)
 	TempInputs(windows, shape2);
 	TempColorInput(windows, shape2);
 	*/
-	pyramid->Draw();
+	//pyramid->Draw();
 
 	cube->Draw();
 	if (useCamera)
@@ -114,7 +114,7 @@ void Game::UpdateGame(Windows *_window, Renderer *_render, Input *_input)
 
 	if (useModels) 
 	{
-		TempInputs(windows, pyramid);
+		//TempInputs(windows, pyramid);
 		TempInputs(windows, cube);
 	}
 	TempInputLight();

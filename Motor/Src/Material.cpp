@@ -1,10 +1,15 @@
 #include "Material.h"
 #include <iostream>
 
+#include <glew.h>
+#include <GLFW/glfw3.h>
+
 Material::Material()
 {
 	_colorRGBA = { 1.0f,0.0f,0.0f,1.0f };
 	_vertexColorRGBA = NULL;
+	_specularIntensity = 0.0f;
+	_shininess = 0.0f;
 }
 
 Material::Material(float r, float g, float b, float a) {
@@ -16,6 +21,28 @@ Material::Material(float* arrayRGBA, int tamArrayRGBA, int repeticiones)
 {
 	SetMaterialValue(arrayRGBA, tamArrayRGBA, repeticiones);
 	_vertexColorRGBA = NULL;
+}
+
+Material::Material(float sIntensity, float shine)
+{
+	_specularIntensity = sIntensity;
+	_shininess = shine;
+}
+
+//void Material::UseMaterial(unsigned int specularIntensityLoc, unsigned int shininessLoc)
+//{
+//	glUniform1f(specularIntensityLoc, _specularIntensity);
+//	glUniform1f(shininessLoc, _shininess);
+//}
+
+void Material::SetNewShininess(float value)
+{
+	_shininess = value;
+}
+
+void Material::SetNewSpecularIntensity(float value)
+{
+	_specularIntensity = value;
 }
 
 Material::~Material()

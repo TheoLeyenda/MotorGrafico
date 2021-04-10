@@ -15,7 +15,14 @@ int GameBase::InitEngine()
 	input = new Input(windows->GetWindowsPtr());
 	camera = new Camera(render, TypeProjectionCamera::Ortho);
 	collisionManager = new CollisionManager();
-	light = new Light(render,1.0f, 0.0f, 0.0f, 0.5f, 2.0f, -1.0, -2.0f, 1.0f);
+
+	shinyMaterial = new Material(1.0f,124);
+	dullMaterial = new Material(0.3f,4);
+
+	//light = new Light(render,1.0f, 0.0f, 0.0f, 0.5f, 2.0f, -1.0, -2.0f, 1.0f);
+
+	light = new Light(render, 1.0f, 1.0f, 0.0f, 0.1f, 2.0f, -1.0, -2.0f, 0.4f, shinyMaterial);
+	//PRUEBA DEL MATERIAL (SPECULAR)
 	if (!initGLFW || windows == NULL)
 		return INIT_ERROR;
 
@@ -23,6 +30,7 @@ int GameBase::InitEngine()
 	windows->CreateContextWindows();
 	render->GLEWInit();
 	render->SetShader();
+
 
 	render->SetLighting(light);
 
@@ -55,7 +63,7 @@ void GameBase::UpdateEngine()
 		timeClock.tick();
 		//---------------------//
 		HandleCamera();
-		HandleLight();
+		HandleLight(camera);
 		//---------------------//
 		UpdateGame(windows, render, input);
 		//---------------------//	
@@ -81,6 +89,10 @@ void GameBase::DestroyEngine()
 		delete camera;
 	if (light != NULL)
 		delete light;
+	if (shinyMaterial != NULL)
+		delete shinyMaterial;
+	if (dullMaterial != NULL)
+		delete dullMaterial;
 }
 
 void GameBase::HandleCamera()
@@ -93,11 +105,11 @@ void GameBase::HandleCamera()
 	//render->drawCamera(render->GetShaderTexture(), camera->GetInternalData().model);
 }
 
-void GameBase::HandleLight()
+void GameBase::HandleLight(Camera* camera)
 {
 	if (light != NULL)
 	{
-		render->DrawLighting(light);
+		render->DrawLighting(light,camera);
 	}
 }
 

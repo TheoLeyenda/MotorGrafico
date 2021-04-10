@@ -1,5 +1,6 @@
 #include "Light.h"
 
+#include "Camera.h"
 #include "glew.h"
 #include "GLFW/glfw3.h"
 
@@ -22,15 +23,33 @@ Light::Light(Renderer * _render, float _red, float _green, float _blue, float _a
 	diffuseIntensity = _diffuseIntensity;
 }
 
-void Light::UseLight(float ambientIntensityLocation, float ambientColourLocation,
-	float diffuseIntensityLocation, float directionLocation)
+Light::Light(Renderer * _render, float _red, float _green, float _blue, float _ambientIntensity,
+	float _xDir, float _yDir, float _zDir, float _diffuseIntensity, Material * newMaterial) : Entity(_render)
 {
+	colour = glm::vec3(_red, _green, _blue);
+	ambientIntensity = _ambientIntensity;
+
+	direction = glm::vec3(_xDir, _yDir, _zDir);
+	diffuseIntensity = _diffuseIntensity;
+
+	materialSpecularInesity = newMaterial->GetSpecularIntensity();
+	materialShininessInfluency = newMaterial->GetShininess();
+}
+
+void Light::UseLight(float ambientIntensityLocation, float ambientColourLocation,
+	float diffuseIntensityLocation, float directionLocation, Camera* cameraIn)
+{
+	glUniform3f(uniformCameraPositionShaderColor, cameraIn->transform.position.x,
+		cameraIn->transform.position.y, cameraIn->transform.position.z);
+
 	glUniform3f(ambientColourLocation, colour.x, colour.y, colour.z);
 	glUniform1f(ambientIntensityLocation, ambientIntensity);
 
 	glUniform3f(directionLocation, direction.x, direction.y, direction.z);
 	glUniform1f(diffuseIntensityLocation, diffuseIntensity);
 
+	glUniform1f(uniformSpecularIntensityShaderColor, materialSpecularInesity);
+	glUniform1f(uniformShininessShaderColor, materialShininessInfluency);
 }
 
 void Light::SetAmbientIntensityShaderColor(Shader& shader)
@@ -71,6 +90,21 @@ void Light::SetDirectionShaderColor(Shader & shader)
 void Light::SetDirectionShaderTexture(Shader & shader)
 {
 	uniformDirectionShaderTexture = glGetUniformLocation(shader.getId(), "directionalLight.direction");
+}
+
+void Light::SetSpecularIntensityShaderColor(Shader & shader)
+{
+	uniformSpecularIntensityShaderColor = glGetUniformLocation(shader.getId(), "material.specularIntensity");
+}
+
+void Light::SetShininessShaderColor(Shader & shader)
+{
+	uniformShininessShaderColor = glGetUniformLocation(shader.getId(), "material.shininess");
+}
+
+void Light::SetCameraPositionShaderColor(Shader & shader)
+{
+	uniformCameraPositionShaderColor = glGetUniformLocation(shader.getId(), "cameraPos");
 }
 
 void Light::SetColorLight(float r, float g, float b)
