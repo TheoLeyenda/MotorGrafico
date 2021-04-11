@@ -11,9 +11,9 @@ class ENGINE_API Light : public Entity
 public:
 	Light(Renderer* _render);
 	Light(Renderer* _render, float _red, float _green, float _blue, float _ambientIntensity
-		, float _xDir, float _yDir, float _zDir, float _diffuseIntensity);
+		, float _xPos, float _yPos, float _zPos, float _diffuseIntensity);
 	Light(Renderer* _render, float _red, float _green, float _blue, float _ambientIntensity
-		, float _xDir, float _yDir, float _zDir, float _diffuseIntensity,
+		, float _xPos, float _yPos, float _zPos, float _diffuseIntensity,
 		Material* newMaterial);
 
 	void UseLight(float ambientIntensityLocation, float ambientColourLocation,
@@ -52,6 +52,10 @@ public:
 	void SetSpecularIntensityShaderColor(Shader& shader);
 	void SetShininessShaderColor(Shader& shader);
 	void SetCameraPositionShaderColor(Shader& shader);
+
+	unsigned int GetUniformLightPos() { return uniformLightPosition; }
+
+	void SetUniformLightPos(Shader& shader);
 
 	void SetColorLight(float r, float g, float b);
 	void SetAmbientIntensity(float _ambientIntensity);
@@ -116,6 +120,8 @@ private:
 	unsigned int uniformSpecularIntensityShaderColor; //Material Values
 	unsigned int uniformShininessShaderColor;//Material Values
 
+	unsigned int uniformLightPosition;
+
 	unsigned int _posAttribLight;
 	unsigned int _colAttribLight;
 	unsigned int _vboLight;
@@ -125,7 +131,7 @@ private:
 	glm::vec3 colour;
 	float ambientIntensity;
 
-	glm::vec3 direction;
+	//glm::vec3 direction;
 	float diffuseIntensity;
 
 	float materialSpecularInesity;

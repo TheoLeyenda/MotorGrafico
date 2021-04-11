@@ -115,7 +115,7 @@ void Game::UpdateGame(Windows *_window, Renderer *_render, Input *_input)
 	if (useModels) 
 	{
 		//TempInputs(windows, pyramid);
-		TempInputs(windows, cube);
+		TempInputs(windows, light);
 	}
 	TempInputLight();
 }

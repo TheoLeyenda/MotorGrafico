@@ -226,7 +226,8 @@ void Renderer::SetLighting(Light * _light)
 	_light->SetAmbientIntensityShaderColor(GetShaderColor());
 
 	_light->SetDiffuseIntensityShaderColor(GetShaderColor());
-	_light->SetDirectionShaderColor(GetShaderColor());
+	//_light->SetDirectionShaderColor(GetShaderColor());
+	_light->SetUniformLightPos(GetShaderColor());
 
 	_light->SetSpecularIntensityShaderColor(GetShaderColor());
 	_light->SetShininessShaderColor(GetShaderColor());

@@ -65,9 +65,6 @@ void GameBase::UpdateEngine()
 		//---------------------//
 		HandleCamera();
 		HandleLight(camera);
-		std::cout << "POS LIGTH X: " << light->transform.position.x<< endl;
-		std::cout << "POS LIGTH Y: " << light->transform.position.y<< endl;
-		std::cout << "POS LIGTH Z: " << light->transform.position.z<< endl;
 		//---------------------//
 		UpdateGame(windows, render, input);
 		//---------------------//	

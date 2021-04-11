@@ -25,6 +25,7 @@ struct Material
 uniform DirectionLight directionalLight;
 uniform Material material;
 
+uniform vec3 posLight;
 uniform vec3 cameraPos;
 
 out vec4 outColor;
@@ -33,7 +34,10 @@ void main()
 {
 	vec4 ambientColour = vec4(directionalLight.colour, 1.0f) * directionalLight.ambientIntensity;
 
-	float diffuseFactor = max(dot(normalize(Normal), normalize(directionalLight.direction)), 0.0f);
+	//directionalLight.direction = normalize(FragPos - posLight);
+	vec3 dirLight = normalize(posLight - FragPos);
+
+	float diffuseFactor = max(dot(normalize(Normal), dirLight), 0.0f);
 	vec4 diffuseColor = vec4(directionalLight.colour, 1.0f) * directionalLight.diffuseIntensity * diffuseFactor;
 
 	vec4 specularColor = vec4(0, 0, 0, 0);
@@ -41,7 +45,7 @@ void main()
 	if (diffuseFactor > 0.0f)
 	{
 		vec3 fragToCamera = normalize(cameraPos - FragPos);
-		vec3 reflectedVertex = normalize(reflect(-directionalLight.direction, normalize(Normal)));
+		vec3 reflectedVertex = normalize(reflect(-dirLight, normalize(Normal)));
 		
 		float specularFactor = max(dot(fragToCamera, reflectedVertex),0.0);
 		if (specularFactor > 0.0f)
