@@ -16,12 +16,12 @@ int GameBase::InitEngine()
 	camera = new Camera(render, TypeProjectionCamera::Ortho);
 	collisionManager = new CollisionManager();
 
-	shinyMaterial = new Material(1.0f,124);
+	shinyMaterial = new Material(1.0f, 124);
 	dullMaterial = new Material(0.3f,4);
 
 	//light = new Light(render,1.0f, 0.0f, 0.0f, 0.5f, 2.0f, -1.0, -2.0f, 1.0f);
 
-	light = new Light(render, 1.0f, 1.0f, 0.0f, 0.1f, 2.0f, -1.0, -2.0f, 0.4f, shinyMaterial);
+	light = new Light(render, 0.19225f, 0.19225f, 0.19225f, 1.0f, 2.0f, -1.0, 2.0f, 2.0f, shinyMaterial);
 	//PRUEBA DEL MATERIAL (SPECULAR)
 	if (!initGLFW || windows == NULL)
 		return INIT_ERROR;

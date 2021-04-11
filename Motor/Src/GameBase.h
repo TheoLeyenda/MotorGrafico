@@ -27,7 +27,7 @@ protected:
 	Camera* camera;
 	Light* light;
 
-	Material* shinyMaterial;
+	Material* silverMaterial;
 	Material* dullMaterial;
 public:
 	GameBase();

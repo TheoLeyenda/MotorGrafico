@@ -41,7 +41,7 @@ void main()
 	if (diffuseFactor > 0.0f)
 	{
 		vec3 fragToCamera = normalize(cameraPos - FragPos);
-		vec3 reflectedVertex = normalize(reflect(directionalLight.direction, normalize(Normal)));
+		vec3 reflectedVertex = normalize(reflect(-directionalLight.direction, normalize(Normal)));
 		
 		float specularFactor = dot(fragToCamera, reflectedVertex);
 		if (specularFactor > 0.0f)
