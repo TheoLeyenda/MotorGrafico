@@ -186,6 +186,16 @@ void Renderer::BindBufferModel(unsigned int vbo, unsigned int ibo, unsigned int 
 	glEnableVertexAttribArray(normalAtt);
 }
 
+void Renderer::BindBufferLight(unsigned int vbo, unsigned int ibo, unsigned int posAtt, unsigned int colAtt)
+{
+	glBindBuffer(GL_ARRAY_BUFFER, vbo);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
+	glVertexAttribPointer(posAtt, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), 0);
+	glEnableVertexAttribArray(posAtt);
+	glVertexAttribPointer(colAtt, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
+	glEnableVertexAttribArray(colAtt);
+}
+
 void Renderer::UnbindBuffer() {
 	glBindVertexArray(0);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
@@ -222,12 +232,10 @@ void Renderer::SetLighting(Light * _light)
 	_light->SetShininessShaderColor(GetShaderColor());
 }
 
-void Renderer::DrawLighting(Light * _light, Camera* camera)
+void Renderer::LightingInfluence(Light * _light, Camera* camera)
 {
 	if (_light != NULL)
 	{
-		//SetLighting(_light);
-
 		_light->UseLight(_light->GetAmbientIntensityLocationShaderColor(),_light->GetAmbientColorLocationShaderColor(),
 			_light->GetDiffuseIntensityLocationShaderColor(),_light->GetDirectionLocationShaderColor(),camera);
 	}
@@ -286,6 +294,17 @@ void Renderer::DrawModel(int indices,Shader& shaderProg, glm::mat4 model,
 	unsigned int vbo, unsigned int ibo, unsigned int posAtt, unsigned int colAtt, unsigned int normalAtt)
 {
 	BindBufferModel(vbo, ibo, posAtt, colAtt, normalAtt);
+
+	UseShaderEnt(shaderProg, model);
+
+	glDrawElements(GL_TRIANGLES, indices, GL_UNSIGNED_INT, 0);
+
+	UnbindBuffer();
+}
+
+void Renderer::DrawLight(int indices, Shader & shaderProg, glm::mat4 model, unsigned int vbo, unsigned int ibo, unsigned int posAtt, unsigned int colAtt)
+{
+	BindBufferLight(vbo, ibo, posAtt, colAtt);
 
 	UseShaderEnt(shaderProg, model);
 

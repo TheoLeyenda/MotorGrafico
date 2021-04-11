@@ -118,7 +118,6 @@ void Game::UpdateGame(Windows *_window, Renderer *_render, Input *_input)
 		TempInputs(windows, cube);
 	}
 	TempInputLight();
-
 }
 
 void Game::DestroyGame()

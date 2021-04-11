@@ -43,11 +43,11 @@ void main()
 		vec3 fragToCamera = normalize(cameraPos - FragPos);
 		vec3 reflectedVertex = normalize(reflect(-directionalLight.direction, normalize(Normal)));
 		
-		float specularFactor = dot(fragToCamera, reflectedVertex);
+		float specularFactor = max(dot(fragToCamera, reflectedVertex), 0.0);
 		if (specularFactor > 0.0f)
 		{
 			specularFactor = pow(specularFactor, material.shininess);
-			specularColor = vec4(directionalLight.colour * material.specularIntensity * specularFactor, 1.0f);
+			specularColor = vec4((material.specularIntensity * specularFactor * directionalLight.colour), 1.0f);
 		}
 	}
 

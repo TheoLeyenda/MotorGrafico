@@ -10,8 +10,6 @@ Model3D::Model3D(Renderer* renderer) : Entity(renderer)
 	myMathLibrary.CalcAverageNormals(indexPyramid, indicesPyramidCount, vertexPyramid, verticesPyramidCount, elementsForVertexPyramidCount, offsetNormalDataPyramid);
 
 	CreateDataModel();
-
-	
 }
 
 Model3D::Model3D(Renderer * renderer, TypeModel typeModel) : Entity(renderer)

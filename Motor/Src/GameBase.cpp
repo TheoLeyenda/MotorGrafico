@@ -16,12 +16,11 @@ int GameBase::InitEngine()
 	camera = new Camera(render, TypeProjectionCamera::Ortho);
 	collisionManager = new CollisionManager();
 
-	shinyMaterial = new Material(1.0f, 124);
+	shinyMaterial = new Material(1.0f, 32);
 	dullMaterial = new Material(0.3f,4);
 
 	//light = new Light(render,1.0f, 0.0f, 0.0f, 0.5f, 2.0f, -1.0, -2.0f, 1.0f);
 
-	light = new Light(render, 0.19225f, 0.19225f, 0.19225f, 1.0f, 2.0f, -1.0, 2.0f, 2.0f, shinyMaterial);
 	//PRUEBA DEL MATERIAL (SPECULAR)
 	if (!initGLFW || windows == NULL)
 		return INIT_ERROR;
@@ -31,7 +30,7 @@ int GameBase::InitEngine()
 	render->GLEWInit();
 	render->SetShader();
 
-
+	light = new Light(render, 0.19225f, 0.19225f, 0.19225f, 1.0f, 2.0f, 1.0, 2.0f, 2.0f, shinyMaterial);
 	render->SetLighting(light);
 
 	glEnable(GL_DEPTH_TEST);
@@ -43,7 +42,9 @@ int GameBase::InitEngine()
 
 	//SETEO POSICION DE LA CAMARA
 	camera->SetPosition(300.0f, 100.0f, 200.0f);
-	
+	light->SetPosition(300.0f, 200.0f, -50.0f);
+	light->SetScale(10.0f, 10.0f, 10.0f);
+
 	//INICIALIZO LA CAMARA PARA PODER UTILIZARLA
 	camera->InitCamera(camera->transform.position, glm::vec3(0.0f, 1.0f, 0.0f), -90, 0);
 	
@@ -64,6 +65,9 @@ void GameBase::UpdateEngine()
 		//---------------------//
 		HandleCamera();
 		HandleLight(camera);
+		std::cout << "POS LIGTH X: " << light->transform.position.x<< endl;
+		std::cout << "POS LIGTH Y: " << light->transform.position.y<< endl;
+		std::cout << "POS LIGTH Z: " << light->transform.position.z<< endl;
 		//---------------------//
 		UpdateGame(windows, render, input);
 		//---------------------//	
@@ -109,7 +113,8 @@ void GameBase::HandleLight(Camera* camera)
 {
 	if (light != NULL)
 	{
-		render->DrawLighting(light,camera);
+		render->LightingInfluence(light,camera);
+		light->Draw();
 	}
 }
 
