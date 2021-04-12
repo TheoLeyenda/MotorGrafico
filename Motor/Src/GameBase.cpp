@@ -16,7 +16,11 @@ int GameBase::InitEngine()
 	camera = new Camera(render, TypeProjectionCamera::Ortho);
 	collisionManager = new CollisionManager();
 
-	shinyMaterial = new Material(2.5f, 16);
+	shinyMaterial = new Material(0.135f, 0.2225f, 0.1575f, 2.5f, 64
+					, glm::vec3(0.135f, 0.2225f, 0.1575f)
+					, glm::vec3(0.54f, 0.89f, 0.63f)
+					, glm::vec3(0.316228f, 0.316228f, 0.316228f));
+
 	dullMaterial = new Material(0.3f,4);
 
 	//PRUEBA DEL MATERIAL (SPECULAR)
@@ -28,8 +32,10 @@ int GameBase::InitEngine()
 	render->GLEWInit();
 	render->SetShader();
 
-	light = new Light(render, 0.24725f, 0.1995f, 0.0745, 1.0f,
-		2.0f, 1.0, 2.0f, 1.5f, shinyMaterial, Light::Directional);
+	light = new Light(render, shinyMaterial->GetColorRGBA()[0]
+							, shinyMaterial->GetColorRGBA()[1]
+							, shinyMaterial->GetColorRGBA()[2]
+		, 1.0f, 2.0f, 1.0, 2.0f, shinyMaterial->GetAverageDiffuseMatMultyplay(2.0f), shinyMaterial, Light::Directional);
 	render->SetLighting(light);
 
 	glEnable(GL_DEPTH_TEST);

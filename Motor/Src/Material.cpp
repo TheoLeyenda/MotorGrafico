@@ -10,30 +10,215 @@ Material::Material()
 	_vertexColorRGBA = NULL;
 	_specularIntensity = 0.0f;
 	_shininess = 0.0f;
+
+	_ambientMat[0] = 0;
+	_ambientMat[1] = 0;
+	_ambientMat[2] = 0;
+
+	_diffuseMat[0] = 0;
+	_diffuseMat[1] = 0;
+	_diffuseMat[2] = 0;
+
+	_specularMat[0] = 0;
+	_specularMat[1] = 0;
+	_specularMat[2] = 0;
 }
 
 Material::Material(float r, float g, float b, float a) {
 	SetMaterialValue(r, g, b, a);
 	_vertexColorRGBA = NULL;
+
+	_specularIntensity = 0;
+	_shininess = 0;
+
+	_ambientMat[0] = 0;
+	_ambientMat[1] = 0;
+	_ambientMat[2] = 0;
+
+	_diffuseMat[0] = 0;
+	_diffuseMat[1] = 0;
+	_diffuseMat[2] = 0;
+
+	_specularMat[0] = 0;
+	_specularMat[1] = 0;
+	_specularMat[2] = 0;
 }
 
 Material::Material(float* arrayRGBA, int tamArrayRGBA, int repeticiones)
 {
 	SetMaterialValue(arrayRGBA, tamArrayRGBA, repeticiones);
 	_vertexColorRGBA = NULL;
+
+	_specularIntensity = 0;
+	_shininess = 0;
+
+	_ambientMat[0] = 0;
+	_ambientMat[1] = 0;
+	_ambientMat[2] = 0;
+
+	_diffuseMat[0] = 0;
+	_diffuseMat[1] = 0;
+	_diffuseMat[2] = 0;
+
+	_specularMat[0] = 0;
+	_specularMat[1] = 0;
+	_specularMat[2] = 0;
 }
 
 Material::Material(float sIntensity, float shine)
 {
 	_specularIntensity = sIntensity;
 	_shininess = shine;
+
+	_ambientMat[0] = 0;
+	_ambientMat[1] = 0;
+	_ambientMat[2] = 0;
+
+	_diffuseMat[0] = 0;
+	_diffuseMat[1] = 0;
+	_diffuseMat[2] = 0;
+
+	_specularMat[0] = 0;
+	_specularMat[1] = 0;
+	_specularMat[2] = 0;
 }
 
-//void Material::UseMaterial(unsigned int specularIntensityLoc, unsigned int shininessLoc)
-//{
-//	glUniform1f(specularIntensityLoc, _specularIntensity);
-//	glUniform1f(shininessLoc, _shininess);
-//}
+Material::Material(float r, float g, float b, float sIntensity, float shine)
+{
+	SetMaterialValue(r, g, b, 1.0f);
+	_shininess = shine;
+	_specularIntensity = sIntensity;
+
+	_ambientMat[0] = 0;
+	_ambientMat[1] = 0;
+	_ambientMat[2] = 0;
+
+	_diffuseMat[0] = 0;
+	_diffuseMat[1] = 0;
+	_diffuseMat[2] = 0;
+
+	_specularMat[0] = 0;
+	_specularMat[1] = 0;
+	_specularMat[2] = 0;
+}
+
+Material::Material(float r, float g, float b, float sIntensity, float shine, glm::vec3 ambientMat, glm::vec3 diffuseMat, glm::vec3 specularMat)
+{
+	SetMaterialValue(r, g, b, 1.0f);
+	_shininess = shine;
+	_specularIntensity = sIntensity;
+	
+	_ambientMat[0] = ambientMat[0];
+	_ambientMat[1] = ambientMat[1];
+	_ambientMat[2] = ambientMat[2];
+
+	_diffuseMat[0] = diffuseMat[0];
+	_diffuseMat[1] = diffuseMat[1];
+	_diffuseMat[2] = diffuseMat[2];
+
+	_specularMat[0] = specularMat[0];
+	_specularMat[1] = specularMat[1];
+	_specularMat[2] = specularMat[2];
+}
+
+float Material::GetAverageAmbientMat()
+{
+	float result = 0;
+
+	result = _ambientMat[0] + _ambientMat[1] + _ambientMat[2];
+
+	result = result / 3;
+
+	return result;
+}
+
+float Material::GetAverageDiffuseMat()
+{
+	float result = 0;
+
+	result = _diffuseMat[0] + _diffuseMat[1] + _diffuseMat[2];
+
+	result = result / 3;
+
+	return result;
+}
+
+float Material::GetAverageSpecularMat()
+{
+	float result = 0;
+
+	result = _specularMat[0] + _specularMat[1] + _specularMat[2];
+
+	result = result / 3;
+
+	return result;
+}
+
+float Material::GetAverageAmbientMatMultyplay(float multyplay)
+{
+	return GetAverageAmbientMat() * multyplay;
+}
+
+float Material::GetAverageDiffuseMatMultyplay(float multyplay)
+{
+	return GetAverageDiffuseMat() * multyplay;
+}
+
+float Material::GetAverageSpecularMatMultyplay(float multyplay)
+{
+	return GetAverageSpecularMat() * multyplay;
+}
+
+float Material::GetAverageAmbientMatPow(float pow)
+{
+	return powf(GetAverageAmbientMat(), pow);
+}
+
+float Material::GetAverageDiffuseMatPow(float pow)
+{
+	return powf(GetAverageDiffuseMat(), pow);
+}
+
+float Material::GetAverageSpecularMatPow(float pow)
+{
+	return powf(GetAverageSpecularMat(), pow);
+}
+
+void Material::SetAmbientMat(glm::vec3 ambientMat)
+{
+	_ambientMat[0] = ambientMat[0];
+	_ambientMat[1] = ambientMat[1];
+	_ambientMat[2] = ambientMat[2];
+}
+
+void Material::SetDiffuseMat(glm::vec3 diffuseMat)
+{
+	_diffuseMat[0] = diffuseMat[0];
+	_diffuseMat[1] = diffuseMat[1];
+	_diffuseMat[2] = diffuseMat[2];
+}
+
+void Material::SetSpecularMat(glm::vec3 specularMat)
+{
+	_specularMat[0] = specularMat[0];
+	_specularMat[1] = specularMat[1];
+	_specularMat[2] = specularMat[2];
+}
+
+glm::vec3 Material::GetAmbientMat()
+{
+	return _ambientMat;
+}
+
+glm::vec3 Material::GetDiffuseMat()
+{
+	return _diffuseMat;
+}
+
+glm::vec3 Material::GetSpecularMat()
+{
+	return _specularMat;
+}
 
 void Material::SetNewShininess(float value)
 {
