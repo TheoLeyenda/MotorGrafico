@@ -16,10 +16,10 @@ int GameBase::InitEngine()
 	camera = new Camera(render, TypeProjectionCamera::Ortho);
 	collisionManager = new CollisionManager();
 
-	shinyMaterial = new Material(0.135f, 0.2225f, 0.1575f, 2.5f, 64
-					, glm::vec3(0.135f, 0.2225f, 0.1575f)
-					, glm::vec3(0.54f, 0.89f, 0.63f)
-					, glm::vec3(0.316228f, 0.316228f, 0.316228f));
+	shinyMaterial = new Material(0.25f, 0.20725f, 0.20725f, 10.5f, 32.0f
+					, glm::vec3(0.25f, 0.20725f, 0.20725f)
+					, glm::vec3(1.0f, 0.829f, 0.829f)
+					, glm::vec3(0.296648f, 0.296648f, 0.296648f));
 
 	dullMaterial = new Material(0.3f,4);
 
