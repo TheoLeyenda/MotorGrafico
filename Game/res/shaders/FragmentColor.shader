@@ -34,7 +34,6 @@ void main()
 {
 	vec4 ambientColour = vec4(directionalLight.colour, 1.0f) * directionalLight.ambientIntensity;
 
-	//directionalLight.direction = normalize(FragPos - posLight);
 	vec3 dirLight = normalize(posLight - FragPos);
 
 	float diffuseFactor = max(dot(normalize(Normal), dirLight), 0.0f);

@@ -9,18 +9,24 @@ const int lightCubeCount = 48;
 class ENGINE_API Light : public Entity
 {
 public:
-	Light(Renderer* _render);
+	enum TypeLight
+	{
+		Point,
+		Directional,
+		Spot
+	};
+
+	Light(Renderer* _render, TypeLight type);
 	Light(Renderer* _render, float _red, float _green, float _blue, float _ambientIntensity
-		, float _xPos, float _yPos, float _zPos, float _diffuseIntensity);
+		, float _xPos, float _yPos, float _zPos, float _diffuseIntensity, TypeLight type);
 	Light(Renderer* _render, float _red, float _green, float _blue, float _ambientIntensity
 		, float _xPos, float _yPos, float _zPos, float _diffuseIntensity,
-		Material* newMaterial);
+		Material* newMaterial, TypeLight type);
 
 	void UseLight(float ambientIntensityLocation, float ambientColourLocation,
 		float diffuseIntensityLocation, float directionLocation, Camera* cameraIn);
 	
 	void Draw();
-
 	unsigned int GetAmbientIntensityLocationShaderColor() { return uniformAmbientIntensityShaderColor; }
 	unsigned int GetAmbientColorLocationShaderColor() { return uniformAmbientColourShaderColor; }
 
@@ -65,6 +71,11 @@ public:
 
 	float GetAmbientIntensity() { return ambientIntensity; }
 	float GetDiffuseIntensity() { return diffuseIntensity; }
+
+	void SetTypeLight(TypeLight type);
+
+	TypeLight GetTypeLight() { return _typeLight; }
+
 	~Light();
 protected:
 	void SetVAO();
@@ -130,6 +141,7 @@ private:
 
 	glm::vec3 colour;
 	float ambientIntensity;
+	TypeLight _typeLight;
 
 	//glm::vec3 direction;
 	float diffuseIntensity;

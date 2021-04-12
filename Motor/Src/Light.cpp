@@ -4,37 +4,40 @@
 #include "glew.h"
 #include "GLFW/glfw3.h"
 
-Light::Light(Renderer * _render) : Entity(_render)
+Light::Light(Renderer * _render, TypeLight type) : Entity(_render)
 {
 	colour = glm::vec3(1.0f, 1.0f, 1.0f);
 	ambientIntensity = 1.0f;
 
 	SetPosition(0.0f, -1.0f, 0.0f);
 	diffuseIntensity = 0.0f;
+	_typeLight = type;
 
 	CreateDataLight();
 }
 
 Light::Light(Renderer * _render, float _red, float _green, float _blue, float _ambientIntensity,
-	float _xPos, float _yPos, float _zPos, float _diffuseIntensity) : Entity(_render)
+	float _xPos, float _yPos, float _zPos, float _diffuseIntensity, TypeLight type) : Entity(_render)
 {
 	colour = glm::vec3(_red, _green, _blue);
 	ambientIntensity = _ambientIntensity;
 
 	SetPosition(_xPos, _yPos, _zPos);
 	diffuseIntensity = _diffuseIntensity;
+	_typeLight = type;
 
 	CreateDataLight();
 }
 
 Light::Light(Renderer * _render, float _red, float _green, float _blue, float _ambientIntensity,
-	float _xPos, float _yPos, float _zPos, float _diffuseIntensity, Material * newMaterial) : Entity(_render)
+	float _xPos, float _yPos, float _zPos, float _diffuseIntensity, Material * newMaterial, TypeLight type) : Entity(_render)
 {
 	colour = glm::vec3(_red, _green, _blue);
 	ambientIntensity = _ambientIntensity;
 
 	SetPosition(_xPos, _yPos, _zPos);
 	diffuseIntensity = _diffuseIntensity;
+	_typeLight = type;
 
 	materialSpecularInesity = newMaterial->GetSpecularIntensity();
 	materialShininessInfluency = newMaterial->GetShininess();
@@ -137,12 +140,17 @@ void Light::SetAmbientIntensity(float _ambientIntensity)
 
 void Light::SetDirectionLight(float xDir, float yDir, float zDir)
 {
-	//direction = glm::vec3(xDir, yDir, zDir);
+	SetPosition(xDir, yDir, zDir);
 }
 
 void Light::SetDiffuseIntensity(float _diffuseIntensity)
 {
 	diffuseIntensity = _diffuseIntensity;
+}
+
+void Light::SetTypeLight(TypeLight type)
+{
+	_typeLight = type;
 }
 
 Light::~Light() {}

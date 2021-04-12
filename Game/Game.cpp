@@ -76,10 +76,13 @@ void Game::InitGame()
 
 	cube = new Model3D(render, Cube);
 	cube->SetPosition(300.0f, 100.0f, -50.0f);
+	cube2 = new Model3D(render, Cube);
+	cube2->SetPosition(500.0f, 100.0f, -50.0f);
 	//cube->SetRotationZ(50);
 	//cube->SetRotationX(60);
 	//cube->SetRotationZ(45);
 	cube->SetScale(50.0f, 50.0f, 50.0f);
+	cube2->SetScale(50.0f, 50.0f, 50.0f);
 
 	ambientIntensity = light->GetAmbientIntensity();
 	diffuseIntensity = light->GetDiffuseIntensity();
@@ -109,6 +112,7 @@ void Game::UpdateGame(Windows *_window, Renderer *_render, Input *_input)
 	//pyramid->Draw();
 
 	cube->Draw();
+	cube2->Draw();
 	if (useCamera)
 		TempInputCamera();
 
@@ -132,6 +136,8 @@ void Game::DestroyGame()
 
 	if (cube != NULL)
 		delete cube;
+	if (cube2 != NULL)
+		delete cube2;
 	if (pyramid != NULL)
 		delete pyramid;
 	//---------------------//
@@ -333,7 +339,6 @@ void Game::TempInputs(Windows* windows, Entity* shape)
 	if (input->GetKey(KeyBoard::KEY_T))
 	{
 		shape->SetPosition(shape->transform.position.x, shape->transform.position.y + speed, shape->transform.position.z);
-
 	}
 	if (input->GetKey(KeyBoard::KEY_G))
 	{
@@ -346,7 +351,14 @@ void Game::TempInputs(Windows* windows, Entity* shape)
 	if (input->GetKey(KeyBoard::KEY_F))
 	{
 		shape->SetPosition(shape->transform.position.x - speed, shape->transform.position.y, shape->transform.position.z);
-
+	}
+	if (input->GetKey(KeyBoard::KEY_R))
+	{
+		shape->SetPosition(shape->transform.position.x, shape->transform.position.y, shape->transform.position.z + speed);
+	}
+	if (input->GetKey(KeyBoard::KEY_Y))
+	{
+		shape->SetPosition(shape->transform.position.x, shape->transform.position.y, shape->transform.position.z - speed);
 	}
 	//-------------------//
 

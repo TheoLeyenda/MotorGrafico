@@ -16,10 +16,8 @@ int GameBase::InitEngine()
 	camera = new Camera(render, TypeProjectionCamera::Ortho);
 	collisionManager = new CollisionManager();
 
-	shinyMaterial = new Material(1.0f, 32);
+	shinyMaterial = new Material(2.5f, 16);
 	dullMaterial = new Material(0.3f,4);
-
-	//light = new Light(render,1.0f, 0.0f, 0.0f, 0.5f, 2.0f, -1.0, -2.0f, 1.0f);
 
 	//PRUEBA DEL MATERIAL (SPECULAR)
 	if (!initGLFW || windows == NULL)
@@ -30,7 +28,8 @@ int GameBase::InitEngine()
 	render->GLEWInit();
 	render->SetShader();
 
-	light = new Light(render, 0.19225f, 0.19225f, 0.19225f, 1.0f, 2.0f, 1.0, 2.0f, 2.0f, shinyMaterial);
+	light = new Light(render, 0.24725f, 0.1995f, 0.0745, 1.0f,
+		2.0f, 1.0, 2.0f, 1.5f, shinyMaterial, Light::Directional);
 	render->SetLighting(light);
 
 	glEnable(GL_DEPTH_TEST);
@@ -42,7 +41,7 @@ int GameBase::InitEngine()
 
 	//SETEO POSICION DE LA CAMARA
 	camera->SetPosition(300.0f, 100.0f, 200.0f);
-	light->SetPosition(300.0f, 200.0f, -50.0f);
+	light->SetPosition(300.0f, 200.0f, 50.0f);
 	light->SetScale(10.0f, 10.0f, 10.0f);
 
 	//INICIALIZO LA CAMARA PARA PODER UTILIZARLA

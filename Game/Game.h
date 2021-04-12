@@ -8,7 +8,9 @@ private:
 	Shape* shape1;
 	Shape* shape2;
 	Model3D* pyramid;
+
 	Model3D* cube;
+	Model3D* cube2;
 public:
 	Game();
 	~Game();
