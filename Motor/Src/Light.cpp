@@ -6,60 +6,38 @@
 
 Light::Light(Renderer * _render, TypeLight type) : Entity(_render)
 {
-	colour = glm::vec3(1.0f, 1.0f, 1.0f);
-	ambientIntensity = 1.0f;
-
-	SetPosition(0.0f, -1.0f, 0.0f);
-	diffuseIntensity = 0.0f;
-	_typeLight = type;
+	_colour = glm::vec3(0.0f, 0.0f, 0.0f);
+	_ambient = glm::vec3(0.0f, 0.0f, 0.0f);
+	_diffuse = glm::vec3(0.0f, 0.0f, 0.0f);
+	_specular = glm::vec3(0.0f, 0.0f, 0.0f);
 
 	CreateDataLight();
 }
 
-Light::Light(Renderer * _render, float _red, float _green, float _blue, float _ambientIntensity,
-	float _xPos, float _yPos, float _zPos, float _diffuseIntensity, TypeLight type) : Entity(_render)
-{
-	colour = glm::vec3(_red, _green, _blue);
-	ambientIntensity = _ambientIntensity;
-
-	SetPosition(_xPos, _yPos, _zPos);
-	diffuseIntensity = _diffuseIntensity;
-	_typeLight = type;
+Light::Light(glm::vec3 colour, glm::vec3 ambient, glm::vec3 diffuse, glm::vec3 specular, Renderer * render, TypeLight type) : Entity(render)
+{ 
+	_colour = colour;
+	_ambient = ambient;
+	_diffuse = diffuse;
+	_specular = specular;
 
 	CreateDataLight();
 }
 
-Light::Light(Renderer * _render, float _red, float _green, float _blue, float _ambientIntensity,
-	float _xPos, float _yPos, float _zPos, float _diffuseIntensity, Material * newMaterial, TypeLight type) : Entity(_render)
+void Light::UseLight(Camera * cameraIn)
 {
-	colour = glm::vec3(_red, _green, _blue);
-	ambientIntensity = _ambientIntensity;
-
-	SetPosition(_xPos, _yPos, _zPos);
-	diffuseIntensity = _diffuseIntensity;
-	_typeLight = type;
-
-	materialSpecularInesity = newMaterial->GetSpecularIntensity();
-	materialShininessInfluency = newMaterial->GetShininess();
-
-	CreateDataLight();
-}
-
-void Light::UseLight(float ambientIntensityLocation, float ambientColourLocation,
-	float diffuseIntensityLocation, float directionLocation, Camera* cameraIn)
-{
-	glUniform3f(uniformCameraPositionShaderColor, cameraIn->transform.position.x,
+	glUniform3f(_uniformPosCameraLocation, cameraIn->transform.position.x,
 		cameraIn->transform.position.y, cameraIn->transform.position.z);
 
-	glUniform3f(ambientColourLocation, colour.x, colour.y, colour.z);
-	glUniform1f(ambientIntensityLocation, ambientIntensity);
+	glUniform3f(_unifromColourLocation, _colour.x, _colour.y, _colour.z);
 
-	//glUniform3f(directionLocation, direction.x, direction.y, direction.z);
-	glUniform3f(uniformLightPosition, transform.position.x, transform.position.y, transform.position.z);
-	glUniform1f(diffuseIntensityLocation, diffuseIntensity);
+	glUniform3f(_uniformAmbientLocation, _ambient.x, _ambient.y, _ambient.z);
 
-	glUniform1f(uniformSpecularIntensityShaderColor, materialSpecularInesity);
-	glUniform1f(uniformShininessShaderColor, materialShininessInfluency);
+	glUniform3f(_uniformDiffuseLocation, _diffuse.x, _diffuse.y, _diffuse.z);
+
+	glUniform3f(_uniformSpecularLocation, _specular.x, _specular.y, _specular.z);
+
+	glUniform3f(_uniformPosLightLocation, transform.position.x, transform.position.y, transform.position.z);
 }
 
 void Light::Draw()
@@ -68,89 +46,49 @@ void Light::Draw()
 		this->internalData.model, _vboLight, _iboLight, _posAttribLight, _colAttribLight);
 }
 
-void Light::SetAmbientIntensityShaderColor(Shader& shader)
-{
-	uniformAmbientIntensityShaderColor = glGetUniformLocation(shader.getId(), "directionalLight.ambientIntensity");
-}
-
-void Light::SetAmbientColourShaderColor(Shader & shader)
-{
-	uniformAmbientColourShaderColor = glGetUniformLocation(shader.getId(), "directionalLight.colour");
-}
-
-void Light::SetAmbientIntensityShaderTexture(Shader & shader)
-{
-	uniformAmbientIntensityShaderTexture = glGetUniformLocation(shader.getId(), "directionalLight.ambientIntensity");
-}
-
-void Light::SetAmbientColourShaderTexture(Shader & shader)
-{
-	uniformAmbientColourShaderTexture = glGetUniformLocation(shader.getId(), "directionalLight.colour");
-}
-
-void Light::SetDiffuseIntensityShaderColor(Shader & shader)
-{
-	uniformDiffuseIntensityShaderColor = glGetUniformLocation(shader.getId(), "directionalLight.diffuseIntensity");
-}
-
-void Light::SetDiffuseIntensityShaderTexture(Shader& shader)
-{
-	uniformDiffuseIntensityShaderTexture = glGetUniformLocation(shader.getId(), "directionalLight.diffuseIntensity");
-}
-
-void Light::SetDirectionShaderColor(Shader & shader)
-{
-	uniformDirectionShaderColor = glGetUniformLocation(shader.getId(), "directionalLight.direction");
-}
-
-void Light::SetDirectionShaderTexture(Shader & shader)
-{
-	uniformDirectionShaderTexture = glGetUniformLocation(shader.getId(), "directionalLight.direction");
-}
-
-void Light::SetSpecularIntensityShaderColor(Shader & shader)
-{
-	uniformSpecularIntensityShaderColor = glGetUniformLocation(shader.getId(), "material.specularIntensity");
-}
-
-void Light::SetShininessShaderColor(Shader & shader)
-{
-	uniformShininessShaderColor = glGetUniformLocation(shader.getId(), "material.shininess");
-}
-
-void Light::SetCameraPositionShaderColor(Shader & shader)
-{
-	uniformCameraPositionShaderColor = glGetUniformLocation(shader.getId(), "cameraPos");
-}
-
-void Light::SetUniformLightPos(Shader & shader)
-{
-	uniformLightPosition = glGetUniformLocation(shader.getId(), "posLight");
-}
-
 void Light::SetColorLight(float r, float g, float b)
 {
-	colour = glm::vec3(r, g, b);
+	_colour = glm::vec3(r, g, b);
 }
 
-void Light::SetAmbientIntensity(float _ambientIntensity)
+glm::vec3 Light::GetColorLight()
 {
-	ambientIntensity = _ambientIntensity;
-}
-
-void Light::SetDirectionLight(float xDir, float yDir, float zDir)
-{
-	SetPosition(xDir, yDir, zDir);
-}
-
-void Light::SetDiffuseIntensity(float _diffuseIntensity)
-{
-	diffuseIntensity = _diffuseIntensity;
+	return _colour;
 }
 
 void Light::SetTypeLight(TypeLight type)
 {
 	_typeLight = type;
+}
+
+void Light::SetUniformColourLocation(Shader& shader)
+{
+	_unifromColourLocation = glGetUniformLocation(shader.getId(), "directionalLight.colour");
+}
+
+void Light::SetUniformAmbientLocation(Shader& shader)
+{
+	_uniformAmbientLocation = glGetUniformLocation(shader.getId(), "directionalLight.ambient");
+}
+
+void Light::SetUniformDiffuseLocation(Shader& shader)
+{
+	_uniformDiffuseLocation = glGetUniformLocation(shader.getId(), "directionalLight.diffuse");
+}
+
+void Light::SetUniformSpecularLocation(Shader& shader)
+{
+	_uniformSpecularLocation = glGetUniformLocation(shader.getId(), "directionalLight.specular");
+}
+
+void Light::SetUniformPosLightLocation(Shader& shader)
+{
+	_uniformPosLightLocation = glGetUniformLocation(shader.getId(), "directionalLight.posLight");
+}
+
+void Light::SetUniformPosCameraLocation(Shader & shader)
+{
+	_uniformPosCameraLocation = glGetUniformLocation(shader.getId(), "cameraPos");
 }
 
 Light::~Light() {}

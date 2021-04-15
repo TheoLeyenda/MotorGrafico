@@ -14,6 +14,7 @@
 #include "CollisionManager.h"
 #include "Camera.h"
 #include "Light.h"
+#include "Material.h"
 
 #define INIT_ERROR -1
 
@@ -27,8 +28,11 @@ protected:
 	Camera* camera;
 	Light* light;
 
-	Material* shinyMaterial;
-	Material* dullMaterial;
+
+	Material* currentMaterial;
+	Material* matCube1;
+	Material* matCube2;
+	Material* matPyramid;
 public:
 	GameBase();
 	~GameBase();

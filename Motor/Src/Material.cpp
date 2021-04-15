@@ -1,4 +1,5 @@
 #include "Material.h"
+#include "shader.h"
 #include <iostream>
 
 #include <glew.h>
@@ -8,7 +9,6 @@ Material::Material()
 {
 	_colorRGBA = { 1.0f,0.0f,0.0f,1.0f };
 	_vertexColorRGBA = NULL;
-	_specularIntensity = 0.0f;
 	_shininess = 0.0f;
 
 	_ambientMat[0] = 0;
@@ -28,7 +28,6 @@ Material::Material(float r, float g, float b, float a) {
 	SetMaterialValue(r, g, b, a);
 	_vertexColorRGBA = NULL;
 
-	_specularIntensity = 0;
 	_shininess = 0;
 
 	_ambientMat[0] = 0;
@@ -49,7 +48,6 @@ Material::Material(float* arrayRGBA, int tamArrayRGBA, int repeticiones)
 	SetMaterialValue(arrayRGBA, tamArrayRGBA, repeticiones);
 	_vertexColorRGBA = NULL;
 
-	_specularIntensity = 0;
 	_shininess = 0;
 
 	_ambientMat[0] = 0;
@@ -67,7 +65,6 @@ Material::Material(float* arrayRGBA, int tamArrayRGBA, int repeticiones)
 
 Material::Material(float sIntensity, float shine)
 {
-	_specularIntensity = sIntensity;
 	_shininess = shine;
 
 	_ambientMat[0] = 0;
@@ -87,7 +84,6 @@ Material::Material(float r, float g, float b, float sIntensity, float shine)
 {
 	SetMaterialValue(r, g, b, 1.0f);
 	_shininess = shine;
-	_specularIntensity = sIntensity;
 
 	_ambientMat[0] = 0;
 	_ambientMat[1] = 0;
@@ -106,7 +102,6 @@ Material::Material(float r, float g, float b, float sIntensity, float shine, glm
 {
 	SetMaterialValue(r, g, b, 1.0f);
 	_shininess = shine;
-	_specularIntensity = sIntensity;
 	
 	_ambientMat[0] = ambientMat[0];
 	_ambientMat[1] = ambientMat[1];
@@ -119,6 +114,17 @@ Material::Material(float r, float g, float b, float sIntensity, float shine, glm
 	_specularMat[0] = specularMat[0];
 	_specularMat[1] = specularMat[1];
 	_specularMat[2] = specularMat[2];
+}
+
+void Material::UseMaterial()
+{
+	glUniform1f(_uniformShininessLocation, _shininess);
+
+	glUniform3f(_uniformAmbientMatLocation, _ambientMat.x, _ambientMat.y, _ambientMat.z);
+
+	glUniform3f(_uniformDiffuseMatLocation, _diffuseMat.x, _diffuseMat.y, _diffuseMat.z);
+
+	glUniform3f(_uniformSpecularMatLocation, _specularMat.x, _specularMat.y, _specularMat.z);
 }
 
 float Material::GetAverageAmbientMat()
@@ -225,11 +231,6 @@ void Material::SetNewShininess(float value)
 	_shininess = value;
 }
 
-void Material::SetNewSpecularIntensity(float value)
-{
-	_specularIntensity = value;
-}
-
 Material::~Material()
 {
 	if (_vertexColorRGBA != NULL)
@@ -281,3 +282,27 @@ glm::vec4 * Material::GetVertexColorRGBA()
 {
 	return _vertexColorRGBA;
 }
+
+void Material::SetUniformShininessLocation(Shader& shader)
+{
+	_uniformShininessLocation = glGetUniformLocation(shader.getId(), "material.shininess");
+}
+
+void Material::SetUniformAmbientMatLocation(Shader& shader)
+{
+	_uniformAmbientMatLocation = glGetUniformLocation(shader.getId(), "material.ambient");
+}
+
+void Material::SetUniformDiffuseMatLocation(Shader& shader)
+{
+	_uniformDiffuseMatLocation = glGetUniformLocation(shader.getId(), "material.diffuse");
+}
+
+void Material::SetUniformSpecularMatLocation(Shader& shader)
+{
+	_uniformSpecularMatLocation = glGetUniformLocation(shader.getId(), "material.specular");
+}
+
+
+
+

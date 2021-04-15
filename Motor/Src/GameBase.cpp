@@ -16,12 +16,24 @@ int GameBase::InitEngine()
 	camera = new Camera(render, TypeProjectionCamera::Ortho);
 	collisionManager = new CollisionManager();
 
-	shinyMaterial = new Material(0.25f, 0.20725f, 0.20725f, 10.5f, 32.0f
-					, glm::vec3(0.25f, 0.20725f, 0.20725f)
-					, glm::vec3(1.0f, 0.829f, 0.829f)
-					, glm::vec3(0.296648f, 0.296648f, 0.296648f));
+	matCube1 = new Material();
+	matCube1->SetAmbientMat(glm::vec3(0.24725f, 0.1995f, 0.0745f));
+	matCube1->SetDiffuseMat(glm::vec3(0.75164f, 0.60648f, 0.22648f));
+	matCube1->SetSpecularMat(glm::vec3(0.628281f, 0.555802f, 0.366065f));
+	matCube1->SetNewShininess(0.1f);
 
-	dullMaterial = new Material(0.3f,4);
+	matCube2 = new Material();
+	matCube2->SetAmbientMat(glm::vec3(0.19225f, 0.19225f, 0.19225f));
+	matCube2->SetDiffuseMat(glm::vec3(0.50754f, 0.50754f, 0.50754f));
+	matCube2->SetSpecularMat(glm::vec3(0.508273f, 0.508273f, 0.508273f));
+	matCube2->SetNewShininess(0.4f);
+
+	matPyramid = new Material();
+	matPyramid->SetAmbientMat(glm::vec3(0.0215f, 0.1745f, 0.0215f));
+	matPyramid->SetDiffuseMat(glm::vec3(0.07568f, 0.61424f, 0.07568f));
+	matPyramid->SetSpecularMat(glm::vec3(0.633f, 0.727811f, 0.633f));
+	matPyramid->SetNewShininess(0.6f);
+
 
 	//PRUEBA DEL MATERIAL (SPECULAR)
 	if (!initGLFW || windows == NULL)
@@ -32,12 +44,17 @@ int GameBase::InitEngine()
 	render->GLEWInit();
 	render->SetShader();
 
-	light = new Light(render, shinyMaterial->GetColorRGBA()[0]
-							, shinyMaterial->GetColorRGBA()[1]
-							, shinyMaterial->GetColorRGBA()[2]
-		, 1.0f, 2.0f, 1.0, 2.0f, shinyMaterial->GetAverageDiffuseMatMultyplay(2.0f), shinyMaterial, Light::Directional);
-	render->SetLighting(light);
+	currentMaterial = matPyramid;
 
+	light = new Light(render, Light::TypeLight::Directional);
+	light->SetColour(glm::vec3(1.0f, 1.0f, 1.0f));
+	light->SetAmbient(glm::vec3(0.7f, 0.7f, 0.7f));
+	light->SetDiffuse(glm::vec3(0.5f, 0.5f, 0.5f));
+	light->SetSpecular(glm::vec3(2.0f, 2.0f, 2.0f));
+
+	render->SetMaterial(currentMaterial);
+	render->SetLighting(light);
+	
 	glEnable(GL_DEPTH_TEST);
 
 	//SETEO LA DATA DE VISTA DE LA CAMARA
@@ -69,6 +86,7 @@ void GameBase::UpdateEngine()
 		timeClock.tick();
 		//---------------------//
 		HandleCamera();
+		render->UseMaterial(currentMaterial);
 		HandleLight(camera);
 		//---------------------//
 		UpdateGame(windows, render, input);
@@ -95,10 +113,12 @@ void GameBase::DestroyEngine()
 		delete camera;
 	if (light != NULL)
 		delete light;
-	if (shinyMaterial != NULL)
-		delete shinyMaterial;
-	if (dullMaterial != NULL)
-		delete dullMaterial;
+	if (matCube1 != NULL)
+		delete matCube1;
+	if (matCube2 != NULL)
+		delete matCube2;
+	if (matPyramid != NULL)
+		delete matPyramid;
 }
 
 void GameBase::HandleCamera()

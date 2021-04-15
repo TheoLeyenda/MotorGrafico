@@ -11,48 +11,39 @@ in vec3 FragPos;
 struct DirectionLight
 {
 	vec3 colour;
-	float ambientIntensity;
-	vec3 direction;
-	float diffuseIntensity;
+	vec3 ambient;
+	vec3 diffuse;
+	vec3 specular;
+	vec3 posLight;
 };
 
 struct Material
 {
-	float specularIntensity;
+	vec3 ambient;
+	vec3 diffuse;
+	vec3 specular;
 	float shininess;
 };
 
 uniform DirectionLight directionalLight;
 uniform Material material;
 
-uniform vec3 posLight;
 uniform vec3 cameraPos;
 
 out vec4 outColor;
 
 void main()
 {
-	vec4 ambientColour = vec4(directionalLight.colour, 1.0f) * directionalLight.ambientIntensity;
+	vec3 ambient = directionalLight.ambient * material.ambient;
+	vec3 norm = normalize(Normal);
+	vec3 lightDir = normalize(directionalLight.posLight - FragPos);
+	float diff = max(dot(norm, lightDir), 0.0f);
+	vec3 diffuse = directionalLight.diffuse * (diff * material.diffuse);
+	vec3 viewDir = normalize(cameraPos - FragPos);
+	vec3 reflectDir = reflect(-lightDir, norm);
+	float spec = pow(max(dot(viewDir, reflectDir), 0.0f), material.shininess * 128.0f);
+	vec3 specular = directionalLight.specular * (spec * material.specular);
+	vec3 result = (ambient + diffuse + specular) * directionalLight.colour;
 
-	vec3 dirLight = normalize(posLight - FragPos);
-
-	float diffuseFactor = max(dot(normalize(Normal), dirLight), 0.0f);
-	vec4 diffuseColor = vec4(directionalLight.colour, 1.0f) * directionalLight.diffuseIntensity * diffuseFactor;
-
-	vec4 specularColor = vec4(0, 0, 0, 0);
-	
-	if (diffuseFactor > 0.0f)
-	{
-		vec3 fragToCamera = normalize(cameraPos - FragPos);
-		vec3 reflectedVertex = normalize(reflect(-dirLight, normalize(Normal)));
-		
-		float specularFactor = max(dot(fragToCamera, reflectedVertex), 0.0);
-		if (specularFactor > 0.0f)
-		{
-			specularFactor = pow(specularFactor, material.shininess);
-			specularColor = vec4((material.specularIntensity * specularFactor * directionalLight.colour), 1.0f);
-		}
-	}
-
-	outColor = color * (ambientColour + diffuseColor + specularColor);
+	outColor = color * vec4(result, 1.0f);
 };

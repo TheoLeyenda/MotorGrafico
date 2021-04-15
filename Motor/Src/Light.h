@@ -1,7 +1,6 @@
 #ifndef LIGHT_H
 #define LIGHT_H
 #include "Entity.h"
-#include "Material.h"
 
 const int lightIndicesCubeCount = 36;
 const int lightCubeCount = 48;
@@ -17,64 +16,41 @@ public:
 	};
 
 	Light(Renderer* _render, TypeLight type);
-	Light(Renderer* _render, float _red, float _green, float _blue, float _ambientIntensity
-		, float _xPos, float _yPos, float _zPos, float _diffuseIntensity, TypeLight type);
-	Light(Renderer* _render, float _red, float _green, float _blue, float _ambientIntensity
-		, float _xPos, float _yPos, float _zPos, float _diffuseIntensity,
-		Material* newMaterial, TypeLight type);
+	Light(glm::vec3 colour, glm::vec3 ambient, glm::vec3 diffuse
+		, glm::vec3 specular, Renderer* render, TypeLight type);
 
-	void UseLight(float ambientIntensityLocation, float ambientColourLocation,
-		float diffuseIntensityLocation, float directionLocation, Camera* cameraIn);
-	
+	void UseLight(Camera* cameraIn);
+
 	void Draw();
-	unsigned int GetAmbientIntensityLocationShaderColor() { return uniformAmbientIntensityShaderColor; }
-	unsigned int GetAmbientColorLocationShaderColor() { return uniformAmbientColourShaderColor; }
-
-	void SetAmbientIntensityShaderColor(Shader& shader);
-	void SetAmbientColourShaderColor(Shader& shader);
-
-	unsigned int GetAmbientIntensityLocationShaderTexture() { return uniformAmbientIntensityShaderTexture; }
-	unsigned int GetAmbientColorLocationShaderTexture() { return uniformAmbientColourShaderTexture; }
-
-	void SetAmbientIntensityShaderTexture(Shader& shader);
-	void SetAmbientColourShaderTexture(Shader& shader);
-
-	unsigned int GetDiffuseIntensityLocationShaderColor() { return uniformDiffuseIntensityShaderColor; }
-	unsigned int GetDiffuseIntensityLocationShaderTexture() { return uniformDiffuseIntensityShaderTexture; }
-
-	void SetDiffuseIntensityShaderColor(Shader& shader);
-	void SetDiffuseIntensityShaderTexture(Shader& shader);
-
-	unsigned int GetDirectionLocationShaderColor() { return uniformDirectionShaderColor; }
-	unsigned int GetDirectionLocationShaderTexture() { return uniformDirectionShaderTexture; }
-
-	void SetDirectionShaderColor(Shader& shader);
-	void SetDirectionShaderTexture(Shader& shader);
-
-	unsigned int GetSpecularIntensityLocationShaderColor() { return uniformSpecularIntensityShaderColor; }
-	unsigned int GetShininessLocationShaderColor() { return uniformShininessShaderColor; }
-	unsigned int GetCameraPositionLocationShaderColor() { return uniformCameraPositionShaderColor; }
-
-	void SetSpecularIntensityShaderColor(Shader& shader);
-	void SetShininessShaderColor(Shader& shader);
-	void SetCameraPositionShaderColor(Shader& shader);
-
-	unsigned int GetUniformLightPos() { return uniformLightPosition; }
-
-	void SetUniformLightPos(Shader& shader);
 
 	void SetColorLight(float r, float g, float b);
-	void SetAmbientIntensity(float _ambientIntensity);
-
-	void SetDirectionLight(float xDir, float yDir, float zDir);
-	void SetDiffuseIntensity(float _diffuseIntensity);
-
-	float GetAmbientIntensity() { return ambientIntensity; }
-	float GetDiffuseIntensity() { return diffuseIntensity; }
+	glm::vec3 GetColorLight();
 
 	void SetTypeLight(TypeLight type);
-
 	TypeLight GetTypeLight() { return _typeLight; }
+
+	void SetUniformColourLocation(Shader& shader);
+	unsigned int GetUniformColourLocation() { return _unifromColourLocation; }
+
+	void SetUniformAmbientLocation(Shader& shader);
+	unsigned int GetUniformAmbientLocation() { return _uniformAmbientLocation; }
+
+	void SetUniformDiffuseLocation(Shader& shader);
+	unsigned int GetUniformDiffuseLocation() { return _uniformDiffuseLocation; }
+
+	void SetUniformSpecularLocation(Shader& shader);
+	unsigned int GetUniformSpecularLocation() { return _uniformSpecularLocation; }
+
+	void SetUniformPosLightLocation(Shader& shader);
+	unsigned int GetUniformPosLightLocation() { return _uniformPosLightLocation; }
+
+	void SetUniformPosCameraLocation(Shader& shader);
+	unsigned int GetUniformPosCameraLocation() { return _uniformPosCameraLocation; }
+
+	void SetColour(glm::vec3 colour) { _colour = colour; }
+	void SetAmbient(glm::vec3 ambient) { _ambient = ambient; }
+	void SetDiffuse(glm::vec3 diffuse) { _diffuse = diffuse; }
+	void SetSpecular(glm::vec3 specular) { _specular = specular; }
 
 	~Light();
 protected:
@@ -115,39 +91,25 @@ private:
 	6, 7, 3
 	};
 
-	unsigned int uniformAmbientIntensityShaderColor;
-	unsigned int uniformAmbientColourShaderColor;
-
-	unsigned int uniformAmbientIntensityShaderTexture;
-	unsigned int uniformAmbientColourShaderTexture;
-
-	unsigned int uniformDiffuseIntensityShaderColor;
-	unsigned int uniformDiffuseIntensityShaderTexture;
-
-	unsigned int uniformDirectionShaderColor;
-	unsigned int uniformDirectionShaderTexture;
-
-	unsigned int uniformCameraPositionShaderColor;
-	unsigned int uniformSpecularIntensityShaderColor; //Material Values
-	unsigned int uniformShininessShaderColor;//Material Values
-
-	unsigned int uniformLightPosition;
-
 	unsigned int _posAttribLight;
 	unsigned int _colAttribLight;
 	unsigned int _vboLight;
 	unsigned int _iboLight;
 	unsigned int _vaoLight;
 
-	glm::vec3 colour;
-	float ambientIntensity;
+	unsigned int _unifromColourLocation;
+	unsigned int _uniformAmbientLocation;
+	unsigned int _uniformDiffuseLocation;
+	unsigned int _uniformSpecularLocation;
+	unsigned int _uniformPosLightLocation;
+	unsigned int _uniformPosCameraLocation;
+
+	glm::vec3 _colour;
+	glm::vec3 _ambient;
+	glm::vec3 _diffuse;
+	glm::vec3 _specular;
+
 	TypeLight _typeLight;
-
-	//glm::vec3 direction;
-	float diffuseIntensity;
-
-	float materialSpecularInesity;
-	float materialShininessInfluency;
 };
 
 #endif

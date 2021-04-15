@@ -16,7 +16,7 @@ enum TypeCollisionCheck
 
 //---------------------//
 //VALORES DE TESTEO
-float speed = 2.5f;
+float speed = 10.0f;
 float speedRotation = 0.05f;
 float speedScale = 2.5f;
 
@@ -27,7 +27,7 @@ float a = 1.0f;
 
 bool enableVertexTexture = false;
 
-float speedMovementCamera = 250.0f;
+float speedMovementCamera = 600.0f;
 float speedRotateCamera = 90.0f;
 
 float newPositionCamX = 0;
@@ -67,6 +67,9 @@ void Game::InitGame()
 	newPositionCamY = camera->transform.position.y;
 	newPositionCamZ = camera->transform.position.z + 55;
 
+
+
+
 	//pyramid = new Model3D(render,Pyramid);
 	//pyramid->SetPosition(300.0f, 250.0f, -50.0f);
 	//pyramid->SetRotationZ(50);
@@ -84,8 +87,6 @@ void Game::InitGame()
 	cube->SetScale(50.0f, 50.0f, 50.0f);
 	cube2->SetScale(50.0f, 50.0f, 50.0f);
 
-	ambientIntensity = light->GetAmbientIntensity();
-	diffuseIntensity = light->GetDiffuseIntensity();
 }
 
 void Game::UpdateGame(Windows *_window, Renderer *_render, Input *_input)
@@ -121,7 +122,6 @@ void Game::UpdateGame(Windows *_window, Renderer *_render, Input *_input)
 		//TempInputs(windows, pyramid);
 		TempInputs(windows, light);
 	}
-	TempInputLight();
 }
 
 void Game::DestroyGame()
@@ -270,66 +270,6 @@ void Game::TempInputCamera()
 	//render->RotateCamera(newRotationCamZ, camera->GetInternalData().model);
 	
 #pragma endregion
-}
-
-void Game::TempInputLight()
-{
-	if (input->GetKey(KEY_1)) 
-	{
-		light->SetColorLight(1.0f, 0.0f, 0.0f);
-	}
-	if (input->GetKey(KEY_2)) 
-	{
-		light->SetColorLight(0.0f, 1.0f, 0.0f);
-	}
-	if (input->GetKey(KEY_3)) 
-	{
-		light->SetColorLight(0.0f, 0.0f, 1.0f);
-	}
-	if (input->GetKey(KEY_4)) 
-	{
-		ambientIntensity += 0.01f;
-		if (ambientIntensity >= 1.0f)
-			ambientIntensity = 1.0f;
-
-		light->SetAmbientIntensity(ambientIntensity);
-	}
-	if (input->GetKey(KEY_5)) 
-	{
-		ambientIntensity -= 0.01f;
-		if (ambientIntensity <= 0)
-			ambientIntensity = 0.0f;
-
-		light->SetAmbientIntensity(ambientIntensity);
-	}
-	if (input->GetKey(KEY_6)) 
-	{
-		diffuseIntensity += 0.01f;
-		if (diffuseIntensity >= 1.0f)
-			diffuseIntensity = 1.0f;
-
-		light->SetDiffuseIntensity(diffuseIntensity);
-	}
-	if (input->GetKey(KEY_7))
-	{
-		diffuseIntensity -= 0.01f;
-		if (diffuseIntensity <= 0.0f)
-			diffuseIntensity = 0.0f;
-
-		light->SetDiffuseIntensity(diffuseIntensity);
-	}
-	if (input->GetKey(KEY_8)) 
-	{
-		light->SetDirectionLight(2.0f, -1.0, -2.0f);
-	}
-	if (input->GetKey(KEY_9)) 
-	{
-		light->SetDirectionLight(-2.0f, -1.0, 2.0f);
-	}
-	if (input->GetKey(KEY_0)) 
-	{
-		light->SetDirectionLight(-2.0f, -1.0, -2.0f);
-	}
 }
 
 void Game::TempInputs(Windows* windows, Entity* shape)

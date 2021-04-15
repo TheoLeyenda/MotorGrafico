@@ -10,6 +10,7 @@
 
 #include "Camera.h"
 #include "Light.h"
+#include "Material.h"
 Renderer::Renderer() {
 	_MVP.view = glm::mat4(1.0f);
 	_MVP.projection = glm::mat4(1.0f);
@@ -220,25 +221,41 @@ void Renderer::SetProjectionOrtho(float left, float right, float bottom, float t
 
 void Renderer::SetLighting(Light * _light)
 {
-	_light->SetCameraPositionShaderColor(GetShaderColor());
-	//--
-	_light->SetAmbientColourShaderColor(GetShaderColor());
-	_light->SetAmbientIntensityShaderColor(GetShaderColor());
-
-	_light->SetDiffuseIntensityShaderColor(GetShaderColor());
-	//_light->SetDirectionShaderColor(GetShaderColor());
-	_light->SetUniformLightPos(GetShaderColor());
-
-	_light->SetSpecularIntensityShaderColor(GetShaderColor());
-	_light->SetShininessShaderColor(GetShaderColor());
+	if (_light != NULL) 
+	{
+		_light->SetUniformPosCameraLocation(GetShaderColor());
+		_light->SetUniformAmbientLocation(GetShaderColor());
+		_light->SetUniformDiffuseLocation(GetShaderColor());
+		_light->SetUniformSpecularLocation(GetShaderColor());
+		_light->SetUniformColourLocation(GetShaderColor());
+		_light->SetUniformPosLightLocation(GetShaderColor());
+	}
 }
 
 void Renderer::LightingInfluence(Light * _light, Camera* camera)
 {
 	if (_light != NULL)
 	{
-		_light->UseLight(_light->GetAmbientIntensityLocationShaderColor(),_light->GetAmbientColorLocationShaderColor(),
-			_light->GetDiffuseIntensityLocationShaderColor(),_light->GetDirectionLocationShaderColor(),camera);
+		_light->UseLight(camera);
+	}
+}
+
+void Renderer::SetMaterial(Material * _material)
+{
+	if (_material != NULL) 
+	{
+		_material->SetUniformAmbientMatLocation(GetShaderColor());
+		_material->SetUniformDiffuseMatLocation(GetShaderColor());
+		_material->SetUniformSpecularMatLocation(GetShaderColor());
+		_material->SetUniformShininessLocation(GetShaderColor());
+	}
+}
+
+void Renderer::UseMaterial(Material * _material)
+{
+	if (_material != NULL) 
+	{
+		_material->UseMaterial();
 	}
 }
 

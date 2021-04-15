@@ -25,6 +25,7 @@ static enum TypeShader
 
 class Camera;
 class Light;
+class Material;
 
 const float toRadians = 3.14159265f / 180;
 
@@ -69,6 +70,9 @@ public:
 	void SetProjectionPerspective(float FOV, float aspect, float near, float front);
 	void SetProjectionOrtho(float left, float right, float bottom, float top, float near, float front);
 	void drawCamera(Shader& shader, glm::mat4 trsCamera);
+
+	void SetMaterial(Material* _material);
+	void UseMaterial(Material* _material);
 
 	void SetLighting(Light* _light);
 	void LightingInfluence(Light* _light, Camera* camera);

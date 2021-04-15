@@ -4,32 +4,34 @@
 #include "../Lib/glm/vec4.hpp"
 #include "../Lib/glm/vec3.hpp"
 
+class Shader;
+
 class ENGINE_API Material
 {
 private:
 	glm::vec4 _colorRGBA;
 	glm::vec4* _vertexColorRGBA;
 
-	//LIGTH
-	float _specularIntensity;
 	float _shininess;
-	//-----------
-
-	//MATERIAL
 	glm::vec3 _ambientMat;
 	glm::vec3 _diffuseMat;
 	glm::vec3 _specularMat;
-	//-----------
+
+	unsigned int _uniformShininessLocation;
+	unsigned int _uniformAmbientMatLocation;
+	unsigned int _uniformDiffuseMatLocation;
+	unsigned int _uniformSpecularMatLocation;
 
 public:
 	Material();
 	Material(float r, float g, float b, float a);
 	Material(float* arrayRGBA, int tamArrayRGBA, int repeticiones);
 
-	//LIGTH
 	Material(float sIntensity,float shine);
 	Material(float r, float g, float b, float sIntensity, float shine);
 	Material(float r, float g, float b, float sIntensity, float shine, glm::vec3 ambientMat, glm::vec3 diffuseMat, glm::vec3 specularMat);
+
+	void UseMaterial();
 
 	//Devuelve el promedio de los tres valores del _ambientMat.
 	float GetAverageAmbientMat();
@@ -70,15 +72,25 @@ public:
 
 	glm::vec3 GetSpecularMat();
 
-	float GetSpecularIntensity() { return _specularIntensity; }
 	float GetShininess() { return _shininess; }
 	void SetNewShininess(float value);
-	void SetNewSpecularIntensity(float value);
 	//-----------
 	~Material();
 	void SetMaterialValue(float r, float g, float b, float a);
 	void SetMaterialValue(float* arrayRGBA, int tamArrayRGBA, int repeticiones);
 	glm::vec4 GetColorRGBA();
 	glm::vec4* GetVertexColorRGBA();
+
+	void SetUniformShininessLocation(Shader& shader);
+	unsigned int GetUniformShininessLocation() { return _uniformShininessLocation; }
+
+	void SetUniformAmbientMatLocation(Shader& shader);
+	unsigned int GetUniformAmbientMatLocation() { return _uniformAmbientMatLocation; }
+
+	void SetUniformDiffuseMatLocation(Shader& shader);
+	unsigned int GetUiformDiffuseMatLocation() { return _uniformDiffuseMatLocation; }
+
+	void SetUniformSpecularMatLocation(Shader& shader);
+	unsigned int GetUniformSpecularMatLocation() { return _uniformSpecularMatLocation; }
 };
 #endif
