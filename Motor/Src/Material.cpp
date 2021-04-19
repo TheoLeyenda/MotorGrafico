@@ -116,8 +116,10 @@ Material::Material(float r, float g, float b, float sIntensity, float shine, glm
 	_specularMat[2] = specularMat[2];
 }
 
-void Material::UseMaterial()
+void Material::UseMaterial(Shader& shaderProg)
 {
+	shaderProg.use();
+
 	glUniform1f(_uniformShininessLocation, _shininess);
 
 	glUniform3f(_uniformAmbientMatLocation, _ambientMat.x, _ambientMat.y, _ambientMat.z);
@@ -125,6 +127,8 @@ void Material::UseMaterial()
 	glUniform3f(_uniformDiffuseMatLocation, _diffuseMat.x, _diffuseMat.y, _diffuseMat.z);
 
 	glUniform3f(_uniformSpecularMatLocation, _specularMat.x, _specularMat.y, _specularMat.z);
+
+	glUseProgram(0);
 }
 
 float Material::GetAverageAmbientMat()

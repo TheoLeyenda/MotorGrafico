@@ -2,6 +2,7 @@
 #include <iostream>
 #include <glew.h>
 #include <GLFW/glfw3.h>
+#include "Material.h"
 
 Model3D::Model3D(Renderer* renderer) : Entity(renderer)
 {
@@ -128,6 +129,18 @@ void Model3D::CreateDataModel()
 	//---
 	UnbindBuffers();
 	//---
+}
+
+void Model3D::UseMyMaterial()
+{
+	my_Mat->UseMaterial(renderer->GetShaderColor());
+}
+
+void Model3D::SetNewMaterial(Material * mat)
+{
+	my_Mat = mat;
+
+	renderer->SetMaterial(my_Mat);
 }
 
 void Model3D::Draw()

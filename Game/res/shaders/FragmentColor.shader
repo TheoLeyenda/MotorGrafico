@@ -41,7 +41,7 @@ void main()
 	vec3 diffuse = directionalLight.diffuse * (diff * material.diffuse);
 	vec3 viewDir = normalize(cameraPos - FragPos);
 	vec3 reflectDir = reflect(-lightDir, norm);
-	float spec = pow(max(dot(viewDir, reflectDir), 0.0f), material.shininess * 128.0f);
+	float spec = pow(max(dot(viewDir, reflectDir), 0.0f), material.shininess);
 	vec3 specular = directionalLight.specular * (spec * material.specular);
 	vec3 result = (ambient + diffuse + specular) * directionalLight.colour;
 

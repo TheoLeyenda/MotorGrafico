@@ -28,11 +28,10 @@ protected:
 	Camera* camera;
 	Light* light;
 
-
-	Material* currentMaterial;
-	Material* matCube1;
-	Material* matCube2;
-	Material* matPyramid;
+	//Material* currentMaterial;
+	//Material* matCube1;
+	//Material* matCube2;
+	//Material* matPyramid;
 public:
 	GameBase();
 	~GameBase();

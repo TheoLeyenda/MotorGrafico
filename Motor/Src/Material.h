@@ -31,7 +31,7 @@ public:
 	Material(float r, float g, float b, float sIntensity, float shine);
 	Material(float r, float g, float b, float sIntensity, float shine, glm::vec3 ambientMat, glm::vec3 diffuseMat, glm::vec3 specularMat);
 
-	void UseMaterial();
+	void UseMaterial(Shader& shaderProg);
 
 	//Devuelve el promedio de los tres valores del _ambientMat.
 	float GetAverageAmbientMat();

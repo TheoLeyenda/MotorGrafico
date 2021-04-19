@@ -74,6 +74,7 @@ private:
 	unsigned int _posAttrib;
 	unsigned int _colAttrib;
 	unsigned int _normalAttrib;
+	Material* my_Mat;
 protected:
 	void SetVAO();
 	void SetVBO();
@@ -85,7 +86,6 @@ protected:
 	void UnbindIBO();
 	void UnbindVAO();
 	void CreateDataModel();
-	//void UpdateDataModel();
 public:
 	Model3D(Renderer* renderer);
 	Model3D(Renderer* renderer,TypeModel typeModel);
@@ -93,6 +93,8 @@ public:
 	//GETERS
 	TypeModel GetTypeModel() { return _type; }
 	//FUNCTIONS
+	void UseMyMaterial();
+	void SetNewMaterial(Material* mat);
 	void Draw();
 };
 #endif // !MODEL_H

@@ -26,6 +26,8 @@ Light::Light(glm::vec3 colour, glm::vec3 ambient, glm::vec3 diffuse, glm::vec3 s
 
 void Light::UseLight(Camera * cameraIn)
 {
+	renderer->GetShaderColor().use();
+
 	glUniform3f(_uniformPosCameraLocation, cameraIn->transform.position.x,
 		cameraIn->transform.position.y, cameraIn->transform.position.z);
 
@@ -38,6 +40,8 @@ void Light::UseLight(Camera * cameraIn)
 	glUniform3f(_uniformSpecularLocation, _specular.x, _specular.y, _specular.z);
 
 	glUniform3f(_uniformPosLightLocation, transform.position.x, transform.position.y, transform.position.z);
+
+	glUseProgram(0);
 }
 
 void Light::Draw()

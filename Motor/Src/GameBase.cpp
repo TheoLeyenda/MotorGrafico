@@ -16,25 +16,6 @@ int GameBase::InitEngine()
 	camera = new Camera(render, TypeProjectionCamera::Ortho);
 	collisionManager = new CollisionManager();
 
-	matCube1 = new Material();
-	matCube1->SetAmbientMat(glm::vec3(0.24725f, 0.1995f, 0.0745f));
-	matCube1->SetDiffuseMat(glm::vec3(0.75164f, 0.60648f, 0.22648f));
-	matCube1->SetSpecularMat(glm::vec3(0.628281f, 0.555802f, 0.366065f));
-	matCube1->SetNewShininess(0.1f);
-
-	matCube2 = new Material();
-	matCube2->SetAmbientMat(glm::vec3(0.19225f, 0.19225f, 0.19225f));
-	matCube2->SetDiffuseMat(glm::vec3(0.50754f, 0.50754f, 0.50754f));
-	matCube2->SetSpecularMat(glm::vec3(0.508273f, 0.508273f, 0.508273f));
-	matCube2->SetNewShininess(0.4f);
-
-	matPyramid = new Material();
-	matPyramid->SetAmbientMat(glm::vec3(0.0215f, 0.1745f, 0.0215f));
-	matPyramid->SetDiffuseMat(glm::vec3(0.07568f, 0.61424f, 0.07568f));
-	matPyramid->SetSpecularMat(glm::vec3(0.633f, 0.727811f, 0.633f));
-	matPyramid->SetNewShininess(0.6f);
-
-
 	//PRUEBA DEL MATERIAL (SPECULAR)
 	if (!initGLFW || windows == NULL)
 		return INIT_ERROR;
@@ -44,15 +25,13 @@ int GameBase::InitEngine()
 	render->GLEWInit();
 	render->SetShader();
 
-	currentMaterial = matPyramid;
 
 	light = new Light(render, Light::TypeLight::Directional);
 	light->SetColour(glm::vec3(1.0f, 1.0f, 1.0f));
-	light->SetAmbient(glm::vec3(0.7f, 0.7f, 0.7f));
-	light->SetDiffuse(glm::vec3(0.5f, 0.5f, 0.5f));
+	light->SetAmbient(glm::vec3(0.4f, 0.4f, 0.4f));
+	light->SetDiffuse(glm::vec3(0.4f, 0.4f, 0.4f));
 	light->SetSpecular(glm::vec3(2.0f, 2.0f, 2.0f));
 
-	render->SetMaterial(currentMaterial);
 	render->SetLighting(light);
 	
 	glEnable(GL_DEPTH_TEST);
@@ -85,9 +64,9 @@ void GameBase::UpdateEngine()
 		//---------------------//
 		timeClock.tick();
 		//---------------------//
-		HandleCamera();
-		render->UseMaterial(currentMaterial);
-		HandleLight(camera);
+		//HandleCamera();
+		//render->UseMaterial(currentMaterial);
+		//HandleLight(camera);
 		//---------------------//
 		UpdateGame(windows, render, input);
 		//---------------------//	
@@ -113,12 +92,12 @@ void GameBase::DestroyEngine()
 		delete camera;
 	if (light != NULL)
 		delete light;
-	if (matCube1 != NULL)
-		delete matCube1;
-	if (matCube2 != NULL)
-		delete matCube2;
-	if (matPyramid != NULL)
-		delete matPyramid;
+	//if (matCube1 != NULL)
+	//	delete matCube1;
+	//if (matCube2 != NULL)
+	//	delete matCube2;
+	//if (matPyramid != NULL)
+	//	delete matPyramid;
 }
 
 void GameBase::HandleCamera()

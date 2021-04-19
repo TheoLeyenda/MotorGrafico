@@ -200,7 +200,7 @@ void Renderer::BindBufferLight(unsigned int vbo, unsigned int ibo, unsigned int 
 void Renderer::UnbindBuffer() {
 	glBindVertexArray(0);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
-	glUseProgram(0);
+	ClearShader();
 }
 
 void Renderer::SetView(Camera * _camera)
@@ -253,10 +253,10 @@ void Renderer::SetMaterial(Material * _material)
 
 void Renderer::UseMaterial(Material * _material)
 {
-	if (_material != NULL) 
-	{
-		_material->UseMaterial();
-	}
+	//if (_material != NULL) 
+	//{
+	//	_material->UseMaterial();
+	//}
 }
 
 void Renderer::drawCamera(Shader& shader, glm::mat4 trsCamera)
