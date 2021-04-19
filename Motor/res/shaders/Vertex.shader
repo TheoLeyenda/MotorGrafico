@@ -16,12 +16,11 @@ out vec3 FragPos;
 
 void main()
 {
-	gl_Position = projection * view * model * vec4(position, 1.0);
+	FragPos = vec3(model * vec4(position, 1.0));
+	Normal = mat3(transpose(inverse(model))) * norm;
 
 	color = customColor;
 	texCoord = m_TexCoord;
 
-	Normal = mat3(transpose(inverse(model))) * norm;
-
-	FragPos = (model * vec4(position, 1.0)).xyz;
+	gl_Position = projection * view * vec4(FragPos, 1.0);
 };

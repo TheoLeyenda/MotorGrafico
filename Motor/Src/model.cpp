@@ -146,6 +146,8 @@ void Model3D::SetNewMaterial(Material * mat)
 void Model3D::Draw()
 {
 	//----
+	UseMyMaterial();
+	//----
 	switch (_type)
 	{
 	case Cube:

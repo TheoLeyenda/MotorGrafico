@@ -27,10 +27,10 @@ int GameBase::InitEngine()
 
 
 	light = new Light(render, Light::TypeLight::Directional);
-	light->SetColour(glm::vec3(1.0f, 1.0f, 1.0f));
-	light->SetAmbient(glm::vec3(0.4f, 0.4f, 0.4f));
-	light->SetDiffuse(glm::vec3(0.4f, 0.4f, 0.4f));
-	light->SetSpecular(glm::vec3(2.0f, 2.0f, 2.0f));
+	//light->SetColour(glm::vec3(1.0f, 1.0f, 1.0f));
+	light->SetAmbient(glm::vec3(0.2f, 0.2f, 0.2f));
+	light->SetDiffuse(glm::vec3(0.5f, 0.5f, 0.5f));
+	light->SetSpecular(glm::vec3(1.5f, 1.5f, 1.5f));
 
 	render->SetLighting(light);
 	
