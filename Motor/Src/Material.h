@@ -73,7 +73,7 @@ public:
 	glm::vec3 GetSpecularMat();
 
 	float GetShininess() { return _shininess; }
-	void SetNewShininess(float value);
+	void SetNewShininess(float value, int powValue);
 	//-----------
 	~Material();
 	void SetMaterialValue(float r, float g, float b, float a);

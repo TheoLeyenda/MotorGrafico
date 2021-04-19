@@ -11,11 +11,12 @@ private:
 
 	Model3D* cube;
 	Model3D* cube2;
+	Model3D* cube3;
 
 	Material* goldMaterial;
 	Material* silverMaterial;
 	Material* esmeraldMaterial;
-	Material* redRubberMaterial;
+	Material* greenPlasticMaterial;
 public:
 	Game();
 	~Game();

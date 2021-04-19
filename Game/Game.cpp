@@ -62,25 +62,25 @@ void Game::InitGame()
 	goldMaterial->SetAmbientMat(glm::vec3(0.24725f, 0.1995f, 0.0745f));
 	goldMaterial->SetDiffuseMat(glm::vec3(0.75164f, 0.60648f, 0.22648f));
 	goldMaterial->SetSpecularMat(glm::vec3(0.628281f, 0.555802f, 0.366065f));
-	goldMaterial->SetNewShininess(0.1f * 128);
+	goldMaterial->SetNewShininess(0.1f, 256);
 	
 	silverMaterial = new Material();
 	silverMaterial->SetAmbientMat(glm::vec3(0.19225f, 0.19225f, 0.19225f));
 	silverMaterial->SetDiffuseMat(glm::vec3(0.50754f, 0.50754f, 0.50754f));
 	silverMaterial->SetSpecularMat(glm::vec3(0.508273f, 0.508273f, 0.508273f));
-	silverMaterial->SetNewShininess(0.4f);
+	silverMaterial->SetNewShininess(0.4f, 32);
 	
 	esmeraldMaterial = new Material();
 	esmeraldMaterial->SetAmbientMat(glm::vec3(0.0215f, 0.1745f, 0.0215f));
 	esmeraldMaterial->SetDiffuseMat(glm::vec3(0.07568f, 0.61424f, 0.07568f));
 	esmeraldMaterial->SetSpecularMat(glm::vec3(0.633f, 0.727811f, 0.633f));
-	esmeraldMaterial->SetNewShininess(0.6f);
+	esmeraldMaterial->SetNewShininess(0.6f, 32);
 
-	redRubberMaterial = new Material();
-	redRubberMaterial->SetAmbientMat(glm::vec3(0.05, 0.0, 0.0));
-	redRubberMaterial->SetDiffuseMat(glm::vec3(0.5, 0.4, 0.4));
-	redRubberMaterial->SetSpecularMat(glm::vec3(0.7, 0.04, 0.04));
-	redRubberMaterial->SetNewShininess(0.078125f * 32);
+	greenPlasticMaterial = new Material();
+	greenPlasticMaterial->SetAmbientMat(glm::vec3(0.0, 0.0, 0.0));
+	greenPlasticMaterial->SetDiffuseMat(glm::vec3(0.1, 0.35, 0.1));
+	greenPlasticMaterial->SetSpecularMat(glm::vec3(0.45, 0.55, 0.45));
+	greenPlasticMaterial->SetNewShininess(0.25f, 32);
 
 	pyramid = new Model3D(render,Pyramid);
 	pyramid->SetPosition(300.0f, 250.0f, -50.0f);
@@ -89,13 +89,17 @@ void Game::InitGame()
 	cube = new Model3D(render, Cube);
 	cube->SetPosition(300.0f, 100.0f, -50.0f);
 	cube->SetScale(50.0f, 50.0f, 50.0f);
-	cube->SetNewMaterial(redRubberMaterial);
+	cube->SetNewMaterial(greenPlasticMaterial);
 
 	cube2 = new Model3D(render, Cube);
 	cube2->SetPosition(500.0f, 100.0f, -50.0f);
 	cube2->SetScale(50.0f, 50.0f, 50.0f);
 	cube2->SetNewMaterial(goldMaterial);
 
+	cube3 = new Model3D(render, Cube);
+	cube3->SetPosition(500.0f, 300.0f, -50.0f);
+	cube3->SetScale(50.0f, 50.0f, 50.0f);
+	cube3->SetNewMaterial(silverMaterial);
 }
 
 void Game::UpdateGame(Windows *_window, Renderer *_render, Input *_input)
@@ -132,6 +136,8 @@ void Game::UpdateGame(Windows *_window, Renderer *_render, Input *_input)
 	cube->Draw();
 	cube2->UseMyMaterial();
 	cube2->Draw();
+	cube3->UseMyMaterial();
+	cube3->Draw();
 }
 
 void Game::DestroyGame()
@@ -148,6 +154,8 @@ void Game::DestroyGame()
 		delete cube;
 	if (cube2 != NULL)
 		delete cube2;
+	if (cube3 != NULL)
+		delete cube3;
 	if (pyramid != NULL)
 		delete pyramid;
 	//---------------------//
@@ -157,8 +165,8 @@ void Game::DestroyGame()
 		delete silverMaterial;
 	if (esmeraldMaterial != NULL)
 		delete esmeraldMaterial;
-	if (redRubberMaterial != NULL)
-		delete redRubberMaterial;
+	if (greenPlasticMaterial != NULL)
+		delete greenPlasticMaterial;
 }
 void Game::TempColorInput(Windows* windows, Shape* shape)
 {

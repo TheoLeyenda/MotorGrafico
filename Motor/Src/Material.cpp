@@ -230,9 +230,9 @@ glm::vec3 Material::GetSpecularMat()
 	return _specularMat;
 }
 
-void Material::SetNewShininess(float value)
+void Material::SetNewShininess(float value, int powValue)
 {
-	_shininess = value;
+	_shininess = value * powValue;
 }
 
 Material::~Material()
