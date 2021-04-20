@@ -16,7 +16,7 @@ private:
 	Material* goldMaterial;
 	Material* silverMaterial;
 	Material* esmeraldMaterial;
-	Material* greenPlasticMaterial;
+	Material* greenRubberMaterial;
 public:
 	Game();
 	~Game();
@@ -28,6 +28,7 @@ public:
 	void UpdateGame(Windows *_window, Renderer *_render, Input *_input) override;
 	void DestroyGame() override;
 
+	void InitMaterials();
 	void TempInputs(Windows* windows, Entity* shape);
 	void TempInputsPlayer1(Windows* windows, Sprite* sprite);
 	void TempInputsPlayer2(Windows* windows, Sprite* sprite);

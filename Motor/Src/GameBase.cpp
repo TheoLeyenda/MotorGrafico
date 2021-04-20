@@ -25,33 +25,30 @@ int GameBase::InitEngine()
 	render->GLEWInit();
 	render->SetShader();
 
+#pragma region CREACION Y SETEO DE LUZ DEFAULT
 
 	light = new Light(render, Light::TypeLight::Directional);
-	//light->SetColour(glm::vec3(1.0f, 1.0f, 1.0f));
 	light->SetAmbient(glm::vec3(0.2f, 0.2f, 0.2f));
 	light->SetDiffuse(glm::vec3(0.5f, 0.5f, 0.5f));
 	light->SetSpecular(glm::vec3(1.5f, 1.5f, 1.5f));
-
 	render->SetLighting(light);
-	
-	glEnable(GL_DEPTH_TEST);
-
-	//SETEO LA DATA DE VISTA DE LA CAMARA
-	camera->SetDataOrtho(0.0f, windows->GetSizeX(), 0.0f, windows->GetSizeY(), -100.0f, 1000.0f);
-	camera->SetDataPerspective(90.0f, windows->GetSizeX(), windows->GetSizeY(), 0.1f, 1000.0f);
-	camera->UseProjection();
-
-	//SETEO POSICION DE LA CAMARA
-	camera->SetPosition(300.0f, 100.0f, 200.0f);
 	light->SetPosition(300.0f, 200.0f, 50.0f);
 	light->SetScale(10.0f, 10.0f, 10.0f);
 
-	//INICIALIZO LA CAMARA PARA PODER UTILIZARLA
+#pragma endregion
+	//=====================================
+#pragma region CREACION Y SETEO DE CAMARA DEFAULT
+
+	camera->SetDataOrtho(0.0f, windows->GetSizeX(), 0.0f, windows->GetSizeY(), -100.0f, 1000.0f);
+	camera->SetDataPerspective(90.0f, windows->GetSizeX(), windows->GetSizeY(), 100.1f, 1000.0f);
+	camera->UseProjection();
+	camera->SetPosition(300.0f, 100.0f, 200.0f);
 	camera->InitCamera(camera->transform.position, glm::vec3(0.0f, 1.0f, 0.0f), -90, 0);
-	
 	render->SetView(camera);
-	
-	render->drawCamera(render->GetShaderColor(),camera->GetInternalData().model);
+
+#pragma endregion
+
+	glEnable(GL_DEPTH_TEST);
 
 	return 0;
 }
@@ -64,9 +61,9 @@ void GameBase::UpdateEngine()
 		//---------------------//
 		timeClock.tick();
 		//---------------------//
-		//HandleCamera();
-		//render->UseMaterial(currentMaterial);
-		//HandleLight(camera);
+		HandleCamera();
+		//---------------------//
+		HandleLight(camera);
 		//---------------------//
 		UpdateGame(windows, render, input);
 		//---------------------//	

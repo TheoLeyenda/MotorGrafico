@@ -58,46 +58,24 @@ void Game::InitGame()
 	newPositionCamY = camera->transform.position.y;
 	newPositionCamZ = camera->transform.position.z + 55;
 
-	goldMaterial = new Material();
-	goldMaterial->SetAmbientMat(glm::vec3(0.24725f, 0.1995f, 0.0745f));
-	goldMaterial->SetDiffuseMat(glm::vec3(0.75164f, 0.60648f, 0.22648f));
-	goldMaterial->SetSpecularMat(glm::vec3(0.628281f, 0.555802f, 0.366065f));
-	goldMaterial->SetNewShininess(0.1f, 128);
-	
-	silverMaterial = new Material();
-	silverMaterial->SetAmbientMat(glm::vec3(0.19225f, 0.19225f, 0.19225f));
-	silverMaterial->SetDiffuseMat(glm::vec3(0.50754f, 0.50754f, 0.50754f));
-	silverMaterial->SetSpecularMat(glm::vec3(0.508273f, 0.508273f, 0.508273f));
-	silverMaterial->SetNewShininess(0.4f, 128);
-	
-	esmeraldMaterial = new Material();
-	esmeraldMaterial->SetAmbientMat(glm::vec3(0.0215f, 0.1745f, 0.0215f));
-	esmeraldMaterial->SetDiffuseMat(glm::vec3(0.07568f, 0.61424f, 0.07568f));
-	esmeraldMaterial->SetSpecularMat(glm::vec3(0.633f, 0.727811f, 0.633f));
-	esmeraldMaterial->SetNewShininess(0.6f, 32);
-
-	greenPlasticMaterial = new Material();
-	greenPlasticMaterial->SetAmbientMat(glm::vec3(0.05, 0.05, 0.0));
-	greenPlasticMaterial->SetDiffuseMat(glm::vec3(0.5, 0.5, 0.4));
-	greenPlasticMaterial->SetSpecularMat(glm::vec3(0.7, 0.7, 0.04));
-	greenPlasticMaterial->SetNewShininess(0.078125f, 128);
+	InitMaterials();
 
 	pyramid = new Model3D(render,Pyramid);
 	pyramid->SetPosition(300.0f, 250.0f, -50.0f);
 	pyramid->SetScale(50.0f, 50.0f, 50.0f);
 
 	cube = new Model3D(render, Cube);
-	cube->SetPosition(300.0f, 100.0f, -50.0f);
+	cube->SetPosition(300, 100.0f, -50.0f);
 	cube->SetScale(50.0f, 50.0f, 50.0f);
-	cube->SetNewMaterial(greenPlasticMaterial);
+	cube->SetNewMaterial(greenRubberMaterial);
 
 	cube2 = new Model3D(render, Cube);
-	cube2->SetPosition(500.0f, 100.0f, -50.0f);
+	cube2->SetPosition(420.0f, 100.0f, -50.0f);
 	cube2->SetScale(50.0f, 50.0f, 50.0f);
 	cube2->SetNewMaterial(goldMaterial);
 
 	cube3 = new Model3D(render, Cube);
-	cube3->SetPosition(500.0f, 300.0f, -50.0f);
+	cube3->SetPosition(360.0f, 250.0f, -50.0f);
 	cube3->SetScale(50.0f, 50.0f, 50.0f);
 	cube3->SetNewMaterial(silverMaterial);
 }
@@ -105,33 +83,14 @@ void Game::InitGame()
 void Game::UpdateGame(Windows *_window, Renderer *_render, Input *_input)
 {
 	//timeClock.FPS();
-	/*
-	shape2->Draw(TypeShape::TRIANGLE, 3);
-	shape1->Draw(TypeShape::QUAD, 4);
 
-	std::cout << "POS X:" << shape2->transform.position.x << std::endl;
-	std::cout << "POS Y:" << shape2->transform.position.y << std::endl;
-	std::cout << "POS Z:" << shape2->transform.position.z << std::endl;
-
-	collisionManager->CheckCollision2D(shape1, shape2, speed, shape1->GetBoxColliderSize2D(), shape2->GetBoxColliderSize2D());
-	collisionManager->CheckCollision2D(shape1, shape1, speed, shape1->GetBoxColliderSize2D(), shape1->GetBoxColliderSize2D());
-
-	collisionManager->CheckCollision2D(shape2, shape1, speed, shape2->GetBoxColliderSize2D(), shape1->GetBoxColliderSize2D());
-	collisionManager->CheckCollision2D(shape2, shape1, speed, shape2->GetBoxColliderSize2D(), shape1->GetBoxColliderSize2D());
-
-	TempInputs(windows, shape2);
-	TempColorInput(windows, shape2);
-	*/
-	//pyramid->Draw();
 	if (useCamera)
 		TempInputCamera();
 
 	if (useModels)
 		TempInputs(windows, light);
 
-	HandleCamera();
-	HandleLight(camera);
-
+	//pyramid->Draw();
 	cube->Draw();
 	cube2->Draw();
 	cube3->Draw();
@@ -162,9 +121,10 @@ void Game::DestroyGame()
 		delete silverMaterial;
 	if (esmeraldMaterial != NULL)
 		delete esmeraldMaterial;
-	if (greenPlasticMaterial != NULL)
-		delete greenPlasticMaterial;
+	if (greenRubberMaterial != NULL)
+		delete greenRubberMaterial;
 }
+
 void Game::TempColorInput(Windows* windows, Shape* shape)
 {
 	//---------------------//
@@ -293,6 +253,35 @@ void Game::TempInputCamera()
 	//render->RotateCamera(newRotationCamZ, camera->GetInternalData().model);
 	
 #pragma endregion
+}
+
+void Game::InitMaterials()
+{
+
+	goldMaterial = new Material();
+	goldMaterial->SetAmbientMat(glm::vec3(0.24725f, 0.1995f, 0.0745f));
+	goldMaterial->SetDiffuseMat(glm::vec3(0.75164f, 0.60648f, 0.22648f));
+	goldMaterial->SetSpecularMat(glm::vec3(0.628281f, 0.555802f, 0.366065f));
+	goldMaterial->SetNewShininess(0.1f, 128);
+
+	silverMaterial = new Material();
+	silverMaterial->SetAmbientMat(glm::vec3(0.19225f, 0.19225f, 0.19225f));
+	silverMaterial->SetDiffuseMat(glm::vec3(0.50754f, 0.50754f, 0.50754f));
+	silverMaterial->SetSpecularMat(glm::vec3(0.508273f, 0.508273f, 0.508273f));
+	silverMaterial->SetNewShininess(0.4f, 128);
+
+	esmeraldMaterial = new Material();
+	esmeraldMaterial->SetAmbientMat(glm::vec3(0.0215f, 0.1745f, 0.0215f));
+	esmeraldMaterial->SetDiffuseMat(glm::vec3(0.07568f, 0.61424f, 0.07568f));
+	esmeraldMaterial->SetSpecularMat(glm::vec3(0.633f, 0.727811f, 0.633f));
+	esmeraldMaterial->SetNewShininess(0.6f, 32);
+
+	greenRubberMaterial = new Material();
+	greenRubberMaterial->SetAmbientMat(glm::vec3(0.0f, 0.05f, 0.0));
+	greenRubberMaterial->SetDiffuseMat(glm::vec3(0.4f, 0.5f, 0.4f));
+	greenRubberMaterial->SetSpecularMat(glm::vec3(0.04f, 0.7f, 0.04f));
+	greenRubberMaterial->SetNewShininess(0.078125f, 128.0f);
+
 }
 
 void Game::TempInputs(Windows* windows, Entity* shape)

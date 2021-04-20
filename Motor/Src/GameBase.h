@@ -19,6 +19,10 @@
 #define INIT_ERROR -1
 
 class ENGINE_API GameBase {
+private:
+
+	void HandleCamera();				//Funcion interna del engine
+	void HandleLight(Camera* camera);	//Funcion interna del engine
 protected:
 	Windows* windows;
 	Renderer* render;
@@ -27,11 +31,6 @@ protected:
 	Time timeClock;
 	Camera* camera;
 	Light* light;
-
-	//Material* currentMaterial;
-	//Material* matCube1;
-	//Material* matCube2;
-	//Material* matPyramid;
 public:
 	GameBase();
 	~GameBase();
@@ -39,8 +38,6 @@ public:
 	int InitEngine();
 	void UpdateEngine();
 	void DestroyEngine();
-	void HandleCamera();
-	void HandleLight(Camera* camera);
 
 	virtual void InitGame() = 0; //Inicializa todos las variables del juego.
 	virtual void UpdateGame(Windows *_window, Renderer *_render, Input *_input) = 0; //Update del juego
