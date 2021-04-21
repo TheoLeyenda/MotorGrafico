@@ -11,6 +11,25 @@ Light::Light(Renderer * _render, TypeLight type) : Entity(_render)
 	_diffuse = glm::vec3(0.0f, 0.0f, 0.0f);
 	_specular = glm::vec3(0.0f, 0.0f, 0.0f);
 
+	switch (type)
+	{
+	case Light::Point:
+		_isPoint = 1;
+		_isDirectional = 0;
+		_isSpot = 0;
+		break;
+	case Light::Directional:
+		_isDirectional = 1;
+		_isPoint = 0;
+		_isSpot = 0;
+		break;
+	case Light::Spot:
+		_isSpot = 1;
+		_isDirectional = 0;
+		_isPoint = 0;
+		break;
+	}
+
 	CreateDataLight();
 }
 
@@ -21,6 +40,25 @@ Light::Light(glm::vec3 colour, glm::vec3 ambient, glm::vec3 diffuse, glm::vec3 s
 	_diffuse = diffuse;
 	_specular = specular;
 
+	switch (type)
+	{
+	case Light::Point:
+		_isPoint = 1;
+		_isDirectional = 0;
+		_isSpot = 0;
+		break;
+	case Light::Directional:
+		_isDirectional = 1;
+		_isPoint = 0;
+		_isSpot = 0;
+		break;
+	case Light::Spot:
+		_isSpot = 1;
+		_isDirectional = 0;
+		_isPoint = 0;
+		break;
+	}
+
 	CreateDataLight();
 }
 
@@ -28,6 +66,14 @@ void Light::UseLight(Camera * cameraIn)
 {
 	renderer->GetShaderColor().use();
 
+	glUniform1i(_uniformTypeLightDirectional, _isDirectional);
+	
+	glUniform1i(_uniformTypeLightPoint, _isPoint);
+	
+	glUniform1i(_uniformTypeLightSpot, _isSpot);
+
+	glUniform3f(_uniformDirectionLocation, _direction.x, _direction.y, _direction.z);
+	
 	glUniform3f(_uniformPosCameraLocation, cameraIn->transform.position.x,
 		cameraIn->transform.position.y, cameraIn->transform.position.z);
 
@@ -40,6 +86,7 @@ void Light::UseLight(Camera * cameraIn)
 	glUniform3f(_uniformSpecularLocation, _specular.x, _specular.y, _specular.z);
 
 	glUniform3f(_uniformPosLightLocation, transform.position.x, transform.position.y, transform.position.z);
+
 
 	glUseProgram(0);
 }
@@ -90,10 +137,31 @@ void Light::SetUniformPosLightLocation(Shader& shader)
 	_uniformPosLightLocation = glGetUniformLocation(shader.getId(), "directionalLight.posLight");
 }
 
+void Light::SetUniformDirectionLightLocation(Shader & shader)
+{
+	_uniformDirectionLocation = glGetUniformLocation(shader.getId(), "directionalLight.direction");
+}	
+
 void Light::SetUniformPosCameraLocation(Shader & shader)
 {
 	_uniformPosCameraLocation = glGetUniformLocation(shader.getId(), "cameraPos");
 }
+
+void Light::SetUniformTypeLightDirectional(Shader & shader)
+{
+	_uniformTypeLightDirectional = glGetUniformLocation(shader.getId(), "typelight.directional");
+}
+
+void Light::SetUniformTypeLightSpot(Shader & shader)
+{
+	_uniformTypeLightSpot = glGetUniformLocation(shader.getId(), "typelight.spotLight");
+}
+
+void Light::SetUniformTypeLightPoint(Shader & shader)
+{
+	_uniformTypeLightPoint = glGetUniformLocation(shader.getId(), "typelight.pointLight");
+}
+
 
 Light::~Light() {}
 

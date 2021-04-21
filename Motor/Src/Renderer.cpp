@@ -223,6 +223,11 @@ void Renderer::SetLighting(Light * _light)
 {
 	if (_light != NULL) 
 	{
+		_light->SetUniformTypeLightDirectional(GetShaderColor());
+		_light->SetUniformTypeLightPoint(GetShaderColor());
+		_light->SetUniformTypeLightSpot(GetShaderColor());
+		_light->SetUniformDirectionLightLocation(GetShaderColor());
+		
 		_light->SetUniformPosCameraLocation(GetShaderColor());
 		_light->SetUniformAmbientLocation(GetShaderColor());
 		_light->SetUniformDiffuseLocation(GetShaderColor());
@@ -249,14 +254,6 @@ void Renderer::SetMaterial(Material * _material)
 		_material->SetUniformSpecularMatLocation(GetShaderColor());
 		_material->SetUniformShininessLocation(GetShaderColor());
 	}
-}
-
-void Renderer::UseMaterial(Material * _material)
-{
-	//if (_material != NULL) 
-	//{
-	//	_material->UseMaterial();
-	//}
 }
 
 void Renderer::drawCamera(Shader& shader, glm::mat4 trsCamera)

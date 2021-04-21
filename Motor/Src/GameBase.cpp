@@ -28,6 +28,8 @@ int GameBase::InitEngine()
 #pragma region CREACION Y SETEO DE LUZ DEFAULT
 
 	light = new Light(render, Light::TypeLight::Directional);
+	light->SetDirection(glm::vec3(-0.2f, -1.0f, -2.3f));
+
 	light->SetAmbient(glm::vec3(0.2f, 0.2f, 0.2f));
 	light->SetDiffuse(glm::vec3(0.5f, 0.5f, 0.5f));
 	light->SetSpecular(glm::vec3(1.5f, 1.5f, 1.5f));
@@ -89,12 +91,6 @@ void GameBase::DestroyEngine()
 		delete camera;
 	if (light != NULL)
 		delete light;
-	//if (matCube1 != NULL)
-	//	delete matCube1;
-	//if (matCube2 != NULL)
-	//	delete matCube2;
-	//if (matPyramid != NULL)
-	//	delete matPyramid;
 }
 
 void GameBase::HandleCamera()

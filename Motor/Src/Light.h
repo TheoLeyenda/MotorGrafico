@@ -47,10 +47,23 @@ public:
 	void SetUniformPosCameraLocation(Shader& shader);
 	unsigned int GetUniformPosCameraLocation() { return _uniformPosCameraLocation; }
 
+	void SetUniformTypeLightDirectional(Shader& shader);
+	unsigned int GetUniformTypeLightDirectional() { return _uniformTypeLightDirectional; }
+
+	void SetUniformTypeLightSpot(Shader& shader);
+	unsigned int GetUniformTypeLightSpot() { return _uniformTypeLightSpot; }
+
+	void SetUniformTypeLightPoint(Shader& shader);
+	unsigned int GetUniformTypeLightPoint() { return _uniformTypeLightPoint; }
+
+	void SetUniformDirectionLightLocation(Shader& shader);
+	unsigned int GetUniformDirectionalLight() { return _uniformDirectionLocation; }
+
 	void SetColour(glm::vec3 colour) { _colour = colour; }
 	void SetAmbient(glm::vec3 ambient) { _ambient = ambient; }
 	void SetDiffuse(glm::vec3 diffuse) { _diffuse = diffuse; }
 	void SetSpecular(glm::vec3 specular) { _specular = specular; }
+	void SetDirection(glm::vec3 direction) { _direction = direction; }
 
 	~Light();
 protected:
@@ -103,13 +116,22 @@ private:
 	unsigned int _uniformSpecularLocation;
 	unsigned int _uniformPosLightLocation;
 	unsigned int _uniformPosCameraLocation;
+	unsigned int _uniformDirectionLocation;
+
+	unsigned int _uniformTypeLightDirectional;
+	unsigned int _uniformTypeLightPoint;
+	unsigned int _uniformTypeLightSpot;
 
 	glm::vec3 _colour;
 	glm::vec3 _ambient;
 	glm::vec3 _diffuse;
 	glm::vec3 _specular;
+	glm::vec3 _direction;
 
 	TypeLight _typeLight;
+	int _isDirectional;
+	int _isPoint;
+	int _isSpot;
 };
 
 #endif

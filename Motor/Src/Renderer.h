@@ -72,7 +72,6 @@ public:
 	void drawCamera(Shader& shader, glm::mat4 trsCamera);
 
 	void SetMaterial(Material* _material);
-	void UseMaterial(Material* _material);
 
 	void SetLighting(Light* _light);
 	void LightingInfluence(Light* _light, Camera* camera);

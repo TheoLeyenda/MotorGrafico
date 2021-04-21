@@ -14,6 +14,8 @@ struct DirectionLight
 	vec3 ambient;
 	vec3 diffuse;
 	vec3 specular;
+
+	vec3 direction;
 	vec3 posLight;
 };
 
@@ -25,6 +27,14 @@ struct Material
 	float shininess;
 };
 
+struct TypeLight
+{
+	int directional;
+	int pointLight;
+	int spotLight;
+};
+
+uniform TypeLight typelight;
 uniform DirectionLight directionalLight;
 uniform Material material;
 
@@ -34,9 +44,15 @@ out vec4 outColor;
 
 void main()
 {
+	vec3 lightDir = vec3(1.0);
+
+	if (typelight.directional == 1)
+		lightDir = normalize(-directionalLight.direction);
+	else if (typelight.directional == 0)
+		lightDir = normalize(directionalLight.posLight - FragPos);
+
 	vec3 ambient = directionalLight.ambient * material.ambient;
 	vec3 norm = normalize(Normal);
-	vec3 lightDir = normalize(directionalLight.posLight - FragPos);
 	float diff = max(dot(norm, lightDir), 0.0f);
 	vec3 diffuse = directionalLight.diffuse * (diff * material.diffuse);
 	vec3 viewDir = normalize(cameraPos - FragPos);
