@@ -69,6 +69,13 @@ public:
 	void SetUniformQuadraticPointLight(Shader& shader);
 	unsigned int GetUniformQuadraticPointLight() { return _uniformQuadraticPointLight; }
 
+	void SetUniformCutOffSopttLight(Shader& shader);
+	unsigned int GetUniformCutOffSopttLight() { return _uniformCutOffSpotLight; }
+
+	void SetUniformOuterCutOffSopttLight(Shader& shader);
+	unsigned int GetUniformOuterCutOffSopttLight() { return _uniformOuterCutOffSpotLight; }
+
+
 	void SetColour(glm::vec3 colour) { _colour = colour; }
 	void SetAmbient(glm::vec3 ambient) { _ambient = ambient; }
 	void SetDiffuse(glm::vec3 diffuse) { _diffuse = diffuse; }
@@ -78,6 +85,8 @@ public:
 	void SetPointLight(float linearVal, float quadraticVal);
 	void SetLinearValue(float value) { _linearValue = value; }
 	void SetQuadraticValue(float value) { _quadraticValue = value; }
+	void SetCutOffSpotLight(float value) { _cutOffValue = value; }
+	void SetOuterCutOffSpotLight(float value) { _outerCutOffValue = value; }
 
 	~Light();
 protected:
@@ -140,6 +149,9 @@ private:
 	unsigned int _uniformLinearPointLight;
 	unsigned int _uniformQuadraticPointLight;
 
+	unsigned int _uniformCutOffSpotLight;
+	unsigned int _uniformOuterCutOffSpotLight;
+
 	glm::vec3 _colour;
 	glm::vec3 _ambient;
 	glm::vec3 _diffuse;
@@ -149,6 +161,8 @@ private:
 	float _linearValue;
 	float _quadraticValue;
 	const float _constValue = 1.0f;
+	float _cutOffValue;
+	float _outerCutOffValue;
 
 	TypeLight _typeLight;
 	int _isDirectional;

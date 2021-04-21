@@ -14,6 +14,7 @@ void Camera::InitCamera(glm::vec3 pos, glm::vec3 up, float yaw, float pitch) {
 	_yaw = yaw;
 	_pitch = pitch;
 	_front = glm::vec3(0.0f, 0.0f, -1.0f);
+
 	UpdateCamera();
 }
 glm::mat4 Camera::CalculateViewMatrix() {

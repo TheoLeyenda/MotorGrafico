@@ -65,7 +65,7 @@ void Game::InitGame()
 	pyramid->SetScale(50.0f, 50.0f, 50.0f);
 
 	cube = new Model3D(render, Cube);
-	cube->SetPosition(300, 100.0f, -50.0f);
+	cube->SetPosition(320, 100.0f, -50.0f);
 	cube->SetScale(50.0f, 50.0f, 50.0f);
 	cube->SetNewMaterial(greenRubberMaterial);
 
@@ -75,9 +75,12 @@ void Game::InitGame()
 	cube2->SetNewMaterial(goldMaterial);
 
 	cube3 = new Model3D(render, Cube);
-	cube3->SetPosition(360.0f, 250.0f, -50.0f);
+	cube3->SetPosition(320.0f, 100.0f, -200.0f);
 	cube3->SetScale(50.0f, 50.0f, 50.0f);
 	cube3->SetNewMaterial(silverMaterial);
+
+
+	light->SetPointLight(0.0014f, 0.000007f);
 }
 
 void Game::UpdateGame(Windows *_window, Renderer *_render, Input *_input)

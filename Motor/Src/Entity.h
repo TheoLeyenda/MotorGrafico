@@ -45,6 +45,13 @@ Renderer* GetRenderer();
 
 struct ENGINE_API Transform
 {
+	glm::vec3 forward;
+	glm::vec3 backward;
+	glm::vec3 left;
+	glm::vec3 right;
+	glm::vec3 up;
+	glm::vec3 down;
+
 	glm::vec3 position;
 	glm::vec3 rotation;
 	glm::vec3 scale;

@@ -240,6 +240,11 @@ void Renderer::SetLighting(Light * _light)
 		_light->SetUniformConstPointLight(GetShaderColor());
 #pragma endregion
 
+#pragma region SPOT LIGHT
+		_light->SetUniformOuterCutOffSopttLight(GetShaderColor());
+		_light->SetUniformCutOffSopttLight(GetShaderColor());
+#pragma endregion
+
 #pragma region BASIC LIGHTING (POS LIGHT)
 		_light->SetUniformPosCameraLocation(GetShaderColor());
 		_light->SetUniformAmbientLocation(GetShaderColor());

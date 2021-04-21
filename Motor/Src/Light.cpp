@@ -37,6 +37,8 @@ Light::Light(Renderer * _render, TypeLight type) : Entity(_render)
 
 	_linearValue = 0.09f;
 	_quadraticValue = 0.032f;
+	_cutOffValue = 12.5f;
+	_outerCutOffValue = 17.5f;
 
 	CreateDataLight();
 }
@@ -74,6 +76,8 @@ Light::Light(glm::vec3 colour, glm::vec3 ambient, glm::vec3 diffuse, glm::vec3 s
 
 	_linearValue = 0.09f;
 	_quadraticValue = 0.032f;
+	_cutOffValue = 12.5f;
+	_outerCutOffValue = 17.5f;
 
 	CreateDataLight();
 }
@@ -90,10 +94,19 @@ void Light::UseLight(Camera * cameraIn)
 	glUniform1i(_uniformTypeLightSpot, _isSpot);
 #pragma endregion
 
-#pragma region DIRECTIONAL LIGHT
-	glUniform3f(_uniformDirectionLocation, _direction.x, _direction.y, _direction.z);
+#pragma region DIRECTIONAL LIGHT && SPOT LIGHT
+	if(_isDirectional == 1 && _isSpot == 0)
+		glUniform3f(_uniformDirectionLocation, _direction.x, _direction.y, _direction.z);
+	if(_isDirectional == 0 && _isSpot == 1)
+		glUniform3f(_uniformDirectionLocation, transform.backward.x, transform.backward.y, transform.backward.z);
 #pragma endregion
 	
+#pragma region SPOT LIGHT
+	glUniform1f(_uniformCutOffSpotLight, glm::cos(glm::radians(_cutOffValue)));
+
+	glUniform1f(_uniformOuterCutOffSpotLight, glm::cos(glm::radians(_outerCutOffValue)));
+#pragma endregion
+
 #pragma region POINT LIGHT
 	glUniform1f(_uniformConstPointLight, _constValue);
 
@@ -143,46 +156,56 @@ void Light::SetTypeLight(TypeLight type)
 
 void Light::SetUniformColourLocation(Shader& shader)
 {
-	_unifromColourLocation = glGetUniformLocation(shader.getId(), "directionalLight.colour");
+	_unifromColourLocation = glGetUniformLocation(shader.getId(), "lightSource.colour");
 }
 
 void Light::SetUniformAmbientLocation(Shader& shader)
 {
-	_uniformAmbientLocation = glGetUniformLocation(shader.getId(), "directionalLight.ambient");
+	_uniformAmbientLocation = glGetUniformLocation(shader.getId(), "lightSource.ambient");
 }
 
 void Light::SetUniformDiffuseLocation(Shader& shader)
 {
-	_uniformDiffuseLocation = glGetUniformLocation(shader.getId(), "directionalLight.diffuse");
+	_uniformDiffuseLocation = glGetUniformLocation(shader.getId(), "lightSource.diffuse");
 }
 
 void Light::SetUniformSpecularLocation(Shader& shader)
 {
-	_uniformSpecularLocation = glGetUniformLocation(shader.getId(), "directionalLight.specular");
+	_uniformSpecularLocation = glGetUniformLocation(shader.getId(), "lightSource.specular");
 }
 
 void Light::SetUniformPosLightLocation(Shader& shader)
 {
-	_uniformPosLightLocation = glGetUniformLocation(shader.getId(), "directionalLight.posLight");
+	_uniformPosLightLocation = glGetUniformLocation(shader.getId(), "lightSource.posLight");
 }
 
 void Light::SetUniformDirectionLightLocation(Shader & shader)
 {
-	_uniformDirectionLocation = glGetUniformLocation(shader.getId(), "directionalLight.direction");
+	_uniformDirectionLocation = glGetUniformLocation(shader.getId(), "lightSource.direction");
 }
 void Light::SetUniformConstPointLight(Shader & shader)
 {
-	_uniformConstPointLight = glGetUniformLocation(shader.getId(), "directionalLight.constant");
+	_uniformConstPointLight = glGetUniformLocation(shader.getId(), "lightSource.constant");
 }
 
 void Light::SetUniformLinearPointLight(Shader & shader)
 {
-	_uniformLinearPointLight = glGetUniformLocation(shader.getId(), "directionalLight.linear");
+	_uniformLinearPointLight = glGetUniformLocation(shader.getId(), "lightSource.linear");
 }
 
 void Light::SetUniformQuadraticPointLight(Shader & shader)
 {
-	_uniformQuadraticPointLight = glGetUniformLocation(shader.getId(), "directionalLight.quadratic");
+	_uniformQuadraticPointLight = glGetUniformLocation(shader.getId(), "lightSource.quadratic");
+}
+
+void Light::SetUniformCutOffSopttLight(Shader & shader)
+{
+	_uniformCutOffSpotLight = glGetUniformLocation(shader.getId(), "lightSource.cutOff");
+}
+
+void Light::SetUniformOuterCutOffSopttLight(Shader & shader)
+{
+	_uniformOuterCutOffSpotLight = glGetUniformLocation(shader.getId(), "lightSource.outerCutOff");
 }
 
 void Light::SetUniformPosCameraLocation(Shader & shader)
