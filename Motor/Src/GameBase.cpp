@@ -28,10 +28,15 @@ int GameBase::InitEngine()
 #pragma region CREACION Y SETEO DE LUZ DEFAULT
 
 	light = new Light(render, Light::TypeLight::Spot);
-	//light->SetDirectionLight(glm::vec3(-0.2f, -1.0f, -2.3f));//Solo modifica algo si la luz es direccional, sino no hace nada
+	//light->SetDirectionLight(glm::vec3(-0.2f, -1.0f, -2.3f)); //Solo modifica algo si la luz es direccional, sino no hace nada
+	
 	light->SetPointLight(0.0014f, 0.000007f);
 	light->SetOuterCutOffSpotLight(17.5f);
 	light->SetCutOffSpotLight(12.5f);
+
+	//Y la direccional solo nesesita su direccion seteada.
+	//La point light solo nesesita su point light.
+	//La spotlight necesita el pointa light y su cutoff iner y cutoff outer.
 
 	light->SetAmbient(glm::vec3(0.2f, 0.2f, 0.2f));
 	light->SetDiffuse(glm::vec3(0.5f, 0.5f, 0.5f));

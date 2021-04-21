@@ -40,6 +40,9 @@ Light::Light(Renderer * _render, TypeLight type) : Entity(_render)
 	_cutOffValue = 12.5f;
 	_outerCutOffValue = 17.5f;
 
+	//Default
+	SetDirectionLight(glm::vec3(-0.2f, -1.0f, -2.3f));
+
 	CreateDataLight();
 }
 
@@ -78,6 +81,9 @@ Light::Light(glm::vec3 colour, glm::vec3 ambient, glm::vec3 diffuse, glm::vec3 s
 	_quadraticValue = 0.032f;
 	_cutOffValue = 12.5f;
 	_outerCutOffValue = 17.5f;
+
+	//Default
+	SetDirectionLight(glm::vec3(-0.2f, -1.0f, -2.3f));
 
 	CreateDataLight();
 }

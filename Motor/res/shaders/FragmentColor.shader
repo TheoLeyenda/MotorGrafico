@@ -57,6 +57,14 @@ void main()
 	float theta;
 	float epsilon;
 	float intensity;
+	vec3 ambient;
+	vec3 norm;
+	vec3 diffuse;
+	vec3 viewDir;
+	vec3 reflectDir;
+	vec3 specular;
+	float diff;
+	float spec;
 
 	if (typelight.directional == 1)
 		lightDir = normalize(-lightSource.direction);
@@ -67,42 +75,60 @@ void main()
 	epsilon = lightSource.cutOff - lightSource.outerCutOff;
 	intensity = clamp((theta - lightSource.outerCutOff) / epsilon, 0.0, 1.0);
 
+	if (typelight.directional == 1)
+	{
+		ambient = lightSource.ambient * material.ambient;
+		norm = normalize(Normal);
+		diff = max(dot(norm, lightDir), 0.0f);
+		diffuse = lightSource.diffuse * (diff * material.diffuse);
+		viewDir = normalize(cameraPos - FragPos);
+		reflectDir = reflect(-lightDir, norm);
+		spec = pow(max(dot(viewDir, reflectDir), 0.0f), material.shininess);
+		specular = lightSource.specular * (spec * material.specular);
+	}
 	if (theta > lightSource.cutOff)
 	{
-		vec3 ambient = lightSource.ambient * material.ambient;
-		vec3 norm = normalize(Normal);
-		float diff = max(dot(norm, lightDir), 0.0f);
-		vec3 diffuse = lightSource.diffuse * (diff * material.diffuse);
-		vec3 viewDir = normalize(cameraPos - FragPos);
-		vec3 reflectDir = reflect(-lightDir, norm);
-		float spec = pow(max(dot(viewDir, reflectDir), 0.0f), material.shininess);
-		vec3 specular = lightSource.specular * (spec * material.specular);
-
-		diffuse *= intensity;
-		specular *= intensity;
-
-		if (typelight.pointLight == 1)
-		{
-			distance = length(lightSource.posLight - FragPos);
-			attenuation = 1.0 / (lightSource.constant + lightSource.linear * distance +
-				lightSource.quadratic * (distance * distance));
-
-			ambient *= attenuation;
-			diffuse *= attenuation;
-			specular *= attenuation;
-		}
 		if (typelight.spotLight == 1)
 		{
+			ambient = lightSource.ambient * material.ambient;
+			norm = normalize(Normal);
+			diff = max(dot(norm, lightDir), 0.0f);
+			diffuse = lightSource.diffuse * (diff * material.diffuse);
+			viewDir = normalize(cameraPos - FragPos);
+			reflectDir = reflect(-lightDir, norm);
+			spec = pow(max(dot(viewDir, reflectDir), 0.0f), material.shininess);
+			specular = lightSource.specular * (spec * material.specular);
+
+			diffuse *= intensity;
+			specular *= intensity;
+
 			distance = length(lightSource.posLight - FragPos);
 			attenuation = 1.0 / (lightSource.constant + lightSource.linear * distance +
 				lightSource.quadratic * (distance * distance));
 
-			//ambient *= attenuation;
 			diffuse *= attenuation;
 			specular *= attenuation;
 		}
-
-		vec3 result = (ambient + diffuse + specular);
-		outColor = vec4(result, 1.0f);
 	}
+	if (typelight.pointLight == 1)
+	{
+		ambient = lightSource.ambient * material.ambient;
+		norm = normalize(Normal);
+		diff = max(dot(norm, lightDir), 0.0f);
+		diffuse = lightSource.diffuse * (diff * material.diffuse);
+		viewDir = normalize(cameraPos - FragPos);
+		reflectDir = reflect(-lightDir, norm);
+		spec = pow(max(dot(viewDir, reflectDir), 0.0f), material.shininess);
+		specular = lightSource.specular * (spec * material.specular);
+
+		distance = length(lightSource.posLight - FragPos);
+		attenuation = 1.0 / (lightSource.constant + lightSource.linear * distance +
+			lightSource.quadratic * (distance * distance));
+
+		ambient *= attenuation;
+		diffuse *= attenuation;
+		specular *= attenuation;
+	}
+	vec3 result = (ambient + diffuse + specular);
+	outColor = vec4(result, 1.0f);
 };

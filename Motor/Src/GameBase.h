@@ -30,7 +30,9 @@ protected:
 	CollisionManager* collisionManager;
 	Time timeClock;
 	Camera* camera;
+
 	Light* light;
+	Light* light2;
 public:
 	GameBase();
 	~GameBase();
