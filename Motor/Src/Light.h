@@ -12,7 +12,8 @@ public:
 	{
 		Point,
 		Directional,
-		Spot
+		Spot,
+		Pos
 	};
 
 	Light(Renderer* _render, TypeLight type);
@@ -59,11 +60,24 @@ public:
 	void SetUniformDirectionLightLocation(Shader& shader);
 	unsigned int GetUniformDirectionalLight() { return _uniformDirectionLocation; }
 
+	void SetUniformConstPointLight(Shader& shader);
+	unsigned int GetUniformConstPointLight() { return _uniformConstPointLight; }
+
+	void SetUniformLinearPointLight(Shader& shader);
+	unsigned int GetUniformLinearPointLight() { return _uniformLinearPointLight; }
+
+	void SetUniformQuadraticPointLight(Shader& shader);
+	unsigned int GetUniformQuadraticPointLight() { return _uniformQuadraticPointLight; }
+
 	void SetColour(glm::vec3 colour) { _colour = colour; }
 	void SetAmbient(glm::vec3 ambient) { _ambient = ambient; }
 	void SetDiffuse(glm::vec3 diffuse) { _diffuse = diffuse; }
 	void SetSpecular(glm::vec3 specular) { _specular = specular; }
-	void SetDirection(glm::vec3 direction) { _direction = direction; }
+	void SetDirectionLight(glm::vec3 direction) { _direction = direction; }
+
+	void SetPointLight(float linearVal, float quadraticVal);
+	void SetLinearValue(float value) { _linearValue = value; }
+	void SetQuadraticValue(float value) { _quadraticValue = value; }
 
 	~Light();
 protected:
@@ -122,11 +136,19 @@ private:
 	unsigned int _uniformTypeLightPoint;
 	unsigned int _uniformTypeLightSpot;
 
+	unsigned int _uniformConstPointLight;
+	unsigned int _uniformLinearPointLight;
+	unsigned int _uniformQuadraticPointLight;
+
 	glm::vec3 _colour;
 	glm::vec3 _ambient;
 	glm::vec3 _diffuse;
 	glm::vec3 _specular;
 	glm::vec3 _direction;
+
+	float _linearValue;
+	float _quadraticValue;
+	const float _constValue = 1.0f;
 
 	TypeLight _typeLight;
 	int _isDirectional;

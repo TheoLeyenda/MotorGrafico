@@ -17,6 +17,10 @@ struct DirectionLight
 
 	vec3 direction;
 	vec3 posLight;
+
+	float constant;
+	float linear;
+	float quadratic;
 };
 
 struct Material
@@ -60,6 +64,19 @@ void main()
 	float spec = pow(max(dot(viewDir, reflectDir), 0.0f), material.shininess);
 	vec3 specular = directionalLight.specular * (spec * material.specular);
 	
+	float distance;
+	float attenuation;
+	if (typelight.pointLight == 1)
+	{
+		distance = length(directionalLight.posLight - FragPos);
+		attenuation = 1.0 / (directionalLight.constant + directionalLight.linear * distance +
+			directionalLight.quadratic * (distance * distance));
+
+		ambient *= attenuation;
+		diffuse *= attenuation;
+		specular *= attenuation;
+	}
+
 	vec3 result = (ambient + diffuse + specular);
 	outColor = vec4(result, 1.0f);
 };

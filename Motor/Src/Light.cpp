@@ -28,7 +28,15 @@ Light::Light(Renderer * _render, TypeLight type) : Entity(_render)
 		_isDirectional = 0;
 		_isPoint = 0;
 		break;
+	case Light::Pos:
+		_isSpot = 0;
+		_isDirectional = 0;
+		_isPoint = 0;
+		break;
 	}
+
+	_linearValue = 0.09f;
+	_quadraticValue = 0.032f;
 
 	CreateDataLight();
 }
@@ -57,7 +65,15 @@ Light::Light(glm::vec3 colour, glm::vec3 ambient, glm::vec3 diffuse, glm::vec3 s
 		_isDirectional = 0;
 		_isPoint = 0;
 		break;
+	case Light::Pos:
+		_isSpot = 0;
+		_isDirectional = 0;
+		_isPoint = 0;
+		break;
 	}
+
+	_linearValue = 0.09f;
+	_quadraticValue = 0.032f;
 
 	CreateDataLight();
 }
@@ -66,14 +82,27 @@ void Light::UseLight(Camera * cameraIn)
 {
 	renderer->GetShaderColor().use();
 
+#pragma region TYPES LIGHT
 	glUniform1i(_uniformTypeLightDirectional, _isDirectional);
 	
 	glUniform1i(_uniformTypeLightPoint, _isPoint);
 	
 	glUniform1i(_uniformTypeLightSpot, _isSpot);
+#pragma endregion
 
+#pragma region DIRECTIONAL LIGHT
 	glUniform3f(_uniformDirectionLocation, _direction.x, _direction.y, _direction.z);
+#pragma endregion
 	
+#pragma region POINT LIGHT
+	glUniform1f(_uniformConstPointLight, _constValue);
+
+	glUniform1f(_uniformLinearPointLight, _linearValue);
+
+	glUniform1f(_uniformQuadraticPointLight, _quadraticValue);
+#pragma endregion
+
+#pragma region BASIC LIGHTING (POS LIGHT)
 	glUniform3f(_uniformPosCameraLocation, cameraIn->transform.position.x,
 		cameraIn->transform.position.y, cameraIn->transform.position.z);
 
@@ -86,7 +115,7 @@ void Light::UseLight(Camera * cameraIn)
 	glUniform3f(_uniformSpecularLocation, _specular.x, _specular.y, _specular.z);
 
 	glUniform3f(_uniformPosLightLocation, transform.position.x, transform.position.y, transform.position.z);
-
+#pragma endregion
 
 	glUseProgram(0);
 }
@@ -140,7 +169,21 @@ void Light::SetUniformPosLightLocation(Shader& shader)
 void Light::SetUniformDirectionLightLocation(Shader & shader)
 {
 	_uniformDirectionLocation = glGetUniformLocation(shader.getId(), "directionalLight.direction");
-}	
+}
+void Light::SetUniformConstPointLight(Shader & shader)
+{
+	_uniformConstPointLight = glGetUniformLocation(shader.getId(), "directionalLight.constant");
+}
+
+void Light::SetUniformLinearPointLight(Shader & shader)
+{
+	_uniformLinearPointLight = glGetUniformLocation(shader.getId(), "directionalLight.linear");
+}
+
+void Light::SetUniformQuadraticPointLight(Shader & shader)
+{
+	_uniformQuadraticPointLight = glGetUniformLocation(shader.getId(), "directionalLight.quadratic");
+}
 
 void Light::SetUniformPosCameraLocation(Shader & shader)
 {
@@ -162,6 +205,12 @@ void Light::SetUniformTypeLightPoint(Shader & shader)
 	_uniformTypeLightPoint = glGetUniformLocation(shader.getId(), "typelight.pointLight");
 }
 
+
+void Light::SetPointLight(float linearVal, float quadraticVal)
+{
+	SetLinearValue(linearVal);
+	SetQuadraticValue(quadraticVal);
+}
 
 Light::~Light() {}
 

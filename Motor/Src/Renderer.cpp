@@ -223,17 +223,32 @@ void Renderer::SetLighting(Light * _light)
 {
 	if (_light != NULL) 
 	{
+
+#pragma region TYPES LIGHT
 		_light->SetUniformTypeLightDirectional(GetShaderColor());
 		_light->SetUniformTypeLightPoint(GetShaderColor());
 		_light->SetUniformTypeLightSpot(GetShaderColor());
+#pragma endregion
+
+#pragma region DIRECTIONAL LIGHT
 		_light->SetUniformDirectionLightLocation(GetShaderColor());
-		
+#pragma endregion
+
+#pragma region POINT LIGHT
+		_light->SetUniformQuadraticPointLight(GetShaderColor());
+		_light->SetUniformLinearPointLight(GetShaderColor());
+		_light->SetUniformConstPointLight(GetShaderColor());
+#pragma endregion
+
+#pragma region BASIC LIGHTING (POS LIGHT)
 		_light->SetUniformPosCameraLocation(GetShaderColor());
 		_light->SetUniformAmbientLocation(GetShaderColor());
 		_light->SetUniformDiffuseLocation(GetShaderColor());
 		_light->SetUniformSpecularLocation(GetShaderColor());
 		_light->SetUniformColourLocation(GetShaderColor());
 		_light->SetUniformPosLightLocation(GetShaderColor());
+#pragma endregion
+
 	}
 }
 
