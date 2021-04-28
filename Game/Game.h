@@ -7,11 +7,11 @@ private:
 	int resultInit;
 	Shape* shape1;
 	Shape* shape2;
-	Model3D* pyramid;
+	Primitive3D* pyramid;
 
-	Model3D* cube;
-	Model3D* cube2;
-	Model3D* cube3;
+	Primitive3D* cube;
+	Primitive3D* cube2;
+	Primitive3D* cube3;
 
 	Material* goldMaterial;
 	Material* silverMaterial;

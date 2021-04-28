@@ -1,5 +1,5 @@
-#ifndef MODEL_H
-#define MODEL_H
+#ifndef PRIMITIVE3D_H
+#define PRIMITIVE3D_H
 
 #include "PrivateClass/Export.h"
 #include "Entity.h"
@@ -21,7 +21,7 @@ const int elementsForVertexPyramidCount = 10;
 const int offsetNormalDataPyramid = 7;
 
 
-class ENGINE_API Model3D : public Entity
+class ENGINE_API Primitive3D : public Entity
 {
 private:
 
@@ -87,9 +87,9 @@ protected:
 	void UnbindVAO();
 	void CreateDataModel();
 public:
-	Model3D(Renderer* renderer);
-	Model3D(Renderer* renderer,TypeModel typeModel);
-	~Model3D();
+	Primitive3D(Renderer* renderer);
+	Primitive3D(Renderer* renderer,TypeModel typeModel);
+	~Primitive3D();
 	//GETERS
 	TypeModel GetTypeModel() { return _type; }
 	//FUNCTIONS

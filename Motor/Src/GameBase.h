@@ -5,7 +5,7 @@
 #include "Windows.h"
 #include "Renderer.h"
 #include "Shape.h"
-#include "model.h"
+#include "Primitive3D.h"
 #include <stdlib.h>
 #include <time.h>
 #include "Input.h"

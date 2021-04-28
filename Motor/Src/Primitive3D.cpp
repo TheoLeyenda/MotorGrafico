@@ -1,10 +1,10 @@
-#include "model.h"
+#include "Primitive3D.h"
 #include <iostream>
 #include <glew.h>
 #include <GLFW/glfw3.h>
 #include "Material.h"
 
-Model3D::Model3D(Renderer* renderer) : Entity(renderer)
+Primitive3D::Primitive3D(Renderer* renderer) : Entity(renderer)
 {
 	_type = Pyramid;
 	myMathLibrary.CalcAverageNormals(indexCube, indicesCubeCount, vertexCube, verticesCubeCount, elementsForVertexCubeCount, offsetNormalDataCube);
@@ -13,7 +13,7 @@ Model3D::Model3D(Renderer* renderer) : Entity(renderer)
 	CreateDataModel();
 }
 
-Model3D::Model3D(Renderer * renderer, TypeModel typeModel) : Entity(renderer)
+Primitive3D::Primitive3D(Renderer * renderer, TypeModel typeModel) : Entity(renderer)
 {
 	_type = typeModel;
 	myMathLibrary.CalcAverageNormals(indexCube, indicesCubeCount, vertexCube, verticesCubeCount, elementsForVertexCubeCount, offsetNormalDataCube);
@@ -22,17 +22,17 @@ Model3D::Model3D(Renderer * renderer, TypeModel typeModel) : Entity(renderer)
 	CreateDataModel();
 }
 
-Model3D::~Model3D()
+Primitive3D::~Primitive3D()
 {
 }
 
-void Model3D::SetVAO()
+void Primitive3D::SetVAO()
 {
 	glGenVertexArrays(1, &_vao);
 	glBindVertexArray(_vao);
 }
 
-void Model3D::SetVBO()
+void Primitive3D::SetVBO()
 {
 	glGenBuffers(1, &_vbo);
 	glBindBuffer(GL_ARRAY_BUFFER,_vbo);
@@ -59,7 +59,7 @@ void Model3D::SetVBO()
 
 }
 
-void Model3D::SetIBO()
+void Primitive3D::SetIBO()
 {
 	glGenBuffers(1, &_ibo);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _ibo);
@@ -74,17 +74,17 @@ void Model3D::SetIBO()
 	}
 }
 
-void Model3D::BindVAO()
+void Primitive3D::BindVAO()
 {
 	glBindVertexArray(_vao);
 }
 
-void Model3D::BindIBO()
+void Primitive3D::BindIBO()
 {
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _ibo);
 }
 
-void Model3D::BindVBO()
+void Primitive3D::BindVBO()
 {
 	glBindBuffer(GL_ARRAY_BUFFER, _vbo);
 
@@ -101,24 +101,24 @@ void Model3D::BindVBO()
 	glEnableVertexAttribArray(_normalAttrib);
 }
 
-void Model3D::UnbindBuffers()
+void Primitive3D::UnbindBuffers()
 {
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindVertexArray(0);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 }
 
-void Model3D::UnbindIBO()
+void Primitive3D::UnbindIBO()
 {
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 }
 
-void Model3D::UnbindVAO()
+void Primitive3D::UnbindVAO()
 {
 	glBindVertexArray(0);
 }
 
-void Model3D::CreateDataModel()
+void Primitive3D::CreateDataModel()
 {
 	//---
 	SetVAO();
@@ -131,19 +131,19 @@ void Model3D::CreateDataModel()
 	//---
 }
 
-void Model3D::UseMyMaterial()
+void Primitive3D::UseMyMaterial()
 {
 	my_Mat->UseMaterial(renderer->GetShaderColor());
 }
 
-void Model3D::SetNewMaterial(Material * mat)
+void Primitive3D::SetNewMaterial(Material * mat)
 {
 	my_Mat = mat;
 
 	renderer->SetMaterial(my_Mat);
 }
 
-void Model3D::Draw()
+void Primitive3D::Draw()
 {
 	//----
 	UseMyMaterial();
