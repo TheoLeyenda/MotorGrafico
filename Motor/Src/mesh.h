@@ -2,28 +2,28 @@
 #define MESH_H
 
 #include "PrivateClass/Export.h"
+#include "shader.h"
 #include <iostream>
-#include <cstddef>
+#include <string>
 #include <vector>
-#include <string.h>
-#include "glm/vec3.hpp"
-#include "glm/vec2.hpp"
-#include "glm/mat4x4.hpp"
-#include "GLEW/Include/glew.h"
+#include "Texture.h"
+#include "Vertex.h"
 
-using namespace std;
-
+/*
 struct ENGINE_API Vertex
 {
 	glm::vec3 position;
 	glm::vec3 normal;
-	glm::vec3 texCoords;
+	glm::vec2 texCoords;
 };
+
 struct ENGINE_API Texture
 {
 	unsigned int id;
-	string type;
+	std::string type;
+	std::string path;
 };
+*/
 
 class ENGINE_API Mesh
 {
@@ -34,13 +34,12 @@ private:
 
 	void setupMesh();
 public:
-	vector<Vertex> vertices;
-	vector<Texture> textures;
-	vector<unsigned int> indices;
+	std::vector<Vertex> vertices;
+	std::vector<Texture> textures;
+	std::vector<unsigned int> indices;
 
-	Mesh(vector<Vertex> vertices, vector<unsigned int> indices,
-		vector<Texture> textures);
-	~Mesh();
-
+	Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices,
+		std::vector<Texture> textures);
+	void Draw(Shader& shader);
 };
 #endif // !MESH_H

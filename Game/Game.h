@@ -1,6 +1,8 @@
 #ifndef GAME_H
 #define GAME_H
 #include "GameBase.h"
+#include "model.h"
+
 class Game: public GameBase
 {
 private:
@@ -17,6 +19,8 @@ private:
 	Material* silverMaterial;
 	Material* esmeraldMaterial;
 	Material* greenRubberMaterial;
+
+	Model* myLoadedModel;
 public:
 	Game();
 	~Game();

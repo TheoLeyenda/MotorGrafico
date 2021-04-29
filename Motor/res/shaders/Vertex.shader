@@ -1,13 +1,13 @@
 #version 330 core
 
-in vec3 position;
-in vec4 customColor;
-in vec3 norm;
+layout(location = 0) in vec3 position;
+layout(location = 1) in vec3 norm;
+layout(location = 2) in vec2 m_TexCoord;
 
+in vec4 customColor;
 uniform mat4 model;
 uniform mat4 view;
 uniform mat4 projection;
-in vec2 m_TexCoord;
 out vec2 texCoord;
 out vec4 color;
 out vec3 Normal;

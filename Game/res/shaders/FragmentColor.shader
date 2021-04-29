@@ -32,6 +32,12 @@ struct Material
 	vec3 diffuse;
 	vec3 specular;
 	float shininess;
+
+	uniform sampler2D texture_diffuse1;
+	uniform sampler2D texture_diffuse2;
+	uniform sampler2D texture_diffuse3;
+	uniform sampler2D texture_specular1;
+	uniform sampler2D texture_specular2;
 };
 
 struct TypeLight
@@ -130,5 +136,5 @@ void main()
 		specular *= attenuation;
 	}
 	vec3 result = (ambient + diffuse + specular);
-	outColor = vec4(result, 1.0f);
+	outColor = vec4((result * texture(material.texture_diffuse1, texCoord)), 1.0f);
 };

@@ -58,26 +58,28 @@ void Game::InitGame()
 	newPositionCamY = camera->transform.position.y;
 	newPositionCamZ = camera->transform.position.z + 55;
 
-	InitMaterials();
+	myLoadedModel = new Model("res/modelos/Camioneta_Texturizada.fbx");
 
-	pyramid = new Primitive3D(render,Pyramid);
-	pyramid->SetPosition(300.0f, 250.0f, -50.0f);
-	pyramid->SetScale(50.0f, 50.0f, 50.0f);
+	//InitMaterials();
 
-	cube = new Primitive3D(render, Cube);
-	cube->SetPosition(300, 100.0f, -50.0f);
-	cube->SetScale(50.0f, 50.0f, 50.0f);
-	cube->SetNewMaterial(greenRubberMaterial);
-
-	cube2 = new Primitive3D(render, Cube);
-	cube2->SetPosition(420.0f, 100.0f, -50.0f);
-	cube2->SetScale(50.0f, 50.0f, 50.0f);
-	cube2->SetNewMaterial(goldMaterial);
-
-	cube3 = new Primitive3D(render, Cube);
-	cube3->SetPosition(360.0f, 250.0f, -50.0f);
-	cube3->SetScale(50.0f, 50.0f, 50.0f);
-	cube3->SetNewMaterial(silverMaterial);
+	//pyramid = new Primitive3D(render,Pyramid);
+	//pyramid->SetPosition(300.0f, 250.0f, -50.0f);
+	//pyramid->SetScale(50.0f, 50.0f, 50.0f);
+	//
+	//cube = new Primitive3D(render, Cube);
+	//cube->SetPosition(300, 100.0f, -50.0f);
+	//cube->SetScale(50.0f, 50.0f, 50.0f);
+	//cube->SetNewMaterial(greenRubberMaterial);
+	//
+	//cube2 = new Primitive3D(render, Cube);
+	//cube2->SetPosition(420.0f, 100.0f, -50.0f);
+	//cube2->SetScale(50.0f, 50.0f, 50.0f);
+	//cube2->SetNewMaterial(goldMaterial);
+	//
+	//cube3 = new Primitive3D(render, Cube);
+	//cube3->SetPosition(360.0f, 250.0f, -50.0f);
+	//cube3->SetScale(50.0f, 50.0f, 50.0f);
+	//cube3->SetNewMaterial(silverMaterial);
 }
 
 void Game::UpdateGame(Windows *_window, Renderer *_render, Input *_input)
@@ -91,9 +93,10 @@ void Game::UpdateGame(Windows *_window, Renderer *_render, Input *_input)
 		TempInputs(windows, light);
 
 	//pyramid->Draw();
-	cube->Draw();
-	cube2->Draw();
-	cube3->Draw();
+	//cube->Draw();
+	//cube2->Draw();
+	//cube3->Draw();
+	myLoadedModel->Draw(render->GetShaderColor());
 }
 
 void Game::DestroyGame()
@@ -123,6 +126,9 @@ void Game::DestroyGame()
 		delete esmeraldMaterial;
 	if (greenRubberMaterial != NULL)
 		delete greenRubberMaterial;
+
+	if (myLoadedModel != NULL)
+		delete myLoadedModel;
 }
 
 void Game::TempColorInput(Windows* windows, Shape* shape)
