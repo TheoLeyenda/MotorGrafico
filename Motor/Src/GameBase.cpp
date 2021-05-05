@@ -33,6 +33,10 @@ int GameBase::InitEngine()
 	light->SetCutOffSpotLight(12.5f);
 	light->SetOuterCutOffSpotLight(17.5f);
 
+	//DIRECTIONAL usa : SetDirectionalLight
+	//POINT usa : SetPointLight Y SetCutOffSpotLight
+	//SPOTLIGHT usa : SetPointLight, SetCutOutter y SetCutterOff
+
 	light->SetAmbient(glm::vec3(0.2f, 0.2f, 0.2f));
 	light->SetDiffuse(glm::vec3(0.5f, 0.5f, 0.5f));
 	light->SetSpecular(glm::vec3(1.5f, 1.5f, 1.5f));
