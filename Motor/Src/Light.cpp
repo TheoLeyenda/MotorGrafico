@@ -10,35 +10,24 @@ Light::Light(Renderer * _render, TypeLight type) : Entity(_render)
 	_ambient = glm::vec3(0.0f, 0.0f, 0.0f);
 	_diffuse = glm::vec3(0.0f, 0.0f, 0.0f);
 	_specular = glm::vec3(0.0f, 0.0f, 0.0f);
+	_typeLight = type;
 
-	switch (type)
+	SetBoolsTypeLight();
+
+	switch (_typeLight)
 	{
-	case Light::Point:
-		_isPoint = 1;
-		_isDirectional = 0;
-		_isSpot = 0;
+	case TypeLight::Directional:
+		SetDirectionLight(glm::vec3(-0.2f, -1.0f, -2.3f));
 		break;
-	case Light::Directional:
-		_isDirectional = 1;
-		_isPoint = 0;
-		_isSpot = 0;
+	case TypeLight::Point:
+		SetTypeLightPoint();
 		break;
-	case Light::Spot:
-		_isSpot = 1;
-		_isDirectional = 0;
-		_isPoint = 0;
+	case TypeLight::Spot:
+		SetTypeLightSpot();
 		break;
-	case Light::Pos:
-		_isSpot = 0;
-		_isDirectional = 0;
-		_isPoint = 0;
+	default:
 		break;
 	}
-
-	_linearValue = 0.09f;
-	_quadraticValue = 0.032f;
-	_cutOffValue = 12.5f;
-	_outerCutOffValue = 17.5f;
 
 	CreateDataLight();
 }
@@ -49,35 +38,24 @@ Light::Light(glm::vec3 colour, glm::vec3 ambient, glm::vec3 diffuse, glm::vec3 s
 	_ambient = ambient;
 	_diffuse = diffuse;
 	_specular = specular;
+	_typeLight = type;
 
-	switch (type)
+	SetBoolsTypeLight();
+
+	switch (_typeLight)
 	{
-	case Light::Point:
-		_isPoint = 1;
-		_isDirectional = 0;
-		_isSpot = 0;
+	case TypeLight::Directional:
+		SetDirectionLight(glm::vec3(-0.2f, -1.0f, -2.3f));
 		break;
-	case Light::Directional:
-		_isDirectional = 1;
-		_isPoint = 0;
-		_isSpot = 0;
+	case TypeLight::Point:
+		SetTypeLightPoint();
 		break;
-	case Light::Spot:
-		_isSpot = 1;
-		_isDirectional = 0;
-		_isPoint = 0;
+	case TypeLight::Spot:
+		SetTypeLightSpot();
 		break;
-	case Light::Pos:
-		_isSpot = 0;
-		_isDirectional = 0;
-		_isPoint = 0;
+	default:
 		break;
 	}
-
-	_linearValue = 0.09f;
-	_quadraticValue = 0.032f;
-	_cutOffValue = 12.5f;
-	_outerCutOffValue = 17.5f;
 
 	CreateDataLight();
 }
@@ -229,6 +207,50 @@ void Light::SetUniformTypeLightPoint(Shader & shader)
 }
 
 
+void Light::SetTypeLightPoint(float linearVal, float quadraticVal, float cutOffValue)
+{
+	SetPointLight(linearVal, quadraticVal);
+	SetCutOffSpotLight(cutOffValue);
+	_typeLight = TypeLight::Point;
+
+	_isPoint = 1;
+	_isDirectional = 0;
+	_isSpot = 0;
+}
+
+void Light::SetTypeLightPoint()
+{
+	SetPointLight(0.0014f, 0.000007f);
+	SetCutOffSpotLight(12.5f);
+	_typeLight = TypeLight::Point;
+	SetBoolsTypeLight();
+}
+
+void Light::SetTypeLightSpot(float linearVal, float quadraticVal, float cutOffValue, float outerCutOffValue)
+{
+	SetPointLight(linearVal, quadraticVal);
+	SetCutOffSpotLight(cutOffValue);
+	SetOuterCutOffSpotLight(outerCutOffValue);
+	_typeLight = TypeLight::Spot;
+	SetBoolsTypeLight();
+}
+
+void Light::SetTypeLightSpot()
+{
+	SetPointLight(0.0014f, 0.000007f);
+	SetCutOffSpotLight(12.5f);
+	SetOuterCutOffSpotLight(17.5f);
+	_typeLight = TypeLight::Spot;
+	SetBoolsTypeLight();
+}
+
+void Light::SetTypeLightDirectional(glm::vec3 direction)
+{
+	SetDirectionLight(direction);
+	_typeLight = TypeLight::Directional;
+	SetBoolsTypeLight();
+}
+
 void Light::SetPointLight(float linearVal, float quadraticVal)
 {
 	SetLinearValue(linearVal);
@@ -315,4 +337,26 @@ void Light::CreateDataLight()
 	//---
 	UnbindBuffers();
 	//---
+}
+
+void Light::SetBoolsTypeLight()
+{
+	switch (_typeLight)
+	{
+	case Light::Point:
+		_isPoint = 1;
+		_isDirectional = 0;
+		_isSpot = 0;
+		break;
+	case Light::Directional:
+		_isDirectional = 1;
+		_isPoint = 0;
+		_isSpot = 0;
+		break;
+	case Light::Spot:
+		_isSpot = 1;
+		_isDirectional = 0;
+		_isPoint = 0;
+		break;
+	}
 }

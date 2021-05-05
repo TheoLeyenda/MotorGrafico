@@ -13,7 +13,6 @@ public:
 		Point,
 		Directional,
 		Spot,
-		Pos
 	};
 
 	Light(Renderer* _render, TypeLight type);
@@ -75,18 +74,17 @@ public:
 	void SetUniformOuterCutOffSopttLight(Shader& shader);
 	unsigned int GetUniformOuterCutOffSopttLight() { return _uniformOuterCutOffSpotLight; }
 
-
 	void SetColour(glm::vec3 colour) { _colour = colour; }
 	void SetAmbient(glm::vec3 ambient) { _ambient = ambient; }
 	void SetDiffuse(glm::vec3 diffuse) { _diffuse = diffuse; }
 	void SetSpecular(glm::vec3 specular) { _specular = specular; }
-	void SetDirectionLight(glm::vec3 direction) { _direction = direction; }
 
-	void SetPointLight(float linearVal, float quadraticVal);
-	void SetLinearValue(float value) { _linearValue = value; }
-	void SetQuadraticValue(float value) { _quadraticValue = value; }
-	void SetCutOffSpotLight(float value) { _cutOffValue = value; }
-	void SetOuterCutOffSpotLight(float value) { _outerCutOffValue = value; }
+	void SetTypeLightPoint(float linearVal, float quadraticVal, float cutOffValue);
+	void SetTypeLightSpot(float linearVal, float quadraticVal, float cutOffValue, float outerCutOffValue);
+	void SetTypeLightDirectional(glm::vec3 direction);
+
+	void SetTypeLightPoint();
+	void SetTypeLightSpot();
 
 	~Light();
 protected:
@@ -100,6 +98,16 @@ protected:
 	void UnbindVAO();
 	void UnbindBuffers();
 	void CreateDataLight();
+
+	void SetBoolsTypeLight();
+
+	void SetPointLight(float linearVal, float quadraticVal);
+	void SetLinearValue(float value) { _linearValue = value; }
+	void SetQuadraticValue(float value) { _quadraticValue = value; }
+	void SetCutOffSpotLight(float value) { _cutOffValue = value; }
+	void SetOuterCutOffSpotLight(float value) { _outerCutOffValue = value; }
+	void SetDirectionLight(glm::vec3 direction) { _direction = direction; }
+
 private:
 	float lightSourceCube[lightCubeCount] = {
 		//	x		y		z	

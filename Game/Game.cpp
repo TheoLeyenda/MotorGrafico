@@ -94,6 +94,19 @@ void Game::UpdateGame(Windows *_window, Renderer *_render, Input *_input)
 	cube->Draw();
 	cube2->Draw();
 	cube3->Draw();
+
+	if (input->GetKey(KeyBoard::KEY_1))
+	{
+		light->SetTypeLightDirectional(glm::vec3(-0.2f, -1.0f, -2.3f));
+	}
+	if (input->GetKey(KeyBoard::KEY_2))
+	{
+		light->SetTypeLightPoint();
+	}
+	if (input->GetKey(KeyBoard::KEY_3))
+	{
+		light->SetTypeLightSpot();
+	}
 }
 
 void Game::DestroyGame()
