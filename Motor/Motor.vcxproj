@@ -30,7 +30,9 @@
     <ClInclude Include="Src\Input.h" />
     <ClInclude Include="Src\Light.h" />
     <ClInclude Include="Src\Material.h" />
-    <ClInclude Include="Src\model.h" />
+    <ClInclude Include="Src\Mesh.h" />
+    <ClInclude Include="Src\Model.h" />
+    <ClInclude Include="Src\Primitive3D.h" />
     <ClInclude Include="Src\MyMathLibrary.h" />
     <ClInclude Include="Src\PrivateClass\Export.h" />
     <ClInclude Include="Src\Renderer.h" />
@@ -53,7 +55,9 @@
     <ClCompile Include="Src\Input.cpp" />
     <ClCompile Include="Src\Light.cpp" />
     <ClCompile Include="Src\Material.cpp" />
-    <ClCompile Include="Src\model.cpp" />
+    <ClCompile Include="Src\Mesh.cpp" />
+    <ClCompile Include="Src\Model.cpp" />
+    <ClCompile Include="Src\Primitive3D.cpp" />
     <ClCompile Include="Src\MyMathLibrary.cpp" />
     <ClCompile Include="Src\Renderer.cpp" />
     <ClCompile Include="Src\shader.cpp" />
@@ -149,12 +153,12 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)Lib\GLFW\include;$(ProjectDir)Lib;$(ProjectDir)Lib\GLEW\Include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)External Libraries\Assimp\include;$(ProjectDir)Lib\GLFW\include;$(ProjectDir)Lib;$(ProjectDir)Lib\GLEW\Include</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>DEBUG;ENGINE_EXPORT;GLEW_STATIC;_WINDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
-      <AdditionalLibraryDirectories>$(ProyectDir)Lib\GLEW\Lib;$(ProjectDir)Lib\GLFW\glfw-3.3.2.bin.WIN32\lib-vc2017</AdditionalLibraryDirectories>
-      <AdditionalDependencies>opengl32.lib;glew32s.lib;glfw3.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)External Libraries\Assimp\Lib;$(ProyectDir)Lib\GLEW\Lib;$(ProjectDir)Lib\GLFW\glfw-3.3.2.bin.WIN32\lib-vc2017</AdditionalLibraryDirectories>
+      <AdditionalDependencies>assimp-vc140-mt.lib;opengl32.lib;glew32s.lib;glfw3.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command>copy /Y "$(SolutionDir)Motor\Bin\Win32\Debug\Motor32.dll" "$(SolutionDir)Game\Bin\Debug"</Command>

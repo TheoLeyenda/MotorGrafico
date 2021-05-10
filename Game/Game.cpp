@@ -53,6 +53,11 @@ Game::~Game() {}
 
 void Game::InitGame()
 {
+	model = new Model("res/modelos/baseCamp_bunkerSmall.fbx", false, render);
+	model->SetScaleModel(50.0f, 50.0f, 50.0f);
+	model->SetPosition(300.0f, 250.0f, -50.0f);
+	model->SetRotationModelX(-90.0f);
+	//model->SetRotationModelY(90.0f);
 
 	newPositionCamX = camera->transform.position.x;
 	newPositionCamY = camera->transform.position.y;
@@ -60,21 +65,21 @@ void Game::InitGame()
 
 	InitMaterials();
 
-	pyramid = new Model3D(render,Pyramid);
+	pyramid = new Primitive3D(render,Pyramid);
 	pyramid->SetPosition(300.0f, 250.0f, -50.0f);
 	pyramid->SetScale(50.0f, 50.0f, 50.0f);
 
-	cube = new Model3D(render, Cube);
+	cube = new Primitive3D(render, Cube);
 	cube->SetPosition(300, 100.0f, -50.0f);
 	cube->SetScale(50.0f, 50.0f, 50.0f);
 	cube->SetNewMaterial(greenRubberMaterial);
 
-	cube2 = new Model3D(render, Cube);
+	cube2 = new Primitive3D(render, Cube);
 	cube2->SetPosition(420.0f, 100.0f, -50.0f);
 	cube2->SetScale(50.0f, 50.0f, 50.0f);
 	cube2->SetNewMaterial(goldMaterial);
 
-	cube3 = new Model3D(render, Cube);
+	cube3 = new Primitive3D(render, Cube);
 	cube3->SetPosition(360.0f, 250.0f, -50.0f);
 	cube3->SetScale(50.0f, 50.0f, 50.0f);
 	cube3->SetNewMaterial(silverMaterial);
@@ -94,6 +99,10 @@ void Game::UpdateGame(Windows *_window, Renderer *_render, Input *_input)
 	cube->Draw();
 	cube2->Draw();
 	cube3->Draw();
+
+	if (model != NULL) {
+		model->Draw(render->GetShaderColor());
+	}
 
 	if (input->GetKey(KeyBoard::KEY_1))
 	{
@@ -136,6 +145,9 @@ void Game::DestroyGame()
 		delete esmeraldMaterial;
 	if (greenRubberMaterial != NULL)
 		delete greenRubberMaterial;
+
+	if (model != NULL)
+		delete model;
 }
 
 void Game::TempColorInput(Windows* windows, Shape* shape)
@@ -156,12 +168,12 @@ void Game::TempColorInput(Windows* windows, Shape* shape)
 		typeColorShape = TypeColorShape::SolidColor;
 		if (shape->GetCurrentShape() == TypeShape::TRIANGLE) {
 			shape->SetShape(TypeShape::TRIANGLE, typeColorShape);
-			shape->SetVertexsAttribShape(TypeMaterial::Color);
+			shape->SetVertexsAttribShape(TypeMaterial::ColorType);
 		}
 		else if (shape->GetCurrentShape() == TypeShape::QUAD)
 		{
 			shape->SetShape(TypeShape::QUAD, typeColorShape);
-			shape->SetVertexsAttribShape(TypeMaterial::Color);
+			shape->SetVertexsAttribShape(TypeMaterial::ColorType);
 		}
 	}
 	if (input->GetKey(KeyBoard::KEY_KP_ENTER))
@@ -169,12 +181,12 @@ void Game::TempColorInput(Windows* windows, Shape* shape)
 		typeColorShape = TypeColorShape::VertexColor;
 		if (shape->GetCurrentShape() == TypeShape::TRIANGLE) {
 			shape->SetShape(TypeShape::TRIANGLE, typeColorShape);
-			shape->SetVertexsAttribShape(TypeMaterial::Color);
+			shape->SetVertexsAttribShape(TypeMaterial::ColorType);
 		}
 		else if (shape->GetCurrentShape() == TypeShape::QUAD)
 		{
 			shape->SetShape(TypeShape::QUAD, typeColorShape);
-			shape->SetVertexsAttribShape(TypeMaterial::Color);
+			shape->SetVertexsAttribShape(TypeMaterial::ColorType);
 		}
 	}
 #pragma endregion

@@ -42,6 +42,7 @@ void Sprite::Draw()
 {
 	if (renderer != NULL) 
 	{
+		CheckIsModel();
 
 		if (_transparency)
 			BlendSprite();

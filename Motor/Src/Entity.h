@@ -72,8 +72,13 @@ protected:
 	InternalData internalData;
 	void UpdateMatrixModel();
 	MyMathLibrary myMathLibrary;
+	float isModel;
+
+	unsigned int _uniformIsModelLocation;
+
 public:
 	Entity(Renderer *_renderer);
+	Entity(Renderer *_renderer, float _isModel);
 	~Entity();
 	Transform transform;
 	Renderer* GetRenderer();
@@ -83,5 +88,7 @@ public:
 	void SetRotationX(float x);
 	void SetRotationY(float y);
 	void SetRotationZ(float z);
+	void InitIsModelShader();
+	void CheckIsModel();
 };
 #endif

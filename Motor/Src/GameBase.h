@@ -5,7 +5,7 @@
 #include "Windows.h"
 #include "Renderer.h"
 #include "Shape.h"
-#include "model.h"
+#include "Primitive3D.h"
 #include <stdlib.h>
 #include <time.h>
 #include "Input.h"
@@ -15,6 +15,7 @@
 #include "Camera.h"
 #include "Light.h"
 #include "Material.h"
+#include "Model.h"
 
 #define INIT_ERROR -1
 

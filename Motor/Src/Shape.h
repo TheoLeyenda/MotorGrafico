@@ -18,8 +18,8 @@ static enum TypeColorShape
 };
 static enum TypeMaterial 
 {
-	Texture = 1,
-	Color = 2,
+	TextureType = 1,
+	ColorType = 2,
 };
 //typedef unsigned int GLenum;
 class ENGINE_API Shape : public Entity2D

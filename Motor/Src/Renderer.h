@@ -11,6 +11,7 @@
 #include <glm/gtc/type_ptr.hpp>
 #include "shader.h"
 #include <string>
+#include <vector>
 
 struct matrixMVP
 {
@@ -75,6 +76,9 @@ public:
 
 	void SetLighting(Light* _light);
 	void LightingInfluence(Light* _light, Camera* camera);
+
+	void DrawMeshes(std::vector<unsigned int> indices, Shader & shaderProg, glm::mat4 model, unsigned int vbo, unsigned int ibo, unsigned int posAtt, unsigned int nomAtt, unsigned int texAtt);
+	void LocateModel(Shader & shaderProg, glm::mat4 model, unsigned int vbo, unsigned int posAtt);
 
 	//=====================
 	void BindBufferSprite(unsigned int vbo);

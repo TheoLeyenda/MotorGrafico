@@ -62,6 +62,8 @@ Light::Light(glm::vec3 colour, glm::vec3 ambient, glm::vec3 diffuse, glm::vec3 s
 
 void Light::UseLight(Camera * cameraIn)
 {
+	CheckIsModel();
+
 	renderer->GetShaderColor().use();
 
 #pragma region TYPES LIGHT
