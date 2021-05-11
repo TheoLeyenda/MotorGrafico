@@ -53,7 +53,7 @@ Game::~Game() {}
 
 void Game::InitGame()
 {
-	model = new Model("res/modelos/baseCamp_bunkerSmall.fbx", false, render);
+	model = new Model("res/modelos/Alfator/source/alfator.fbx", false, render);
 	model->SetScaleModel(50.0f, 50.0f, 50.0f);
 	model->SetPosition(300.0f, 250.0f, -50.0f);
 	model->SetRotationModelX(-90.0f);

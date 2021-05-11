@@ -119,7 +119,8 @@ unsigned int Model::TextureFromFile(const char * path, const string & directory,
 	glGenTextures(1, &textureID);
 
 	int width, height, nrComponents;
-	unsigned char *data = stbi_load(filename.c_str(), &width, &height, &nrComponents, 0);
+	//unsigned char *data = stbi_load(filename.c_str(), &width, &height, &nrComponents, 0);
+	unsigned char *data = stbi_load("res/modelos/Alfator/textures/alfa.png", &width, &height, &nrComponents, 0);
 	if (data)
 	{
 		GLenum format;

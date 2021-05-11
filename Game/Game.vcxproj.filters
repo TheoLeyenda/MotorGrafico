@@ -43,6 +43,15 @@
     <Image Include="res\modelos\BanioSovietico\source\texturaRusaDeMadera.png">
       <Filter>Archivos de recursos</Filter>
     </Image>
+    <Image Include="res\modelos\Alfator\textures\alfa.png">
+      <Filter>Archivos de recursos</Filter>
+    </Image>
+    <Image Include="res\modelos\Alfator\textures\alfa_ifade1.png">
+      <Filter>Archivos de recursos</Filter>
+    </Image>
+    <Image Include="res\modelos\Alfator\textures\alfa_ifade2.png">
+      <Filter>Archivos de recursos</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <None Include="res\shaders\FragmentColor.shader" />
@@ -52,5 +61,6 @@
     <None Include="res\modelos\BanioSovietico\source\BanioSovietico.fbx" />
     <None Include="res\modelos\baseCamp_bunkerSmall.fbx" />
     <None Include="res\modelos\untitled.fbx" />
+    <None Include="res\modelos\Alfator\source\alfator.fbx" />
   </ItemGroup>
 </Project>

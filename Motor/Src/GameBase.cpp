@@ -27,7 +27,7 @@ int GameBase::InitEngine()
 
 #pragma region CREACION Y SETEO DE LUZ DEFAULT
 
-	light = new Light(render, Light::TypeLight::Point);
+	light = new Light(render, Light::TypeLight::Directional);
 
 	light->SetAmbient(glm::vec3(0.2f, 0.2f, 0.2f));
 	light->SetDiffuse(glm::vec3(0.5f, 0.5f, 0.5f));
