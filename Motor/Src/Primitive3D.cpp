@@ -145,6 +145,7 @@ void Primitive3D::SetNewMaterial(Material * mat)
 
 void Primitive3D::Draw()
 {
+	CheckIsModel();
 	//----
 	UseMyMaterial();
 	//----

@@ -91,13 +91,13 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)Motor\Lib;$(SolutionDir)Motor\Src</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)External Libraries\Assimp\include;$(SolutionDir)Motor\Lib;$(SolutionDir)Motor\Src</AdditionalIncludeDirectories>
       <PrecompiledHeaderFile />
       <PreprocessorDefinitions>GLEW_STATIC;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
-      <AdditionalLibraryDirectories>$(SolutionDir)Motor\Bin\Win32\Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>Motor32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)External Libraries\Assimp\Lib;$(SolutionDir)Motor\Bin\Win32\Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>assimp-vc140-mt.lib;Motor32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command>
@@ -175,12 +175,21 @@
     <ClInclude Include="Game.h" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="res\modelos\Alfator\textures\alfa.png" />
+    <Image Include="res\modelos\Alfator\textures\alfa_ifade1.png" />
+    <Image Include="res\modelos\Alfator\textures\alfa_ifade2.png" />
+    <Image Include="res\modelos\BanioSovietico\source\texturaRusaDeMadera.png" />
     <Image Include="res\texturas\bokitaElMasGrandePapa.png" />
     <Image Include="res\texturas\caminataPiola.png" />
     <Image Include="res\texturas\Facharda.jpg" />
     <Image Include="res\texturas\PlayerShit.png" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="res\modelos\Alfator\source\alfator.fbx" />
+    <None Include="res\modelos\BanioSovietico\source\BanioSovietico.fbx" />
+    <None Include="res\modelos\baseCamp_bunkerSmall.fbx" />
+    <None Include="res\modelos\Camioneta_Texturizada.fbx" />
+    <None Include="res\modelos\untitled.fbx" />
     <None Include="res\shaders\FragmentColor.shader" />
     <None Include="res\shaders\FragmentTexture.shader" />
     <None Include="res\shaders\Vertex.shader" />

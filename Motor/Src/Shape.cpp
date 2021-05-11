@@ -60,7 +60,7 @@ Shape::Shape(Renderer * _renderer,TypeShape typeShape, const char * filePath): E
 	_transparency = false;
 	texImporter = new TextureImporter();
 
-	_typeMaterial = TypeMaterial::Texture;
+	_typeMaterial = TypeMaterial::TextureType;
 
 	SetShape(_currentShape, _typeColorShape);
 	SetVertexsAttribShape(_typeMaterial);
@@ -81,7 +81,7 @@ Shape::Shape(Renderer * _renderer, TypeShape typeShape, Material * _material,  c
 	texImporter = new TextureImporter();
 
 	material = _material;
-	_typeMaterial = TypeMaterial::Texture;
+	_typeMaterial = TypeMaterial::TextureType;
 
 	SetShape(_currentShape, _typeColorShape);
 	SetVertexsAttribShape(_typeMaterial);
@@ -96,7 +96,7 @@ Shape::Shape(Renderer *_renderer, TypeShape typeShape, TypeColorShape typeColorS
 	_currentShape = typeShape;
 	_typeColorShape = typeColorShape;
 	renderer = _renderer;
-	_typeMaterial = TypeMaterial::Color;
+	_typeMaterial = TypeMaterial::ColorType;
 	
 	_path = "None Path";
 	SetShape(_currentShape, _typeColorShape);
@@ -110,7 +110,7 @@ Shape::Shape(Renderer * _renderer, Material * _material, TypeShape typeShape, Ty
 	_typeColorShape = typeColorShape;
 	renderer = _renderer;
 	material = _material;
-	_typeMaterial = TypeMaterial::Color;
+	_typeMaterial = TypeMaterial::ColorType;
 
 	_path = "None Path";
 	SetShape(_currentShape, _typeColorShape);
@@ -146,7 +146,7 @@ void Shape::SetShape(unsigned int typeShape, TypeColorShape typeColorShape)
 	switch (typeShape)
 	{
 	case GL_TRIANGLES:
-		if (_typeMaterial == TypeMaterial::Texture) 
+		if (_typeMaterial == TypeMaterial::TextureType) 
 		{
 			_vertexBuffer = vertexBufferTextureTri;
 		}
@@ -164,7 +164,7 @@ void Shape::SetShape(unsigned int typeShape, TypeColorShape typeColorShape)
 		}
 		break;
 	case GL_QUADS:
-		if (_typeMaterial == TypeMaterial::Texture) 
+		if (_typeMaterial == TypeMaterial::TextureType) 
 		{
 			_vertexBuffer = vertexBufferTextureQuad;
 		}
@@ -234,8 +234,9 @@ void Shape::Draw(unsigned int figura,int vertexs)
 	_currentShape = figura;
 	if (renderer != NULL)
 	{
+		CheckIsModel();
 
-		if (_typeMaterial == TypeMaterial::Texture)
+		if (_typeMaterial == TypeMaterial::TextureType)
 		{
 			if (_transparency)
 				BlendSprite();
@@ -253,7 +254,7 @@ void Shape::Draw(unsigned int figura,int vertexs)
 				UnBlendSprite();
 			
 		}
-		else if(_typeMaterial == TypeMaterial::Color)
+		else if(_typeMaterial == TypeMaterial::ColorType)
 		{
 			renderer->DrawShape(figura, vertexs, GetVbo(), renderer->GetShaderColor(), internalData.model, false);
 		}

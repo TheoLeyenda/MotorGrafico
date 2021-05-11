@@ -1,34 +1,54 @@
 #ifndef MODEL_H
 #define MODEL_H
 
-#include "stb_image.h"
+#include "Mesh.h"
+//#include <glad/glad.h> 
+
+#include <glm/glm.hpp>
+//#include <stb_image.h>
+#include <assimp/Importer.hpp>
+#include <assimp/scene.h>
+#include <assimp/postprocess.h>
+
 #include <fstream>
 #include <sstream>
+#include <iostream>
 #include <map>
-#include "mesh.h"
 
-struct aiScene;
-struct aiNode;
-struct aiMesh;
-struct aiMaterial;
-enum aiTextureType;
+using namespace std;
 
-class ENGINE_API Model
+class Time;
+
+class ENGINE_API Model : public Entity
 {
-private:
-	string directory;
-	vector<Mesh> meshes;
-	vector<Texture> textures_loaded;
-
-	void processNode(aiNode *node, const aiScene *scene);
-	Mesh processMesh(aiMesh *mesh, const aiScene *scene);
-	vector<Texture> loadMaterialTexture(aiMaterial *mat, aiTextureType type,
-		string typeName);
-	void loadModel(string path);
-	unsigned int TextureFromFile(const char *path, const string &directory, bool gamma = false);
-
 public:
-	Model(const char * path);
-	void Draw(Shader& shader);
+	vector<Texture> textures_loaded;	// stores all the textures loaded so far, optimization to make sure textures aren't loaded more than once.
+	vector<Mesh> meshes;
+	string directory;
+	bool gammaCorrection;
+
+	Model(string const &path, bool gamma, Renderer* render);
+	
+	void Draw(Shader &shader);
+	
+	void MoveModel(glm::vec3 direction, float speed, Time* timer);
+	void MoveModel(glm::vec3 direction, float speed, Time timer);
+
+	void SetScaleModel(float x, float y, float z);
+
+	void SetRotationModelX(float RotateX);
+	void SetRotationModelY(float RotateY);
+	void SetRotationModelZ(float RotateZ);
+	
+private:
+	void CenterPivotPositionModel();
+	unsigned int TextureFromFile(const char *path, const string &directory, bool gamma);
+	void LoadModel(string path);
+	void ProcessNode(aiNode *node, const aiScene *scene);
+	Mesh ProcessMesh(aiMesh *mesh, const aiScene *scene);
+	vector<Texture> LoadMaterialTextures(aiMaterial *mat, aiTextureType type,
+		string typeName);
+
 };
-#endif // !MODEL_H
+
+#endif

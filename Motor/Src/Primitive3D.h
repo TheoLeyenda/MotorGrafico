@@ -1,5 +1,5 @@
-#ifndef PRIMITIVE3D_H
-#define PRIMITIVE3D_H
+#ifndef PRIMITIVE_H
+#define PRIMITIVE_H
 
 #include "PrivateClass/Export.h"
 #include "Entity.h"

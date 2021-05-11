@@ -265,6 +265,20 @@ void Renderer::LightingInfluence(Light * _light, Camera* camera)
 	}
 }
 
+void Renderer::DrawMeshes(std::vector<unsigned int> indices, Shader & shaderProg, glm::mat4 model, unsigned int vbo, unsigned int ibo, unsigned int posAtt, unsigned int nomAtt, unsigned int texAtt)
+{
+	UseShaderEnt(shaderProg, model);
+
+	glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
+
+	UnbindBuffer();
+}
+
+void Renderer::LocateModel(Shader & shaderProg, glm::mat4 model, unsigned int vbo, unsigned int posAtt)
+{
+	UseShaderEnt(shaderProg, model);
+}
+
 void Renderer::SetMaterial(Material * _material)
 {
 	if (_material != NULL) 

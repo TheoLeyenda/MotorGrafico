@@ -21,6 +21,7 @@ glm::mat4 Camera::CalculateViewMatrix() {
 	return glm::lookAt(transform.position, transform.position + _front, _up);
 }
 void Camera::UpdateCamera() {
+	CheckIsModel();
 	_front.x = cos(glm::radians(_yaw)) * cos(glm::radians(_pitch));
 	_front.y = sin(glm::radians(_pitch));
 	_front.z = sin(glm::radians(_yaw)) * cos(glm::radians(_pitch));
@@ -28,6 +29,8 @@ void Camera::UpdateCamera() {
 
 	_right = glm::normalize(glm::cross(_front, _worldUp));
 	_up = glm::normalize(glm::cross(_right, _front));
+
+	//CheckIsModel();
 }
 void Camera::SetPitch(float p) {
 	_pitch = p;

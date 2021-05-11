@@ -27,30 +27,21 @@ int GameBase::InitEngine()
 
 #pragma region CREACION Y SETEO DE LUZ DEFAULT
 
-	light = new Light(render, Light::TypeLight::Point);
-	//light->SetDirectionLight(glm::vec3(-0.2f, -1.0f, -2.3f)); //Solo modifica algo si la luz es direccional, sino no hace nada
-	
-	light->SetPointLight(0.0014f, 0.000007f);
-	//light->SetOuterCutOffSpotLight(17.5f);
-	//light->SetCutOffSpotLight(12.5f);
-
-	//Y la direccional solo nesesita su direccion seteada.
-	//La point light solo nesesita su point light.
-	//La spotlight necesita el pointa light y su cutoff iner y cutoff outer.
+	light = new Light(render, Light::TypeLight::Directional);
 
 	light->SetAmbient(glm::vec3(0.2f, 0.2f, 0.2f));
 	light->SetDiffuse(glm::vec3(0.5f, 0.5f, 0.5f));
 	light->SetSpecular(glm::vec3(1.5f, 1.5f, 1.5f));
 	render->SetLighting(light);
-	light->SetPosition(300.0f, 200.0f, 50.0f);
+	light->SetPosition(350.0f, 200.0f, 300.0f);
 	light->SetScale(10.0f, 10.0f, 10.0f);
 
 #pragma endregion
 	//=====================================
 #pragma region CREACION Y SETEO DE CAMARA DEFAULT
 
-	camera->SetDataOrtho(0.0f, windows->GetSizeX(), 0.0f, windows->GetSizeY(), -100.0f, 1000.0f);
-	camera->SetDataPerspective(90.0f, windows->GetSizeX(), windows->GetSizeY(), 100.1f, 1000.0f);
+	camera->SetDataOrtho(0.0f, windows->GetSizeX(), 0.0f, windows->GetSizeY(), -100.0f, 10000.0f);
+	camera->SetDataPerspective(90.0f, windows->GetSizeX(), windows->GetSizeY(), 100.1f, 10000.0f);
 	camera->UseProjection();
 	camera->SetPosition(300.0f, 100.0f, 200.0f);
 	camera->InitCamera(camera->transform.position, glm::vec3(0.0f, 1.0f, 0.0f), -90, 0);

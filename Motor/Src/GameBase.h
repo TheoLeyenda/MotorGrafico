@@ -15,6 +15,7 @@
 #include "Camera.h"
 #include "Light.h"
 #include "Material.h"
+#include "Model.h"
 
 #define INIT_ERROR -1
 
