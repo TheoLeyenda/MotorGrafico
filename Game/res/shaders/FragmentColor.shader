@@ -146,6 +146,7 @@ void main()
 	}
 	else if (isModel == 1)
 	{
-		outColor = texture(texture_diffuse1, texCoord);
+		ourTexture = texture_diffuse1;
+		outColor = texture(ourTexture, texCoord);
 	}
 };

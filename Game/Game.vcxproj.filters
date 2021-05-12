@@ -43,13 +43,22 @@
     <Image Include="res\modelos\BanioSovietico\source\texturaRusaDeMadera.png">
       <Filter>Archivos de recursos</Filter>
     </Image>
-    <Image Include="res\modelos\Alfator\textures\alfa.png">
+    <Image Include="res\modelos\Alfator\source\0.png">
       <Filter>Archivos de recursos</Filter>
     </Image>
-    <Image Include="res\modelos\Alfator\textures\alfa_ifade1.png">
+    <Image Include="res\modelos\Alfator\source\1.png">
       <Filter>Archivos de recursos</Filter>
     </Image>
-    <Image Include="res\modelos\Alfator\textures\alfa_ifade2.png">
+    <Image Include="res\modelos\Alfator\source\2.png">
+      <Filter>Archivos de recursos</Filter>
+    </Image>
+    <Image Include="res\modelos\Alfator\textures\0.png">
+      <Filter>Archivos de recursos</Filter>
+    </Image>
+    <Image Include="res\modelos\Alfator\textures\1.png">
+      <Filter>Archivos de recursos</Filter>
+    </Image>
+    <Image Include="res\modelos\Alfator\textures\2.png">
       <Filter>Archivos de recursos</Filter>
     </Image>
   </ItemGroup>
