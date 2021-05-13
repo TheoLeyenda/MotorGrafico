@@ -141,9 +141,9 @@ void main()
 			diffuse *= attenuation;
 			specular *= attenuation;
 		}
-		vec3 result = (ambient + diffuse + specular);
+		vec4 result = (vec4(ambient + diffuse + specular, 1) + texture(ourTexture, texCoord));
 
-		outColor = texture(ourTexture, texCoord) + vec4(result, 1);
+		outColor = vec4(result);
 	}
 	else if (isModel == 1)
 	{

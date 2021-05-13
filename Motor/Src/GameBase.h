@@ -32,6 +32,9 @@ protected:
 	Time timeClock;
 	Camera* camera;
 	Light* light;
+	Material* textureMaterialForLight;
+	Material* textureMaterialDefault;
+
 public:
 	GameBase();
 	~GameBase();

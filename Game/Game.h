@@ -17,7 +17,7 @@ private:
 	Material* silverMaterial;
 	Material* esmeraldMaterial;
 	Material* greenRubberMaterial;
-	Material* defaultMaterial;
+
 
 	Model* model = NULL;
 

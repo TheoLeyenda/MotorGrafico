@@ -70,7 +70,7 @@ void Game::InitGame()
 	pyramid->SetScale(50.0f, 50.0f, 50.0f);
 	pyramid->SetRotationY(6.0f);
 	//pyramid->SetNewMaterial(silverMaterial);
-	pyramid->SetNewMaterial(defaultMaterial);
+	pyramid->SetNewMaterial(textureMaterialForLight);
 	pyramid->LoadTexture("res/texturas/bokitaElMasGrandePapa.png", false);
 
 	cube = new Primitive3D(render, Cube);
@@ -86,7 +86,7 @@ void Game::InitGame()
 	cube3 = new Primitive3D(render, Cube);
 	cube3->SetPosition(360.0f, 250.0f, -50.0f);
 	cube3->SetScale(50.0f, 50.0f, 50.0f);
-	cube3->SetNewMaterial(defaultMaterial);
+	cube3->SetNewMaterial(textureMaterialForLight);
 	cube3->LoadTexture("res/texturas/Facharda.jpg", false);
 	
 }
@@ -98,8 +98,8 @@ void Game::UpdateGame(Windows *_window, Renderer *_render, Input *_input)
 	if (useCamera)
 		TempInputCamera();
 
-	if (useModels)
-		TempInputs(windows, pyramid);
+	//TempInputs(windows, pyramid);
+	TempInputs(windows, light);
 
 	if(pyramid != NULL)
 		pyramid->Draw();
@@ -316,12 +316,6 @@ void Game::InitMaterials()
 	greenRubberMaterial->SetDiffuseMat(glm::vec3(0.4f, 0.5f, 0.4f));
 	greenRubberMaterial->SetSpecularMat(glm::vec3(0.04f, 0.7f, 0.04f));
 	greenRubberMaterial->SetNewShininess(0.078125f, 128.0f);
-
-	defaultMaterial = new Material();
-	defaultMaterial->SetAmbientMat(glm::vec3(0.15f, 0.15f, 0.15f));
-	defaultMaterial->SetDiffuseMat(glm::vec3(0.15f, 0.15f, 0.15f));
-	defaultMaterial->SetSpecularMat(glm::vec3(0.15f, 0.15f, 0.15f));
-	defaultMaterial->SetNewShininess(0.25f, 2080.0f);
 
 }
 
