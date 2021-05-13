@@ -53,10 +53,10 @@ Game::~Game() {}
 
 void Game::InitGame()
 {
-	model = new Model("res/modelos/Alfator/source/alfator.fbx", "res/modelos/Alfator/textures/" , false, render);
-	model->SetScaleModel(50.0f, 50.0f, 50.0f);
-	model->SetPosition(300.0f, 250.0f, -50.0f);
-	model->SetRotationModelX(-90.0f);
+	//model = new Model("res/modelos/Alfator/source/alfator.fbx", "res/modelos/Alfator/textures/" , false, render);
+	//model->SetScaleModel(50.0f, 50.0f, 50.0f);
+	//model->SetPosition(300.0f, 250.0f, -50.0f);
+	//model->SetRotationModelX(-90.0f);
 	//model->SetRotationModelY(90.0f);
 
 	newPositionCamX = camera->transform.position.x;
@@ -66,8 +66,12 @@ void Game::InitGame()
 	InitMaterials();
 
 	pyramid = new Primitive3D(render,Pyramid);
-	pyramid->SetPosition(300.0f, 250.0f, -50.0f);
+	pyramid->SetPosition(500.0f, 250.0f, -50.0f);
 	pyramid->SetScale(50.0f, 50.0f, 50.0f);
+	pyramid->SetRotationY(6.0f);
+	//pyramid->SetNewMaterial(silverMaterial);
+	pyramid->SetNewMaterial(defaultMaterial);
+	pyramid->LoadTexture("res/texturas/bokitaElMasGrandePapa.png", false);
 
 	cube = new Primitive3D(render, Cube);
 	cube->SetPosition(300, 100.0f, -50.0f);
@@ -82,7 +86,9 @@ void Game::InitGame()
 	cube3 = new Primitive3D(render, Cube);
 	cube3->SetPosition(360.0f, 250.0f, -50.0f);
 	cube3->SetScale(50.0f, 50.0f, 50.0f);
-	cube3->SetNewMaterial(silverMaterial);
+	cube3->SetNewMaterial(defaultMaterial);
+	cube3->LoadTexture("res/texturas/Facharda.jpg", false);
+	
 }
 
 void Game::UpdateGame(Windows *_window, Renderer *_render, Input *_input)
@@ -93,16 +99,20 @@ void Game::UpdateGame(Windows *_window, Renderer *_render, Input *_input)
 		TempInputCamera();
 
 	if (useModels)
-		TempInputs(windows, light);
+		TempInputs(windows, pyramid);
 
-	//pyramid->Draw();
-	cube->Draw();
-	cube2->Draw();
-	cube3->Draw();
+	if(pyramid != NULL)
+		pyramid->Draw();
+	cout << pyramid->transform.rotation.y<<endl;
+	if (cube != NULL)
+		cube->Draw();
+	if(cube2 != NULL)
+		cube2->Draw();
+	if(cube3 != NULL)
+		cube3->Draw();
 
-	if (model != NULL) {
+	if (model != NULL)
 		model->Draw(render->GetShaderColor());
-	}
 
 	if (input->GetKey(KeyBoard::KEY_1))
 	{
@@ -306,6 +316,12 @@ void Game::InitMaterials()
 	greenRubberMaterial->SetDiffuseMat(glm::vec3(0.4f, 0.5f, 0.4f));
 	greenRubberMaterial->SetSpecularMat(glm::vec3(0.04f, 0.7f, 0.04f));
 	greenRubberMaterial->SetNewShininess(0.078125f, 128.0f);
+
+	defaultMaterial = new Material();
+	defaultMaterial->SetAmbientMat(glm::vec3(0.15f, 0.15f, 0.15f));
+	defaultMaterial->SetDiffuseMat(glm::vec3(0.15f, 0.15f, 0.15f));
+	defaultMaterial->SetSpecularMat(glm::vec3(0.15f, 0.15f, 0.15f));
+	defaultMaterial->SetNewShininess(0.25f, 2080.0f);
 
 }
 
