@@ -17,7 +17,11 @@ private:
 	Material* silverMaterial;
 	Material* esmeraldMaterial;
 	Material* greenRubberMaterial;
+	
 
+	Light* light1;
+	Light* light2;
+	Light* light3;
 
 	Model* model = NULL;
 

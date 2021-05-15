@@ -4,6 +4,12 @@
 #include "glew.h"
 #include "GLFW/glfw3.h"
 
+int Light::nr_of_directional_light = 0;
+int Light::nr_of_point_light = 0;
+int Light::nr_of_spot_light = 0;
+
+//int Asteroide::_cantAsteroides = 0;
+
 Light::Light(Renderer * _render, TypeLight type) : Entity(_render)
 {
 	_colour = glm::vec3(0.0f, 0.0f, 0.0f);
@@ -17,17 +23,22 @@ Light::Light(Renderer * _render, TypeLight type) : Entity(_render)
 	switch (_typeLight)
 	{
 	case TypeLight::Directional:
+		nr_of_directional_light++;
 		SetDirectionLight(glm::vec3(-0.2f, -1.0f, -2.3f));
 		break;
 	case TypeLight::Point:
+		nr_of_point_light++;
 		SetTypeLightPoint();
 		break;
 	case TypeLight::Spot:
+		nr_of_spot_light++;
 		SetTypeLightSpot();
 		break;
 	default:
 		break;
 	}
+
+	UpdateCountLightInShader(_render->GetShaderColor());
 
 	CreateDataLight();
 }
@@ -45,19 +56,43 @@ Light::Light(glm::vec3 colour, glm::vec3 ambient, glm::vec3 diffuse, glm::vec3 s
 	switch (_typeLight)
 	{
 	case TypeLight::Directional:
+		nr_of_directional_light++;
 		SetDirectionLight(glm::vec3(-0.2f, -1.0f, -2.3f));
 		break;
 	case TypeLight::Point:
+		nr_of_point_light++;
 		SetTypeLightPoint();
 		break;
 	case TypeLight::Spot:
+		nr_of_spot_light++;
 		SetTypeLightSpot();
 		break;
 	default:
 		break;
 	}
 
+	UpdateCountLightInShader(render->GetShaderColor());
+
 	CreateDataLight();
+}
+
+void Light::SetCountLightInShader(Shader shader)
+{
+	nr_of_directional_lightLocation = glGetUniformLocation(shader.getId(), "nr_of_directional_light");
+	nr_of_point_lightsLocation = glGetUniformLocation(shader.getId(), "nr_of_point_lights");
+	nr_of_spot_lightLocation = glGetUniformLocation(shader.getId(), "nr_of_spot_light");
+}
+
+void Light::UpdateCountLightInShader(Shader shader)
+{
+	CheckIsModel();
+	renderer->GetShaderColor().use();
+	SetCountLightInShader(shader);
+	glUniform1i(nr_of_directional_lightLocation, nr_of_directional_light);
+	glUniform1i(nr_of_point_lightsLocation, nr_of_point_light);
+	glUniform1i(nr_of_spot_lightLocation, nr_of_spot_light);
+	glUseProgram(0);
+
 }
 
 void Light::UseLight(Camera * cameraIn)
@@ -213,8 +248,20 @@ void Light::SetTypeLightPoint(float linearVal, float quadraticVal, float cutOffV
 {
 	SetPointLight(linearVal, quadraticVal);
 	SetCutOffSpotLight(cutOffValue);
+
+	if(_typeLight != TypeLight::Point)
+		nr_of_point_light++;
+	
 	_typeLight = TypeLight::Point;
 
+	if (nr_of_directional_light > 0)
+		nr_of_directional_light--;
+
+	if (nr_of_spot_light > 0)
+		nr_of_spot_light--;
+
+	UpdateCountLightInShader(renderer->GetShaderColor());
+	
 	_isPoint = 1;
 	_isDirectional = 0;
 	_isSpot = 0;
@@ -224,7 +271,20 @@ void Light::SetTypeLightPoint()
 {
 	SetPointLight(0.0014f, 0.000007f);
 	SetCutOffSpotLight(12.5f);
+	
+	if(_typeLight != TypeLight::Point)
+		nr_of_point_light++;
+
 	_typeLight = TypeLight::Point;
+
+	if (nr_of_directional_light > 0)
+		nr_of_directional_light--;
+
+	if (nr_of_spot_light > 0)
+		nr_of_spot_light--;
+
+	UpdateCountLightInShader(renderer->GetShaderColor());
+
 	SetBoolsTypeLight();
 }
 
@@ -233,7 +293,20 @@ void Light::SetTypeLightSpot(float linearVal, float quadraticVal, float cutOffVa
 	SetPointLight(linearVal, quadraticVal);
 	SetCutOffSpotLight(cutOffValue);
 	SetOuterCutOffSpotLight(outerCutOffValue);
+
+	if (_typeLight != TypeLight::Spot)
+		nr_of_spot_light++;
+	
 	_typeLight = TypeLight::Spot;
+
+	if (nr_of_directional_light > 0)
+		nr_of_directional_light--;
+
+	if (nr_of_point_light > 0)
+		nr_of_point_light--;
+
+	UpdateCountLightInShader(renderer->GetShaderColor());
+
 	SetBoolsTypeLight();
 }
 
@@ -242,14 +315,41 @@ void Light::SetTypeLightSpot()
 	SetPointLight(0.0014f, 0.000007f);
 	SetCutOffSpotLight(12.5f);
 	SetOuterCutOffSpotLight(17.5f);
+	
+	if (_typeLight != TypeLight::Spot)
+		nr_of_spot_light++;
+	
 	_typeLight = TypeLight::Spot;
+
+
+	if (nr_of_directional_light > 0)
+		nr_of_directional_light--;
+
+	if (nr_of_point_light > 0)
+		nr_of_point_light--;
+
+	UpdateCountLightInShader(renderer->GetShaderColor());
+
 	SetBoolsTypeLight();
 }
 
 void Light::SetTypeLightDirectional(glm::vec3 direction)
 {
 	SetDirectionLight(direction);
+
+	if(_typeLight != TypeLight::Directional)
+		nr_of_directional_light++;
+	
 	_typeLight = TypeLight::Directional;
+
+	if (nr_of_spot_light > 0)
+		nr_of_spot_light--;
+
+	if (nr_of_point_light > 0)
+		nr_of_point_light--;
+
+	UpdateCountLightInShader(renderer->GetShaderColor());
+
 	SetBoolsTypeLight();
 }
 
@@ -259,7 +359,24 @@ void Light::SetPointLight(float linearVal, float quadraticVal)
 	SetQuadraticValue(quadraticVal);
 }
 
-Light::~Light() {}
+Light::~Light() 
+{
+	switch (_typeLight)
+	{
+	case Light::Point:
+		nr_of_point_light--;
+		break;
+	case Light::Directional:
+		nr_of_directional_light--;
+		break;
+	case Light::Spot:
+		nr_of_spot_light--;
+		break;
+	default:
+		break;
+	}
+	UpdateCountLightInShader(renderer->GetShaderColor());
+}
 
 void Light::SetVAO()
 {

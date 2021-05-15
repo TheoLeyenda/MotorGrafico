@@ -8,6 +8,11 @@ const int lightCubeCount = 48;
 class ENGINE_API Light : public Entity
 {
 public:
+
+	static int nr_of_directional_light;
+	static int nr_of_point_light;
+	static int nr_of_spot_light;
+
 	enum TypeLight
 	{
 		Point,
@@ -108,6 +113,9 @@ protected:
 	void SetOuterCutOffSpotLight(float value) { _outerCutOffValue = value; }
 	void SetDirectionLight(glm::vec3 direction) { _direction = direction; }
 
+	void SetCountLightInShader(Shader shader);
+	void UpdateCountLightInShader(Shader shader);
+
 private:
 	float lightSourceCube[lightCubeCount] = {
 		//	x		y		z	
@@ -165,6 +173,10 @@ private:
 	glm::vec3 _diffuse;
 	glm::vec3 _specular;
 	glm::vec3 _direction;
+
+	unsigned int nr_of_directional_lightLocation;
+	unsigned int nr_of_point_lightsLocation;
+	unsigned int nr_of_spot_lightLocation;
 
 	float _linearValue;
 	float _quadraticValue;
