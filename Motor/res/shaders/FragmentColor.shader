@@ -15,6 +15,10 @@ in vec4 color;
 in vec3 Normal;
 in vec3 FragPos;
 
+uniform int nr_of_directional_light;
+uniform int nr_of_point_lights;
+uniform int nr_of_spot_light;
+
 struct Light
 {
 	vec3 colour;
@@ -56,94 +60,129 @@ uniform vec3 cameraPos;
 
 out vec4 outColor;
 
-void main()
-{
-	vec3 lightDir = vec3(1.0);
-	float distance;
-	float attenuation;
-	float theta;
-	float epsilon;
-	float intensity;
-	float diff;
-	float spec;
-	vec3 ambient;
-	vec3 norm;
-	vec3 diffuse;
-	vec3 viewDir;
-	vec3 reflectDir;
-	vec3 specular;
+vec3 lightDir = vec3(1.0);
+float distance;
+float attenuation;
+float theta;
+float epsilon;
+float intensity;
+float diff;
+float spec;
+vec3 ambient;
+vec3 norm;
+vec3 diffuse;
+vec3 viewDir;
+vec3 reflectDir;
+vec3 specular;
 
-	if (isModel == 0) 
+vec3 CalcDirLight() 
+{
+	lightDir = normalize(-lightSource.direction);
+
+	theta = dot(lightDir, normalize(-lightSource.direction));
+	epsilon = lightSource.cutOff - lightSource.outerCutOff;
+	intensity = clamp((theta - lightSource.outerCutOff) / epsilon, 0.0, 1.0);
+
+	ambient = lightSource.ambient * material.ambient;
+	norm = normalize(Normal);
+	diff = max(dot(norm, lightDir), 0.0f);
+	diffuse = lightSource.diffuse * (diff * material.diffuse);
+	viewDir = normalize(cameraPos - FragPos);
+	reflectDir = reflect(-lightDir, norm);
+	spec = pow(max(dot(viewDir, reflectDir), 0.0f), material.shininess);
+	specular = lightSource.specular * (spec * material.specular);
+
+	return (ambient + diffuse + specular);
+
+}
+
+vec3 CalcPointLight()
+{
+	lightDir = normalize(lightSource.posLight - FragPos);
+
+	theta = dot(lightDir, normalize(-lightSource.direction));
+	epsilon = lightSource.cutOff - lightSource.outerCutOff;
+	intensity = clamp((theta - lightSource.outerCutOff) / epsilon, 0.0, 1.0);
+
+	ambient = lightSource.ambient * material.ambient;
+	norm = normalize(Normal);
+	diff = max(dot(norm, lightDir), 0.0f);
+	diffuse = lightSource.diffuse * (diff * material.diffuse);
+	viewDir = normalize(cameraPos - FragPos);
+	reflectDir = reflect(-lightDir, norm);
+	spec = pow(max(dot(viewDir, reflectDir), 0.0f), material.shininess);
+	specular = lightSource.specular * (spec * material.specular);
+
+	distance = length(lightSource.posLight - FragPos);
+	attenuation = 1.0 / (lightSource.constant + lightSource.linear * distance +
+		lightSource.quadratic * (distance * distance));
+
+	ambient *= attenuation;
+	diffuse *= attenuation;
+	specular *= attenuation;
+
+	return (ambient + diffuse + specular);
+}
+
+vec3 CalcSpotLight()
+{
+	lightDir = normalize(lightSource.posLight - FragPos);
+
+	theta = dot(lightDir, normalize(-lightSource.direction));
+	epsilon = lightSource.cutOff - lightSource.outerCutOff;
+	intensity = clamp((theta - lightSource.outerCutOff) / epsilon, 0.0, 1.0);
+
+	if (theta > lightSource.cutOff)
 	{
 
-		if (typelight.directional == 1)
-			lightDir = normalize(-lightSource.direction);
-		else if (typelight.directional == 0)
-			lightDir = normalize(lightSource.posLight - FragPos);
+		ambient = lightSource.ambient * material.ambient;
+		norm = normalize(Normal);
+		diff = max(dot(norm, lightDir), 0.0f);
+		diffuse = lightSource.diffuse * (diff * material.diffuse);
+		viewDir = normalize(cameraPos - FragPos);
+		reflectDir = reflect(-lightDir, norm);
+		spec = pow(max(dot(viewDir, reflectDir), 0.0f), material.shininess);
+		specular = lightSource.specular * (spec * material.specular);
 
-		theta = dot(lightDir, normalize(-lightSource.direction));
-		epsilon = lightSource.cutOff - lightSource.outerCutOff;
-		intensity = clamp((theta - lightSource.outerCutOff) / epsilon, 0.0, 1.0);
+		diffuse *= intensity;
+		specular *= intensity;
 
-		if (typelight.directional == 1)
+		distance = length(lightSource.posLight - FragPos);
+		attenuation = 1.0 / (lightSource.constant + lightSource.linear * distance +
+			lightSource.quadratic * (distance * distance));
+
+		//ambient *= attenuation;
+		diffuse *= attenuation;
+		specular *= attenuation;
+	}
+
+	return (ambient + diffuse + specular);
+}
+
+void main()
+{
+	if (isModel == 0) 
+	{
+		vec3 outPutShader = vec3(0.0f);
+
+		for (int i = 0; i < nr_of_directional_light; i++)
 		{
-			ambient = lightSource.ambient * material.ambient;
-			vec3 norm = normalize(Normal);
-			diff = max(dot(norm, lightDir), 0.0f);
-			diffuse = lightSource.diffuse * (diff * material.diffuse);
-			viewDir = normalize(cameraPos - FragPos);
-			reflectDir = reflect(-lightDir, norm);
-			spec = pow(max(dot(viewDir, reflectDir), 0.0f), material.shininess);
-			specular = lightSource.specular * (spec * material.specular);
+			outPutShader += CalcDirLight();
 		}
-		if (theta > lightSource.cutOff)
+
+		for (int i = 0; i < nr_of_point_lights; i++)
 		{
-			if (typelight.spotLight == 1)
-			{
-
-				ambient = lightSource.ambient * material.ambient;
-				norm = normalize(Normal);
-				diff = max(dot(norm, lightDir), 0.0f);
-				diffuse = lightSource.diffuse * (diff * material.diffuse);
-				viewDir = normalize(cameraPos - FragPos);
-				reflectDir = reflect(-lightDir, norm);
-				spec = pow(max(dot(viewDir, reflectDir), 0.0f), material.shininess);
-				specular = lightSource.specular * (spec * material.specular);
-
-				diffuse *= intensity;
-				specular *= intensity;
-
-				distance = length(lightSource.posLight - FragPos);
-				attenuation = 1.0 / (lightSource.constant + lightSource.linear * distance +
-					lightSource.quadratic * (distance * distance));
-
-				//ambient *= attenuation;
-				diffuse *= attenuation;
-				specular *= attenuation;
-			}
+			outPutShader += CalcPointLight();
 		}
-		if (typelight.pointLight == 1)
+
+		for (int i = 0; i < nr_of_spot_light; i++)
 		{
-			ambient = lightSource.ambient * material.ambient;
-			norm = normalize(Normal);
-			diff = max(dot(norm, lightDir), 0.0f);
-			diffuse = lightSource.diffuse * (diff * material.diffuse);
-			viewDir = normalize(cameraPos - FragPos);
-			reflectDir = reflect(-lightDir, norm);
-			spec = pow(max(dot(viewDir, reflectDir), 0.0f), material.shininess);
-			specular = lightSource.specular * (spec * material.specular);
-
-			distance = length(lightSource.posLight - FragPos);
-			attenuation = 1.0 / (lightSource.constant + lightSource.linear * distance +
-				lightSource.quadratic * (distance * distance));
-
-			ambient *= attenuation;
-			diffuse *= attenuation;
-			specular *= attenuation;
+			outPutShader += CalcSpotLight();
 		}
-		vec4 result = (vec4(ambient + diffuse + specular, 1) + texture(ourTexture, texCoord));
 
-		outColor = vec4(result);
+		vec4 result = (vec4(outPutShader, 1) + texture(ourTexture, texCoord));
+
+		outColor = result;
 	}
 	else if (isModel == 1)
 	{

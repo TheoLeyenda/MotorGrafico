@@ -58,6 +58,7 @@ void Game::InitGame()
 	//model->SetPosition(300.0f, 250.0f, -50.0f);
 	//model->SetRotationModelX(-90.0f);
 	//model->SetRotationModelY(90.0f);
+	//model->SetRotationModelZ(90.0f);
 
 	newPositionCamX = camera->transform.position.x;
 	newPositionCamY = camera->transform.position.y;
@@ -69,7 +70,7 @@ void Game::InitGame()
 	pyramid->SetPosition(500.0f, 250.0f, -50.0f);
 	pyramid->SetScale(50.0f, 50.0f, 50.0f);
 	pyramid->SetRotationY(6.0f);
-	//pyramid->SetNewMaterial(silverMaterial);
+	pyramid->SetNewMaterial(silverMaterial);
 	pyramid->SetNewMaterial(textureMaterialForLight);
 	pyramid->LoadTexture("res/texturas/bokitaElMasGrandePapa.png", false);
 
@@ -86,8 +87,10 @@ void Game::InitGame()
 	cube3 = new Primitive3D(render, Cube);
 	cube3->SetPosition(360.0f, 250.0f, -50.0f);
 	cube3->SetScale(50.0f, 50.0f, 50.0f);
-	cube3->SetNewMaterial(textureMaterialForLight);
+	cube3->SetNewMaterial(textureMaterialDefault);
 	cube3->LoadTexture("res/texturas/Facharda.jpg", false);
+	
+
 	
 }
 
@@ -103,7 +106,6 @@ void Game::UpdateGame(Windows *_window, Renderer *_render, Input *_input)
 
 	if(pyramid != NULL)
 		pyramid->Draw();
-	cout << pyramid->transform.rotation.y<<endl;
 	if (cube != NULL)
 		cube->Draw();
 	if(cube2 != NULL)
@@ -114,17 +116,35 @@ void Game::UpdateGame(Windows *_window, Renderer *_render, Input *_input)
 	if (model != NULL)
 		model->Draw(render->GetShaderColor());
 
+	if (input->GetKey(KeyBoard::KEY_KP_ENTER) && light != NULL) 
+	{
+		delete light;
+		light = NULL;
+	}
+
 	if (input->GetKey(KeyBoard::KEY_1))
 	{
 		light->SetTypeLightDirectional(glm::vec3(-0.2f, -1.0f, -2.3f));
+		system("cls");
+		cout << "Count pointLight: " << Light::nr_of_point_light<<endl;
+		cout << "Count directionalLight: " << Light::nr_of_directional_light << endl;
+		cout << "Count spotLight: " << Light::nr_of_spot_light << endl;
 	}
 	if (input->GetKey(KeyBoard::KEY_2))
 	{
 		light->SetTypeLightPoint();
+		system("cls");
+		cout << "Count pointLight: " << Light::nr_of_point_light << endl;
+		cout << "Count directionalLight: " << Light::nr_of_directional_light << endl;
+		cout << "Count spotLight: " << Light::nr_of_spot_light << endl;
 	}
 	if (input->GetKey(KeyBoard::KEY_3))
 	{
 		light->SetTypeLightSpot();
+		system("cls");
+		cout << "Count pointLight: " << Light::nr_of_point_light << endl;
+		cout << "Count directionalLight: " << Light::nr_of_directional_light << endl;
+		cout << "Count spotLight: " << Light::nr_of_spot_light << endl;
 	}
 }
 

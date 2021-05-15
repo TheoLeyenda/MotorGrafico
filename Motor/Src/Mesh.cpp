@@ -46,8 +46,9 @@ void Mesh::Draw(Shader& shader)
 	glBindVertexArray(VAO);
 	BindMesh();
 	renderer->DrawMeshes(indices, shader, internalData.model, VBO, EBO, _posAttrib, _normAttrib, _textureAttrib);
-	glBindVertexArray(0);
 
+	glBindTexture(GL_TEXTURE_2D, 0);
+	glBindVertexArray(0);
 	// always good practice to set everything back to defaults once configured.
 	glActiveTexture(GL_TEXTURE0);
 }
