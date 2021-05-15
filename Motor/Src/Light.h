@@ -13,6 +13,8 @@ public:
 	static int nr_of_point_light;
 	static int nr_of_spot_light;
 
+	int my_Id;
+
 	enum TypeLight
 	{
 		Point,
@@ -31,8 +33,15 @@ public:
 	void SetColorLight(float r, float g, float b);
 	glm::vec3 GetColorLight();
 
-	void SetTypeLight(TypeLight type);
+	void SetTypeLightDefault(TypeLight type);
+	void SetPointLightCustom(float linearVal, float quadraticVal, float cutOffValue);
+	void SetSpotLightCustom(float linearVal, float quadraticVal, float cutOffValue, float outerCutOffValue);
+	void SetDirectionalLightCustom(glm::vec3 direction);
+
 	TypeLight GetTypeLight() { return _typeLight; }
+
+	void SetIdLight(int id) { my_Id = id; }
+	int GetMyId() { return my_Id; }
 
 	void SetUniformColourLocation(Shader& shader);
 	unsigned int GetUniformColourLocation() { return _unifromColourLocation; }
@@ -90,6 +99,7 @@ public:
 
 	void SetTypeLightPoint();
 	void SetTypeLightSpot();
+	void SetTypeLightDirectional();
 
 	~Light();
 protected:

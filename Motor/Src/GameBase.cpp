@@ -38,15 +38,16 @@ int GameBase::InitEngine()
 	render->SetShader();
 
 #pragma region CREACION Y SETEO DE LUZ DEFAULT
+	_lights.clear();
 
-	light = new Light(render, Light::TypeLight::Directional);
-
-	light->SetAmbient(glm::vec3(0.2f, 0.2f, 0.2f));
-	light->SetDiffuse(glm::vec3(0.5f, 0.5f, 0.5f));
-	light->SetSpecular(glm::vec3(1.5f, 1.5f, 1.5f));
-	render->SetLighting(light);
-	light->SetPosition(350.0f, 200.0f, 300.0f);
-	light->SetScale(10.0f, 10.0f, 10.0f);
+	//light = new Light(render, Light::TypeLight::Directional);
+	//
+	//light->SetAmbient(glm::vec3(0.2f, 0.2f, 0.2f));
+	//light->SetDiffuse(glm::vec3(0.5f, 0.5f, 0.5f));
+	//light->SetSpecular(glm::vec3(1.5f, 1.5f, 1.5f));
+	//render->SetLighting(light);
+	//light->SetPosition(350.0f, 200.0f, 300.0f);
+	//light->SetScale(10.0f, 10.0f, 10.0f);
 
 #pragma endregion
 	//=====================================
@@ -106,6 +107,125 @@ void GameBase::DestroyEngine()
 		delete textureMaterialDefault;
 	if (textureMaterialForLight != NULL)
 		delete textureMaterialForLight;
+
+	while(_lights.size() > 0)
+	{
+		if (_lights[0] != NULL)
+		{
+			delete _lights[0];
+		}
+		_lights.erase(_lights.begin());
+	}
+}
+
+void GameBase::AddLight(Light::TypeLight typeLight, int id)
+{
+	for (int i = 0; i < _lights.size(); i++)
+	{
+		if (_lights[i] != NULL)
+		{
+			if (_lights[i]->GetMyId() == id)
+			{
+				std::cout << "La luz[" <<i <<"] del vector ya pose el identificador: "<< id << std::endl;
+				return;
+			}
+		}
+	}
+	Light* newLight = new Light(render, typeLight);
+	newLight->SetAmbient(glm::vec3(0.2f, 0.2f, 0.2f));
+	newLight->SetDiffuse(glm::vec3(0.5f, 0.5f, 0.5f));
+	newLight->SetSpecular(glm::vec3(1.5f, 1.5f, 1.5f));
+	newLight->SetIdLight(id);
+	newLight->SetPosition(350.0f, 200.0f, 300.0f);
+	newLight->SetScale(10.0f, 10.0f, 10.0f);
+	render->SetLighting(newLight);
+	
+	_lights.push_back(newLight);
+}
+
+void GameBase::RemoveLight(int id)
+{
+	for (int i = 0; i < _lights.size(); i++)
+	{
+		if (_lights[i] != NULL)
+		{
+			if (_lights[i]->GetMyId() == id) {
+				delete _lights[i];
+				_lights.erase(_lights.begin() + i);
+				i = _lights.size();
+			}
+		}
+	}
+}
+
+void GameBase::SetLightPosition(int id, glm::vec3 position)
+{
+	for (int i = 0; i < _lights.size(); i++)
+	{
+		if (_lights[i] != NULL)
+		{
+			if (_lights[i]->GetMyId() == id)
+			{
+				_lights[i]->SetPosition(position.x, position.y, position.z);
+			}
+		}
+	}
+}
+
+void GameBase::SetTypeLightDefault(int id, Light::TypeLight setType)
+{
+	for (int i = 0; i < _lights.size(); i++)
+	{
+		if (_lights[i] != NULL)
+		{
+			if (_lights[i]->GetMyId() == id)
+			{
+				_lights[i]->SetTypeLightDefault(setType);
+			}
+		}
+	}
+}
+
+void GameBase::SetTypeLightCustom(int id, glm::vec3 direction)
+{
+	for (int i = 0; i < _lights.size(); i++)
+	{
+		if (_lights[i] != NULL)
+		{
+			if (_lights[i]->GetMyId() == id)
+			{
+				_lights[i]->SetDirectionalLightCustom(direction);
+			}
+		}
+	}
+}
+
+void GameBase::SetTypeLightCustom(int id, float linearVal, float quadraticVal, float cutOffValue)
+{
+	for (int i = 0; i < _lights.size(); i++)
+	{
+		if (_lights[i] != NULL)
+		{
+			if (_lights[i]->GetMyId() == id)
+			{
+				_lights[i]->SetPointLightCustom(linearVal, quadraticVal, cutOffValue);
+			}
+		}
+	}
+}
+
+void GameBase::SetTypeLightCustom(int id, float linearVal, float quadraticVal, float cutOffValue, float outerCutOffValue)
+{
+	for (int i = 0; i < _lights.size(); i++)
+	{
+		if (_lights[i] != NULL)
+		{
+			if (_lights[i]->GetMyId() == id)
+			{
+				_lights[i]->SetSpotLightCustom(linearVal, quadraticVal, cutOffValue, outerCutOffValue);
+			}
+		}
+	}
 }
 
 void GameBase::HandleCamera()
@@ -120,11 +240,22 @@ void GameBase::HandleCamera()
 
 void GameBase::HandleLight(Camera* camera)
 {
+	for (int i = 0; i < _lights.size(); i++)
+	{
+		if (_lights[i] != NULL)
+		{
+			render->LightingInfluence(_lights[i], camera);
+			_lights[i]->Draw();
+		}
+	}
+	/*
 	if (light != NULL)
 	{
+
 		render->LightingInfluence(light,camera);
 		light->Draw();
 	}
+	*/
 }
 
 Time& GameBase::GetTimeClock()

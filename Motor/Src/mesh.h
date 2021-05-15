@@ -1,45 +1,52 @@
 #ifndef MESH_H
 #define MESH_H
 
-#include "PrivateClass/Export.h"
-#include "shader.h"
-#include <iostream>
+#include "Entity.h"
 #include <string>
 #include <vector>
-#include "Texture.h"
-#include "Vertex.h"
 
-/*
 struct ENGINE_API Vertex
 {
-	glm::vec3 position;
-	glm::vec3 normal;
-	glm::vec2 texCoords;
+	// position
+	glm::vec3 Position;
+	// normal
+	glm::vec3 Normal;
+	// texCoords
+	glm::vec2 TexCoords;
+	// tangent
+	//glm::vec3 Tangent;
+	// bitangent
+	//glm::vec3 Bitangent;
 };
 
-struct ENGINE_API Texture
-{
+struct ENGINE_API Texture {
 	unsigned int id;
-	std::string type;
-	std::string path;
+	string type;
+	string path;
 };
-*/
 
-class ENGINE_API Mesh
+class ENGINE_API Mesh : public Entity 
 {
-private:
-	unsigned int VAO;
-	unsigned int VBO;
-	unsigned int IBO;
-
-	void setupMesh();
 public:
-	std::vector<Vertex> vertices;
-	std::vector<Texture> textures;
-	std::vector<unsigned int> indices;
+	// mesh data
+	vector<Vertex>       vertices;
+	vector<unsigned int> indices;
+	vector<Texture>      textures;
 
-	Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices,
-		std::vector<Texture> textures);
-	void Draw(Shader& shader);
+	Mesh(vector<Vertex> vertices, vector<unsigned int> indices, vector<Texture> textures, Renderer* render);
+	void Draw(Shader &shader);
+private:
+	//  render data
+	unsigned int VAO, VBO, EBO;
+
+	unsigned int _normAttrib;
+	unsigned int _textureAttrib;
+	unsigned int _tangentAttrib;
+	unsigned int _bitangentAttrib;
+	unsigned int _posAttrib;
+	void SetupMesh();
+	void BindMesh();
+
 };
-#endif // !MESH_H
+
+#endif

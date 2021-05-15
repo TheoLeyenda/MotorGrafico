@@ -164,9 +164,37 @@ glm::vec3 Light::GetColorLight()
 	return _colour;
 }
 
-void Light::SetTypeLight(TypeLight type)
+void Light::SetTypeLightDefault(TypeLight type)
 {
 	_typeLight = type;
+
+	switch (_typeLight)
+	{
+	case Light::Point:
+		SetTypeLightPoint();
+		break;
+	case Light::Directional:
+		SetTypeLightDirectional();
+		break;
+	case Light::Spot:
+		SetTypeLightSpot();
+		break;
+	}
+}
+
+void Light::SetPointLightCustom(float linearVal, float quadraticVal, float cutOffValue)
+{
+	SetTypeLightPoint(linearVal, quadraticVal, cutOffValue);
+}
+
+void Light::SetSpotLightCustom(float linearVal, float quadraticVal, float cutOffValue, float outerCutOffValue)
+{
+	SetTypeLightSpot(linearVal, quadraticVal, cutOffValue, outerCutOffValue);
+}
+
+void Light::SetDirectionalLightCustom(glm::vec3 direction)
+{
+	SetTypeLightDirectional(direction);
 }
 
 void Light::SetUniformColourLocation(Shader& shader)
@@ -324,6 +352,26 @@ void Light::SetTypeLightSpot()
 
 	if (nr_of_directional_light > 0)
 		nr_of_directional_light--;
+
+	if (nr_of_point_light > 0)
+		nr_of_point_light--;
+
+	UpdateCountLightInShader(renderer->GetShaderColor());
+
+	SetBoolsTypeLight();
+}
+
+void Light::SetTypeLightDirectional()
+{
+	SetDirectionLight(glm::vec3(-0.2f, -1.0f, -2.3f));
+
+	if (_typeLight != TypeLight::Directional)
+		nr_of_directional_light++;
+
+	_typeLight = TypeLight::Directional;
+
+	if (nr_of_spot_light > 0)
+		nr_of_spot_light--;
 
 	if (nr_of_point_light > 0)
 		nr_of_point_light--;

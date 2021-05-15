@@ -34,6 +34,8 @@ protected:
 	Light* light;
 	Material* textureMaterialForLight;
 	Material* textureMaterialDefault;
+	vector<Light*> _lights;
+
 
 public:
 	GameBase();
@@ -42,6 +44,14 @@ public:
 	int InitEngine();
 	void UpdateEngine();
 	void DestroyEngine();
+
+	void AddLight(Light::TypeLight typeLight, int id);
+	void RemoveLight(int id);
+	void SetLightPosition(int id, glm::vec3 position);
+	void SetTypeLightDefault(int id, Light::TypeLight setType);
+	void SetTypeLightCustom(int id, glm::vec3 direction);
+	void SetTypeLightCustom(int id, float linearVal, float quadraticVal, float cutOffValue);
+	void SetTypeLightCustom(int id, float linearVal, float quadraticVal, float cutOffValue, float outerCutOffValue);
 
 	virtual void InitGame() = 0; //Inicializa todos las variables del juego.
 	virtual void UpdateGame(Windows *_window, Renderer *_render, Input *_input) = 0; //Update del juego

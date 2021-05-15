@@ -85,12 +85,13 @@ vec3 CalcDirLight()
 
 	ambient = lightSource.ambient * material.ambient;
 	norm = normalize(Normal);
-	diff = max(dot(norm, lightDir), 0.0f);
+	diff = max(dot(norm, lightDir), 0.0);
 	diffuse = lightSource.diffuse * (diff * material.diffuse);
 	viewDir = normalize(cameraPos - FragPos);
 	reflectDir = reflect(-lightDir, norm);
-	spec = pow(max(dot(viewDir, reflectDir), 0.0f), material.shininess);
+	spec = pow(max(dot(viewDir, reflectDir), 0.0), material.shininess);
 	specular = lightSource.specular * (spec * material.specular);
+
 
 	return (ambient + diffuse + specular);
 
@@ -106,11 +107,11 @@ vec3 CalcPointLight()
 
 	ambient = lightSource.ambient * material.ambient;
 	norm = normalize(Normal);
-	diff = max(dot(norm, lightDir), 0.0f);
+	diff = max(dot(norm, lightDir), 0.0);
 	diffuse = lightSource.diffuse * (diff * material.diffuse);
 	viewDir = normalize(cameraPos - FragPos);
 	reflectDir = reflect(-lightDir, norm);
-	spec = pow(max(dot(viewDir, reflectDir), 0.0f), material.shininess);
+	spec = pow(max(dot(viewDir, reflectDir), 0.0), material.shininess);
 	specular = lightSource.specular * (spec * material.specular);
 
 	distance = length(lightSource.posLight - FragPos);
@@ -137,11 +138,11 @@ vec3 CalcSpotLight()
 
 		ambient = lightSource.ambient * material.ambient;
 		norm = normalize(Normal);
-		diff = max(dot(norm, lightDir), 0.0f);
+		diff = max(dot(norm, lightDir), 0.0);
 		diffuse = lightSource.diffuse * (diff * material.diffuse);
 		viewDir = normalize(cameraPos - FragPos);
 		reflectDir = reflect(-lightDir, norm);
-		spec = pow(max(dot(viewDir, reflectDir), 0.0f), material.shininess);
+		spec = pow(max(dot(viewDir, reflectDir), 0.0), material.shininess);
 		specular = lightSource.specular * (spec * material.specular);
 
 		diffuse *= intensity;
@@ -163,7 +164,7 @@ void main()
 {
 	if (isModel == 0) 
 	{
-		vec3 outPutShader = vec3(0.0f);
+		vec3 outPutShader = vec3(0.0);
 
 		for (int i = 0; i < nr_of_directional_light; i++)
 		{
@@ -188,4 +189,4 @@ void main()
 	{
 		outColor = texture(texture_diffuse1, texCoord);
 	}
-};
+}

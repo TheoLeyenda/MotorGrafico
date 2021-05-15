@@ -1,68 +1,111 @@
-#include "mesh.h"
-#include "glew.h"
-#include "GLFW/glfw3.h"
-
-void Mesh::setupMesh()
-{
-	glGenVertexArrays(1, &VAO);
-	glGenBuffers(1, &VBO);
-	glGenBuffers(1, &IBO);
-
-	glBindVertexArray(VAO);
-	glBindBuffer(GL_ARRAY_BUFFER, VBO);
-
-	glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(Vertex), &vertices[0], GL_STATIC_DRAW);
-
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, IBO);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(unsigned int),
-		&indices[0], GL_STATIC_DRAW);
-
-	// vertex positions
-	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)0);
-	// vertex normals
-	glEnableVertexAttribArray(1);
-	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, data.normal));
-	// vertex texture coords
-	glEnableVertexAttribArray(2);
-	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, data.texCoords));
-
-	glBindVertexArray(0);
-}
-
-Mesh::Mesh(vector<Vertex> vertices, vector<unsigned int> indices,
-	vector<Texture> textures)
+#include "Mesh.h"
+#include <glew.h>
+#include <GLFW/glfw3.h>
+Mesh::Mesh(vector<Vertex> vertices, vector<unsigned int> indices, vector<Texture> textures, Renderer* render): Entity(render, 1)
 {
 	this->vertices = vertices;
 	this->indices = indices;
 	this->textures = textures;
 
-	setupMesh();
+	// now that we have all the required data, set the vertex buffers and its attribute pointers.
+	SetupMesh();
 }
 
 void Mesh::Draw(Shader& shader)
 {
+	CheckIsModel();
+
+	// bind appropriate textures
 	unsigned int diffuseNr = 1;
 	unsigned int specularNr = 1;
-	for (int i = 0; i < textures.size(); i++)
+	unsigned int normalNr = 1;
+	unsigned int heightNr = 1;
+	for (unsigned int i = 0; i < textures.size(); i++)
 	{
-		glActiveTexture(GL_TEXTURE0 +i);
-
+		glActiveTexture(GL_TEXTURE0 + i); // active proper texture unit before binding
+		// retrieve texture number (the N in diffuse_textureN)
 		string number;
-		string name = textures[i].data.type;
+		string name = textures[i].type;
 		if (name == "texture_diffuse")
 			number = std::to_string(diffuseNr++);
-		else if(name == "texture_specular")
-            number = std::to_string(specularNr++);
+		else if (name == "texture_specular")
+			number = std::to_string(specularNr++); // transfer unsigned int to stream
+		else if (name == "texture_normal")
+			number = std::to_string(normalNr++); // transfer unsigned int to stream
+		else if (name == "texture_height")
+			number = std::to_string(heightNr++); // transfer unsigned int to stream
 
-        glUniform1i(glGetUniformLocation(shader.getId(),("material." + name + number).c_str()), i);
-        glBindTexture(GL_TEXTURE_2D, textures[i].data.id);
-    }
-    glActiveTexture(GL_TEXTURE0);
+		string resultName = (name + number);
+		// now set the sampler to the correct texture unit
+		glUniform1i(glGetUniformLocation(shader.id, resultName.c_str()), i);
+		// and finally bind the texture
+		glBindTexture(GL_TEXTURE_2D, textures[i].id);
+	}
 
-    glBindVertexArray(VAO);
-    glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
-    glBindVertexArray(0);
+	// draw mesh
+	glBindVertexArray(VAO);
+	BindMesh();
+	renderer->DrawMeshes(indices, shader, internalData.model, VBO, EBO, _posAttrib, _normAttrib, _textureAttrib);
 
+	glBindTexture(GL_TEXTURE_2D, 0);
+	glBindVertexArray(0);
+	// always good practice to set everything back to defaults once configured.
 	glActiveTexture(GL_TEXTURE0);
+}
+
+void Mesh::BindMesh()
+{
+	glBindVertexArray(VAO);
+
+	glBindBuffer(GL_ARRAY_BUFFER, VBO);
+	glVertexAttribPointer(_posAttrib, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)0);
+	glEnableVertexAttribArray(_posAttrib);
+	glVertexAttribPointer(_normAttrib, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, Normal));
+	glEnableVertexAttribArray(_normAttrib);
+	glVertexAttribPointer(_textureAttrib, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, TexCoords));
+	glEnableVertexAttribArray(_textureAttrib);
+}
+
+void Mesh::SetupMesh()
+{
+	// create buffers/arrays
+	glGenVertexArrays(1, &VAO);
+	glGenBuffers(1, &VBO);
+	glGenBuffers(1, &EBO);
+
+	glBindVertexArray(VAO);
+	// load data into vertex buffers
+	glBindBuffer(GL_ARRAY_BUFFER, VBO);
+	// A great thing about structs is that their memory layout is sequential for all its items.
+	// The effect is that we can simply pass a pointer to the struct and it translates perfectly to a glm::vec3/2 array which
+	// again translates to 3/2 floats which translates to a byte array.
+	glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(Vertex), &vertices[0], GL_STATIC_DRAW);
+
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(unsigned int), &indices[0], GL_STATIC_DRAW);
+
+	// set the vertex attribute pointers
+	// vertex Positions
+	_posAttrib = glGetAttribLocation(renderer->GetShaderColor().getId(), "position");
+	glVertexAttribPointer(_posAttrib, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)0);
+	glEnableVertexAttribArray(_posAttrib);
+
+	// vertex normals
+	_normAttrib = glGetAttribLocation(renderer->GetShaderColor().getId(), "norm");
+	glVertexAttribPointer(_normAttrib, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, Normal));
+	glEnableVertexAttribArray(_normAttrib);
+
+	// vertex texture coords
+	_textureAttrib = glGetAttribLocation(renderer->GetShaderColor().getId(), "m_TexCoord");
+	glVertexAttribPointer(_textureAttrib, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, TexCoords));
+	glEnableVertexAttribArray(_textureAttrib);
+
+	// vertex tangent
+	//glEnableVertexAttribArray(3);
+	//glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, Tangent));
+	// vertex bitangent
+	//glEnableVertexAttribArray(4);
+	//glVertexAttribPointer(4, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, Bitangent));
+
+	glBindVertexArray(0);
 }

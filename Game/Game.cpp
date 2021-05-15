@@ -64,6 +64,8 @@ void Game::InitGame()
 	newPositionCamY = camera->transform.position.y;
 	newPositionCamZ = camera->transform.position.z + 55;
 
+	AddLight(Light::TypeLight::Point, 0);
+
 	InitMaterials();
 
 	pyramid = new Primitive3D(render,Pyramid);
@@ -102,7 +104,7 @@ void Game::UpdateGame(Windows *_window, Renderer *_render, Input *_input)
 		TempInputCamera();
 
 	//TempInputs(windows, pyramid);
-	TempInputs(windows, light);
+	//TempInputs(windows, light);
 
 	if(pyramid != NULL)
 		pyramid->Draw();
@@ -116,15 +118,15 @@ void Game::UpdateGame(Windows *_window, Renderer *_render, Input *_input)
 	if (model != NULL)
 		model->Draw(render->GetShaderColor());
 
-	if (input->GetKey(KeyBoard::KEY_KP_ENTER) && light != NULL) 
-	{
-		delete light;
-		light = NULL;
-	}
+	//if (input->GetKey(KeyBoard::KEY_KP_ENTER) && light != NULL) 
+	//{
+	//	delete light;
+	//	light = NULL;
+	//}
 
 	if (input->GetKey(KeyBoard::KEY_1))
 	{
-		light->SetTypeLightDirectional(glm::vec3(-0.2f, -1.0f, -2.3f));
+		//light->SetTypeLightDirectional(glm::vec3(-0.2f, -1.0f, -2.3f));
 		system("cls");
 		cout << "Count pointLight: " << Light::nr_of_point_light<<endl;
 		cout << "Count directionalLight: " << Light::nr_of_directional_light << endl;
@@ -132,7 +134,7 @@ void Game::UpdateGame(Windows *_window, Renderer *_render, Input *_input)
 	}
 	if (input->GetKey(KeyBoard::KEY_2))
 	{
-		light->SetTypeLightPoint();
+		//light->SetTypeLightPoint();
 		system("cls");
 		cout << "Count pointLight: " << Light::nr_of_point_light << endl;
 		cout << "Count directionalLight: " << Light::nr_of_directional_light << endl;
@@ -140,7 +142,7 @@ void Game::UpdateGame(Windows *_window, Renderer *_render, Input *_input)
 	}
 	if (input->GetKey(KeyBoard::KEY_3))
 	{
-		light->SetTypeLightSpot();
+		//light->SetTypeLightSpot();
 		system("cls");
 		cout << "Count pointLight: " << Light::nr_of_point_light << endl;
 		cout << "Count directionalLight: " << Light::nr_of_directional_light << endl;
