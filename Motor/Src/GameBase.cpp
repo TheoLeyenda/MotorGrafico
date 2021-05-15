@@ -39,16 +39,6 @@ int GameBase::InitEngine()
 
 #pragma region CREACION Y SETEO DE LUZ DEFAULT
 	_lights.clear();
-
-	//light = new Light(render, Light::TypeLight::Directional);
-	//
-	//light->SetAmbient(glm::vec3(0.2f, 0.2f, 0.2f));
-	//light->SetDiffuse(glm::vec3(0.5f, 0.5f, 0.5f));
-	//light->SetSpecular(glm::vec3(1.5f, 1.5f, 1.5f));
-	//render->SetLighting(light);
-	//light->SetPosition(350.0f, 200.0f, 300.0f);
-	//light->SetScale(10.0f, 10.0f, 10.0f);
-
 #pragma endregion
 	//=====================================
 #pragma region CREACION Y SETEO DE CAMARA DEFAULT
@@ -101,8 +91,6 @@ void GameBase::DestroyEngine()
 		delete collisionManager;
 	if (camera != NULL)
 		delete camera;
-	if (light != NULL)
-		delete light;
 	if (textureMaterialDefault != NULL)
 		delete textureMaterialDefault;
 	if (textureMaterialForLight != NULL)
@@ -166,7 +154,8 @@ void GameBase::SetLightPosition(int id, glm::vec3 position)
 		{
 			if (_lights[i]->GetMyId() == id)
 			{
-				_lights[i]->SetPosition(position.x, position.y, position.z);
+				_lights[i]->SetPosition(_lights[i]->transform.position.x + position.x,
+					_lights[i]->transform.position.y + position.y, _lights[i]->transform.position.z + position.z);
 			}
 		}
 	}

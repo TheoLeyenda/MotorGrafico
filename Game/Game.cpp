@@ -92,8 +92,6 @@ void Game::InitGame()
 	cube3->SetNewMaterial(textureMaterialDefault);
 	cube3->LoadTexture("res/texturas/Facharda.jpg", false);
 	
-
-	
 }
 
 void Game::UpdateGame(Windows *_window, Renderer *_render, Input *_input)
@@ -104,7 +102,8 @@ void Game::UpdateGame(Windows *_window, Renderer *_render, Input *_input)
 		TempInputCamera();
 
 	//TempInputs(windows, pyramid);
-	//TempInputs(windows, light);
+
+	TempMoveLightWithID(windows, 0);
 
 	if(pyramid != NULL)
 		pyramid->Draw();
@@ -310,6 +309,35 @@ void Game::TempInputCamera()
 	//render->RotateCamera(newRotationCamZ, camera->GetInternalData().model);
 	
 #pragma endregion
+}
+
+void Game::TempMoveLightWithID(Windows * windows, int id)
+{
+	//INPUT DE MOVIMIENTO
+	if (input->GetKey(KeyBoard::KEY_T))
+	{
+		SetLightPosition(id, glm::vec3(0, speed, 0));
+	}
+	if (input->GetKey(KeyBoard::KEY_G))
+	{
+		SetLightPosition(id, glm::vec3(0, -speed, 0));
+	}
+	if (input->GetKey(KeyBoard::KEY_H))
+	{
+		SetLightPosition(id, glm::vec3(speed, 0, 0));
+	}
+	if (input->GetKey(KeyBoard::KEY_F))
+	{
+		SetLightPosition(id, glm::vec3(-speed, 0, 0));
+	}
+	if (input->GetKey(KeyBoard::KEY_R))
+	{
+		SetLightPosition(id, glm::vec3(0, 0, speed));
+	}
+	if (input->GetKey(KeyBoard::KEY_Y))
+	{
+		SetLightPosition(id, glm::vec3(0, 0, -speed));
+	}
 }
 
 void Game::InitMaterials()

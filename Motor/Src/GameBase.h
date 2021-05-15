@@ -22,6 +22,7 @@
 class ENGINE_API GameBase {
 private:
 
+	vector<Light*> _lights;
 	void HandleCamera();				//Funcion interna del engine
 	void HandleLight(Camera* camera);	//Funcion interna del engine
 protected:
@@ -31,11 +32,8 @@ protected:
 	CollisionManager* collisionManager;
 	Time timeClock;
 	Camera* camera;
-	Light* light;
 	Material* textureMaterialForLight;
 	Material* textureMaterialDefault;
-	vector<Light*> _lights;
-
 
 public:
 	GameBase();
