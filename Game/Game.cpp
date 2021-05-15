@@ -53,10 +53,10 @@ Game::~Game() {}
 
 void Game::InitGame()
 {
-	model = new Model("res/modelos/Alfator/source/alfator.fbx", false, render);
-	model->SetScaleModel(50.0f, 50.0f, 50.0f);
-	model->SetPosition(300.0f, 250.0f, -50.0f);
-	model->SetRotationModelX(-90.0f);
+	//model = new Model("res/modelos/Alfator/source/alfator.fbx", "res/modelos/Alfator/textures/" , false, render);
+	//model->SetScaleModel(50.0f, 50.0f, 50.0f);
+	//model->SetPosition(300.0f, 250.0f, -50.0f);
+	//model->SetRotationModelX(-90.0f);
 	//model->SetRotationModelY(90.0f);
 
 	newPositionCamX = camera->transform.position.x;
@@ -66,8 +66,12 @@ void Game::InitGame()
 	InitMaterials();
 
 	pyramid = new Primitive3D(render,Pyramid);
-	pyramid->SetPosition(300.0f, 250.0f, -50.0f);
+	pyramid->SetPosition(500.0f, 250.0f, -50.0f);
 	pyramid->SetScale(50.0f, 50.0f, 50.0f);
+	pyramid->SetRotationY(6.0f);
+	//pyramid->SetNewMaterial(silverMaterial);
+	pyramid->SetNewMaterial(textureMaterialForLight);
+	pyramid->LoadTexture("res/texturas/bokitaElMasGrandePapa.png", false);
 
 	cube = new Primitive3D(render, Cube);
 	cube->SetPosition(300, 100.0f, -50.0f);
@@ -82,7 +86,9 @@ void Game::InitGame()
 	cube3 = new Primitive3D(render, Cube);
 	cube3->SetPosition(360.0f, 250.0f, -50.0f);
 	cube3->SetScale(50.0f, 50.0f, 50.0f);
-	cube3->SetNewMaterial(silverMaterial);
+	cube3->SetNewMaterial(textureMaterialForLight);
+	cube3->LoadTexture("res/texturas/Facharda.jpg", false);
+	
 }
 
 void Game::UpdateGame(Windows *_window, Renderer *_render, Input *_input)
@@ -92,17 +98,21 @@ void Game::UpdateGame(Windows *_window, Renderer *_render, Input *_input)
 	if (useCamera)
 		TempInputCamera();
 
-	if (useModels)
-		TempInputs(windows, light);
+	//TempInputs(windows, pyramid);
+	TempInputs(windows, light);
 
-	//pyramid->Draw();
-	cube->Draw();
-	cube2->Draw();
-	cube3->Draw();
+	if(pyramid != NULL)
+		pyramid->Draw();
+	cout << pyramid->transform.rotation.y<<endl;
+	if (cube != NULL)
+		cube->Draw();
+	if(cube2 != NULL)
+		cube2->Draw();
+	if(cube3 != NULL)
+		cube3->Draw();
 
-	if (model != NULL) {
+	if (model != NULL)
 		model->Draw(render->GetShaderColor());
-	}
 
 	if (input->GetKey(KeyBoard::KEY_1))
 	{

@@ -18,6 +18,7 @@ private:
 	Material* esmeraldMaterial;
 	Material* greenRubberMaterial;
 
+
 	Model* model = NULL;
 
 public:

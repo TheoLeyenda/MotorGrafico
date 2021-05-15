@@ -3,6 +3,7 @@
 
 #include "PrivateClass/Export.h"
 #include "Entity.h"
+#include "TextureImporter.h"
 
 ENGINE_API enum TypeModel
 {
@@ -11,39 +12,38 @@ ENGINE_API enum TypeModel
 };
 
 const int indicesCubeCount = 36;
-const int verticesCubeCount = 80;
-const int elementsForVertexCubeCount = 10;
+const int verticesCubeCount = 96;
 const int offsetNormalDataCube = 7;
 
 const int indicesPyramidCount = 24;
-const int verticesPyramidCount = 50;
-const int elementsForVertexPyramidCount = 10;
+const int verticesPyramidCount = 60;
 const int offsetNormalDataPyramid = 7;
 
+const int elementsForVertexCount = 12;
 
 class ENGINE_API Primitive3D : public Entity
 {
 private:
 
 	float vertexCube[verticesCubeCount] = {
-	//	x		y		z		r		g		b		 a			 Normal
-	  -1.0,   -1.0,    1.0,    1.0f,  1.0f,	  1.0f,    0.0f,	0.0f, 0.0f, 0.0f,
-	   1.0,   -1.0,    1.0,    1.0f,  1.0f,	  1.0f,    0.0f,	0.0f, 0.0f, 0.0f,
-	   1.0,    1.0,    1.0,    1.0f,  1.0f,	  1.0f,    0.0f,	0.0f, 0.0f, 0.0f,
-	  -1.0,    1.0,    1.0,    1.0f,  1.0f,	  1.0f,    0.0f,	0.0f, 0.0f, 0.0f,
-	  -1.0,   -1.0,   -1.0,    1.0f,  1.0f,	  1.0f,    0.0f,	0.0f, 0.0f, 0.0f,
-	   1.0,   -1.0,   -1.0,    1.0f,  1.0f,	  1.0f,    0.0f,	0.0f, 0.0f, 0.0f,
-	   1.0,    1.0,   -1.0,    1.0f,  1.0f,	  1.0f,    0.0f,	0.0f, 0.0f, 0.0f,
-	  -1.0,    1.0,   -1.0,    1.0f,  1.0f,	  1.0f,    0.0f,	0.0f, 0.0f, 0.0f,
+	//	x		y		z		r		g		b		 a			 Normal           UV
+	  -1.0,   -1.0,    1.0,    1.0f,  1.0f,	  1.0f,    0.0f,	0.0f, 0.0f, 0.0f, 0.0f, 0.0f,
+	   1.0,   -1.0,    1.0,    1.0f,  1.0f,	  1.0f,    0.0f,	0.0f, 0.0f, 0.0f, 1.0f, 0.0f,
+	   1.0,    1.0,    1.0,    1.0f,  1.0f,	  1.0f,    0.0f,	0.0f, 0.0f, 0.0f, 1.0f, 1.0f,
+	  -1.0,    1.0,    1.0,    1.0f,  1.0f,	  1.0f,    0.0f,	0.0f, 0.0f, 0.0f, 0.0f, 1.0f,
+	  -1.0,   -1.0,   -1.0,    1.0f,  1.0f,	  1.0f,    0.0f,	0.0f, 0.0f, 0.0f, 0.0f, 0.0f,
+	   1.0,   -1.0,   -1.0,    1.0f,  1.0f,	  1.0f,    0.0f,	0.0f, 0.0f, 0.0f, 1.0f, 0.0f,
+	   1.0,    1.0,   -1.0,    1.0f,  1.0f,	  1.0f,    0.0f,	0.0f, 0.0f, 0.0f, 1.0f, 1.0f,
+	  -1.0,    1.0,   -1.0,    1.0f,  1.0f,	  1.0f,    0.0f,	0.0f, 0.0f, 0.0f, 0.0f, 1.0f,
 	};
 	float vertexPyramid[verticesPyramidCount] = {
-		//	x		y		z		r		g		b		a		  Normal
-		  -1.0f,  -1.0f,   0.0f,  1.0f,	  1.0f,	  1.0f,	   1.0f,  0.0f, 0.0f, 0.0f,
-		   0.0f,  -1.0f,   1.0f,  1.0f,	  1.0f,	  1.0f,	   1.0f,  0.0f, 0.0f, 0.0f,
-		   1.0f,  -1.0f,   0.0f,  1.0f,	  1.0f,	  1.0f,	   1.0f,  0.0f, 0.0f, 0.0f,
-		   0.0f,   1.0f,   0.0f,  1.0f,	  1.0f,	  1.0f,	   1.0f,  0.0f, 0.0f, 0.0f,
-		   0.0f,  -1.0f,  -1.0f,  1.0f,	  1.0f,	  1.0f,	   1.0f,  0.0f, 0.0f, 0.0f,
-	};										
+		//	x		y		z		r		g		b		a		  Normal             UV 
+		  -1.0f,  -1.0f,   0.0f,  1.0f,	  1.0f,	  1.0f,	   1.0f,  1.0f, 0.0f, 1.0f,  0.0f, 0.0f,
+		   0.0f,  -1.0f,   1.0f,  1.0f,	  1.0f,	  1.0f,	   1.0f,  0.0f, 1.0f, 0.0f,	 0.5f, 0.0f,
+		   1.0f,  -1.0f,   0.0f,  1.0f,	  1.0f,	  1.0f,	   1.0f,  0.0f, 0.0f, 1.0f,	 1.0f, 0.0f,
+		   0.0f,   1.0f,   0.0f,  1.0f,	  1.0f,	  1.0f,	   1.0f,  1.0f, 0.0f, 0.0f,	 0.5f, 1.0f,
+		   0.0f,  -1.0f,  -1.0f,  1.0f,	  1.0f,	  1.0f,	   1.0f,  1.0f, 1.0f, 0.0f,	 0.5f, -1.0f,
+	};																				
 	unsigned int indexCube[indicesCubeCount] = {	
 		0, 1, 2,							
 		2, 3, 0,
@@ -74,6 +74,19 @@ private:
 	unsigned int _posAttrib;
 	unsigned int _colAttrib;
 	unsigned int _normalAttrib;
+	unsigned int _uvAttrib;
+
+	//Texture
+	bool _useTexture = true;
+	unsigned char* data;
+	int _height;
+	int _width;
+	int _nrChannels;
+	const char* _path;
+	bool _transparency;
+	unsigned int _texture;
+	TextureImporter* texImporter;
+
 	Material* my_Mat;
 protected:
 	void SetVAO();
@@ -86,9 +99,12 @@ protected:
 	void UnbindIBO();
 	void UnbindVAO();
 	void CreateDataModel();
+	void BlendSprite();
+	void UnBlendSprite();
 public:
 	Primitive3D(Renderer* renderer);
-	Primitive3D(Renderer* renderer,TypeModel typeModel);
+	Primitive3D(Renderer* renderer, TypeModel typeModel);
+	Primitive3D(Renderer* renderer, TypeModel typeModel, const char* filePath, bool useTransparency);
 	~Primitive3D();
 	//GETERS
 	TypeModel GetTypeModel() { return _type; }
@@ -96,5 +112,8 @@ public:
 	void UseMyMaterial();
 	void SetNewMaterial(Material* mat);
 	void Draw();
+	void LoadTexture(const char* path, bool transparent);
+	void SetUseTexture(bool useTexture) { _useTexture = useTexture; }
+	
 };
 #endif // !MODEL_H

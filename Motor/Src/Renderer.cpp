@@ -175,16 +175,18 @@ void Renderer::BindBufferShape(unsigned int vbo, bool useTexture) {
 	}
 }
 
-void Renderer::BindBufferModel(unsigned int vbo, unsigned int ibo, unsigned int posAtt, unsigned int colAtt, unsigned int normalAtt)
+void Renderer::BindBufferModel(unsigned int vbo, unsigned int ibo, unsigned int posAtt, unsigned int colAtt, unsigned int normalAtt, unsigned int uvAtt)
 {
 	glBindBuffer(GL_ARRAY_BUFFER, vbo);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
-	glVertexAttribPointer(posAtt, 3, GL_FLOAT, GL_FALSE, 10 * sizeof(float), 0);
+	glVertexAttribPointer(posAtt, 3, GL_FLOAT, GL_FALSE, 12 * sizeof(float), 0);
 	glEnableVertexAttribArray(posAtt);
-	glVertexAttribPointer(colAtt, 4, GL_FLOAT, GL_FALSE, 10 * sizeof(float), (void*)(3 * sizeof(float)));
+	glVertexAttribPointer(colAtt, 4, GL_FLOAT, GL_FALSE, 12 * sizeof(float), (void*)(3 * sizeof(float)));
 	glEnableVertexAttribArray(colAtt);
-	glVertexAttribPointer(normalAtt, 3, GL_FLOAT, GL_FALSE, 10 * sizeof(float), (void*)(7 * sizeof(float)));
+	glVertexAttribPointer(normalAtt, 3, GL_FLOAT, GL_FALSE, 12 * sizeof(float), (void*)(7 * sizeof(float)));
 	glEnableVertexAttribArray(normalAtt);
+	glVertexAttribPointer(uvAtt, 2, GL_FLOAT, GL_FALSE, 12 * sizeof(float), (void*)(10 * sizeof(float)));
+	glEnableVertexAttribArray(uvAtt);
 }
 
 void Renderer::BindBufferLight(unsigned int vbo, unsigned int ibo, unsigned int posAtt, unsigned int colAtt)
@@ -340,9 +342,9 @@ void Renderer::DrawSprite(unsigned int figura, int vertexs, unsigned int vbo, Sh
 }
 
 void Renderer::DrawModel(int indices,Shader& shaderProg, glm::mat4 model, 
-	unsigned int vbo, unsigned int ibo, unsigned int posAtt, unsigned int colAtt, unsigned int normalAtt)
+	unsigned int vbo, unsigned int ibo, unsigned int posAtt, unsigned int colAtt, unsigned int normalAtt, unsigned int uvAtt)
 {
-	BindBufferModel(vbo, ibo, posAtt, colAtt, normalAtt);
+	BindBufferModel(vbo, ibo, posAtt, colAtt, normalAtt, uvAtt);
 
 	UseShaderEnt(shaderProg, model);
 

@@ -6,10 +6,10 @@ uniform sampler2D ourTexture;
 uniform float isModel = 0; //1 = true, 0 = false.
 
 uniform sampler2D texture_diffuse1;
-uniform sampler2D texture_diffuse2;
-uniform sampler2D texture_diffuse3;
-uniform sampler2D texture_specular1;
-uniform sampler2D texture_specular2;
+//uniform sampler2D texture_diffuse2;
+//uniform sampler2D texture_diffuse3;
+//uniform sampler2D texture_specular1;
+//uniform sampler2D texture_specular2;
 
 in vec4 color;
 in vec3 Normal;
@@ -141,8 +141,9 @@ void main()
 			diffuse *= attenuation;
 			specular *= attenuation;
 		}
-		vec3 result = (ambient + diffuse + specular);
-		outColor = vec4(result, 1.0f);
+		vec4 result = (vec4(ambient + diffuse + specular, 1) + texture(ourTexture, texCoord));
+
+		outColor = vec4(result);
 	}
 	else if (isModel == 1)
 	{

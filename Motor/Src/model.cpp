@@ -7,10 +7,11 @@
 
 #define STB_IMAGE_IMPLEMENTATION
 
-Model::Model(string const & path, bool gamma, Renderer * render): Entity(render, 1)
+Model::Model(string const & path,string const& _directory, bool gamma, Renderer * render): Entity(render, 1)
 {
 	stbi_set_flip_vertically_on_load(true);
 	gammaCorrection = gamma;
+	directory = _directory;
 	LoadModel(path);
 }
 
@@ -110,17 +111,16 @@ void Model::SetRotationModelZ(float RotateZ)
 	}
 }
 
-unsigned int Model::TextureFromFile(const char * path, const string & directory, bool gamma)
+unsigned int Model::TextureFromFile(const char * path, const string & directory, bool gamma, string num)
 {
-	string filename = string(path);
-	filename = directory + '/' + filename;
+	string filename = directory + '/' + num + ".png";
 
 	unsigned int textureID;
 	glGenTextures(1, &textureID);
 
 	int width, height, nrComponents;
-	//unsigned char *data = stbi_load(filename.c_str(), &width, &height, &nrComponents, 0);
-	unsigned char *data = stbi_load("res/modelos/Alfator/textures/alfa.png", &width, &height, &nrComponents, 0);
+	unsigned char *data = stbi_load(filename.c_str(), &width, &height, &nrComponents, 0);
+	//unsigned char *data = stbi_load("res/modelos/Alfator/textures/alfa.png", &width, &height, &nrComponents, 0);
 	if (data)
 	{
 		GLenum format;
@@ -292,8 +292,12 @@ vector<Texture> Model::LoadMaterialTextures(aiMaterial * mat, aiTextureType type
 		}
 		if (!skip)
 		{   // if texture hasn't been loaded already, load it
+			int a = i;
+			stringstream ss;
+			ss << a;
+			string index = ss.str();
 			Texture texture;
-			texture.id = TextureFromFile(str.C_Str(), this->directory, false);
+			texture.id = TextureFromFile(str.C_Str(), this->directory, false, index);
 			texture.type = typeName;
 			texture.path = str.C_Str();
 			textures.push_back(texture);

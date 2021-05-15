@@ -175,9 +175,12 @@
     <ClInclude Include="Game.h" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="res\modelos\Alfator\textures\alfa.png" />
-    <Image Include="res\modelos\Alfator\textures\alfa_ifade1.png" />
-    <Image Include="res\modelos\Alfator\textures\alfa_ifade2.png" />
+    <Image Include="res\modelos\Alfator\source\0.png" />
+    <Image Include="res\modelos\Alfator\source\1.png" />
+    <Image Include="res\modelos\Alfator\source\2.png" />
+    <Image Include="res\modelos\Alfator\textures\0.png" />
+    <Image Include="res\modelos\Alfator\textures\1.png" />
+    <Image Include="res\modelos\Alfator\textures\2.png" />
     <Image Include="res\modelos\BanioSovietico\source\texturaRusaDeMadera.png" />
     <Image Include="res\texturas\bokitaElMasGrandePapa.png" />
     <Image Include="res\texturas\caminataPiola.png" />

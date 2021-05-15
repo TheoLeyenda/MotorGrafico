@@ -63,7 +63,7 @@ public:
 	void UseShaderEnt(Shader& shader, glm::mat4 model);
 	void ClearShader();
 	void BindBufferShape(unsigned int vbo, bool useTexture);
-	void BindBufferModel(unsigned int vbo, unsigned int ibo, unsigned int posAtt, unsigned int colAtt, unsigned int normalAtt);
+	void BindBufferModel(unsigned int vbo, unsigned int ibo, unsigned int posAtt, unsigned int colAtt, unsigned int normalAtt, unsigned int uvAtt);
 	void BindBufferLight(unsigned int vbo, unsigned int ibo, unsigned int posAtt, unsigned int colAtt);
 	void UnbindBuffer();
 
@@ -86,7 +86,7 @@ public:
 	void BeignDraw();
 	void DrawShape(unsigned int figura, int vertexs, unsigned int vbo, Shader& shaderProg, glm::mat4 model, bool useTexture);
 	void DrawSprite(unsigned int figura, int vertexs, unsigned int vbo, Shader& shaderProg, glm::mat4 model);
-	void DrawModel(int indices, Shader& shaderProg, glm::mat4 model,unsigned int vbo, unsigned int ibo, unsigned int posAtt, unsigned int colAtt, unsigned int normalAtt);
+	void DrawModel(int indices, Shader& shaderProg, glm::mat4 model, unsigned int vbo, unsigned int ibo, unsigned int posAtt, unsigned int colAtt, unsigned int normalAtt, unsigned int uvAtt);
 	void DrawLight(int indices, Shader& shaderProg, glm::mat4 model,unsigned int vbo, unsigned int ibo, unsigned int posAtt, unsigned int colAtt);
 	void EndDraw(Windows* refWindow);
 };

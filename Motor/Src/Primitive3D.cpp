@@ -7,23 +7,50 @@
 Primitive3D::Primitive3D(Renderer* renderer) : Entity(renderer)
 {
 	_type = Pyramid;
-	myMathLibrary.CalcAverageNormals(indexCube, indicesCubeCount, vertexCube, verticesCubeCount, elementsForVertexCubeCount, offsetNormalDataCube);
-	myMathLibrary.CalcAverageNormals(indexPyramid, indicesPyramidCount, vertexPyramid, verticesPyramidCount, elementsForVertexPyramidCount, offsetNormalDataPyramid);
+	myMathLibrary.CalcAverageNormals(indexCube, indicesCubeCount, vertexCube, verticesCubeCount, elementsForVertexCount, offsetNormalDataCube);
+	//myMathLibrary.CalcAverageNormals(indexPyramid, indicesPyramidCount, vertexPyramid, verticesPyramidCount, elementsForVertexCount, offsetNormalDataPyramid);
 
+	_path = "None Path";
+	_useTexture = false;
+	my_Mat = NULL;
 	CreateDataModel();
 }
 
 Primitive3D::Primitive3D(Renderer * renderer, TypeModel typeModel) : Entity(renderer)
 {
 	_type = typeModel;
-	myMathLibrary.CalcAverageNormals(indexCube, indicesCubeCount, vertexCube, verticesCubeCount, elementsForVertexCubeCount, offsetNormalDataCube);
-	myMathLibrary.CalcAverageNormals(indexPyramid, indicesPyramidCount, vertexPyramid, verticesPyramidCount, elementsForVertexPyramidCount, offsetNormalDataPyramid);
+	myMathLibrary.CalcAverageNormals(indexCube, indicesCubeCount, vertexCube, verticesCubeCount, elementsForVertexCount, offsetNormalDataCube);
+	//myMathLibrary.CalcAverageNormals(indexPyramid, indicesPyramidCount, vertexPyramid, verticesPyramidCount, elementsForVertexCount, offsetNormalDataPyramid);
 
+	_path = "None Path";
+	_useTexture = false;
+	my_Mat = NULL;
 	CreateDataModel();
+}
+
+Primitive3D::Primitive3D(Renderer* renderer, TypeModel typeModel, const char* filePath, bool useTransparency) : Entity(renderer)
+{
+	_type = typeModel;
+	myMathLibrary.CalcAverageNormals(indexCube, indicesCubeCount, vertexCube, verticesCubeCount, elementsForVertexCount, offsetNormalDataCube);
+	myMathLibrary.CalcAverageNormals(indexPyramid, indicesPyramidCount, vertexPyramid, verticesPyramidCount, elementsForVertexCount, offsetNormalDataPyramid);
+	
+	CreateDataModel();
+
+	_path = filePath;
+	_transparency = useTransparency;
+	_useTexture = true;
+	my_Mat = NULL;
+
+	if (_transparency)
+		BlendSprite();
+
+	LoadTexture(_path, _transparency);
 }
 
 Primitive3D::~Primitive3D()
 {
+	if (texImporter != NULL)
+		delete texImporter;
 }
 
 void Primitive3D::SetVAO()
@@ -46,16 +73,20 @@ void Primitive3D::SetVBO()
 		break;
 	}
 	_posAttrib = glGetAttribLocation(renderer->GetShaderColor().getId(),"position");
-	glVertexAttribPointer(_posAttrib, 3, GL_FLOAT, GL_FALSE, 10 *sizeof(float), 0);
+	glVertexAttribPointer(_posAttrib, 3, GL_FLOAT, GL_FALSE, elementsForVertexCount *sizeof(float), 0);
 	glEnableVertexAttribArray(_posAttrib);
 	
 	_colAttrib = glGetAttribLocation(renderer->GetShaderColor().getId(), "customColor");
-	glVertexAttribPointer(_colAttrib, 4, GL_FLOAT, GL_FALSE, 10 * sizeof(float), (void*)(3 * sizeof(float)));
+	glVertexAttribPointer(_colAttrib, 4, GL_FLOAT, GL_FALSE, elementsForVertexCount * sizeof(float), (void*)(3 * sizeof(float)));
 	glEnableVertexAttribArray(_colAttrib);
 
 	_normalAttrib = glGetAttribLocation(renderer->GetShaderColor().getId(), "norm");
-	glVertexAttribPointer(_normalAttrib, 3, GL_FLOAT, GL_FALSE, 10 * sizeof(float), (void*)(7 * sizeof(float)));
+	glVertexAttribPointer(_normalAttrib, 3, GL_FLOAT, GL_FALSE, elementsForVertexCount * sizeof(float), (void*)(7 * sizeof(float)));
 	glEnableVertexAttribArray(_normalAttrib);
+
+	_uvAttrib = glGetAttribLocation(renderer->GetShaderColor().getId(), "m_TexCoord");
+	glVertexAttribPointer(_uvAttrib, 2, GL_FLOAT, GL_FALSE, elementsForVertexCount * sizeof(float), (void*)(10 * sizeof(float)));
+	glEnableVertexAttribArray(_uvAttrib);
 
 }
 
@@ -89,16 +120,20 @@ void Primitive3D::BindVBO()
 	glBindBuffer(GL_ARRAY_BUFFER, _vbo);
 
 	_posAttrib = glGetAttribLocation(renderer->GetShaderColor().getId(), "position");
-	glVertexAttribPointer(_posAttrib, 3, GL_FLOAT, GL_FALSE, 10 * sizeof(float), 0);
+	glVertexAttribPointer(_posAttrib, 3, GL_FLOAT, GL_FALSE, elementsForVertexCount * sizeof(float), 0);
 	glEnableVertexAttribArray(_posAttrib);
 
 	_colAttrib = glGetAttribLocation(renderer->GetShaderColor().getId(), "customColor");
-	glVertexAttribPointer(_colAttrib, 4, GL_FLOAT, GL_FALSE, 10 * sizeof(float), (void*)(3 * sizeof(float)));
+	glVertexAttribPointer(_colAttrib, 4, GL_FLOAT, GL_FALSE, elementsForVertexCount * sizeof(float), (void*)(3 * sizeof(float)));
 	glEnableVertexAttribArray(_colAttrib);
 
 	_normalAttrib = glGetAttribLocation(renderer->GetShaderColor().getId(), "norm");
-	glVertexAttribPointer(_normalAttrib, 3, GL_FLOAT, GL_FALSE, 10 * sizeof(float), (void*)(7 * sizeof(float)));
+	glVertexAttribPointer(_normalAttrib, 3, GL_FLOAT, GL_FALSE, elementsForVertexCount * sizeof(float), (void*)(7 * sizeof(float)));
 	glEnableVertexAttribArray(_normalAttrib);
+
+	_uvAttrib = glGetAttribLocation(renderer->GetShaderColor().getId(), "m_TexCoord");
+	glVertexAttribPointer(_uvAttrib, 2, GL_FLOAT, GL_FALSE, elementsForVertexCount * sizeof(float), (void*)(10 * sizeof(float)));
+	glEnableVertexAttribArray(_uvAttrib);
 }
 
 void Primitive3D::UnbindBuffers()
@@ -131,9 +166,21 @@ void Primitive3D::CreateDataModel()
 	//---
 }
 
+void Primitive3D::BlendSprite()
+{
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+}
+
+void Primitive3D::UnBlendSprite()
+{
+	glDisable(GL_BLEND);
+}
+
 void Primitive3D::UseMyMaterial()
 {
-	my_Mat->UseMaterial(renderer->GetShaderColor());
+	if(my_Mat != NULL)
+		my_Mat->UseMaterial(renderer->GetShaderColor());
 }
 
 void Primitive3D::SetNewMaterial(Material * mat)
@@ -147,18 +194,45 @@ void Primitive3D::Draw()
 {
 	CheckIsModel();
 	//----
+	if (_useTexture)
+	{
+		if (_transparency)
+			BlendSprite();
+
+		glEnable(GL_TEXTURE_2D);
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, _texture);
+
+	}
 	UseMyMaterial();
 	//----
 	switch (_type)
 	{
 	case Cube:
-		renderer->DrawModel(indicesCubeCount,renderer->GetShaderColor(),
-			internalData.model, _vbo, _ibo, _posAttrib,_colAttrib, _normalAttrib);
+		renderer->DrawModel(indicesCubeCount, renderer->GetShaderColor(),
+			internalData.model, _vbo, _ibo, _posAttrib, _colAttrib, _normalAttrib, _uvAttrib);
 		break;
 	case Pyramid:
 		renderer->DrawModel(indicesPyramidCount, renderer->GetShaderColor(),
-			internalData.model, _vbo, _ibo, _posAttrib, _colAttrib, _normalAttrib);
+			internalData.model, _vbo, _ibo, _posAttrib, _colAttrib, _normalAttrib, _uvAttrib);
 		break;
 	}
+
+	if (_useTexture)
+	{
+		glBindBuffer(GL_ARRAY_BUFFER, 0);
+		glBindTexture(GL_TEXTURE_2D, 0);
+		glDisable(GL_TEXTURE_2D);
+
+		if (_transparency)
+			UnBlendSprite();
+	}
+
 	//----
+}
+
+void Primitive3D::LoadTexture(const char* path, bool transparent) {
+	_useTexture = true;
+	_transparency = transparent;
+	texImporter->LoadTexture(path, data, _texture, _width, _height, _nrChannels, _transparency);
 }

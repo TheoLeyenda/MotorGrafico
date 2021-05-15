@@ -27,7 +27,7 @@ public:
 	string directory;
 	bool gammaCorrection;
 
-	Model(string const &path, bool gamma, Renderer* render);
+	Model(string const &path,string const& _directory, bool gamma, Renderer* render);
 	
 	void Draw(Shader &shader);
 	
@@ -42,7 +42,7 @@ public:
 	
 private:
 	void CenterPivotPositionModel();
-	unsigned int TextureFromFile(const char *path, const string &directory, bool gamma);
+	unsigned int TextureFromFile(const char * path, const string & directory, bool gamma, string num);
 	void LoadModel(string path);
 	void ProcessNode(aiNode *node, const aiScene *scene);
 	Mesh ProcessMesh(aiMesh *mesh, const aiScene *scene);

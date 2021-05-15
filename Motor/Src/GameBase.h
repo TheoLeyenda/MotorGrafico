@@ -31,9 +31,10 @@ protected:
 	CollisionManager* collisionManager;
 	Time timeClock;
 	Camera* camera;
-
 	Light* light;
-	Light* light2;
+	Material* textureMaterialForLight;
+	Material* textureMaterialDefault;
+
 public:
 	GameBase();
 	~GameBase();

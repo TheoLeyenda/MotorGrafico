@@ -16,6 +16,18 @@ int GameBase::InitEngine()
 	camera = new Camera(render, TypeProjectionCamera::Ortho);
 	collisionManager = new CollisionManager();
 
+	textureMaterialForLight = new Material();
+	textureMaterialForLight->SetAmbientMat(glm::vec3(1.1f, 1.1f, 1.1f));
+	textureMaterialForLight->SetDiffuseMat(glm::vec3(0.0f, 0.0f, 0.0f));
+	textureMaterialForLight->SetSpecularMat(glm::vec3(0.5f, 0.5f, 0.5f));
+	textureMaterialForLight->SetNewShininess(1.0f, 128.0f);
+
+	textureMaterialDefault = new Material();
+	textureMaterialDefault->SetAmbientMat(glm::vec3(0.0f, 0.0f, 0.0f));
+	textureMaterialDefault->SetDiffuseMat(glm::vec3(0.0f, 0.0f, 0.0f));
+	textureMaterialDefault->SetSpecularMat(glm::vec3(0.0f, 0.0f, 0.0f));
+	textureMaterialDefault->SetNewShininess(0.25f, 128.0f);
+
 	//PRUEBA DEL MATERIAL (SPECULAR)
 	if (!initGLFW || windows == NULL)
 		return INIT_ERROR;
@@ -90,6 +102,10 @@ void GameBase::DestroyEngine()
 		delete camera;
 	if (light != NULL)
 		delete light;
+	if (textureMaterialDefault != NULL)
+		delete textureMaterialDefault;
+	if (textureMaterialForLight != NULL)
+		delete textureMaterialForLight;
 }
 
 void GameBase::HandleCamera()
