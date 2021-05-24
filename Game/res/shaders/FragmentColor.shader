@@ -19,23 +19,46 @@ uniform int nr_of_directional_light;
 uniform int nr_of_point_lights;
 uniform int nr_of_spot_light;
 
-struct Light
+struct DireLight
 {
-	vec3 colour;
+	vec3 direction;
+
 	vec3 ambient;
 	vec3 diffuse;
 	vec3 specular;
+};
+uniform DireLight dirLight[10];
 
-	vec3 direction;
+struct PointLight
+{
+	vec3 posLight;
+
+	float constant;
+	float linear;
+	float quadratic;
+
+	vec3 ambient;
+	vec3 diffuse;
+	vec3 specular;
+};
+uniform PointLight pointLight[10];
+
+struct SpotLight
+{
 	vec3 posLight;
 
 	float cutOff;
 	float outerCutOff;
-	//Point values
-	float constant;
+	
 	float linear;
+	float constant;
 	float quadratic;
+
+	vec3 ambient;
+	vec3 diffuse;
+	vec3 specular;
 };
+uniform SpotLight spotLight[10];
 
 struct Material
 {
@@ -44,149 +67,127 @@ struct Material
 	vec3 specular;
 	float shininess;
 };
-
-struct TypeLight
-{
-	int directional;
-	int pointLight;
-	int spotLight;
-};
-
-uniform TypeLight typelight;
-uniform Light lightSource;
 uniform Material material;
 
 uniform vec3 cameraPos;
+out vec4 FragColor;
 
-out vec4 outColor;
-
-vec3 lightDir = vec3(1.0);
-float distance;
-float attenuation;
-float theta;
-float epsilon;
-float intensity;
-float diff;
-float spec;
-vec3 ambient;
-vec3 norm;
-vec3 diffuse;
-vec3 viewDir;
-vec3 reflectDir;
-vec3 specular;
-
-vec3 CalcDirLight()
-{
-	lightDir = normalize(-lightSource.direction);
-
-	theta = dot(lightDir, normalize(-lightSource.direction));
-	epsilon = lightSource.cutOff - lightSource.outerCutOff;
-	intensity = clamp((theta - lightSource.outerCutOff) / epsilon, 0.0, 1.0);
-
-	ambient = lightSource.ambient * material.ambient;
-	norm = normalize(Normal);
-	diff = max(dot(norm, lightDir), 0.0);
-	diffuse = lightSource.diffuse * (diff * material.diffuse);
-	viewDir = normalize(cameraPos - FragPos);
-	reflectDir = reflect(-lightDir, norm);
-	spec = pow(max(dot(viewDir, reflectDir), 0.0), material.shininess);
-	specular = lightSource.specular * (spec * material.specular);
-
-
-	return (ambient + diffuse + specular);
-
-}
-
-vec3 CalcPointLight()
-{
-	lightDir = normalize(lightSource.posLight - FragPos);
-
-	theta = dot(lightDir, normalize(-lightSource.direction));
-	epsilon = lightSource.cutOff - lightSource.outerCutOff;
-	intensity = clamp((theta - lightSource.outerCutOff) / epsilon, 0.0, 1.0);
-
-	ambient = lightSource.ambient * material.ambient;
-	norm = normalize(Normal);
-	diff = max(dot(norm, lightDir), 0.0);
-	diffuse = lightSource.diffuse * (diff * material.diffuse);
-	viewDir = normalize(cameraPos - FragPos);
-	reflectDir = reflect(-lightDir, norm);
-	spec = pow(max(dot(viewDir, reflectDir), 0.0), material.shininess);
-	specular = lightSource.specular * (spec * material.specular);
-
-	distance = length(lightSource.posLight - FragPos);
-	attenuation = 1.0 / (lightSource.constant + lightSource.linear * distance +
-		lightSource.quadratic * (distance * distance));
-
-	ambient *= attenuation;
-	diffuse *= attenuation;
-	specular *= attenuation;
-
-	return (ambient + diffuse + specular);
-}
-
-vec3 CalcSpotLight()
-{
-	lightDir = normalize(lightSource.posLight - FragPos);
-
-	theta = dot(lightDir, normalize(-lightSource.direction));
-	epsilon = lightSource.cutOff - lightSource.outerCutOff;
-	intensity = clamp((theta - lightSource.outerCutOff) / epsilon, 0.0, 1.0);
-
-	if (theta > lightSource.cutOff)
-	{
-
-		ambient = lightSource.ambient * material.ambient;
-		norm = normalize(Normal);
-		diff = max(dot(norm, lightDir), 0.0);
-		diffuse = lightSource.diffuse * (diff * material.diffuse);
-		viewDir = normalize(cameraPos - FragPos);
-		reflectDir = reflect(-lightDir, norm);
-		spec = pow(max(dot(viewDir, reflectDir), 0.0), material.shininess);
-		specular = lightSource.specular * (spec * material.specular);
-
-		diffuse *= intensity;
-		specular *= intensity;
-
-		distance = length(lightSource.posLight - FragPos);
-		attenuation = 1.0 / (lightSource.constant + lightSource.linear * distance +
-			lightSource.quadratic * (distance * distance));
-
-		//ambient *= attenuation;
-		diffuse *= attenuation;
-		specular *= attenuation;
-	}
-
-	return (ambient + diffuse + specular);
-}
+vec3 CalcDirLight(DireLight directionalLight, vec3 normal,vec3 viewDir);
+//vec3 CalcPointLight(PointLight pointLigh, vec3 normal, vec3 fragPos, vec3 viewDir);
+//vec3 CalcSpotLight(SpotLight spotLigh, vec3 normal, vec3 fragPos, vec3 viewDir);
 
 void main()
 {
 	if (isModel == 0) 
 	{
 		vec3 outPutShader = vec3(0.0);
+		vec3 viewDir = normalize(cameraPos - FragPos);
+		vec3 norm = normalize(Normal);
 
 		for (int i = 0; i < nr_of_directional_light; i++)
 		{
-			outPutShader += CalcDirLight();
+			outPutShader += CalcDirLight(dirLight[i], norm,viewDir);
 		}
+		//for (int i = 0; i < nr_of_point_lights; i++)
+		//{
+		//	outPutShader += CalcPointLight(pointLight[i], norm, FragPos, viewDir);
+		//}
+//
+		//for (int i = 0; i < nr_of_spot_light; i++)
+		//{
+		//	outPutShader += CalcSpotLight(spotLight[i], norm, FragPos, viewDir);
+		//}
 
-		for (int i = 0; i < nr_of_point_lights; i++)
-		{
-			outPutShader += CalcPointLight();
-		}
+		vec4 result = (vec4(outPutShader, 1.0) + texture(ourTexture, texCoord));
 
-		for (int i = 0; i < nr_of_spot_light; i++)
-		{
-			outPutShader += CalcSpotLight();
-		}
-
-		vec4 result = (vec4(outPutShader, 1) + texture(ourTexture, texCoord));
-
-		outColor = result;
+		FragColor = result;
 	}
 	else if (isModel == 1)
 	{
-		outColor = texture(texture_diffuse1, texCoord);
+		FragColor = texture(texture_diffuse1, texCoord);
 	}
+
+	//FragColor = vec4(1.0,0.0,0.0,1.0);
 }
+
+vec3 CalcDirLight(DireLight directionalLight, vec3 normal, vec3 viewDir)
+{
+	vec3 lightDir = normalize(-directionalLight.direction);
+
+	vec3 ambient = directionalLight.ambient * material.ambient;
+
+	float diff = max(dot(normal, lightDir), 0.0);
+
+	vec3 diffuse = directionalLight.diffuse * (diff * material.diffuse);
+
+	vec3 reflectDir = reflect(-lightDir, normal);
+
+	float spec = pow(max(dot(viewDir, reflectDir), 0.0), material.shininess);
+	vec3 specular = directionalLight.specular * (spec * material.specular);
+
+	return (ambient + diffuse + specular);
+}
+//
+//vec3 CalcPointLight(PointLight pointLigh, vec3 normal, vec3 fragPos, vec3 viewDir)
+//{
+//	vec3 lightDir = normalize(pointLigh.posLight - fragPos);
+//
+//	vec3 ambient = pointLigh.ambient * material.ambient;
+//
+//	float diff = max(dot(normal, lightDir), 0.0);
+//
+//	vec3 diffuse = pointLigh.diffuse * (diff * material.diffuse);
+//
+//	vec3 reflectDir = reflect(-lightDir, normal);
+//
+//	float spec = pow(max(dot(viewDir, reflectDir), 0.0), material.shininess);
+//
+//	vec3 specular = pointLigh.specular * (spec * material.specular);
+//
+//	float distance = length(pointLigh.posLight - fragPos);
+//	float attenuation = 1.0 / (pointLigh.constant + pointLigh.linear * distance +
+//		pointLigh.quadratic * (distance * distance));
+//
+//	ambient *= attenuation;
+//	diffuse *= attenuation;
+//	specular *= attenuation;
+//
+//	return (ambient + diffuse + specular);
+//}
+//
+//vec3 CalcSpotLight(SpotLight spotLigh, vec3 normal, vec3 fragPos, vec3 viewDir)
+//{
+//	vec3 lightDir = normalize(spotLigh.posLight - fragPos);
+//
+//	float theta = dot(lightDir, normalize(-spotLigh.direction));
+//	float epsilon = spotLigh.cutOff - spotLigh.outerCutOff;
+//	float intensity = clamp((theta - spotLigh.outerCutOff) / epsilon, 0.0, 1.0);
+//
+//	if (theta > spotLigh.cutOff)
+//	{
+//
+//		vec3 ambient = spotLigh.ambient * material.ambient;
+//
+//		float diff = max(dot(normal, lightDir), 0.0);
+//
+//		vec3 diffuse = spotLigh.diffuse * (diff * material.diffuse);
+//
+//		vec3 reflectDir = reflect(-lightDir, normal);
+//
+//		float spec = pow(max(dot(viewDir, reflectDir), 0.0), material.shininess);
+//
+//		vec3 specular = spotLigh.specular * (spec * material.specular);
+//
+//		diffuse *= intensity;
+//		specular *= intensity;
+//
+//		float distance = length(spotLigh.posLight - fragPos);
+//		float attenuation = 1.0 / (spotLigh.constant + spotLigh.linear * distance +
+//			spotLigh.quadratic * (distance * distance));
+//
+//		diffuse *= attenuation;
+//		specular *= attenuation;
+//	}
+//
+//	return (ambient + diffuse + specular);
+//}

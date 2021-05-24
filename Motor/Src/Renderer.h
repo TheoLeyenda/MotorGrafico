@@ -75,6 +75,7 @@ public:
 	void SetMaterial(Material* _material);
 
 	void SetLighting(Light* _light);
+	void SetLighting(Light* _light, int iteration);
 	void LightingInfluence(Light* _light, Camera* camera);
 
 	void DrawMeshes(std::vector<unsigned int> indices, Shader & shaderProg, glm::mat4 model, unsigned int vbo, unsigned int ibo, unsigned int posAtt, unsigned int nomAtt, unsigned int texAtt);

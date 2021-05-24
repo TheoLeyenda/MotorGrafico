@@ -126,7 +126,10 @@ void GameBase::AddLight(Light::TypeLight typeLight, int id)
 	newLight->SetIdLight(id);
 	newLight->SetPosition(350.0f, 200.0f, 300.0f);
 	newLight->SetScale(10.0f, 10.0f, 10.0f);
-	render->SetLighting(newLight);
+	render->SetLighting(newLight, _lights.size());
+	cout << "Count pointLight: " << Light::nr_of_point_light << endl;
+	cout << "Count directionalLight: " << Light::nr_of_directional_light << endl;
+	cout << "Count spotLight: " << Light::nr_of_spot_light << endl;
 	
 	_lights.push_back(newLight);
 }
@@ -170,6 +173,10 @@ void GameBase::SetTypeLightDefault(int id, Light::TypeLight setType)
 			if (_lights[i]->GetMyId() == id)
 			{
 				_lights[i]->SetTypeLightDefault(setType);
+				system("cls");
+				cout << "Count pointLight: " << Light::nr_of_point_light << endl;
+				cout << "Count directionalLight: " << Light::nr_of_directional_light << endl;
+				cout << "Count spotLight: " << Light::nr_of_spot_light << endl;
 			}
 		}
 	}

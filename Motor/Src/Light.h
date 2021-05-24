@@ -43,55 +43,99 @@ public:
 	void SetIdLight(int id) { my_Id = id; }
 	int GetMyId() { return my_Id; }
 
-	void SetUniformColourLocation(Shader& shader);
-	unsigned int GetUniformColourLocation() { return _unifromColourLocation; }
+	//=====================================================
+	//DIRECTIONAL LIGHT
+	void SetUniformDirectionLightLocation(Shader& shader, int iter);
+	unsigned int GetUniformDirectionalLight() { return _uniformDirectionLocation; }
 
-	void SetUniformAmbientLocation(Shader& shader);
-	unsigned int GetUniformAmbientLocation() { return _uniformAmbientLocation; }
-
-	void SetUniformDiffuseLocation(Shader& shader);
-	unsigned int GetUniformDiffuseLocation() { return _uniformDiffuseLocation; }
-
-	void SetUniformSpecularLocation(Shader& shader);
-	unsigned int GetUniformSpecularLocation() { return _uniformSpecularLocation; }
-
-	void SetUniformPosLightLocation(Shader& shader);
-	unsigned int GetUniformPosLightLocation() { return _uniformPosLightLocation; }
-
-	void SetUniformPosCameraLocation(Shader& shader);
-	unsigned int GetUniformPosCameraLocation() { return _uniformPosCameraLocation; }
-
-	void SetUniformTypeLightDirectional(Shader& shader);
+	void SetUniformTypeLightDirectional(Shader& shader, int iter);
 	unsigned int GetUniformTypeLightDirectional() { return _uniformTypeLightDirectional; }
 
-	void SetUniformTypeLightSpot(Shader& shader);
-	unsigned int GetUniformTypeLightSpot() { return _uniformTypeLightSpot; }
+	void SetUniformAmbDirectionalLoc(Shader& shader, int iter);
+	unsigned int GetUniformAmbDirectionalLoc() { return _uniformAmbDirectionalLoc; }
+
+	void SetUniformDiffDirectionalLoc(Shader& shader, int iter);
+	unsigned int GetUniformDiffDirectionalLoc() { return _uniformDiffDirectionalLoc; }
+
+	void SetUniformSpecDirectionalLoc(Shader& shader, int iter);
+	unsigned int GetUniformSpecDirectionalLoc() { return _uniformSpecDirectionalLoc; }
+
+	//=====================================================
+	//POINT LIGHT
+	void SetUniformAmbientPointLoc(Shader& shader, int iter);
+	unsigned int GetUniformAmbPointLoc() { return _uniformAmbientPointLoc; }
+
+	void SetUniformDiffPointLoc(Shader& shader, int iter);
+	unsigned int GetUniformDiffPointLoc() { return _uniformDiffusePointLoc; }
+
+	void SetUniformSpecPointLoc(Shader& shader, int iter);
+	unsigned int GetUniformSpecPointLoc() { return _uniformSpecularPointLoc; }
+
+	void SetUniformLinearPointLight(Shader& shader, int iter);
+	unsigned int GetUniformLinearPointLight() { return _uniformLinearPointLight; }
+
+	void SetUniformQuadraticPointLight(Shader& shader, int iter);
+	unsigned int GetUniformQuadraticPointLight() { return _uniformQuadraticPointLight; }
+
+	void SetUniformConstPointLight(Shader& shader, int iter);
+	unsigned int GetUniformConstPointLight() { return _uniformConstPointLight; }
 
 	void SetUniformTypeLightPoint(Shader& shader);
 	unsigned int GetUniformTypeLightPoint() { return _uniformTypeLightPoint; }
 
-	void SetUniformDirectionLightLocation(Shader& shader);
-	unsigned int GetUniformDirectionalLight() { return _uniformDirectionLocation; }
+	void SetUniformPosLightPoint(Shader& shader, int iter);
+	unsigned int GetUniformPosLightPoint() { return _uniformPosLightPointLoc; }
 
-	void SetUniformConstPointLight(Shader& shader);
-	unsigned int GetUniformConstPointLight() { return _uniformConstPointLight; }
+	//=====================================================
+	//SPOT LIGHT
+	void SetUniformAmbientSpotLoc(Shader& shader, int iter);
+	unsigned int GetUniformAmbSpotLoc() { return _uniformAmbientSpotLoc; }
 
-	void SetUniformLinearPointLight(Shader& shader);
-	unsigned int GetUniformLinearPointLight() { return _uniformLinearPointLight; }
+	void SetUniformDiffSpotLoc(Shader& shader, int iter);
+	unsigned int GetUniformDiffSpotLoc() { return _uniformDiffuseSpotLoc; }
 
-	void SetUniformQuadraticPointLight(Shader& shader);
-	unsigned int GetUniformQuadraticPointLight() { return _uniformQuadraticPointLight; }
+	void SetUniformSpecSpotLoc(Shader& shader, int iter);
+	unsigned int GetUniformSpecSpotLoc() { return _uniformSpecularSpotLoc; }
 
-	void SetUniformCutOffSopttLight(Shader& shader);
+	void SetUniformTypeLightSpot(Shader& shader);
+	unsigned int GetUniformTypeLightSpot() { return _uniformTypeLightSpot; }
+
+	void SetUniformLinearSpotLight(Shader& shader, int iter);
+	unsigned int GetUniformLinearSpotLight() { return _uniformLinearSpotLight; }
+
+	void SetUniformQuadraticSpotLight(Shader& shader, int iter);
+	unsigned int GetUniformQuadraticSpotLight() { return _uniformQuadraticSpotLight; }
+
+	void SetUniformConstSpotLight(Shader& shader, int iter);
+	unsigned int GetUniformConstSpotLight() { return _uniformConstSpotLight; }
+
+	void SetUniformCutOffSopttLight(Shader& shader, int iter);
 	unsigned int GetUniformCutOffSopttLight() { return _uniformCutOffSpotLight; }
 
-	void SetUniformOuterCutOffSopttLight(Shader& shader);
+	void SetUniformOuterCutOffSopttLight(Shader& shader, int iter);
 	unsigned int GetUniformOuterCutOffSopttLight() { return _uniformOuterCutOffSpotLight; }
 
+	void SetUniformPosLightSpot(Shader& shader, int iter);
+	unsigned int GetUniformPosLightSpot() { return _uniformPosLightSpotLoc; }
+
+	//=======================================================
+	//CAMERA POS
+	void SetUniformPosCameraLocation(Shader& shader);
+	unsigned int GetUniformPosCameraLocation() { return _uniformPosCameraLocation; }
+
+	
+	//==============================
+	void SetUniformPosLightLocation(Shader& shader);
+	unsigned int GetUniformPosLightLocation() { return _uniformPosLightPointLoc; }
+
+	void SetUniformColourLocation(Shader& shader);
+	unsigned int GetUniformColourLocation() { return _unifromColourLocation; }
+	
+	
 	void SetColour(glm::vec3 colour) { _colour = colour; }
-	void SetAmbient(glm::vec3 ambient) { _ambient = ambient; }
-	void SetDiffuse(glm::vec3 diffuse) { _diffuse = diffuse; }
-	void SetSpecular(glm::vec3 specular) { _specular = specular; }
+	void SetAmbient(glm::vec3 ambient) { _ambientDirectional = ambient; }
+	void SetDiffuse(glm::vec3 diffuse) { _diffuseDirectional = diffuse; }
+	void SetSpecular(glm::vec3 specular) { _specularDirectional = specular; }
 
 	void SetTypeLightPoint(float linearVal, float quadraticVal, float cutOffValue);
 	void SetTypeLightSpot(float linearVal, float quadraticVal, float cutOffValue, float outerCutOffValue);
@@ -117,10 +161,10 @@ protected:
 	void SetBoolsTypeLight();
 
 	void SetPointLight(float linearVal, float quadraticVal);
-	void SetLinearValue(float value) { _linearValue = value; }
-	void SetQuadraticValue(float value) { _quadraticValue = value; }
-	void SetCutOffSpotLight(float value) { _cutOffValue = value; }
-	void SetOuterCutOffSpotLight(float value) { _outerCutOffValue = value; }
+	void SetLinearValue(float value) { _linearValuePoint = value; }
+	void SetQuadraticValue(float value) { _quadraticValuePoint = value; }
+	void SetCutOffSpotLight(float value) { _cutOffValueSpot = value; }
+	void SetOuterCutOffSpotLight(float value) { _outerCutOffValueSpot = value; }
 	void SetDirectionLight(glm::vec3 direction) { _direction = direction; }
 
 	void SetCountLightInShader(Shader shader);
@@ -160,40 +204,72 @@ private:
 	unsigned int _vaoLight;
 
 	unsigned int _unifromColourLocation;
-	unsigned int _uniformAmbientLocation;
-	unsigned int _uniformDiffuseLocation;
-	unsigned int _uniformSpecularLocation;
-	unsigned int _uniformPosLightLocation;
-	unsigned int _uniformPosCameraLocation;
+
+	//=========================================
+	//Directional
 	unsigned int _uniformDirectionLocation;
-
 	unsigned int _uniformTypeLightDirectional;
+	unsigned int _uniformAmbDirectionalLoc;
+	unsigned int _uniformDiffDirectionalLoc;
+	unsigned int _uniformSpecDirectionalLoc;
+	//=========================================
+	//Point
 	unsigned int _uniformTypeLightPoint;
-	unsigned int _uniformTypeLightSpot;
-
 	unsigned int _uniformConstPointLight;
-	unsigned int _uniformLinearPointLight;
 	unsigned int _uniformQuadraticPointLight;
+	unsigned int _uniformLinearPointLight;
+	unsigned int _uniformPosLightPointLoc;
 
-	unsigned int _uniformCutOffSpotLight;
+	unsigned int _uniformAmbientPointLoc;
+	unsigned int _uniformDiffusePointLoc;
+	unsigned int _uniformSpecularPointLoc;
+	//=========================================
+	//Spot
+	unsigned int _uniformTypeLightSpot;
 	unsigned int _uniformOuterCutOffSpotLight;
+	unsigned int _uniformCutOffSpotLight;
+	unsigned int _uniformPosLightSpotLoc;
+	unsigned int _uniformAmbientSpotLoc;
+	unsigned int _uniformDiffuseSpotLoc;
+	unsigned int _uniformSpecularSpotLoc;
 
-	glm::vec3 _colour;
-	glm::vec3 _ambient;
-	glm::vec3 _diffuse;
-	glm::vec3 _specular;
+	unsigned int _uniformQuadraticSpotLight;
+	unsigned int _uniformLinearSpotLight;
+	unsigned int _uniformConstSpotLight;
+
+	//Camera pos
+	unsigned int _uniformPosCameraLocation;
+
+	//DIRECTIONAL
+	glm::vec3 _ambientDirectional;
+	glm::vec3 _diffuseDirectional;
+	glm::vec3 _specularDirectional;
 	glm::vec3 _direction;
-
 	unsigned int nr_of_directional_lightLocation;
+
+	//POINT
+	glm::vec3 _ambientPoint;
+	glm::vec3 _diffusePoint;
+	glm::vec3 _specularPoint;
+	float _linearValuePoint;
+	float _quadraticValuePoint;
+	const float _constValuePoint = 1.0f;
 	unsigned int nr_of_point_lightsLocation;
+
+	//SPOT
+	glm::vec3 _ambientSpot;
+	glm::vec3 _diffuseSpot;
+	glm::vec3 _specularSpot;
+	float _linearValueSpot;
+	float _quadraticValueSpot;
+	const float _constValueSpot = 1.0f;
+	float _cutOffValueSpot;
+	float _outerCutOffValueSpot;
+
 	unsigned int nr_of_spot_lightLocation;
 
-	float _linearValue;
-	float _quadraticValue;
-	const float _constValue = 1.0f;
-	float _cutOffValue;
-	float _outerCutOffValue;
-
+	//OTHERS
+	glm::vec3 _colour;
 	TypeLight _typeLight;
 	int _isDirectional;
 	int _isPoint;
