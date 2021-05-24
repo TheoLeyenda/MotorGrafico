@@ -64,12 +64,18 @@ void Game::InitGame()
 	newPositionCamY = camera->transform.position.y;
 	newPositionCamZ = camera->transform.position.z + 55;
 
-	AddLight(Light::TypeLight::Spot, 0);
-	AddLight(Light::TypeLight::Spot, 1);
-	//AddLight(Light::TypeLight::Point, 3);
+	AddLight(Light::TypeLight::Point, 1);
+	AddLight(Light::TypeLight::Spot, 2);
+	AddLight(Light::TypeLight::Point, 6);
+	AddLight(Light::TypeLight::Directional, 0);
+	AddLight(Light::TypeLight::Spot, 87);
 
-	//SetTypeLightCustom(3, glm::vec3(4, 1, 2));
-	SetLightPosition(1, glm::vec3(100.0f, -100.0f, -200.0f));
+	SetLightPosition(2, glm::vec3(50, -50, 0));
+	SetLightPosition(87, glm::vec3(-50, -50, 0));
+	SetLightPosition(6, glm::vec3(100, -50, -100));
+	SetTypeLightCustom(0, glm::vec3(10, 2, 10));
+
+	GetMyLightsID();
 
 	InitMaterials();
 
@@ -108,8 +114,7 @@ void Game::UpdateGame(Windows *_window, Renderer *_render, Input *_input)
 
 	//TempInputs(windows, pyramid);
 
-	TempMoveLightWithID(windows, 0);
-	TempMoveLightWithID(windows, 1);
+	TempMoveLightWithID(windows, 2);
 	if (input->GetKey(KeyBoard::KEY_ENTER)) {
 		//SetTypeLightDefault(0, Light::TypeLight::Point);
 	}
@@ -125,12 +130,6 @@ void Game::UpdateGame(Windows *_window, Renderer *_render, Input *_input)
 
 	if (model != NULL)
 		model->Draw(render->GetShaderColor());
-
-	//if (input->GetKey(KeyBoard::KEY_KP_ENTER) && light != NULL) 
-	//{
-	//	delete light;
-	//	light = NULL;
-	//}
 
 	if (input->GetKey(KeyBoard::KEY_1))
 	{
@@ -230,8 +229,6 @@ void Game::TempColorInput(Windows* windows, Shape* shape)
 		}
 	}
 #pragma endregion
-
-	
 }
 
 void Game::TempInputCamera()

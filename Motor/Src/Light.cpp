@@ -101,65 +101,60 @@ void Light::UseLight(Camera * cameraIn)
 
 	renderer->GetShaderColor().use();
 
-#pragma region TYPES LIGHT
-	//glUniform1i(_uniformTypeLightDirectional, _isDirectional);
-	//
-	//glUniform1i(_uniformTypeLightPoint, _isPoint);
-	//
-	//glUniform1i(_uniformTypeLightSpot, _isSpot);
-#pragma endregion
-
-#pragma region DIRECTIONAL LIGHT
-	//if(_isDirectional == 1 && _isSpot == 0)
-	//	
-	//if(_isDirectional == 0 && _isSpot == 1)
-	glUniform3f(_uniformDirectionLocation, _directionDirectinal.x, _directionDirectinal.y, _directionDirectinal.z);
-
-	glUniform3f(_uniformAmbDirectionalLoc, _ambient.x, _ambient.y, _ambient.z);
-
-	glUniform3f(_uniformDiffDirectionalLoc, _diffuse.x, _diffuse.y, _diffuse.z);
-
-	glUniform3f(_uniformSpecDirectionalLoc, _specular.x, _specular.y, _specular.z);
-#pragma endregion
-	
-#pragma region SPOT LIGHT
-	glUniform3f(_uniformPosLightSpotLoc, transform.position.x, transform.position.y, transform.position.z);
-
-	glUniform1f(_uniformCutOffSpotLight, glm::cos(glm::radians(_cutOffValueSpot)));
-
-	glUniform1f(_uniformOuterCutOffSpotLight, glm::cos(glm::radians(_outerCutOffValueSpot)));
-
-	glUniform1f(_uniformConstSpotLight, _constValueSpot);
-
-	glUniform1f(_uniformLinearSpotLight, _linearValueSpot);
-
-	glUniform1f(_uniformQuadraticSpotLight, _quadraticValueSpot);
-
-	glUniform3f(_uniformAmbientSpotLoc, _ambient.x, _ambient.y, _ambient.z);
-
-	glUniform3f(_uniformDiffuseSpotLoc, _diffuse.x, _diffuse.y, _diffuse.z);
-
-	glUniform3f(_uniformSpecularSpotLoc, _specular.x, _specular.y, _specular.z);
-	
-	glUniform3f(_uniformSpotLightDirection, transform.backward.x, transform.backward.y, transform.backward.z);
-
-#pragma endregion
-
+	switch (_typeLight)
+	{
+	case Light::Point:
 #pragma region POINT LIGHT
-	glUniform3f(_uniformPosLightPointLoc, transform.position.x, transform.position.y, transform.position.z);
+		glUniform3f(_uniformPosLightPointLoc, this->transform.position.x, this->transform.position.y, this->transform.position.z);
 
-	glUniform1f(_uniformConstPointLight, _constValuePoint);
+		glUniform1f(_uniformConstPointLight, _constValuePoint);
 
-	glUniform1f(_uniformLinearPointLight, _linearValuePoint);
+		glUniform1f(_uniformLinearPointLight, _linearValuePoint);
 
-	glUniform1f(_uniformQuadraticPointLight, _quadraticValuePoint);
+		glUniform1f(_uniformQuadraticPointLight, _quadraticValuePoint);
 
-	glUniform3f(_uniformAmbientPointLoc, _ambient.x, _ambient.y, _ambient.z);
+		glUniform3f(_uniformAmbientPointLoc, _ambient.x, _ambient.y, _ambient.z);
 
-	glUniform3f(_uniformDiffusePointLoc, _diffuse.x, _diffuse.y, _diffuse.z);
+		glUniform3f(_uniformDiffusePointLoc, _diffuse.x, _diffuse.y, _diffuse.z);
 
-	glUniform3f(_uniformSpecularPointLoc, _specular.x, _specular.y, _specular.z);
+		glUniform3f(_uniformSpecularPointLoc, _specular.x, _specular.y, _specular.z);
 #pragma endregion
+		break;
+	case Light::Directional:
+#pragma region DIRECTIONAL LIGHT
+		glUniform3f(_uniformDirectionLocation, _directionDirectinal.x, _directionDirectinal.y, _directionDirectinal.z);
+
+		glUniform3f(_uniformAmbDirectionalLoc, _ambient.x, _ambient.y, _ambient.z);
+
+		glUniform3f(_uniformDiffDirectionalLoc, _diffuse.x, _diffuse.y, _diffuse.z);
+
+		glUniform3f(_uniformSpecDirectionalLoc, _specular.x, _specular.y, _specular.z);
+#pragma endregion
+		break;
+	case Light::Spot:
+#pragma region SPOT LIGHT
+		glUniform3f(_uniformPosLightSpotLoc, this->transform.position.x, this->transform.position.y, this->transform.position.z);
+
+		glUniform1f(_uniformCutOffSpotLight, glm::cos(glm::radians(_cutOffValueSpot)));
+
+		glUniform1f(_uniformOuterCutOffSpotLight, glm::cos(glm::radians(_outerCutOffValueSpot)));
+
+		glUniform1f(_uniformConstSpotLight, _constValueSpot);
+
+		glUniform1f(_uniformLinearSpotLight, _linearValueSpot);
+
+		glUniform1f(_uniformQuadraticSpotLight, _quadraticValueSpot);
+
+		glUniform3f(_uniformAmbientSpotLoc, _ambient.x, _ambient.y, _ambient.z);
+
+		glUniform3f(_uniformDiffuseSpotLoc, _diffuse.x, _diffuse.y, _diffuse.z);
+
+		glUniform3f(_uniformSpecularSpotLoc, _specular.x, _specular.y, _specular.z);
+
+		glUniform3f(_uniformSpotLightDirection, transform.backward.x, transform.backward.y, transform.backward.z);
+#pragma endregion
+		break;
+	}
 
 #pragma region BASIC LIGHTING (POS LIGHT)
 	glUniform3f(_uniformPosCameraLocation, cameraIn->transform.position.x,
@@ -167,7 +162,6 @@ void Light::UseLight(Camera * cameraIn)
 
 	glUniform3f(_unifromColourLocation, _colour.x, _colour.y, _colour.z);
 
-	//glUniform3f(_uniformPosLightPointLoc, transform.position.x, transform.position.y, transform.position.z);
 #pragma endregion
 
 	glUseProgram(0);
@@ -262,17 +256,8 @@ void Light::SetUniformDirectionLightLocation(Shader & shader, int iter)
 	_uniformDirectionLocation = glGetUniformLocation(shader.getId(), result.c_str());
 }
 
-//void Light::SetUniformTypeLightDirectional(Shader & shader, int iter)
-//{
-//	_uniformTypeLightDirectional = glGetUniformLocation(shader.getId(), "typelight.directional");
-//}
-
 //================================================
 //POINT LIGHT
-//void Light::SetUniformPosLightLocation(Shader& shader)
-//{
-//	_uniformPosLightPointLoc = glGetUniformLocation(shader.getId(), "pointLight.posLight");
-//}
 
 void Light::SetUniformConstPointLight(Shader & shader, int iter)
 {
@@ -327,11 +312,6 @@ void Light::SetUniformQuadraticPointLight(Shader & shader, int iter)
 
 	_uniformQuadraticPointLight = glGetUniformLocation(shader.getId(), result.c_str());
 }
-
-//void Light::SetUniformTypeLightPoint(Shader & shader)
-//{
-//	_uniformTypeLightPoint = glGetUniformLocation(shader.getId(), "typelight.pointLight");
-//}
 
 void Light::SetUniformPosLightPoint(Shader & shader, int iter)
 {
@@ -439,12 +419,6 @@ void Light::SetUniformPosCameraLocation(Shader & shader)
 	_uniformPosCameraLocation = glGetUniformLocation(shader.getId(), "cameraPos");
 }
 
-//void Light::SetUniformTypeLightSpot(Shader & shader)
-//{
-//	_uniformTypeLightSpot = glGetUniformLocation(shader.getId(), "typelight.spotLight");
-//}
-
-
 void Light::SetTypeLightPoint(float linearVal, float quadraticVal, float cutOffValue)
 {
 	SetPointLight(linearVal, quadraticVal);
@@ -455,34 +429,35 @@ void Light::SetTypeLightPoint(float linearVal, float quadraticVal, float cutOffV
 	
 	_typeLight = TypeLight::Point;
 
+	/*
 	if (nr_of_directional_light > 0)
 		nr_of_directional_light--;
 
 	if (nr_of_spot_light > 0)
 		nr_of_spot_light--;
+	*/
 
 	UpdateCountLightInShader(renderer->GetShaderColor());
 	
-	_isPoint = 1;
-	_isDirectional = 0;
-	_isSpot = 0;
 }
 
 void Light::SetTypeLightPoint()
 {
 	SetPointLight(0.0014f, 0.000007f);
-	SetCutOffSpotLight(12.5f);
+	//SetCutOffSpotLight(12.5f);
 	
 	if(_typeLight != TypeLight::Point)
 		nr_of_point_light++;
 
 	_typeLight = TypeLight::Point;
 
+	/*
 	if (nr_of_directional_light > 0)
 		nr_of_directional_light--;
 
 	if (nr_of_spot_light > 0)
 		nr_of_spot_light--;
+	*/
 
 	UpdateCountLightInShader(renderer->GetShaderColor());
 
@@ -500,11 +475,13 @@ void Light::SetTypeLightSpot(float linearVal, float quadraticVal, float cutOffVa
 	
 	_typeLight = TypeLight::Spot;
 
+	/*
 	if (nr_of_directional_light > 0)
 		nr_of_directional_light--;
 
 	if (nr_of_point_light > 0)
 		nr_of_point_light--;
+	*/
 
 	UpdateCountLightInShader(renderer->GetShaderColor());
 
@@ -513,7 +490,7 @@ void Light::SetTypeLightSpot(float linearVal, float quadraticVal, float cutOffVa
 
 void Light::SetTypeLightSpot()
 {
-	SetPointLight(0.0014f, 0.000007f);
+	SetSpotLight(0.0014f, 0.000007f);
 	SetCutOffSpotLight(12.5f);
 	SetOuterCutOffSpotLight(17.5f);
 	
@@ -522,12 +499,13 @@ void Light::SetTypeLightSpot()
 	
 	_typeLight = TypeLight::Spot;
 
-
+	/*
 	if (nr_of_directional_light > 0)
 		nr_of_directional_light--;
 
 	if (nr_of_point_light > 0)
 		nr_of_point_light--;
+	*/
 
 	UpdateCountLightInShader(renderer->GetShaderColor());
 
@@ -543,11 +521,13 @@ void Light::SetTypeLightDirectional()
 
 	_typeLight = TypeLight::Directional;
 
+	/*
 	if (nr_of_spot_light > 0)
 		nr_of_spot_light--;
 
 	if (nr_of_point_light > 0)
 		nr_of_point_light--;
+	*/
 
 	UpdateCountLightInShader(renderer->GetShaderColor());
 
@@ -563,11 +543,13 @@ void Light::SetTypeLightDirectional(glm::vec3 direction)
 	
 	_typeLight = TypeLight::Directional;
 
+	/*
 	if (nr_of_spot_light > 0)
 		nr_of_spot_light--;
 
 	if (nr_of_point_light > 0)
 		nr_of_point_light--;
+	*/
 
 	UpdateCountLightInShader(renderer->GetShaderColor());
 
@@ -576,8 +558,14 @@ void Light::SetTypeLightDirectional(glm::vec3 direction)
 
 void Light::SetPointLight(float linearVal, float quadraticVal)
 {
-	SetLinearValue(linearVal);
-	SetQuadraticValue(quadraticVal);
+	SetLinearValuePoint(linearVal);
+	SetQuadraticValuePoint(quadraticVal);
+}
+
+void Light::SetSpotLight(float linearVal, float quadraticVal)
+{
+	SetLinearValueSpot(linearVal);
+	SetQuadraticValueSpot(quadraticVal);
 }
 
 Light::~Light() 

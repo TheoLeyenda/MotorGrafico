@@ -126,7 +126,18 @@ void GameBase::AddLight(Light::TypeLight typeLight, int id)
 	newLight->SetIdLight(id);
 	newLight->SetPosition(350.0f, 200.0f, 300.0f);
 	newLight->SetScale(10.0f, 10.0f, 10.0f);
-	render->SetLighting(newLight, _lights.size());
+	switch (newLight->GetTypeLight())	
+		{
+	case Light::TypeLight::Directional:
+		render->SetLighting(newLight, Light::nr_of_directional_light - 1);
+		break;
+	case Light::TypeLight::Point:
+		render->SetLighting(newLight, Light::nr_of_point_light - 1);
+		break;
+	case Light::TypeLight::Spot:
+		render->SetLighting(newLight, Light::nr_of_spot_light - 1);
+		break;
+	}
 	cout << "Count pointLight: " << Light::nr_of_point_light << endl;
 	cout << "Count directionalLight: " << Light::nr_of_directional_light << endl;
 	cout << "Count spotLight: " << Light::nr_of_spot_light << endl;
@@ -159,6 +170,8 @@ void GameBase::SetLightPosition(int id, glm::vec3 position)
 			{
 				_lights[i]->SetPosition(_lights[i]->transform.position.x + position.x,
 					_lights[i]->transform.position.y + position.y, _lights[i]->transform.position.z + position.z);
+
+				i = _lights.size();
 			}
 		}
 	}
@@ -224,6 +237,29 @@ void GameBase::SetTypeLightCustom(int id, float linearVal, float quadraticVal, f
 	}
 }
 
+void GameBase::GetMyLightsID()
+{
+	for (int i = 0; i < _lights.size(); i++)
+	{
+		if (_lights[i] != NULL)
+		{
+			cout << "Light " << i << " in list-> ID : " << _lights[i]->GetMyId() << endl;
+			switch (_lights[i]->GetTypeLight())		
+			{
+			case Light::TypeLight::Directional:
+				cout << "TypeLight -> Directional light"<< endl;
+				break;
+			case Light::TypeLight::Point:
+				cout << "TypeLight -> Point light" << endl;
+				break;
+			case Light::TypeLight::Spot:
+				cout << "TypeLight -> Spot light" << endl;
+				break;
+			}
+		}
+	}
+}
+
 void GameBase::HandleCamera()
 {
 	render->SetView(camera);
@@ -244,14 +280,6 @@ void GameBase::HandleLight(Camera* camera)
 			_lights[i]->Draw();
 		}
 	}
-	/*
-	if (light != NULL)
-	{
-
-		render->LightingInfluence(light,camera);
-		light->Draw();
-	}
-	*/
 }
 
 Time& GameBase::GetTimeClock()

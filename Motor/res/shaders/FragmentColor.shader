@@ -84,26 +84,29 @@ void main()
 {
 	if (isModel == 0) 
 	{
-		vec3 outPutShader = vec3(0.0);
+		vec3 outPutDirectional = vec3(0.0);
+		vec3 outPutPoint = vec3(0.0);
+		vec3 outPutSpot = vec3(0.0);
+
 		vec3 viewDir = normalize(cameraPos - FragPos);
 		vec3 norm = normalize(Normal);
 
-		int aux = nr_of_point_lights;
-		if(aux >= SIZE_POINT_LIGHTS)
-			aux = SIZE_POINT_LIGHTS;
-
-		for (int i = 0; i < aux; i++)
-		{
-			outPutShader += CalcPointLight(pointLight[i], norm, FragPos, viewDir);
-		}
-//
-		aux = nr_of_directional_light;
+		int aux = nr_of_directional_light;
 		if(aux >= SIZE_DIRECTIONAL_LIGHTS)
 			aux = SIZE_DIRECTIONAL_LIGHTS;
 
 		for (int i = 0; i < aux; i++)
 		{
-			outPutShader += CalcDirLight(dirLight[i], norm,viewDir);
+			outPutDirectional += CalcDirLight(dirLight[i], norm,viewDir);
+		}
+
+		aux = nr_of_point_lights;
+		if(aux >= SIZE_POINT_LIGHTS)
+			aux = SIZE_POINT_LIGHTS;
+
+		for (int i = 0; i < aux; i++)
+		{
+			outPutPoint += CalcPointLight(pointLight[i], norm, FragPos, viewDir);
 		}
 
 		aux = nr_of_spot_light;
@@ -112,10 +115,10 @@ void main()
 
 		for (int i = 0; i < aux; i++)
 		{
-			outPutShader += CalcSpotLight(spotLight[i], norm, FragPos, viewDir);
+			outPutSpot += CalcSpotLight(spotLight[i], norm, FragPos, viewDir);
 		}
-
-		vec4 result = (vec4(outPutShader, 1.0) + texture(ourTexture, texCoord));
+		vec4 outPutShader = vec4((outPutDirectional+outPutPoint+outPutSpot), 1.0);
+		vec4 result = (outPutShader, 1.0) + texture(ourTexture, texCoord));
 
 		FragColor = result;
 	}

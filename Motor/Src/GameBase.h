@@ -50,6 +50,7 @@ public:
 	void SetTypeLightCustom(int id, glm::vec3 direction);
 	void SetTypeLightCustom(int id, float linearVal, float quadraticVal, float cutOffValue);
 	void SetTypeLightCustom(int id, float linearVal, float quadraticVal, float cutOffValue, float outerCutOffValue);
+	void GetMyLightsID();
 
 	virtual void InitGame() = 0; //Inicializa todos las variables del juego.
 	virtual void UpdateGame(Windows *_window, Renderer *_render, Input *_input) = 0; //Update del juego

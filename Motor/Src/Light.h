@@ -19,7 +19,7 @@ public:
 	{
 		Point,
 		Directional,
-		Spot,
+		Spot
 	};
 
 	Light(Renderer* _render, TypeLight type);
@@ -164,10 +164,15 @@ protected:
 	void SetBoolsTypeLight();
 
 	void SetPointLight(float linearVal, float quadraticVal);
-	void SetLinearValue(float value) { _linearValuePoint = value; }
-	void SetQuadraticValue(float value) { _quadraticValuePoint = value; }
+	void SetLinearValuePoint(float value) { _linearValuePoint = value; }
+	void SetQuadraticValuePoint(float value) { _quadraticValuePoint = value; }
+
+	void SetSpotLight(float linearVal, float quadraticVal);
+	void SetLinearValueSpot(float value) { _linearValueSpot = value; }
+	void SetQuadraticValueSpot(float value) { _quadraticValueSpot = value; }
 	void SetCutOffSpotLight(float value) { _cutOffValueSpot = value; }
 	void SetOuterCutOffSpotLight(float value) { _outerCutOffValueSpot = value; }
+
 	void SetDirectionLight(glm::vec3 direction) { _directionDirectinal = direction; }
 
 	void SetCountLightInShader(Shader shader);
