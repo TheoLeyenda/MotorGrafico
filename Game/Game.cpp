@@ -64,10 +64,12 @@ void Game::InitGame()
 	newPositionCamY = camera->transform.position.y;
 	newPositionCamZ = camera->transform.position.z + 55;
 
-	AddLight(Light::TypeLight::Directional, 0);
-	AddLight(Light::TypeLight::Directional, 1);
+	AddLight(Light::TypeLight::Spot, 0);
+	AddLight(Light::TypeLight::Spot, 1);
+	//AddLight(Light::TypeLight::Point, 3);
 
-	SetTypeLightCustom(1, glm::vec3(-2,1,3));
+	//SetTypeLightCustom(3, glm::vec3(4, 1, 2));
+	SetLightPosition(1, glm::vec3(100.0f, -100.0f, -200.0f));
 
 	InitMaterials();
 
@@ -107,6 +109,7 @@ void Game::UpdateGame(Windows *_window, Renderer *_render, Input *_input)
 	//TempInputs(windows, pyramid);
 
 	TempMoveLightWithID(windows, 0);
+	TempMoveLightWithID(windows, 1);
 	if (input->GetKey(KeyBoard::KEY_ENTER)) {
 		//SetTypeLightDefault(0, Light::TypeLight::Point);
 	}

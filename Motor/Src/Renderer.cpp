@@ -296,6 +296,7 @@ void Renderer::SetLighting(Light * _light, int iteration)
 		_light->SetUniformAmbientSpotLoc(GetShaderColor(), iteration);
 		_light->SetUniformDiffSpotLoc(GetShaderColor(), iteration);
 		_light->SetUniformSpecSpotLoc(GetShaderColor(), iteration);
+		_light->SetUniformSpotLightDirection(GetShaderColor(), iteration);
 #pragma endregion
 
 #pragma region BASIC LIGHTING (POS LIGHT)

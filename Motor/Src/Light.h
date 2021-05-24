@@ -118,6 +118,9 @@ public:
 	void SetUniformPosLightSpot(Shader& shader, int iter);
 	unsigned int GetUniformPosLightSpot() { return _uniformPosLightSpotLoc; }
 
+	void SetUniformSpotLightDirection(Shader& shader, int iter);
+	unsigned int GetUniformSpotLightDirection() { return _uniformSpotLightDirection; }
+
 	//=======================================================
 	//CAMERA POS
 	void SetUniformPosCameraLocation(Shader& shader);
@@ -133,9 +136,9 @@ public:
 	
 	
 	void SetColour(glm::vec3 colour) { _colour = colour; }
-	void SetAmbient(glm::vec3 ambient) { _ambientDirectional = ambient; }
-	void SetDiffuse(glm::vec3 diffuse) { _diffuseDirectional = diffuse; }
-	void SetSpecular(glm::vec3 specular) { _specularDirectional = specular; }
+	void SetAmbient(glm::vec3 ambient) { _ambient = ambient; }
+	void SetDiffuse(glm::vec3 diffuse) { _diffuse = diffuse; }
+	void SetSpecular(glm::vec3 specular) { _specular = specular; }
 
 	void SetTypeLightPoint(float linearVal, float quadraticVal, float cutOffValue);
 	void SetTypeLightSpot(float linearVal, float quadraticVal, float cutOffValue, float outerCutOffValue);
@@ -165,7 +168,7 @@ protected:
 	void SetQuadraticValue(float value) { _quadraticValuePoint = value; }
 	void SetCutOffSpotLight(float value) { _cutOffValueSpot = value; }
 	void SetOuterCutOffSpotLight(float value) { _outerCutOffValueSpot = value; }
-	void SetDirectionLight(glm::vec3 direction) { _direction = direction; }
+	void SetDirectionLight(glm::vec3 direction) { _directionDirectinal = direction; }
 
 	void SetCountLightInShader(Shader shader);
 	void UpdateCountLightInShader(Shader shader);
@@ -232,6 +235,7 @@ private:
 	unsigned int _uniformAmbientSpotLoc;
 	unsigned int _uniformDiffuseSpotLoc;
 	unsigned int _uniformSpecularSpotLoc;
+	unsigned int _uniformSpotLightDirection;
 
 	unsigned int _uniformQuadraticSpotLight;
 	unsigned int _uniformLinearSpotLight;
@@ -241,25 +245,20 @@ private:
 	unsigned int _uniformPosCameraLocation;
 
 	//DIRECTIONAL
-	glm::vec3 _ambientDirectional;
-	glm::vec3 _diffuseDirectional;
-	glm::vec3 _specularDirectional;
-	glm::vec3 _direction;
+	glm::vec3 _ambient;
+	glm::vec3 _diffuse;
+	glm::vec3 _specular;
+	glm::vec3 _directionDirectinal;
+	glm::vec3 _directionSpot;
 	unsigned int nr_of_directional_lightLocation;
 
 	//POINT
-	glm::vec3 _ambientPoint;
-	glm::vec3 _diffusePoint;
-	glm::vec3 _specularPoint;
 	float _linearValuePoint;
 	float _quadraticValuePoint;
 	const float _constValuePoint = 1.0f;
 	unsigned int nr_of_point_lightsLocation;
 
 	//SPOT
-	glm::vec3 _ambientSpot;
-	glm::vec3 _diffuseSpot;
-	glm::vec3 _specularSpot;
 	float _linearValueSpot;
 	float _quadraticValueSpot;
 	const float _constValueSpot = 1.0f;
