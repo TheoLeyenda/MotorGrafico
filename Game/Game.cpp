@@ -60,21 +60,38 @@ void Game::InitGame()
 	//model->SetRotationModelY(90.0f);
 	//model->SetRotationModelZ(90.0f);
 
+	//COLORES PARA TESTEAR
+	glm::vec3 red = glm::vec3(1.0f, 0.0f, 0.0f);
+	glm::vec3 blue = glm::vec3(0.0f, 0.0f, 1.0f);
+	glm::vec3 green = glm::vec3(0.0f, 1.0f, 0.0f);
+	glm::vec3 purple = glm::vec3(0.6784f, 0.0157f, 0.9412f);
+	glm::vec3 yellow = glm::vec3(1.0f, 0.9843f, 0.0f);
+	glm::vec3 brown = glm::vec3(0.4392f, 0.3059f, 0.1333f);
+	glm::vec3 orange = glm::vec3(1.0f, 0.5686f, 0.0f);
+	glm::vec3 cyan = glm::vec3(0.0157f, 0.9412f, 0.9412f);
+	glm::vec3 magenta = glm::vec3(0.9412f, 0.0157f, 0.7412f);
+
 	newPositionCamX = camera->transform.position.x;
 	newPositionCamY = camera->transform.position.y;
 	newPositionCamZ = camera->transform.position.z + 55;
 
-	AddLight(Light::TypeLight::Point, 1);
-	AddLight(Light::TypeLight::Spot, 2);
-	AddLight(Light::TypeLight::Point, 6);
-	AddLight(Light::TypeLight::Directional, 0);
-	AddLight(Light::TypeLight::Directional, 0);
-	AddLight(Light::TypeLight::Spot, 87);
+	AddLight(Light::TypeLight::Spot, 1);
+	AddLight(Light::TypeLight::Point, 2);
 
-	SetLightPosition(2, glm::vec3(50, -50, 0));
+	AddLight(Light::TypeLight::Point, 6);
+	SetLightPosition(6, glm::vec3(100, -50, 0));
+
+	AddLight(Light::TypeLight::Spot, 87);
 	SetLightPosition(87, glm::vec3(-50, -50, 0));
-	SetLightPosition(6, glm::vec3(100, -50, -100));
+
+	AddLight(Light::TypeLight::Directional, 0);
 	SetTypeLightCustom(0, glm::vec3(10, 2, 10));
+
+	ChangeColorLight(1, red);
+	ChangeColorLight(2, yellow);
+	ChangeColorLight(6, cyan);
+	ChangeColorLight(87, brown);
+	ChangeColorLight(0, blue);
 
 	GetMyLightsID();
 
@@ -115,7 +132,7 @@ void Game::UpdateGame(Windows *_window, Renderer *_render, Input *_input)
 
 	//TempInputs(windows, pyramid);
 
-	TempMoveLightWithID(windows, 2);
+	TempMoveLightWithID(windows, 1);
 	if (input->GetKey(KeyBoard::KEY_ENTER)) {
 		//SetTypeLightDefault(0, Light::TypeLight::Point);
 	}
