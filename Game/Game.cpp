@@ -68,6 +68,7 @@ void Game::InitGame()
 	AddLight(Light::TypeLight::Spot, 2);
 	AddLight(Light::TypeLight::Point, 6);
 	AddLight(Light::TypeLight::Directional, 0);
+	AddLight(Light::TypeLight::Directional, 0);
 	AddLight(Light::TypeLight::Spot, 87);
 
 	SetLightPosition(2, glm::vec3(50, -50, 0));
