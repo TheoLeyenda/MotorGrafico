@@ -275,6 +275,7 @@ void Renderer::SetLighting(Light * _light, int iteration)
 			_light->SetUniformAmbDirectionalLoc(GetShaderColor(), iteration);
 			_light->SetUniformDiffDirectionalLoc(GetShaderColor(), iteration);
 			_light->SetUniformSpecDirectionalLoc(GetShaderColor(), iteration);
+			_light->SetUniformColourDirectional(GetShaderColor(), iteration);
 #pragma endregion
 			break;
 		case Light::TypeLight::Point:
@@ -286,6 +287,7 @@ void Renderer::SetLighting(Light * _light, int iteration)
 			_light->SetUniformAmbientPointLoc(GetShaderColor(), iteration);
 			_light->SetUniformDiffPointLoc(GetShaderColor(), iteration);
 			_light->SetUniformSpecPointLoc(GetShaderColor(), iteration);
+			_light->SetUniformColourPoint(GetShaderColor(), iteration);
 #pragma endregion
 			break;
 		case Light::TypeLight::Spot:
@@ -300,13 +302,12 @@ void Renderer::SetLighting(Light * _light, int iteration)
 			_light->SetUniformDiffSpotLoc(GetShaderColor(), iteration);
 			_light->SetUniformSpecSpotLoc(GetShaderColor(), iteration);
 			_light->SetUniformSpotLightDirection(GetShaderColor(), iteration);
+			_light->SetUniformColourSpot(GetShaderColor(), iteration);
 #pragma endregion
 			break;
 		}
-
 #pragma region BASIC LIGHTING (POS LIGHT)
 		_light->SetUniformPosCameraLocation(GetShaderColor());
-		_light->SetUniformColourLocation(GetShaderColor());
 		//_light->SetUniformPosLightLocation(GetShaderColor());
 #pragma endregion
 	}

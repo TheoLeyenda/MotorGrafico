@@ -22,6 +22,7 @@ uniform int nr_of_spot_light;
 struct DireLight
 {
 	vec3 direction;
+	vec3 colour;
 
 	vec3 ambient;
 	vec3 diffuse;
@@ -33,6 +34,7 @@ uniform DireLight dirLight[SIZE_DIRECTIONAL_LIGHTS];
 struct PointLight
 {
 	vec3 posLight;
+	vec3 colour;
 
 	float constant;
 	float linear;
@@ -48,6 +50,7 @@ uniform PointLight pointLight[SIZE_POINT_LIGHTS];
 struct SpotLight
 {
 	vec3 posLight;
+	vec3 colour;
 
 	float cutOff;
 	float outerCutOff;
@@ -143,7 +146,7 @@ vec3 CalcDirLight(DireLight directionalLight, vec3 normal, vec3 viewDir)
 	float spec = pow(max(dot(viewDir, reflectDir), 0.0), material.shininess);
 	vec3 specular = directionalLight.specular * (spec * material.specular);
 
-	return (ambient + diffuse + specular);
+	return (ambient + diffuse + specular) * directionalLight.colour;
 }
 
 vec3 CalcPointLight(PointLight pointLigh, vec3 normal, vec3 fragPos, vec3 viewDir)
@@ -170,7 +173,7 @@ vec3 CalcPointLight(PointLight pointLigh, vec3 normal, vec3 fragPos, vec3 viewDi
 	diffuse *= attenuation;
 	specular *= attenuation;
 
-	return (ambient + diffuse + specular);
+	return (ambient + diffuse + specular) * pointLigh.colour;
 }
 
 vec3 CalcSpotLight(SpotLight spotLigh, vec3 normal, vec3 fragPos, vec3 viewDir)
@@ -210,5 +213,5 @@ vec3 CalcSpotLight(SpotLight spotLigh, vec3 normal, vec3 fragPos, vec3 viewDir)
 		specular *= attenuation;
 	}
 
-	return (ambient + diffuse + specular);
+	return (ambient + diffuse + specular) * spotLigh.colour;
 }

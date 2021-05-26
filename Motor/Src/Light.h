@@ -48,9 +48,6 @@ public:
 	void SetUniformDirectionLightLocation(Shader& shader, int iter);
 	unsigned int GetUniformDirectionalLight() { return _uniformDirectionLocation; }
 
-	void SetUniformTypeLightDirectional(Shader& shader, int iter);
-	unsigned int GetUniformTypeLightDirectional() { return _uniformTypeLightDirectional; }
-
 	void SetUniformAmbDirectionalLoc(Shader& shader, int iter);
 	unsigned int GetUniformAmbDirectionalLoc() { return _uniformAmbDirectionalLoc; }
 
@@ -60,6 +57,8 @@ public:
 	void SetUniformSpecDirectionalLoc(Shader& shader, int iter);
 	unsigned int GetUniformSpecDirectionalLoc() { return _uniformSpecDirectionalLoc; }
 
+	void SetUniformColourDirectional(Shader& shader, int iter);
+	unsigned int GetUniformColourDirectional() { return _unifromColourDirectional; }
 	//=====================================================
 	//POINT LIGHT
 	void SetUniformAmbientPointLoc(Shader& shader, int iter);
@@ -80,11 +79,11 @@ public:
 	void SetUniformConstPointLight(Shader& shader, int iter);
 	unsigned int GetUniformConstPointLight() { return _uniformConstPointLight; }
 
-	void SetUniformTypeLightPoint(Shader& shader);
-	unsigned int GetUniformTypeLightPoint() { return _uniformTypeLightPoint; }
-
 	void SetUniformPosLightPoint(Shader& shader, int iter);
 	unsigned int GetUniformPosLightPoint() { return _uniformPosLightPointLoc; }
+
+	void SetUniformColourPoint(Shader& shader, int iter);
+	unsigned int GetUniformColourPoint() { return _unifromColourPoint; }
 
 	//=====================================================
 	//SPOT LIGHT
@@ -96,9 +95,6 @@ public:
 
 	void SetUniformSpecSpotLoc(Shader& shader, int iter);
 	unsigned int GetUniformSpecSpotLoc() { return _uniformSpecularSpotLoc; }
-
-	void SetUniformTypeLightSpot(Shader& shader);
-	unsigned int GetUniformTypeLightSpot() { return _uniformTypeLightSpot; }
 
 	void SetUniformLinearSpotLight(Shader& shader, int iter);
 	unsigned int GetUniformLinearSpotLight() { return _uniformLinearSpotLight; }
@@ -121,18 +117,16 @@ public:
 	void SetUniformSpotLightDirection(Shader& shader, int iter);
 	unsigned int GetUniformSpotLightDirection() { return _uniformSpotLightDirection; }
 
+	void SetUniformColourSpot(Shader& shader, int iter);
+	unsigned int GetUniformColourSpot() { return _unifromColourSpot; }
 	//=======================================================
 	//CAMERA POS
 	void SetUniformPosCameraLocation(Shader& shader);
 	unsigned int GetUniformPosCameraLocation() { return _uniformPosCameraLocation; }
-
 	
 	//==============================
 	void SetUniformPosLightLocation(Shader& shader);
 	unsigned int GetUniformPosLightLocation() { return _uniformPosLightPointLoc; }
-
-	void SetUniformColourLocation(Shader& shader);
-	unsigned int GetUniformColourLocation() { return _unifromColourLocation; }
 	
 	
 	void SetColour(glm::vec3 colour) { _colour = colour; }
@@ -211,18 +205,17 @@ private:
 	unsigned int _iboLight;
 	unsigned int _vaoLight;
 
-	unsigned int _unifromColourLocation;
 
 	//=========================================
 	//Directional
 	unsigned int _uniformDirectionLocation;
-	unsigned int _uniformTypeLightDirectional;
 	unsigned int _uniformAmbDirectionalLoc;
 	unsigned int _uniformDiffDirectionalLoc;
 	unsigned int _uniformSpecDirectionalLoc;
+
+	unsigned int _unifromColourDirectional;
 	//=========================================
 	//Point
-	unsigned int _uniformTypeLightPoint;
 	unsigned int _uniformConstPointLight;
 	unsigned int _uniformQuadraticPointLight;
 	unsigned int _uniformLinearPointLight;
@@ -231,9 +224,10 @@ private:
 	unsigned int _uniformAmbientPointLoc;
 	unsigned int _uniformDiffusePointLoc;
 	unsigned int _uniformSpecularPointLoc;
+	
+	unsigned int _unifromColourPoint;
 	//=========================================
 	//Spot
-	unsigned int _uniformTypeLightSpot;
 	unsigned int _uniformOuterCutOffSpotLight;
 	unsigned int _uniformCutOffSpotLight;
 	unsigned int _uniformPosLightSpotLoc;
@@ -245,6 +239,8 @@ private:
 	unsigned int _uniformQuadraticSpotLight;
 	unsigned int _uniformLinearSpotLight;
 	unsigned int _uniformConstSpotLight;
+
+	unsigned int _unifromColourSpot;
 
 	//Camera pos
 	unsigned int _uniformPosCameraLocation;

@@ -237,6 +237,20 @@ void GameBase::SetTypeLightCustom(int id, float linearVal, float quadraticVal, f
 	}
 }
 
+void GameBase::ChangeColorLight(int id, glm::vec3 color)
+{
+	for (int i = 0; i < _lights.size(); i++)
+	{
+		if (_lights[i] != NULL)
+		{
+			if (_lights[i]->GetMyId() == id)
+			{
+				_lights[i]->SetColour(color);
+			}
+		}
+	}
+}
+
 void GameBase::GetMyLightsID()
 {
 	for (int i = 0; i < _lights.size(); i++)

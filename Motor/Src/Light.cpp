@@ -9,11 +9,9 @@ int Light::nr_of_directional_light = 0;
 int Light::nr_of_point_light = 0;
 int Light::nr_of_spot_light = 0;
 
-//int Asteroide::_cantAsteroides = 0;
-
 Light::Light(Renderer * _render, TypeLight type) : Entity(_render)
 {
-	_colour = glm::vec3(0.0f, 0.0f, 0.0f);
+	_colour = glm::vec3(1.0f, 1.0f, 1.0f);
 	_ambient = glm::vec3(0.0f, 0.0f, 0.0f);
 	_diffuse = glm::vec3(0.0f, 0.0f, 0.0f);
 	_specular = glm::vec3(0.0f, 0.0f, 0.0f);
@@ -118,6 +116,8 @@ void Light::UseLight(Camera * cameraIn)
 		glUniform3f(_uniformDiffusePointLoc, _diffuse.x, _diffuse.y, _diffuse.z);
 
 		glUniform3f(_uniformSpecularPointLoc, _specular.x, _specular.y, _specular.z);
+
+		glUniform3f(_unifromColourPoint, _colour.x, _colour.y,_colour.z);
 #pragma endregion
 		break;
 	case Light::Directional:
@@ -129,6 +129,8 @@ void Light::UseLight(Camera * cameraIn)
 		glUniform3f(_uniformDiffDirectionalLoc, _diffuse.x, _diffuse.y, _diffuse.z);
 
 		glUniform3f(_uniformSpecDirectionalLoc, _specular.x, _specular.y, _specular.z);
+
+		glUniform3f(_unifromColourDirectional, _colour.x, _colour.y, _colour.z);
 #pragma endregion
 		break;
 	case Light::Spot:
@@ -152,6 +154,8 @@ void Light::UseLight(Camera * cameraIn)
 		glUniform3f(_uniformSpecularSpotLoc, _specular.x, _specular.y, _specular.z);
 
 		glUniform3f(_uniformSpotLightDirection, transform.backward.x, transform.backward.y, transform.backward.z);
+
+		glUniform3f(_unifromColourSpot, _colour.x, _colour.y, _colour.z);
 #pragma endregion
 		break;
 	}
@@ -159,9 +163,6 @@ void Light::UseLight(Camera * cameraIn)
 #pragma region BASIC LIGHTING (POS LIGHT)
 	glUniform3f(_uniformPosCameraLocation, cameraIn->transform.position.x,
 		cameraIn->transform.position.y, cameraIn->transform.position.z);
-
-	glUniform3f(_unifromColourLocation, _colour.x, _colour.y, _colour.z);
-
 #pragma endregion
 
 	glUseProgram(0);
@@ -213,13 +214,18 @@ void Light::SetDirectionalLightCustom(glm::vec3 direction)
 {
 	SetTypeLightDirectional(direction);
 }
-
-void Light::SetUniformColourLocation(Shader& shader)
-{
-	_unifromColourLocation = glGetUniformLocation(shader.getId(), "lightSource.colour");
-}
 //================================================
 //DIRECTIONAL LIGHT
+
+void Light::SetUniformColourDirectional(Shader& shader, int iter)
+{
+	stringstream iterS;
+	iterS << iter;
+	string result = "dirLight[" + iterS.str() + "].colour";
+
+	_unifromColourDirectional = glGetUniformLocation(shader.getId(), result.c_str());
+}
+
 void Light::SetUniformAmbDirectionalLoc(Shader& shader, int iter)
 {
 	stringstream iterS;
@@ -322,6 +328,15 @@ void Light::SetUniformPosLightPoint(Shader & shader, int iter)
 	_uniformPosLightPointLoc = glGetUniformLocation(shader.getId(), result.c_str());
 }
 
+void Light::SetUniformColourPoint(Shader & shader, int iter)
+{
+	stringstream iterS;
+	iterS << iter;
+	string result = "pointLight[" + iterS.str() + "].colour";
+
+	_unifromColourPoint = glGetUniformLocation(shader.getId(), result.c_str());
+}
+
 //================================================
 //SPOT LIGHT
 void Light::SetUniformCutOffSopttLight(Shader & shader, int iter)
@@ -358,6 +373,15 @@ void Light::SetUniformSpotLightDirection(Shader & shader, int iter)
 	string result = "spotLight[" + iterS.str() + "].direction";
 
 	_uniformSpotLightDirection = glGetUniformLocation(shader.getId(), result.c_str());
+}
+
+void Light::SetUniformColourSpot(Shader & shader, int iter)
+{
+	stringstream iterS;
+	iterS << iter;
+	string result = "spotLight[" + iterS.str() + "].colour";
+
+	_unifromColourSpot = glGetUniformLocation(shader.getId(), result.c_str());
 }
 
 void Light::SetUniformAmbientSpotLoc(Shader & shader, int iter)
