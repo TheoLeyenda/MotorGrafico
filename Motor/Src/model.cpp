@@ -1,5 +1,5 @@
 #include "Model.h"
-
+#include "Material.h"
 #include "Timer.h"
 
 #include <glew.h>
@@ -13,12 +13,14 @@ Model::Model(string const & path,string const& _directory, bool gamma, Renderer 
 	gammaCorrection = gamma;
 	directory = _directory;
 	LoadModel(path);
+	my_Mat = NULL;
 }
 
 void Model::Draw(Shader & shader)
 {
-	for (unsigned int i = 0; i < meshes.size(); i++)
+	for (unsigned int i = 0; i < meshes.size(); i++) {
 		meshes[i].Draw(shader);
+	}
 }
 
 void Model::CenterPivotPositionModel()
@@ -108,6 +110,16 @@ void Model::SetRotationModelZ(float RotateZ)
 	for (int i = 0; i < meshes.size(); i++)
 	{
 		meshes[i].SetRotationZ(RotateZ);
+	}
+}
+
+void Model::SetNewMaterial(Material * mat)
+{
+	my_Mat = mat;
+
+	for (unsigned int i = 0; i < meshes.size(); i++) 
+	{
+		meshes[i].SetNewMaterial(my_Mat);
 	}
 }
 

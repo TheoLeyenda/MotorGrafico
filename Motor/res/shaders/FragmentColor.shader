@@ -127,7 +127,8 @@ void main()
 	}
 	else if (isModel == 1)
 	{
-		FragColor = texture(texture_diffuse1, texCoord);
+		vec4 outPutColor = vec4((material.ambient + material.diffuse + material.specular) + material.shininess, 1.0f);
+		FragColor = outPutColor + texture(texture_diffuse1, texCoord);
 	}
 }
 

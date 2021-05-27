@@ -39,8 +39,10 @@ public:
 	void SetRotationModelX(float RotateX);
 	void SetRotationModelY(float RotateY);
 	void SetRotationModelZ(float RotateZ);
-	
+
+	void SetNewMaterial(Material* mat);
 private:
+
 	void CenterPivotPositionModel();
 	unsigned int TextureFromFile(const char * path, const string & directory, bool gamma, string num);
 	void LoadModel(string path);
@@ -49,6 +51,7 @@ private:
 	vector<Texture> LoadMaterialTextures(aiMaterial *mat, aiTextureType type,
 		string typeName);
 
+	Material* my_Mat;
 };
 
 #endif

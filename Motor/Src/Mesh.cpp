@@ -1,4 +1,5 @@
 #include "Mesh.h"
+#include "Material.h"
 #include <glew.h>
 #include <GLFW/glfw3.h>
 Mesh::Mesh(vector<Vertex> vertices, vector<unsigned int> indices, vector<Texture> textures, Renderer* render): Entity(render, 1)
@@ -7,6 +8,7 @@ Mesh::Mesh(vector<Vertex> vertices, vector<unsigned int> indices, vector<Texture
 	this->indices = indices;
 	this->textures = textures;
 
+	my_Mat = NULL;
 	// now that we have all the required data, set the vertex buffers and its attribute pointers.
 	SetupMesh();
 }
@@ -45,12 +47,28 @@ void Mesh::Draw(Shader& shader)
 	// draw mesh
 	glBindVertexArray(VAO);
 	BindMesh();
+
+	UseMyMaterial();
+
 	renderer->DrawMeshes(indices, shader, internalData.model, VBO, EBO, _posAttrib, _normAttrib, _textureAttrib);
 
 	glBindTexture(GL_TEXTURE_2D, 0);
 	glBindVertexArray(0);
 	// always good practice to set everything back to defaults once configured.
 	glActiveTexture(GL_TEXTURE0);
+}
+
+void Mesh::UseMyMaterial()
+{
+	if (my_Mat != NULL)
+		my_Mat->UseMaterial(renderer->GetShaderColor());
+}
+
+void Mesh::SetNewMaterial(Material* mat)
+{
+	my_Mat = mat;
+
+	renderer->SetMaterial(my_Mat);
 }
 
 void Mesh::BindMesh()

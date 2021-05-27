@@ -53,12 +53,10 @@ Game::~Game() {}
 
 void Game::InitGame()
 {
-	//model = new Model("res/modelos/Alfator/source/alfator.fbx", "res/modelos/Alfator/textures/" , false, render);
-	//model->SetScaleModel(50.0f, 50.0f, 50.0f);
-	//model->SetPosition(300.0f, 250.0f, -50.0f);
-	//model->SetRotationModelX(-90.0f);
-	//model->SetRotationModelY(90.0f);
-	//model->SetRotationModelZ(90.0f);
+	model = new Model("res/modelos/Alfator/source/alfator.fbx", "res/modelos/Alfator/textures/" , false, render);
+	model->SetScaleModel(50.0f, 50.0f, 50.0f);
+	model->SetRotationModelX(-90.0f);
+	model->SetNewMaterial(goldMaterial);
 
 	//COLORES PARA TESTEAR
 	glm::vec3 red = glm::vec3(1.0f, 0.0f, 0.0f);

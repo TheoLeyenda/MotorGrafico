@@ -5,6 +5,8 @@
 #include <string>
 #include <vector>
 
+class Material;
+
 struct ENGINE_API Vertex
 {
 	// position
@@ -33,11 +35,17 @@ public:
 	vector<unsigned int> indices;
 	vector<Texture>      textures;
 
+
 	Mesh(vector<Vertex> vertices, vector<unsigned int> indices, vector<Texture> textures, Renderer* render);
 	void Draw(Shader &shader);
+
+	void SetNewMaterial(Material* mat);
+	void UseMyMaterial();
+
 private:
 	//  render data
 	unsigned int VAO, VBO, EBO;
+	Material* my_Mat;
 
 	unsigned int _normAttrib;
 	unsigned int _textureAttrib;
