@@ -77,15 +77,15 @@ void Game::InitGame()
 
 	AddLight(Light::TypeLight::Spot, 1);
 	AddLight(Light::TypeLight::Point, 2);
-
 	AddLight(Light::TypeLight::Point, 6);
+
+	AddLight(Light::TypeLight::Directional, 0);
 	SetLightPosition(6, glm::vec3(100, -50, 0));
 
 	AddLight(Light::TypeLight::Spot, 87);
 	SetLightPosition(87, glm::vec3(-50, -50, 0));
 
-	AddLight(Light::TypeLight::Directional, 0);
-	SetTypeLightCustom(0, glm::vec3(10, 2, 10));
+	SetTypeLightCustom(0, glm::vec3(-10, 2, -10));
 
 	ChangeColorLight(1, red);
 	ChangeColorLight(2, yellow);
@@ -130,9 +130,9 @@ void Game::UpdateGame(Windows *_window, Renderer *_render, Input *_input)
 	if (useCamera)
 		TempInputCamera();
 
-	//TempInputs(windows, pyramid);
+	//TempInputs(windows, cube3);
 
-	TempMoveLightWithID(windows, 1);
+	TempMoveLightWithID(windows, 2);
 	if (input->GetKey(KeyBoard::KEY_ENTER)) {
 		//SetTypeLightDefault(0, Light::TypeLight::Point);
 	}

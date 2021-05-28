@@ -85,8 +85,8 @@ vec3 CalcSpotLight(SpotLight spotLigh, vec3 normal, vec3 fragPos, vec3 viewDir);
 
 void main()
 {
-	if (isModel == 0) 
-	{
+	//if (isModel == 0) 
+	//{
 		vec3 outPutDirectional = vec3(0.0);
 		vec3 outPutPoint = vec3(0.0);
 		vec3 outPutSpot = vec3(0.0);
@@ -124,11 +124,11 @@ void main()
 		vec4 result = (outPutShader + texture(ourTexture, texCoord));
 
 		FragColor = result;
-	}
-	else if (isModel == 1)
-	{
-		FragColor = texture(texture_diffuse1, texCoord);
-	}
+	//}
+	//else if (isModel == 1)
+	//{
+	//	FragColor = texture(texture_diffuse1, texCoord);
+	//}
 }
 
 vec3 CalcDirLight(DireLight directionalLight, vec3 normal, vec3 viewDir)

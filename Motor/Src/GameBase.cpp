@@ -121,7 +121,7 @@ void GameBase::AddLight(Light::TypeLight typeLight, int id)
 	}
 	Light* newLight = new Light(render, typeLight);
 	newLight->SetAmbient(glm::vec3(0.2f, 0.2f, 0.2f));
-	newLight->SetDiffuse(glm::vec3(0.5f, 0.5f, 0.5f));
+	newLight->SetDiffuse(glm::vec3(0.2f, 0.2f, 0.2f));
 	newLight->SetSpecular(glm::vec3(1.5f, 1.5f, 1.5f));
 	newLight->SetIdLight(id);
 	newLight->SetPosition(350.0f, 200.0f, 300.0f);
