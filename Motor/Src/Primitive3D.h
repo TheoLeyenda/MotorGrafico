@@ -16,7 +16,7 @@ const int verticesCubeCount = 288;
 const int offsetNormalDataCube = 7;
 
 const int indicesPyramidCount = 24;
-const int verticesPyramidCount = 60;
+const int verticesPyramidCount = 192;
 const int offsetNormalDataPyramid = 7;
 
 const int elementsForVertexCount = 12;
@@ -58,11 +58,25 @@ private:
 	};
 	float vertexPyramid[verticesPyramidCount] = {
 		//	x		y		z		r		g		b		a		  Normal             UV 
-		  -1.0f,  -1.0f,   0.0f,  1.0f,	  1.0f,	  1.0f,	   1.0f,  1.0f, 0.0f, 1.0f,  0.0f, 0.0f,
-		   0.0f,  -1.0f,   1.0f,  1.0f,	  1.0f,	  1.0f,	   1.0f,  0.0f, 1.0f, 0.0f,	 0.5f, 0.0f,
-		   1.0f,  -1.0f,   0.0f,  1.0f,	  1.0f,	  1.0f,	   1.0f,  0.0f, 0.0f, 1.0f,	 1.0f, 0.0f,
-		   0.0f,   1.0f,   0.0f,  1.0f,	  1.0f,	  1.0f,	   1.0f,  1.0f, 0.0f, 0.0f,	 0.5f, 1.0f,
-		   0.0f,  -1.0f,  -1.0f,  1.0f,	  1.0f,	  1.0f,	   1.0f,  1.0f, 1.0f, 0.0f,	 0.5f, -1.0f,
+		  -1.0f,  -1.0f,   0.0f,  1.0f,	  1.0f,	  1.0f,	   1.0f, -0.5f, 0.0f, 0.5f,  0.0f, 0.0f, //0
+		   0.0f,  -1.0f,   1.0f,  1.0f,	  1.0f,	  1.0f,	   1.0f, -0.5f, 0.0f, 0.5f,	 1.0f, 0.0f, //1
+		   1.0f,  -1.0f,   0.0f,  1.0f,	  1.0f,	  1.0f,	   1.0f,  0.5f, 0.0f,-0.5f,	 0.0f, 0.0f, //2
+		   0.0f,   1.0f,   0.0f,  1.0f,	  1.0f,	  1.0f,	   1.0f, -0.5f, 0.0f, 0.5f,	 0.5f, 1.0f, //3
+		   0.0f,  -1.0f,  -1.0f,  1.0f,	  1.0f,	  1.0f,	   1.0f,  0.5f, 0.0f,-0.5f,	 1.0f, 0.0f,//4
+
+		   0.0f,   1.0f,   0.0f,  1.0f,	  1.0f,	  1.0f,	   1.0f, -0.5f, 0.0f,-0.5f,	 0.5f, 1.0f, //5
+		   0.0f,   1.0f,   0.0f,  1.0f,	  1.0f,	  1.0f,	   1.0f,  0.5f, 0.0f,-0.5f,	 0.5f, 1.0f, //6
+		   0.0f,   1.0f,   0.0f,  1.0f,	  1.0f,	  1.0f,	   1.0f,  0.5f, 0.0f, 0.5f,	 0.5f, 1.0f, //7
+
+		  -1.0f,  -1.0f,   0.0f,  1.0f,	  1.0f,	  1.0f,	   1.0f,  0.0f,-1.0f, 0.0f,  1.0f, 0.0f, //8
+		   0.0f,  -1.0f,   1.0f,  1.0f,	  1.0f,	  1.0f,	   1.0f,  0.0f,-1.0f, 0.0f,	 1.0f, 1.0f, //9
+		   1.0f,  -1.0f,   0.0f,  1.0f,	  1.0f,	  1.0f,	   1.0f,  0.0f,-1.0f, 0.0f,	 0.0f, 1.0f, //10
+		   0.0f,  -1.0f,  -1.0f,  1.0f,	  1.0f,	  1.0f,	   1.0f,  0.0f,-1.0f, 0.0f,	 0.0f, 0.0f, //11
+
+		 - 1.0f,  -1.0f,   0.0f,  1.0f,	  1.0f,	  1.0f,	   1.0f, -0.5f, 0.0f,-0.5f,  0.0f, 0.0f, //12
+		   0.0f,  -1.0f,   1.0f,  1.0f,	  1.0f,	  1.0f,	   1.0f,  0.5f, 0.0f, 0.5f,	 1.0f, 0.0f, //13
+		   1.0f,  -1.0f,   0.0f,  1.0f,	  1.0f,	  1.0f,	   1.0f,  0.5f, 0.0f, 0.5f,	 0.0f, 0.0f, //14
+		   0.0f,  -1.0f,  -1.0f,  1.0f,	  1.0f,	  1.0f,	   1.0f, -0.5f, 0.0f,-0.5f,	 1.0f, 0.0f //15
 	};																				
 	unsigned int indexCube[indicesCubeCount] = {	
 		0, 1, 2, 2, 3, 0,	   //Frente
@@ -73,12 +87,9 @@ private:
 		8, 9, 22, 22, 23, 8    //Arriba
 	};
 	unsigned int indexPyramid[indicesPyramidCount] = {
-		0,3,1,
-		1,3,2,
-		0,3,4,
-		4,3,2,
-		0,1,2,
-		2,4,0
+		0,3,1, 13,7,14,
+		12,5,15, 4,6,2,
+		11,8,9, 9,10,11
 	};
 	TypeModel _type;
 	unsigned int _ibo;

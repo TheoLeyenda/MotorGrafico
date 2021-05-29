@@ -18,6 +18,7 @@ enum TypeCollisionCheck
 //VALORES DE TESTEO
 float speed = 10.0f;
 float speedRotation = 0.05f;
+float speedAutomaticRotation = 0.0005f;
 float speedScale = 2.5f;
 
 float r = 1.0f;
@@ -37,6 +38,7 @@ float newPositionCamZ = 0;
 bool ortho = false;
 bool useCamera = true;
 bool useModels = true;
+bool rotateBokitaSkybox = true;
 //---------------------//
 
 //LIGHT
@@ -81,10 +83,10 @@ void Game::InitGame()
 
 	AddLight(Light::TypeLight::Directional, 0);
 	SetLightPosition(6, glm::vec3(100, -50, 0));
-
+	
 	AddLight(Light::TypeLight::Spot, 87);
 	SetLightPosition(87, glm::vec3(-50, -50, 0));
-
+	
 	SetTypeLightCustom(0, glm::vec3(-10, 2, -10));
 
 	ChangeColorLight(1, red);
@@ -99,7 +101,7 @@ void Game::InitGame()
 
 	pyramid = new Primitive3D(render,Pyramid);
 	pyramid->SetPosition(500.0f, 250.0f, -50.0f);
-	pyramid->SetScale(50.0f, 50.0f, 50.0f);
+	pyramid->SetScale(5000.0f, 5000.0f, 5000.0f);
 	pyramid->SetRotationY(6.0f);
 	pyramid->SetNewMaterial(silverMaterial);
 	pyramid->SetNewMaterial(textureMaterialForLight);
@@ -127,10 +129,15 @@ void Game::UpdateGame(Windows *_window, Renderer *_render, Input *_input)
 {
 	//timeClock.FPS();
 
+	if (rotateBokitaSkybox)
+	{
+		pyramid->SetRotationY(pyramid->transform.rotation.y - speedAutomaticRotation);
+	}
+
 	if (useCamera)
 		TempInputCamera();
 
-	//TempInputs(windows, cube3);
+	//TempInputs(windows, pyramid);
 
 	TempMoveLightWithID(windows, 2);
 	if (input->GetKey(KeyBoard::KEY_ENTER)) {
