@@ -39,6 +39,7 @@ bool ortho = false;
 bool useCamera = true;
 bool useModels = true;
 bool rotateBokitaSkybox = true;
+bool useSkybox = false;
 //---------------------//
 
 //LIGHT
@@ -55,10 +56,10 @@ Game::~Game() {}
 
 void Game::InitGame()
 {
-	model = new Model("res/modelos/Alfator/source/alfator.fbx", "res/modelos/Alfator/textures/" , false, render);
-	model->SetScaleModel(50.0f, 50.0f, 50.0f);
-	model->SetRotationModelX(-90.0f);
-	model->SetNewMaterial(goldMaterial);
+	//model = new Model("res/modelos/Alfator/source/alfator.fbx", "res/modelos/Alfator/textures/" , false, render);
+	//model->SetScaleModel(50.0f, 50.0f, 50.0f);
+	//model->SetRotationModelX(-90.0f);
+	//model->SetNewMaterial(goldMaterial);
 
 	//COLORES PARA TESTEAR
 	glm::vec3 red = glm::vec3(1.0f, 0.0f, 0.0f);
@@ -99,7 +100,11 @@ void Game::InitGame()
 
 	pyramid = new Primitive3D(render,Pyramid);
 	pyramid->SetPosition(500.0f, 250.0f, -50.0f);
-	pyramid->SetScale(5000.0f, 5000.0f, 5000.0f);
+	if(useSkybox)
+		pyramid->SetScale(5000.0f, 5000.0f, 5000.0f);
+	else
+		pyramid->SetScale(50.0f, 50.0f, 50.0f);
+
 	pyramid->SetRotationY(6.0f);
 	pyramid->SetNewMaterial(silverMaterial);
 	pyramid->SetNewMaterial(textureMaterialForLight);
@@ -127,7 +132,7 @@ void Game::UpdateGame(Windows *_window, Renderer *_render, Input *_input)
 {
 	//timeClock.FPS();
 
-	if (rotateBokitaSkybox)
+	if (rotateBokitaSkybox && useSkybox)
 	{
 		pyramid->SetRotationY(pyramid->transform.rotation.y - speedAutomaticRotation);
 	}
