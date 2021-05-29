@@ -128,7 +128,7 @@ void Game::InitGame()
 	
 	audio = new Audio(render);
 
-	SetUseDebugWindows(false);
+	SetUseDebugWindows(true);
 }
 
 void Game::UpdateGame(Windows *_window, Renderer *_render, Input *_input)
@@ -160,41 +160,16 @@ void Game::UpdateGame(Windows *_window, Renderer *_render, Input *_input)
 	}
 
 	if(pyramid != NULL)
-		pyramid->Draw();
+		pyramid->Draw(motorasoGui->GetIfWireFrameIsActive());
 	if (cube != NULL)
-		cube->Draw();
+		cube->Draw(motorasoGui->GetIfWireFrameIsActive());
 	if(cube2 != NULL)
-		cube2->Draw();
+		cube2->Draw(motorasoGui->GetIfWireFrameIsActive());
 	if(cube3 != NULL)
-		cube3->Draw();
+		cube3->Draw(motorasoGui->GetIfWireFrameIsActive());
 
 	if (model != NULL)
 		model->Draw(render->GetShaderColor());
-
-	if (input->GetKey(KeyBoard::KEY_1))
-	{
-		//light->SetTypeLightDirectional(glm::vec3(-0.2f, -1.0f, -2.3f));
-		system("cls");
-		cout << "Count pointLight: " << Light::nr_of_point_light<<endl;
-		cout << "Count directionalLight: " << Light::nr_of_directional_light << endl;
-		cout << "Count spotLight: " << Light::nr_of_spot_light << endl;
-	}
-	if (input->GetKey(KeyBoard::KEY_2))
-	{
-		//light->SetTypeLightPoint();
-		system("cls");
-		cout << "Count pointLight: " << Light::nr_of_point_light << endl;
-		cout << "Count directionalLight: " << Light::nr_of_directional_light << endl;
-		cout << "Count spotLight: " << Light::nr_of_spot_light << endl;
-	}
-	if (input->GetKey(KeyBoard::KEY_3))
-	{
-		//light->SetTypeLightSpot();
-		system("cls");
-		cout << "Count pointLight: " << Light::nr_of_point_light << endl;
-		cout << "Count directionalLight: " << Light::nr_of_directional_light << endl;
-		cout << "Count spotLight: " << Light::nr_of_spot_light << endl;
-	}
 }
 
 void Game::DestroyGame()

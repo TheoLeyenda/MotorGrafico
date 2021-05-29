@@ -396,13 +396,17 @@ void Renderer::DrawSprite(unsigned int figura, int vertexs, unsigned int vbo, Sh
 }
 
 void Renderer::DrawModel(int indices,Shader& shaderProg, glm::mat4 model, 
-	unsigned int vbo, unsigned int ibo, unsigned int posAtt, unsigned int colAtt, unsigned int normalAtt, unsigned int uvAtt)
+	unsigned int vbo, unsigned int ibo, unsigned int posAtt, unsigned int colAtt, unsigned int normalAtt, unsigned int uvAtt, bool& wireframeActive)
 {
 	BindBufferModel(vbo, ibo, posAtt, colAtt, normalAtt, uvAtt);
 
 	UseShaderEnt(shaderProg, model);
 
-	glDrawElements(GL_TRIANGLES, indices, GL_UNSIGNED_INT, 0);
+	if(!wireframeActive)
+		glDrawElements(GL_TRIANGLES, indices, GL_UNSIGNED_INT, 0);
+	else
+		glDrawElements(GL_LINE_STRIP, indices, GL_UNSIGNED_INT, 0);
+
 
 	UnbindBuffer();
 }

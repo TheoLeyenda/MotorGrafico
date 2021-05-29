@@ -18,7 +18,7 @@ void MotorasoGui::UpdateMotorasoGui()
 	//ImGui::Checkbox("Another Window", &show_another_window);
 
 	if (ImGui::Button("WIREFRAME"))                            // Buttons return true when clicked (NB: most widgets return true when edited/activated)
-		//wireMode = !wireMode;
+		_wireFrameActive = !_wireFrameActive;
 
 	ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
 }

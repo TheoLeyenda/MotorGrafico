@@ -190,7 +190,7 @@ void Primitive3D::SetNewMaterial(Material * mat)
 	renderer->SetMaterial(my_Mat);
 }
 
-void Primitive3D::Draw()
+void Primitive3D::Draw(bool& wireFrameActive)
 {
 	CheckIsModel();
 	//----
@@ -210,11 +210,11 @@ void Primitive3D::Draw()
 	{
 	case Cube:
 		renderer->DrawModel(indicesCubeCount, renderer->GetShaderColor(),
-			internalData.model, _vbo, _ibo, _posAttrib, _colAttrib, _normalAttrib, _uvAttrib);
+			internalData.model, _vbo, _ibo, _posAttrib, _colAttrib, _normalAttrib, _uvAttrib, wireFrameActive);
 		break;
 	case Pyramid:
 		renderer->DrawModel(indicesPyramidCount, renderer->GetShaderColor(),
-			internalData.model, _vbo, _ibo, _posAttrib, _colAttrib, _normalAttrib, _uvAttrib);
+			internalData.model, _vbo, _ibo, _posAttrib, _colAttrib, _normalAttrib, _uvAttrib, wireFrameActive);
 		break;
 	}
 

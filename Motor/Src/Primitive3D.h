@@ -136,7 +136,7 @@ public:
 	//FUNCTIONS
 	void UseMyMaterial();
 	void SetNewMaterial(Material* mat);
-	void Draw();
+	void Draw(bool& wireFrameActive);
 	void LoadTexture(const char* path, bool transparent);
 	void SetUseTexture(bool useTexture) { _useTexture = useTexture; }
 	

@@ -75,6 +75,7 @@ protected:
 	float isModel;
 
 	unsigned int _uniformIsModelLocation;
+	string nameEntity;
 
 public:
 	Entity(Renderer *_renderer);
@@ -85,6 +86,7 @@ public:
 	InternalData GetInternalData();
 	void SetPosition(float x, float y, float z);
 	virtual void SetScale(float x, float y, float z);
+	void SetName(string name);
 	void SetRotationX(float x);
 	void SetRotationY(float y);
 	void SetRotationZ(float z);

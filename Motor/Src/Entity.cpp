@@ -91,6 +91,11 @@ void Entity::SetScale(float x, float y, float z)
 	UpdateMatrixModel();
 }
 
+void Entity::SetName(string name)
+{
+	nameEntity = name;
+}
+
 void Entity::SetRotationX(float x)
 {
 	transform.rotation[0] = x;

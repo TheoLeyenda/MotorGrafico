@@ -87,7 +87,7 @@ public:
 	void BeignDraw();
 	void DrawShape(unsigned int figura, int vertexs, unsigned int vbo, Shader& shaderProg, glm::mat4 model, bool useTexture);
 	void DrawSprite(unsigned int figura, int vertexs, unsigned int vbo, Shader& shaderProg, glm::mat4 model);
-	void DrawModel(int indices, Shader& shaderProg, glm::mat4 model, unsigned int vbo, unsigned int ibo, unsigned int posAtt, unsigned int colAtt, unsigned int normalAtt, unsigned int uvAtt);
+	void DrawModel(int indices, Shader& shaderProg, glm::mat4 model, unsigned int vbo, unsigned int ibo, unsigned int posAtt, unsigned int colAtt, unsigned int normalAtt, unsigned int uvAtt, bool& wireframeActive);
 	void DrawLight(int indices, Shader& shaderProg, glm::mat4 model,unsigned int vbo, unsigned int ibo, unsigned int posAtt, unsigned int colAtt);
 	void EndDraw(Windows* refWindow);
 };

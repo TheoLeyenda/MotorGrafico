@@ -11,8 +11,11 @@ class ENGINE_API MotorasoGui
 private:
 	Windows* _window;
 	float f = 0;
+
+	bool _wireFrameActive;
 public:
 	MotorasoGui(Windows* window);
+	bool& GetIfWireFrameIsActive() { return _wireFrameActive; }
 	void UpdateMotorasoGui();
 	void CreateFrame();
 	void RenderGui();
