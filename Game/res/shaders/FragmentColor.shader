@@ -54,7 +54,7 @@ struct SpotLight
 
 	float cutOff;
 	float outerCutOff;
-
+	
 	float linear;
 	float constant;
 	float quadratic;
@@ -79,14 +79,14 @@ uniform Material material;
 uniform vec3 cameraPos;
 out vec4 FragColor;
 
-vec3 CalcDirLight(DireLight directionalLight, vec3 normal, vec3 viewDir);
+vec3 CalcDirLight(DireLight directionalLight, vec3 normal,vec3 viewDir);
 vec3 CalcPointLight(PointLight pointLigh, vec3 normal, vec3 fragPos, vec3 viewDir);
 vec3 CalcSpotLight(SpotLight spotLigh, vec3 normal, vec3 fragPos, vec3 viewDir);
 
 void main()
 {
-	if (isModel == 0)
-	{
+	//if (isModel == 0) 
+	//{
 		vec3 outPutDirectional = vec3(0.0);
 		vec3 outPutPoint = vec3(0.0);
 		vec3 outPutSpot = vec3(0.0);
@@ -95,16 +95,16 @@ void main()
 		vec3 norm = normalize(Normal);
 
 		int aux = nr_of_directional_light;
-		if (aux >= SIZE_DIRECTIONAL_LIGHTS)
+		if(aux >= SIZE_DIRECTIONAL_LIGHTS)
 			aux = SIZE_DIRECTIONAL_LIGHTS;
 
 		for (int i = 0; i < aux; i++)
 		{
-			outPutDirectional += CalcDirLight(dirLight[i], norm, viewDir);
+			outPutDirectional += CalcDirLight(dirLight[i], norm,viewDir);
 		}
 
 		aux = nr_of_point_lights;
-		if (aux >= SIZE_POINT_LIGHTS)
+		if(aux >= SIZE_POINT_LIGHTS)
 			aux = SIZE_POINT_LIGHTS;
 
 		for (int i = 0; i < aux; i++)
@@ -113,23 +113,22 @@ void main()
 		}
 
 		aux = nr_of_spot_light;
-		if (aux >= SIZE_SPOT_LIGHTS)
+		if(aux >= SIZE_SPOT_LIGHTS)
 			aux = SIZE_SPOT_LIGHTS;
 
 		for (int i = 0; i < aux; i++)
 		{
 			outPutSpot += CalcSpotLight(spotLight[i], norm, FragPos, viewDir);
 		}
-		vec4 outPutShader = vec4((outPutDirectional + outPutPoint + outPutSpot), 1.0);
+		vec4 outPutShader = vec4((outPutDirectional+outPutPoint+outPutSpot), 1.0);
 		vec4 result = (outPutShader + texture(ourTexture, texCoord));
 
 		FragColor = result;
-	}
-	else if (isModel == 1)
-	{
-		vec4 outPutColor = vec4((material.ambient + material.diffuse + material.specular) + material.shininess, 1.0f);
-		FragColor = outPutColor + texture(texture_diffuse1, texCoord);
-	}
+	//}
+	//else if (isModel == 1)
+	//{
+	//	FragColor = texture(texture_diffuse1, texCoord);
+	//}
 }
 
 vec3 CalcDirLight(DireLight directionalLight, vec3 normal, vec3 viewDir)
@@ -179,9 +178,9 @@ vec3 CalcPointLight(PointLight pointLigh, vec3 normal, vec3 fragPos, vec3 viewDi
 
 vec3 CalcSpotLight(SpotLight spotLigh, vec3 normal, vec3 fragPos, vec3 viewDir)
 {
-	vec3 ambient = vec3(0.0);
-	vec3 diffuse = vec3(0.0);
-	vec3 specular = vec3(0.0);
+	vec3 ambient= vec3(0.0);
+	vec3 diffuse= vec3(0.0);
+	vec3 specular= vec3(0.0);
 
 	vec3 lightDir = normalize(spotLigh.posLight - fragPos);
 

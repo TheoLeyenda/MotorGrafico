@@ -7,7 +7,7 @@
 Primitive3D::Primitive3D(Renderer* renderer) : Entity(renderer)
 {
 	_type = Pyramid;
-	myMathLibrary.CalcAverageNormals(indexCube, indicesCubeCount, vertexCube, verticesCubeCount, elementsForVertexCount, offsetNormalDataCube);
+	//myMathLibrary.CalcAverageNormals(indexCube, indicesCubeCount, vertexCube, verticesCubeCount, elementsForVertexCount, offsetNormalDataCube);
 	//myMathLibrary.CalcAverageNormals(indexPyramid, indicesPyramidCount, vertexPyramid, verticesPyramidCount, elementsForVertexCount, offsetNormalDataPyramid);
 
 	_path = "None Path";
@@ -19,9 +19,9 @@ Primitive3D::Primitive3D(Renderer* renderer) : Entity(renderer)
 Primitive3D::Primitive3D(Renderer * renderer, TypeModel typeModel) : Entity(renderer)
 {
 	_type = typeModel;
-	myMathLibrary.CalcAverageNormals(indexCube, indicesCubeCount, vertexCube, verticesCubeCount, elementsForVertexCount, offsetNormalDataCube);
+	//myMathLibrary.CalcAverageNormals(indexCube, indicesCubeCount, vertexCube, verticesCubeCount, elementsForVertexCount, offsetNormalDataCube);
 	//myMathLibrary.CalcAverageNormals(indexPyramid, indicesPyramidCount, vertexPyramid, verticesPyramidCount, elementsForVertexCount, offsetNormalDataPyramid);
-
+	
 	_path = "None Path";
 	_useTexture = false;
 	my_Mat = NULL;
@@ -31,8 +31,8 @@ Primitive3D::Primitive3D(Renderer * renderer, TypeModel typeModel) : Entity(rend
 Primitive3D::Primitive3D(Renderer* renderer, TypeModel typeModel, const char* filePath, bool useTransparency) : Entity(renderer)
 {
 	_type = typeModel;
-	myMathLibrary.CalcAverageNormals(indexCube, indicesCubeCount, vertexCube, verticesCubeCount, elementsForVertexCount, offsetNormalDataCube);
-	myMathLibrary.CalcAverageNormals(indexPyramid, indicesPyramidCount, vertexPyramid, verticesPyramidCount, elementsForVertexCount, offsetNormalDataPyramid);
+	//myMathLibrary.CalcAverageNormals(indexCube, indicesCubeCount, vertexCube, verticesCubeCount, elementsForVertexCount, offsetNormalDataCube);
+	//myMathLibrary.CalcAverageNormals(indexPyramid, indicesPyramidCount, vertexPyramid, verticesPyramidCount, elementsForVertexCount, offsetNormalDataPyramid);
 	
 	CreateDataModel();
 
