@@ -20,6 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Src\Animation.h" />
+    <ClInclude Include="Src\Audio.h" />
     <ClInclude Include="Src\Camera.h" />
     <ClInclude Include="Src\CollisionManager.h" />
     <ClInclude Include="Src\CompilationController.h" />
@@ -46,6 +47,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Src\Animation.cpp" />
+    <ClCompile Include="Src\Audio.cpp" />
     <ClCompile Include="Src\Camera.cpp" />
     <ClCompile Include="Src\CollisionManager.cpp" />
     <ClCompile Include="Src\Entity.cpp" />
@@ -153,12 +155,12 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)External Libraries\Assimp\include;$(ProjectDir)Lib\GLFW\include;$(ProjectDir)Lib;$(ProjectDir)Lib\GLEW\Include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)Lib\irrKlang-1.6.0\include;$(SolutionDir)External Libraries\Assimp\include;$(ProjectDir)Lib\GLFW\include;$(ProjectDir)Lib;$(ProjectDir)Lib\GLEW\Include</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>DEBUG;ENGINE_EXPORT;GLEW_STATIC;_WINDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
-      <AdditionalLibraryDirectories>$(SolutionDir)External Libraries\Assimp\Lib;$(ProyectDir)Lib\GLEW\Lib;$(ProjectDir)Lib\GLFW\glfw-3.3.2.bin.WIN32\lib-vc2017</AdditionalLibraryDirectories>
-      <AdditionalDependencies>assimp-vc140-mt.lib;opengl32.lib;glew32s.lib;glfw3.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(ProjectDir)Lib\irrKlang-1.6.0\lib\Win32-visualStudio;$(SolutionDir)External Libraries\Assimp\Lib;$(ProyectDir)Lib\GLEW\Lib;$(ProjectDir)Lib\GLFW\glfw-3.3.2.bin.WIN32\lib-vc2017</AdditionalLibraryDirectories>
+      <AdditionalDependencies>irrKlang.lib;assimp-vc140-mt.lib;opengl32.lib;glew32s.lib;glfw3.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command>copy /Y "$(SolutionDir)Motor\Bin\Win32\Debug\Motor32.dll" "$(SolutionDir)Game\Bin\Debug"</Command>

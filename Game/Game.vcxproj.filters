@@ -72,4 +72,7 @@
     <None Include="res\modelos\untitled.fbx" />
     <None Include="res\modelos\Alfator\source\alfator.fbx" />
   </ItemGroup>
+  <ItemGroup>
+    <Media Include="res\audio\Dale Dale Boca.mp3" />
+  </ItemGroup>
 </Project>

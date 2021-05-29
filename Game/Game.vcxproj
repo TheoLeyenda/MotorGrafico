@@ -197,6 +197,9 @@
     <None Include="res\shaders\FragmentTexture.shader" />
     <None Include="res\shaders\Vertex.shader" />
   </ItemGroup>
+  <ItemGroup>
+    <Media Include="res\audio\Dale Dale Boca.mp3" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

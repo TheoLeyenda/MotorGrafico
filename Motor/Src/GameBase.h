@@ -16,6 +16,7 @@
 #include "Light.h"
 #include "Material.h"
 #include "Model.h"
+#include "Audio.h"
 
 #define INIT_ERROR -1
 

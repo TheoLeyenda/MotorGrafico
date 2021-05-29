@@ -39,7 +39,7 @@ bool ortho = false;
 bool useCamera = true;
 bool useModels = true;
 bool rotateBokitaSkybox = true;
-bool useSkybox = false;
+bool useSkybox = true;
 //---------------------//
 
 //LIGHT
@@ -126,11 +126,22 @@ void Game::InitGame()
 	cube3->SetNewMaterial(textureMaterialDefault);
 	cube3->LoadTexture("res/texturas/Facharda.jpg", false);
 	
+	audio = new Audio(render);
+	//audio->PlayAudio2D("Dale Dale Boca.mp3", true);
 }
 
 void Game::UpdateGame(Windows *_window, Renderer *_render, Input *_input)
 {
 	//timeClock.FPS();
+
+	if (input->GetKey(KeyBoard::KEY_RIGHT_SHIFT) && audio->GetIsPlayingAudio2D("res/audio/Dale Dale Boca.mp3"))
+	{
+		audio->StopAll();
+	}
+	if (input->GetKey(KeyBoard::KEY_LEFT_SHIFT) && !audio->GetIsPlayingAudio2D("res/audio/Dale Dale Boca.mp3"))
+	{
+		audio->PlayAudio2D("res/audio/Dale Dale Boca.mp3", true);
+	}
 
 	if (rotateBokitaSkybox && useSkybox)
 	{
@@ -187,6 +198,9 @@ void Game::UpdateGame(Windows *_window, Renderer *_render, Input *_input)
 
 void Game::DestroyGame()
 {
+
+	if (audio != NULL)
+		delete audio;
 	//---------------------//
 #pragma region MOTOR 2D
 	if (shape1 != NULL)
