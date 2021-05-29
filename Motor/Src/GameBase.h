@@ -17,6 +17,7 @@
 #include "Material.h"
 #include "Model.h"
 #include "Audio.h"
+#include "MotorasoGui.h"
 
 #define INIT_ERROR -1
 
@@ -26,15 +27,19 @@ private:
 	vector<Light*> _lights;
 	void HandleCamera();				//Funcion interna del engine
 	void HandleLight(Camera* camera);	//Funcion interna del engine
+
+	bool useDebugWindows = true;
+
 protected:
-	Windows* windows;
-	Renderer* render;
-	Input* input;
-	CollisionManager* collisionManager;
+	Windows* windows = NULL;
+	Renderer* render = NULL;
+	Input* input = NULL;
+	CollisionManager* collisionManager = NULL;
 	Time timeClock;
-	Camera* camera;
-	Material* textureMaterialForLight;
-	Material* textureMaterialDefault;
+	Camera* camera = NULL;
+	Material* textureMaterialForLight = NULL;
+	Material* textureMaterialDefault = NULL;
+	MotorasoGui* motorasoGui = NULL;
 
 public:
 	GameBase();
@@ -43,6 +48,8 @@ public:
 	int InitEngine();
 	void UpdateEngine();
 	void DestroyEngine();
+
+	void SetUseDebugWindows(bool value) { useDebugWindows = value; }
 
 	void AddLight(Light::TypeLight typeLight, int id);
 	void RemoveLight(int id);

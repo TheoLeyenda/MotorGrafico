@@ -127,7 +127,8 @@ void Game::InitGame()
 	cube3->LoadTexture("res/texturas/Facharda.jpg", false);
 	
 	audio = new Audio(render);
-	//audio->PlayAudio2D("Dale Dale Boca.mp3", true);
+
+	SetUseDebugWindows(false);
 }
 
 void Game::UpdateGame(Windows *_window, Renderer *_render, Input *_input)

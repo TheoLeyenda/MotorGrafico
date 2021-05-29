@@ -14,6 +14,8 @@ int GameBase::InitEngine()
 	render = new Renderer();
 	input = new Input(windows->GetWindowsPtr());
 	camera = new Camera(render, TypeProjectionCamera::Ortho);
+	motorasoGui = new MotorasoGui(windows);
+
 	collisionManager = new CollisionManager();
 
 	textureMaterialForLight = new Material();
@@ -65,11 +67,22 @@ void GameBase::UpdateEngine()
 		//---------------------//
 		timeClock.tick();
 		//---------------------//
+		if (useDebugWindows) 
+		{
+			motorasoGui->CreateFrame();
+			motorasoGui->UpdateMotorasoGui();
+		}
+		//---------------------//
 		HandleCamera();
 		//---------------------//
 		HandleLight(camera);
 		//---------------------//
 		UpdateGame(windows, render, input);
+		//---------------------//
+		if (useDebugWindows) 
+		{
+			motorasoGui->RenderGui();
+		}
 		//---------------------//	
 		glfwPollEvents();
 		//---------------------//
@@ -81,6 +94,8 @@ void GameBase::DestroyEngine()
 {
 	glfwTerminate();
 
+	if (motorasoGui != NULL)
+		delete motorasoGui;
 	if (input != NULL)
 		delete input;
 	if (windows != NULL)
