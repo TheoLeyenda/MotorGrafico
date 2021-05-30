@@ -110,7 +110,7 @@ private:
 	const char* _path;
 	bool _transparency;
 	unsigned int _texture;
-	TextureImporter* texImporter;
+	TextureImporter texImporter;
 
 	Material* my_Mat;
 protected:

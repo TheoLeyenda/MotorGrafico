@@ -21,6 +21,8 @@
 
 #define INIT_ERROR -1
 
+
+
 class ENGINE_API GameBase {
 private:
 
@@ -31,6 +33,8 @@ private:
 	bool useDebugWindows = true;
 
 protected:
+	static vector<Entity*> entitysDebugInGame;
+
 	Windows* windows = NULL;
 	Renderer* render = NULL;
 	Input* input = NULL;
@@ -48,6 +52,10 @@ public:
 	int InitEngine();
 	void UpdateEngine();
 	void DestroyEngine();
+
+	void AddObjectInDenugGame(Entity* entity);
+
+	void RemoveObjectInDebugGame(Entity* entity);
 
 	void SetUseDebugWindows(bool value) { useDebugWindows = value; }
 

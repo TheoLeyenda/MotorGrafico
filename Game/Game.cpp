@@ -60,7 +60,7 @@ void Game::InitGame()
 	//model->SetScaleModel(50.0f, 50.0f, 50.0f);
 	//model->SetRotationModelX(-90.0f);
 	//model->SetNewMaterial(goldMaterial);
-
+	
 	//COLORES PARA TESTEAR
 	glm::vec3 red = glm::vec3(1.0f, 0.0f, 0.0f);
 	glm::vec3 blue = glm::vec3(0.0f, 0.0f, 1.0f);
@@ -109,26 +109,34 @@ void Game::InitGame()
 	pyramid->SetNewMaterial(silverMaterial);
 	pyramid->SetNewMaterial(textureMaterialForLight);
 	pyramid->LoadTexture("res/texturas/bokitaElMasGrandePapa.png", false);
+	pyramid->SetName("pyramid");
+
+	AddObjectInDenugGame(pyramid);
 
 	cube = new Primitive3D(render, Cube);
 	cube->SetPosition(300, 100.0f, -50.0f);
 	cube->SetScale(50.0f, 50.0f, 50.0f);
 	cube->SetNewMaterial(greenRubberMaterial);
+	cube->SetName("cube");
+	
+	AddObjectInDenugGame(cube);
 
 	cube2 = new Primitive3D(render, Cube);
 	cube2->SetPosition(420.0f, 100.0f, -50.0f);
 	cube2->SetScale(50.0f, 50.0f, 50.0f);
 	cube2->SetNewMaterial(goldMaterial);
+	cube2->SetName("cube2");
 
 	cube3 = new Primitive3D(render, Cube);
 	cube3->SetPosition(360.0f, 250.0f, -50.0f);
 	cube3->SetScale(50.0f, 50.0f, 50.0f);
 	cube3->SetNewMaterial(textureMaterialDefault);
 	cube3->LoadTexture("res/texturas/Facharda.jpg", false);
+	cube3->SetName("cube3");
 	
 	audio = new Audio(render);
 
-	SetUseDebugWindows(true);
+	SetUseDebugWindows(false);
 }
 
 void Game::UpdateGame(Windows *_window, Renderer *_render, Input *_input)
@@ -142,6 +150,8 @@ void Game::UpdateGame(Windows *_window, Renderer *_render, Input *_input)
 	if (input->GetKey(KeyBoard::KEY_LEFT_SHIFT) && !audio->GetIsPlayingAudio2D("res/audio/Dale Dale Boca.mp3"))
 	{
 		audio->PlayAudio2D("res/audio/Dale Dale Boca.mp3", true);
+		RemoveObjectInDebugGame(cube);
+		AddObjectInDenugGame(cube2);
 	}
 
 	if (rotateBokitaSkybox && useSkybox)
@@ -174,37 +184,62 @@ void Game::UpdateGame(Windows *_window, Renderer *_render, Input *_input)
 
 void Game::DestroyGame()
 {
+	entitysDebugInGame.clear();
 
-	if (audio != NULL)
+	if (audio != NULL) {
 		delete audio;
+		audio = NULL;
+	}
 	//---------------------//
 #pragma region MOTOR 2D
-	if (shape1 != NULL)
+	if (shape1 != NULL) {
 		delete shape1;
-	if (shape2 != NULL)
+		shape1 = NULL;
+	}
+	if (shape2 != NULL) {
 		delete shape2;
+		shape2 = NULL;
+	}
 #pragma endregion
 
-	if (cube != NULL)
+	if (cube != NULL) {
 		delete cube;
-	if (cube2 != NULL)
+		cube = NULL;
+	}
+	if (cube2 != NULL) {
 		delete cube2;
-	if (cube3 != NULL)
+		cube2 = NULL;
+	}
+	if (cube3 != NULL) {
 		delete cube3;
-	if (pyramid != NULL)
+		cube3 = NULL;
+	}
+	if (pyramid != NULL) {
 		delete pyramid;
+		pyramid = NULL;
+	}
 	//---------------------//
-	if (goldMaterial != NULL)
+	if (goldMaterial != NULL) {
 		delete goldMaterial;
-	if (silverMaterial != NULL)
+		goldMaterial = NULL;
+	}
+	if (silverMaterial != NULL) {
 		delete silverMaterial;
-	if (esmeraldMaterial != NULL)
+		silverMaterial = NULL;
+	}
+	if (esmeraldMaterial != NULL) {
 		delete esmeraldMaterial;
-	if (greenRubberMaterial != NULL)
+		esmeraldMaterial = NULL;
+	}
+	if (greenRubberMaterial != NULL) {
 		delete greenRubberMaterial;
+		greenRubberMaterial = NULL;
+	}
 
-	if (model != NULL)
+	if (model != NULL) {
 		delete model;
+		model = NULL;
+	}
 }
 
 void Game::TempColorInput(Windows* windows, Shape* shape)

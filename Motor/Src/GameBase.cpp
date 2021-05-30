@@ -3,6 +3,8 @@
 #include "glew.h"
 #include "GLFW/glfw3.h"
 
+vector<Entity*> GameBase::entitysDebugInGame = vector<Entity*>();
+
 GameBase::GameBase() {}
 GameBase::~GameBase() {}
 
@@ -70,7 +72,7 @@ void GameBase::UpdateEngine()
 		if (useDebugWindows) 
 		{
 			motorasoGui->CreateFrame();
-			motorasoGui->UpdateMotorasoGui();
+			motorasoGui->UpdateMotorasoGui(entitysDebugInGame);
 		}
 		//---------------------//
 		HandleCamera();
@@ -94,22 +96,38 @@ void GameBase::DestroyEngine()
 {
 	glfwTerminate();
 
-	if (motorasoGui != NULL)
+	if (motorasoGui != NULL) {
 		delete motorasoGui;
-	if (input != NULL)
+		motorasoGui = NULL;
+	}
+	if (input != NULL) {
 		delete input;
-	if (windows != NULL)
+		input = NULL;
+	}
+	if (windows != NULL) {
 		delete windows;
-	if (render != NULL)
+		windows = NULL;
+	}
+	if (render != NULL) {
 		delete render;
-	if (collisionManager != NULL)
+		render = NULL;
+	}
+	if (collisionManager != NULL) {
 		delete collisionManager;
-	if (camera != NULL)
+		collisionManager = NULL;
+	}
+	if (camera != NULL) {
 		delete camera;
-	if (textureMaterialDefault != NULL)
+		camera = NULL;
+	}
+	if (textureMaterialDefault != NULL) {
 		delete textureMaterialDefault;
-	if (textureMaterialForLight != NULL)
+		textureMaterialDefault = NULL;
+	}
+	if (textureMaterialForLight != NULL) {
 		delete textureMaterialForLight;
+		textureMaterialForLight = NULL;
+	}
 
 	while(_lights.size() > 0)
 	{
@@ -118,6 +136,35 @@ void GameBase::DestroyEngine()
 			delete _lights[0];
 		}
 		_lights.erase(_lights.begin());
+	}
+}
+
+void GameBase::AddObjectInDenugGame(Entity* entity)
+{
+	for (int i = 0; i < entitysDebugInGame.size(); i++)
+	{
+		if (entitysDebugInGame[i] == entity)
+		{
+			return;
+		}
+	}
+	entitysDebugInGame.push_back(entity);
+}
+
+void GameBase::RemoveObjectInDebugGame(Entity* entity)
+{
+	int index = -1;
+	for (int i = 0; i < entitysDebugInGame.size(); i++) 
+	{
+		if (entitysDebugInGame[i] == entity) 
+		{
+			entitysDebugInGame[i]->SetShowInDebug(false);
+			index = i;
+			i = elementsForVertexCount;
+		}
+	}
+	if (index != -1) {
+		entitysDebugInGame.erase(entitysDebugInGame.begin() + index);
 	}
 }
 

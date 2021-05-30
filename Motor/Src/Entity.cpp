@@ -31,6 +31,7 @@ Entity::Entity(Renderer * _renderer)
 	SetScale(1, 1, 1);
 
 	isModel = 0;
+	nameEntity = "Entity sin nombre";
 }
 
 Entity::Entity(Renderer * _renderer, float _isModel)
@@ -58,6 +59,8 @@ Entity::Entity(Renderer * _renderer, float _isModel)
 	SetScale(1, 1, 1);
 
 	isModel = _isModel;
+
+	nameEntity = "Entity sin nombre";
 }
 
 Entity::~Entity() {}
@@ -94,6 +97,11 @@ void Entity::SetScale(float x, float y, float z)
 void Entity::SetName(string name)
 {
 	nameEntity = name;
+}
+
+string Entity::GetName()
+{
+	return nameEntity;
 }
 
 void Entity::SetRotationX(float x)

@@ -76,8 +76,11 @@ protected:
 
 	unsigned int _uniformIsModelLocation;
 	string nameEntity;
+	bool showInDebug = false;
 
 public:
+	void SetShowInDebug(float value) { showInDebug = value; }
+	bool GetShowInDebug() { return showInDebug; }
 	Entity(Renderer *_renderer);
 	Entity(Renderer *_renderer, float _isModel);
 	~Entity();
@@ -87,6 +90,7 @@ public:
 	void SetPosition(float x, float y, float z);
 	virtual void SetScale(float x, float y, float z);
 	void SetName(string name);
+	string GetName();
 	void SetRotationX(float x);
 	void SetRotationY(float y);
 	void SetRotationZ(float z);

@@ -1,5 +1,6 @@
 #include "MotorasoGui.h"
-
+#include "Entity.h"
+#include <glm/glm.hpp>
 MotorasoGui::MotorasoGui(Windows* window) 
 {
 	ImGui::CreateContext();
@@ -11,7 +12,7 @@ MotorasoGui::MotorasoGui(Windows* window)
 void MotorasoGui::UpdateMotorasoGui()
 {
 	ImGui::Text("Hello, world!");                           // Display some text (you can use a format string too)
-	ImGui::SliderFloat("X Position", &f, 0.0f, _window->GetSizeX());            // Edit 1 float using a slider from 0.0f to 1.0f    
+	ImGui::SliderFloat("X Position", &xPosition, 0.0f, _window->GetSizeX());            // Edit 1 float using a slider from 0.0f to 1.0f    
 	//ImGui::ColorEdit3("clear color", (float*)&clear_color); // Edit 3 floats representing a color
 
 	//ImGui::Checkbox("Demo Window", &show_demo_window);      // Edit bools storing our windows open/close state
@@ -20,6 +21,54 @@ void MotorasoGui::UpdateMotorasoGui()
 	if (ImGui::Button("WIREFRAME"))                            // Buttons return true when clicked (NB: most widgets return true when edited/activated)
 		_wireFrameActive = !_wireFrameActive;
 
+	ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
+}
+
+void MotorasoGui::UpdateMotorasoGui(vector<Entity*> entitysData)
+{
+	ImGui::Text("Inspector");
+	float p = 0;
+	float speedPosition = 15.0f;
+	float speedRotation = 1.0f;
+	float speedScalated = 50.0f;
+	for(int i = 0; i < entitysData.size(); i++)
+	{
+		if (entitysData[i] != NULL) 
+		{
+			if (ImGui::Button(entitysData[i]->GetName().c_str()))
+			{
+				entitysData[i]->SetShowInDebug(!entitysData[i]->GetShowInDebug());
+				for (int j = 0; j < entitysData.size(); j++)
+				{
+					if (j != i)
+					{
+						entitysData[j]->SetShowInDebug(false);
+					}
+				}
+			}
+			if (entitysData[i]->GetShowInDebug())
+			{
+				ImGui::Text("Position");
+				ImGui::SliderFloat("Position X", &entitysData[i]->transform.position.x, entitysData[i]->transform.position.x - speedPosition, entitysData[i]->transform.position.x + speedPosition);
+				ImGui::SliderFloat("Position Y", &entitysData[i]->transform.position.y, entitysData[i]->transform.position.y - speedPosition, entitysData[i]->transform.position.y + speedPosition);
+				ImGui::SliderFloat("Position Z", &entitysData[i]->transform.position.z, entitysData[i]->transform.position.z - speedPosition, entitysData[i]->transform.position.z + speedPosition);
+				ImGui::Text("Rotation");
+				ImGui::SliderFloat("Rotation X", &entitysData[i]->transform.rotation.x, entitysData[i]->transform.rotation.x - speedRotation, entitysData[i]->transform.rotation.x + speedRotation);
+				ImGui::SliderFloat("Rotation Y", &entitysData[i]->transform.rotation.y, entitysData[i]->transform.rotation.y - speedRotation, entitysData[i]->transform.rotation.y + speedRotation);
+				ImGui::SliderFloat("Rotation Z", &entitysData[i]->transform.rotation.z, entitysData[i]->transform.rotation.z - speedRotation, entitysData[i]->transform.rotation.z + speedRotation);
+				ImGui::Text("Scaled");
+				ImGui::SliderFloat("Scaled", &entitysData[i]->transform.scale.x, entitysData[i]->transform.scale.x - speedScalated, entitysData[i]->transform.scale.x + speedScalated);
+				entitysData[i]->SetPosition(entitysData[i]->transform.position.x, entitysData[i]->transform.position.y, entitysData[i]->transform.position.z);
+				entitysData[i]->SetRotationX(entitysData[i]->transform.rotation.x);
+				entitysData[i]->SetRotationY(entitysData[i]->transform.rotation.y);
+				entitysData[i]->SetRotationZ(entitysData[i]->transform.rotation.z);
+				entitysData[i]->SetScale(entitysData[i]->transform.scale.x, entitysData[i]->transform.scale.x, entitysData[i]->transform.scale.x);
+			}
+		}
+	}
+
+	if (ImGui::Button("WIREFRAME"))                            // Buttons return true when clicked (NB: most widgets return true when edited/activated)
+		_wireFrameActive = !_wireFrameActive;
 	ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
 }
 

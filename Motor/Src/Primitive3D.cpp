@@ -47,11 +47,7 @@ Primitive3D::Primitive3D(Renderer* renderer, TypeModel typeModel, const char* fi
 	LoadTexture(_path, _transparency);
 }
 
-Primitive3D::~Primitive3D()
-{
-	if (texImporter != NULL)
-		delete texImporter;
-}
+Primitive3D::~Primitive3D(){}
 
 void Primitive3D::SetVAO()
 {
@@ -234,5 +230,5 @@ void Primitive3D::Draw(bool& wireFrameActive)
 void Primitive3D::LoadTexture(const char* path, bool transparent) {
 	_useTexture = true;
 	_transparency = transparent;
-	texImporter->LoadTexture(path, data, _texture, _width, _height, _nrChannels, _transparency);
+	texImporter.LoadTexture(path, data, _texture, _width, _height, _nrChannels, _transparency);
 }
