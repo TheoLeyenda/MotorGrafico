@@ -20,10 +20,6 @@ private:
 	
 	Audio* audio = NULL;
 
-	Light* light1 = NULL;
-	Light* light2 = NULL;
-	Light* light3 = NULL;
-
 	Model* model = NULL;
 
 public:

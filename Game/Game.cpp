@@ -88,6 +88,12 @@ void Game::InitGame()
 	
 	SetTypeLightCustom(0, glm::vec3(-10, 2, -10));
 
+	AddObjectInDenugGame(GetLight(1));
+	AddObjectInDenugGame(GetLight(2));
+	AddObjectInDenugGame(GetLight(6));
+	AddObjectInDenugGame(GetLight(0));
+	AddObjectInDenugGame(GetLight(87));
+
 	ChangeColorLight(1, red);
 	ChangeColorLight(2, yellow);
 	ChangeColorLight(6, cyan);
@@ -152,6 +158,7 @@ void Game::UpdateGame(Windows *_window, Renderer *_render, Input *_input)
 		audio->PlayAudio2D("res/audio/Dale Dale Boca.mp3", true);
 		RemoveObjectInDebugGame(cube);
 		AddObjectInDenugGame(cube2);
+		GetLight(0)->SetName("BANERO SAPEEEE");
 	}
 
 	if (rotateBokitaSkybox && useSkybox)

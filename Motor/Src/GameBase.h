@@ -59,6 +59,7 @@ public:
 
 	void SetUseDebugWindows(bool value) { useDebugWindows = value; }
 
+	Light* GetLight(int id);
 	void AddLight(Light::TypeLight typeLight, int id);
 	void RemoveLight(int id);
 	void SetLightPosition(int id, glm::vec3 position);

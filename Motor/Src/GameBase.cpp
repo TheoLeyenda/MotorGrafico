@@ -141,14 +141,17 @@ void GameBase::DestroyEngine()
 
 void GameBase::AddObjectInDenugGame(Entity* entity)
 {
-	for (int i = 0; i < entitysDebugInGame.size(); i++)
+	if (entity != NULL) 
 	{
-		if (entitysDebugInGame[i] == entity)
+		for (int i = 0; i < entitysDebugInGame.size(); i++)
 		{
-			return;
+			if (entitysDebugInGame[i] == entity)
+			{
+				return;
+			}
 		}
+		entitysDebugInGame.push_back(entity);
 	}
-	entitysDebugInGame.push_back(entity);
 }
 
 void GameBase::RemoveObjectInDebugGame(Entity* entity)
@@ -166,6 +169,18 @@ void GameBase::RemoveObjectInDebugGame(Entity* entity)
 	if (index != -1) {
 		entitysDebugInGame.erase(entitysDebugInGame.begin() + index);
 	}
+}
+
+Light * GameBase::GetLight(int id)
+{
+	for (int i = 0; i < _lights.size(); i++) 
+	{
+		if (_lights[i]->GetMyId() == id) 
+		{
+			return _lights[i];
+		}
+	}
+	return NULL;
 }
 
 void GameBase::AddLight(Light::TypeLight typeLight, int id)
@@ -188,16 +203,25 @@ void GameBase::AddLight(Light::TypeLight typeLight, int id)
 	newLight->SetIdLight(id);
 	newLight->SetPosition(350.0f, 200.0f, 300.0f);
 	newLight->SetScale(10.0f, 10.0f, 10.0f);
+	
+	stringstream ss;
+	ss << id;
+	string index = ss.str();
+
 	switch (newLight->GetTypeLight())	
-		{
+	{
 	case Light::TypeLight::Directional:
 		render->SetLighting(newLight, Light::nr_of_directional_light - 1);
+		
+		newLight->SetName("Directional Light " + index);
 		break;
 	case Light::TypeLight::Point:
 		render->SetLighting(newLight, Light::nr_of_point_light - 1);
+		newLight->SetName("Point Light " + index);
 		break;
 	case Light::TypeLight::Spot:
 		render->SetLighting(newLight, Light::nr_of_spot_light - 1);
+		newLight->SetName("Spot Light " + index);
 		break;
 	}
 	cout << "Count pointLight: " << Light::nr_of_point_light << endl;
