@@ -136,7 +136,7 @@ void Game::InitGame()
 	
 	audio = new Audio(render);
 
-	SetUseDebugWindows(false);
+	SetUseDebugWindows(true);
 }
 
 void Game::UpdateGame(Windows *_window, Renderer *_render, Input *_input)
