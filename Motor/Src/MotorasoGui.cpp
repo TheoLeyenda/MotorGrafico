@@ -1,6 +1,7 @@
 #include "MotorasoGui.h"
 #include "Entity.h"
 #include <glm/glm.hpp>
+#include "GameBase.h"
 MotorasoGui::MotorasoGui(Windows* window) 
 {
 	ImGui::CreateContext();
@@ -63,6 +64,7 @@ void MotorasoGui::UpdateMotorasoGui(vector<Entity*> entitysData)
 				entitysData[i]->SetRotationY(entitysData[i]->transform.rotation.y);
 				entitysData[i]->SetRotationZ(entitysData[i]->transform.rotation.z);
 				entitysData[i]->SetScale(entitysData[i]->transform.scale.x, entitysData[i]->transform.scale.x, entitysData[i]->transform.scale.x);
+
 			}
 		}
 	}

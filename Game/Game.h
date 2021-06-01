@@ -7,6 +7,14 @@ private:
 	int resultInit;
 	Shape* shape1 = NULL;
 	Shape* shape2 = NULL;
+	Shape* shape3 = NULL;
+	Shape* shape4 = NULL;
+
+	Sprite* sprite = NULL;
+	Sprite* spriteAnimado = NULL;
+
+	Animation* animations = NULL;
+
 	Primitive3D* pyramid = NULL;
 
 	Primitive3D* cube = NULL;
@@ -17,7 +25,9 @@ private:
 	Material* silverMaterial = NULL;
 	Material* esmeraldMaterial = NULL;
 	Material* greenRubberMaterial = NULL;
-	
+	Material* mat_shape3 = NULL;
+	Material* mat_shape4 = NULL;
+
 	Audio* audio = NULL;
 
 	Model* model = NULL;

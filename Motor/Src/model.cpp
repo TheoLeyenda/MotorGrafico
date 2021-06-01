@@ -7,6 +7,10 @@
 
 #define STB_IMAGE_IMPLEMENTATION
 
+void Model::BindBuffer() {}
+
+void Model::Draw(bool & wireFrameActive){}
+
 Model::Model(string const & path,string const& _directory, bool gamma, Renderer * render): Entity(render, 1)
 {
 	stbi_set_flip_vertically_on_load(true);

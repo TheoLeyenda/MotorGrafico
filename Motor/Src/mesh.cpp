@@ -2,6 +2,8 @@
 #include "Material.h"
 #include <glew.h>
 #include <GLFW/glfw3.h>
+
+
 Mesh::Mesh(vector<Vertex> vertices, vector<unsigned int> indices, vector<Texture> textures, Renderer* render): Entity(render, 1)
 {
 	this->vertices = vertices;
@@ -50,7 +52,7 @@ void Mesh::Draw(Shader& shader)
 
 	UseMyMaterial();
 
-	renderer->DrawMeshes(indices, shader, internalData.model, VBO, EBO, _posAttrib, _normAttrib, _textureAttrib);
+	//renderer->DrawMeshes(indices, shader, internalData.model, VBO, EBO, _posAttrib, _normAttrib, _textureAttrib);
 
 	glBindTexture(GL_TEXTURE_2D, 0);
 	glBindVertexArray(0);
@@ -58,10 +60,14 @@ void Mesh::Draw(Shader& shader)
 	glActiveTexture(GL_TEXTURE0);
 }
 
+void Mesh::BindBuffer() {}
+
+void Mesh::Draw(bool & wireFrameActive) {}
+
 void Mesh::UseMyMaterial()
 {
 	if (my_Mat != NULL)
-		my_Mat->UseMaterial(renderer->GetShaderColor());
+		my_Mat->UseMaterial(renderer->GetCurrentShaderUse());
 }
 
 void Mesh::SetNewMaterial(Material* mat)
@@ -104,17 +110,17 @@ void Mesh::SetupMesh()
 
 	// set the vertex attribute pointers
 	// vertex Positions
-	_posAttrib = glGetAttribLocation(renderer->GetShaderColor().getId(), "position");
+	_posAttrib = glGetAttribLocation(renderer->GetCurrentShaderUse().getId(), "position");
 	glVertexAttribPointer(_posAttrib, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)0);
 	glEnableVertexAttribArray(_posAttrib);
 
 	// vertex normals
-	_normAttrib = glGetAttribLocation(renderer->GetShaderColor().getId(), "norm");
+	_normAttrib = glGetAttribLocation(renderer->GetCurrentShaderUse().getId(), "norm");
 	glVertexAttribPointer(_normAttrib, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, Normal));
 	glEnableVertexAttribArray(_normAttrib);
 
 	// vertex texture coords
-	_textureAttrib = glGetAttribLocation(renderer->GetShaderColor().getId(), "m_TexCoord");
+	_textureAttrib = glGetAttribLocation(renderer->GetCurrentShaderUse().getId(), "m_TexCoord");
 	glVertexAttribPointer(_textureAttrib, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, TexCoords));
 	glEnableVertexAttribArray(_textureAttrib);
 

@@ -39,14 +39,12 @@ bool ortho = false;
 bool useCamera = true;
 bool useModels = true;
 bool rotateBokitaSkybox = true;
-bool useSkybox = true;
+bool useSkybox = false;
 //---------------------//
 
 //LIGHT
 float ambientIntensity;
 float diffuseIntensity;
-
-TypeColorShape typeColorShape = TypeColorShape::SolidColor;
 
 Game::Game() :GameBase() {}
 
@@ -86,7 +84,7 @@ void Game::InitGame()
 	AddLight(Light::TypeLight::Spot, 87);
 	SetLightPosition(87, glm::vec3(-50, -50, 0));
 	
-	SetTypeLightCustom(0, glm::vec3(-10, 2, -10));
+	SetSettingsLightCustom(0, glm::vec3(0, 2, -6));
 
 	AddObjectInDenugGame(GetLight(1));
 	AddObjectInDenugGame(GetLight(2));
@@ -94,11 +92,11 @@ void Game::InitGame()
 	AddObjectInDenugGame(GetLight(0));
 	AddObjectInDenugGame(GetLight(87));
 
-	ChangeColorLight(1, red);
-	ChangeColorLight(2, yellow);
-	ChangeColorLight(6, cyan);
-	ChangeColorLight(87, brown);
-	ChangeColorLight(0, blue);
+	//ChangeColorLight(1, red);
+	//ChangeColorLight(2, yellow);
+	//ChangeColorLight(6, cyan);
+	//ChangeColorLight(87, brown);
+	//ChangeColorLight(0, blue);
 
 	GetMyLightsID();
 
@@ -142,6 +140,100 @@ void Game::InitGame()
 	
 	audio = new Audio(render);
 
+	shape1 = new Shape(render,TypeShape::QUAD, "res/texturas/Algun dia.png");
+	shape1->SetPosition(-190.0f, 200.0f, 10.0);
+	shape1->SetScale(120.0f, 120.0f, 120.0f);
+	shape1->SetName("Shape1");
+	AddObjectInDenugGame(shape1);
+
+	shape2 = new Shape(render, TypeShape::TRIANGLE, "res/texturas/bokitaElMasGrandePapa.png");
+	shape2->SetPosition(-320.0f, 200.0f, 10.0);
+	shape2->SetScale(120.0f, 120.0f, 120.0f);
+	shape2->SetNewMaterial(textureMaterialForLight);
+	shape2->SetName("Shape2");
+	AddObjectInDenugGame(shape2);
+
+	shape3 = new Shape(render, TypeShape::QUAD);
+	shape3->SetPosition(-450.0f, 200.0f, 10.0);
+	shape3->SetScale(120.0f, 120.0f, 120.0f);
+	shape3->SetNewMaterial(mat_shape3);
+	shape3->SetName("Shape3");
+	AddObjectInDenugGame(shape3);
+
+	shape4 = new Shape(render, TypeShape::TRIANGLE);
+	shape4->SetPosition(-580.0f, 200.0f, 10.0);
+	shape4->SetScale(120.0f, 120.0f, 120.0f);
+	shape4->SetNewMaterial(mat_shape4);
+	shape4->SetName("Shape4");
+	AddObjectInDenugGame(shape4);
+
+	sprite = new Sprite(render,"res/texturas/nave.png", true);
+	sprite->SetPosition(-360.0f, 350.0f, 10.0);
+	sprite->SetScale(120.0f, 120.0f, 120.0f);
+	sprite->SetRotationZ(91.1f);
+	sprite->SetName("Sprite");
+	AddObjectInDenugGame(sprite);
+
+	spriteAnimado = new Sprite(render, "res/texturas/PlayerShit.png", true);
+	//spriteAnimado->SetPosition(windows->GetSizeX() / 2, windows->GetSizeY() / 2, 0.0f);
+	spriteAnimado->SetPosition(0, windows->GetSizeY()/2, 0.0f);
+	spriteAnimado->SetScale(120.0f, 120.0f, 120.0f);
+	spriteAnimado->SetRotationZ(91.1f);
+	spriteAnimado->SetName("SpriteAnimado");
+	AddObjectInDenugGame(spriteAnimado);
+
+	animations = new Animation();
+
+	float durationAnim = 0.75f;
+	// ANIMACION CAMINATA HACIA ARRIBA
+	animations->AddFrame((480 - 60 * 8), 0.0f, 60, 60, 480, 240, durationAnim);
+	animations->AddFrame((480 - 60 * 7), 0.0f, 60, 60, 480, 240, durationAnim);
+	animations->AddFrame((480 - 60 * 6), 0.0f, 60, 60, 480, 240, durationAnim);
+	animations->AddFrame((480 - 60 * 5), 0.0f, 60, 60, 480, 240, durationAnim);
+	animations->AddFrame((480 - 60 * 4), 0.0f, 60, 60, 480, 240, durationAnim);
+	animations->AddFrame((480 - 60 * 3), 0.0f, 60, 60, 480, 240, durationAnim);
+	animations->AddFrame((480 - 60 * 2), 0.0f, 60, 60, 480, 240, durationAnim);
+	animations->AddFrame((480 - 60 * 1), 0.0f, 60, 60, 480, 240, durationAnim);
+	animations->AddAnimation();
+
+	// ANIMACION CAMINATA HACIA DERECHA
+	animations->AddFrame((480 - 60 * 8), 60, 60, 60, 480, 240, durationAnim);
+	animations->AddFrame((480 - 60 * 7), 60, 60, 60, 480, 240, durationAnim);
+	animations->AddFrame((480 - 60 * 6), 60, 60, 60, 480, 240, durationAnim);
+	animations->AddFrame((480 - 60 * 5), 60, 60, 60, 480, 240, durationAnim);
+	animations->AddFrame((480 - 60 * 4), 60, 60, 60, 480, 240, durationAnim);
+	animations->AddFrame((480 - 60 * 3), 60, 60, 60, 480, 240, durationAnim);
+	animations->AddFrame((480 - 60 * 2), 60, 60, 60, 480, 240, durationAnim);
+	animations->AddFrame((480 - 60 * 1), 60, 60, 60, 480, 240, durationAnim);
+	animations->AddAnimation();
+
+	// ANIMACION CAMINATA HACIA IZQUIERDA
+	animations->AddFrame((480 - 60 * 8), 120, 60, 60, 480, 240, durationAnim);
+	animations->AddFrame((480 - 60 * 7), 120, 60, 60, 480, 240, durationAnim);
+	animations->AddFrame((480 - 60 * 6), 120, 60, 60, 480, 240, durationAnim);
+	animations->AddFrame((480 - 60 * 5), 120, 60, 60, 480, 240, durationAnim);
+	animations->AddFrame((480 - 60 * 4), 120, 60, 60, 480, 240, durationAnim);
+	animations->AddFrame((480 - 60 * 3), 120, 60, 60, 480, 240, durationAnim);
+	animations->AddFrame((480 - 60 * 2), 120, 60, 60, 480, 240, durationAnim);
+	animations->AddFrame((480 - 60 * 1), 120, 60, 60, 480, 240, durationAnim);
+	animations->AddAnimation();
+
+	// ANIMACION CAMINATA HACIA ABAJO
+	animations->AddFrame((480 - 60 * 8), 180, 60, 60, 480, 240, durationAnim);
+	animations->AddFrame((480 - 60 * 7), 180, 60, 60, 480, 240, durationAnim);
+	animations->AddFrame((480 - 60 * 6), 180, 60, 60, 480, 240, durationAnim);
+	animations->AddFrame((480 - 60 * 5), 180, 60, 60, 480, 240, durationAnim);
+	animations->AddFrame((480 - 60 * 4), 180, 60, 60, 480, 240, durationAnim);
+	animations->AddFrame((480 - 60 * 3), 180, 60, 60, 480, 240, durationAnim);
+	animations->AddFrame((480 - 60 * 2), 180, 60, 60, 480, 240, durationAnim);
+	animations->AddFrame((480 - 60 * 1), 180, 60, 60, 480, 240, durationAnim);
+	animations->AddAnimation();
+
+	//animations->SetCurrentAnimation(3);
+	spriteAnimado->SetAnimation(animations);
+
+	spriteAnimado->SetAttribsSprite();
+
 	SetUseDebugWindows(true);
 }
 
@@ -169,12 +261,22 @@ void Game::UpdateGame(Windows *_window, Renderer *_render, Input *_input)
 	if (useCamera)
 		TempInputCamera();
 
-	//TempInputs(windows, pyramid);
+
+	//TempInputsPlayer1(windows, spriteAnimado);
 
 	TempMoveLightWithID(windows, 2);
-	if (input->GetKey(KeyBoard::KEY_ENTER)) {
-		//SetTypeLightDefault(0, Light::TypeLight::Point);
-	}
+
+	if (shape1 != NULL) 
+		shape1->Draw(motorasoGui->GetIfWireFrameIsActive());
+
+	if (shape2 != NULL)
+		shape2->Draw(motorasoGui->GetIfWireFrameIsActive());
+
+	if (shape3 != NULL)
+		shape3->Draw(motorasoGui->GetIfWireFrameIsActive());
+
+	if (shape4 != NULL)
+		shape4->Draw(motorasoGui->GetIfWireFrameIsActive());
 
 	if(pyramid != NULL)
 		pyramid->Draw(motorasoGui->GetIfWireFrameIsActive());
@@ -185,8 +287,16 @@ void Game::UpdateGame(Windows *_window, Renderer *_render, Input *_input)
 	if(cube3 != NULL)
 		cube3->Draw(motorasoGui->GetIfWireFrameIsActive());
 
+	//cout << timeClock.deltaTime() << endl;
+
+	if (sprite != NULL)
+		sprite->Draw(GetTimeClock());
+
+	if (spriteAnimado != NULL)
+		spriteAnimado->Draw(GetTimeClock());
+
 	if (model != NULL)
-		model->Draw(render->GetShaderColor());
+		model->Draw(render->GetCurrentShaderUse());
 }
 
 void Game::DestroyGame()
@@ -243,6 +353,25 @@ void Game::DestroyGame()
 		greenRubberMaterial = NULL;
 	}
 
+	if (mat_shape3 != NULL) {
+		delete mat_shape3;
+		mat_shape3 = NULL;
+	}
+
+	if (mat_shape4 != NULL) {
+		delete mat_shape4;
+		mat_shape4 = NULL;
+	}
+
+	if (sprite != NULL)
+		delete sprite;
+
+	if (spriteAnimado != NULL)
+		delete spriteAnimado;
+
+	if (animations != NULL)
+		delete animations;
+
 	if (model != NULL) {
 		delete model;
 		model = NULL;
@@ -254,40 +383,6 @@ void Game::TempColorInput(Windows* windows, Shape* shape)
 	//---------------------//
 #pragma region COLOR REGION
 	
-	if (input->GetKey(KeyBoard::KEY_ENTER))
-	{
-		r = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
-		g = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
-		b = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
-		shape->SetSolidColor(r, g, b);
-	}
-	
-	if (input->GetKey(KeyBoard::KEY_KP_0))
-	{
-		typeColorShape = TypeColorShape::SolidColor;
-		if (shape->GetCurrentShape() == TypeShape::TRIANGLE) {
-			shape->SetShape(TypeShape::TRIANGLE, typeColorShape);
-			shape->SetVertexsAttribShape(TypeMaterial::ColorType);
-		}
-		else if (shape->GetCurrentShape() == TypeShape::QUAD)
-		{
-			shape->SetShape(TypeShape::QUAD, typeColorShape);
-			shape->SetVertexsAttribShape(TypeMaterial::ColorType);
-		}
-	}
-	if (input->GetKey(KeyBoard::KEY_KP_ENTER))
-	{
-		typeColorShape = TypeColorShape::VertexColor;
-		if (shape->GetCurrentShape() == TypeShape::TRIANGLE) {
-			shape->SetShape(TypeShape::TRIANGLE, typeColorShape);
-			shape->SetVertexsAttribShape(TypeMaterial::ColorType);
-		}
-		else if (shape->GetCurrentShape() == TypeShape::QUAD)
-		{
-			shape->SetShape(TypeShape::QUAD, typeColorShape);
-			shape->SetVertexsAttribShape(TypeMaterial::ColorType);
-		}
-	}
 #pragma endregion
 }
 
@@ -371,7 +466,7 @@ void Game::TempInputCamera()
 	//MANEJO DE DATOS
 	camera->SetPosition(newPositionCamX, newPositionCamY, newPositionCamZ);
 
-	render->SetView(camera);
+	camera->SetView();
 	//render->RotateCamera(newRotationCamZ, camera->GetInternalData().model);
 	
 #pragma endregion
@@ -408,6 +503,17 @@ void Game::TempMoveLightWithID(Windows * windows, int id)
 
 void Game::InitMaterials()
 {
+	mat_shape3 = new Material();
+	mat_shape3->SetAmbientMat(glm::vec3(0.5f * 2, 0.1f * 2, 0.1f * 2));
+	mat_shape3->SetDiffuseMat(glm::vec3(0.5f * 2, 0.5f * 2, 0.4f * 2));
+	mat_shape3->SetSpecularMat(glm::vec3(0.7f * 2, 0.7f * 2, 0.04f * 2));
+	mat_shape3->SetNewShininess(1.0, 128);
+
+	mat_shape4 = new Material();
+	mat_shape4->SetAmbientMat(glm::vec3(0.1f * 2, 0.18725f * 2, 0.1745f * 2));
+	mat_shape4->SetDiffuseMat(glm::vec3(0.396f * 2, 0.74151f * 2, 0.69102f * 2));
+	mat_shape4->SetSpecularMat(glm::vec3(0.297254f * 2, 0.30829f * 2, 0.306678f * 2));
+	mat_shape4->SetNewShininess(0.1f, 128);
 
 	goldMaterial = new Material();
 	goldMaterial->SetAmbientMat(glm::vec3(0.24725f, 0.1995f, 0.0745f));

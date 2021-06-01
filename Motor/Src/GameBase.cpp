@@ -21,7 +21,7 @@ int GameBase::InitEngine()
 	collisionManager = new CollisionManager();
 
 	textureMaterialForLight = new Material();
-	textureMaterialForLight->SetAmbientMat(glm::vec3(1.1f, 1.1f, 1.1f));
+	textureMaterialForLight->SetAmbientMat(glm::vec3(0.5f, 0.5f, 0.5f));
 	textureMaterialForLight->SetDiffuseMat(glm::vec3(0.0f, 0.0f, 0.0f));
 	textureMaterialForLight->SetSpecularMat(glm::vec3(0.5f, 0.5f, 0.5f));
 	textureMaterialForLight->SetNewShininess(1.0f, 128.0f);
@@ -39,7 +39,7 @@ int GameBase::InitEngine()
 	windows->CheckCreateWindows();
 	windows->CreateContextWindows();
 	render->GLEWInit();
-	render->SetShader();
+	render->SetCurrentShaderUse("Falta Path de VertexShader", "Falta Path de FragmentShader");
 
 #pragma region CREACION Y SETEO DE LUZ DEFAULT
 	_lights.clear();
@@ -52,7 +52,7 @@ int GameBase::InitEngine()
 	camera->UseProjection();
 	camera->SetPosition(300.0f, 100.0f, 200.0f);
 	camera->InitCamera(camera->transform.position, glm::vec3(0.0f, 1.0f, 0.0f), -90, 0);
-	render->SetView(camera);
+	camera->SetView();
 
 #pragma endregion
 
@@ -77,7 +77,7 @@ void GameBase::UpdateEngine()
 		//---------------------//
 		HandleCamera();
 		//---------------------//
-		HandleLight(camera);
+		HandleLight();
 		//---------------------//
 		UpdateGame(windows, render, input);
 		//---------------------//
@@ -196,11 +196,17 @@ void GameBase::AddLight(Light::TypeLight typeLight, int id)
 			}
 		}
 	}
-	Light* newLight = new Light(render, typeLight);
-	newLight->SetAmbient(glm::vec3(0.2f, 0.2f, 0.2f));
+	Light* newLight = new Light(render, typeLight, camera);
+	if(typeLight == Light::Directional)
+		newLight->SetAmbient(glm::vec3(0.5f, 0.5f, 0.5f));
+	else
+		newLight->SetAmbient(glm::vec3(0.2f, 0.2f, 0.2f));
+	
 	newLight->SetDiffuse(glm::vec3(0.2f, 0.2f, 0.2f));
 	newLight->SetSpecular(glm::vec3(1.5f, 1.5f, 1.5f));
+	
 	newLight->SetIdLight(id);
+	
 	newLight->SetPosition(350.0f, 200.0f, 300.0f);
 	newLight->SetScale(10.0f, 10.0f, 10.0f);
 	
@@ -281,13 +287,13 @@ void GameBase::SetTypeLightDefault(int id, Light::TypeLight setType)
 	}
 }
 
-void GameBase::SetTypeLightCustom(int id, glm::vec3 direction)
+void GameBase::SetSettingsLightCustom(int id, glm::vec3 direction)
 {
 	for (int i = 0; i < _lights.size(); i++)
 	{
 		if (_lights[i] != NULL)
 		{
-			if (_lights[i]->GetMyId() == id)
+			if (_lights[i]->GetMyId() == id && _lights[i]->GetTypeLight() == Light::TypeLight::Directional)
 			{
 				_lights[i]->SetDirectionalLightCustom(direction);
 			}
@@ -295,13 +301,13 @@ void GameBase::SetTypeLightCustom(int id, glm::vec3 direction)
 	}
 }
 
-void GameBase::SetTypeLightCustom(int id, float linearVal, float quadraticVal, float cutOffValue)
+void GameBase::SetSettingsLightCustom(int id, float linearVal, float quadraticVal, float cutOffValue)
 {
 	for (int i = 0; i < _lights.size(); i++)
 	{
 		if (_lights[i] != NULL)
 		{
-			if (_lights[i]->GetMyId() == id)
+			if (_lights[i]->GetMyId() == id && _lights[i]->GetTypeLight() == Light::TypeLight::Point)
 			{
 				_lights[i]->SetPointLightCustom(linearVal, quadraticVal, cutOffValue);
 			}
@@ -309,13 +315,13 @@ void GameBase::SetTypeLightCustom(int id, float linearVal, float quadraticVal, f
 	}
 }
 
-void GameBase::SetTypeLightCustom(int id, float linearVal, float quadraticVal, float cutOffValue, float outerCutOffValue)
+void GameBase::SetSettingsLightCustom(int id, float linearVal, float quadraticVal, float cutOffValue, float outerCutOffValue)
 {
 	for (int i = 0; i < _lights.size(); i++)
 	{
 		if (_lights[i] != NULL)
 		{
-			if (_lights[i]->GetMyId() == id)
+			if (_lights[i]->GetMyId() == id && _lights[i]->GetTypeLight() == Light::TypeLight::Spot)
 			{
 				_lights[i]->SetSpotLightCustom(linearVal, quadraticVal, cutOffValue, outerCutOffValue);
 			}
@@ -362,22 +368,21 @@ void GameBase::GetMyLightsID()
 
 void GameBase::HandleCamera()
 {
-	render->SetView(camera);
-	render->drawCamera(render->GetShaderColor(), camera->GetInternalData().model);
+	camera->SetView();
+	camera->UseCamera(render->GetCurrentShaderUse(), camera->GetInternalData().model);
 
 	//HACER UN FRAGMENT SHADER QUE CONTENGA EL COLOR Y LA TEXTURA.
 
 	//render->drawCamera(render->GetShaderTexture(), camera->GetInternalData().model);
 }
 
-void GameBase::HandleLight(Camera* camera)
+void GameBase::HandleLight()
 {
 	for (int i = 0; i < _lights.size(); i++)
 	{
 		if (_lights[i] != NULL)
 		{
-			render->LightingInfluence(_lights[i], camera);
-			_lights[i]->Draw();
+			_lights[i]->Draw(motorasoGui->GetIfWireFrameIsActive());
 		}
 	}
 }

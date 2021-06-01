@@ -22,7 +22,7 @@ private:
 public:
 	Animation();
 	~Animation();
-	void Update(Time& time);
+	void Update(Time& timer);
 	void AddFrame(float frameX, float frameY, int spriteWidth, int spriteHeigth, int textureWidth, int textureHeigth, float timeToAnim, int totalFrames, int countFilas);
 	int GetCurrentFrame();
 	vector<Frame>& GetAnimation();

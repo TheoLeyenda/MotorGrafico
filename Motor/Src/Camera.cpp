@@ -1,12 +1,48 @@
 
 #include "Camera.h"
+#include <glew.h>
+#include <GLFW/glfw3.h>
 
 Camera::Camera(Renderer* _render, TypeProjectionCamera _typeProjectionCamera) : Entity(_render)
 {
+	_MVP.view = glm::mat4(1.0f);
+	_MVP.projection = glm::mat4(1.0f);
 	typeProjectionCamera = _typeProjectionCamera;
 }
 
 Camera::~Camera(){}
+
+void Camera::BindBuffer(){}
+
+void Camera::Draw(bool & wireFrameActive)
+{
+	UseCamera(renderer->GetCurrentShaderUse(), internalData.model);
+}
+void Camera::UseCamera(Shader& shader, glm::mat4 trsCamera)
+{
+	unsigned int transformLoc = glGetUniformLocation(shader.getId(), "model");
+	unsigned int projectionLoc = glGetUniformLocation(shader.getId(), "projection");
+	unsigned int viewLoc = glGetUniformLocation(shader.getId(), "view");
+	glUseProgram(shader.getId());
+	glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(trsCamera));
+	glUniformMatrix4fv(projectionLoc, 1, GL_FALSE, glm::value_ptr(_MVP.projection));
+	glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(_MVP.view));
+}
+void Camera::SetView()
+{
+	_MVP.view = CalculateViewMatrix();
+}
+
+void Camera::SetProjectionPerspective(float FOV, float aspect, float near, float front)
+{
+	//                                      FOV          Aspect  near   front
+	_MVP.projection = glm::perspective(glm::radians(FOV), aspect, near, front);
+}
+
+void Camera::SetProjectionOrtho(float left, float right, float bottom, float top, float near, float front)
+{
+	_MVP.projection = glm::ortho(left, right, bottom, top, near, front);
+}
 
 void Camera::InitCamera(glm::vec3 pos, glm::vec3 up, float yaw, float pitch) {
 	SetPosition(pos.x, pos.y, pos.z);
@@ -76,7 +112,7 @@ void Camera::UseProjection()
 	switch (typeProjectionCamera)
 	{
 	case Perspective:
-		renderer->SetProjectionPerspective(
+		SetProjectionPerspective(
 			projectionDataPerspective.FOV,
 			projectionDataPerspective.aspect,
 			projectionDataPerspective.near,
@@ -84,7 +120,7 @@ void Camera::UseProjection()
 		);
 		break;
 	case Ortho:
-		renderer->SetProjectionOrtho(
+		SetProjectionOrtho(
 			projectionDataOrtho.left,
 			projectionDataOrtho.right,
 			projectionDataOrtho.bottom,
@@ -94,6 +130,15 @@ void Camera::UseProjection()
 		);
 		break;
 	}
+}
+
+glm::mat4 Camera::getViewMat()
+{
+	return _MVP.view;
+}
+glm::mat4 Camera::getProjMat()
+{
+	return _MVP.projection;
 }
 
 void Camera::RotateCameraX(float speed)

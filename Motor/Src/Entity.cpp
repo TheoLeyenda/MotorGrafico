@@ -143,7 +143,7 @@ void Entity::SetRotationZ(float z)
 void Entity::InitIsModelShader()
 {
 	if(renderer != NULL)
-		_uniformIsModelLocation = glGetUniformLocation(renderer->GetShaderColor().getId(), "isModel");
+		_uniformIsModelLocation = glGetUniformLocation(renderer->GetCurrentShaderUse().getId(), "isModel");
 }
 
 void Entity::CheckIsModel()

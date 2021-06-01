@@ -1,22 +1,7 @@
 #include "Sprite.h"
 #include "glew.h"
 
-//============================================
-Sprite::Sprite(Renderer *_renderer, Material* _material, const char* filePath, bool transparency):Entity2D(_renderer, _material)
-{
-	renderer = _renderer;
-	material = _material;
-	
-	_transparency = transparency;
 
-	texImporter = new TextureImporter();
-
-	renderer->SetAttribsSprite();
-
-	InitTextureVertexCoord();
-
-	LoadTexture(filePath, _transparency);
-}
 //============================================
 Sprite::Sprite(Renderer * _renderer, const char* filePath, bool transparency):Entity2D(_renderer)
 {
@@ -25,7 +10,7 @@ Sprite::Sprite(Renderer * _renderer, const char* filePath, bool transparency):En
 
 	texImporter = new TextureImporter();
 
-	renderer->SetAttribsSprite();
+	SetAttribsSprite();
 
 	InitTextureVertexCoord();
 
@@ -34,44 +19,81 @@ Sprite::Sprite(Renderer * _renderer, const char* filePath, bool transparency):En
 //============================================
 Sprite::~Sprite() {
 	glDeleteTextures(1, &texture);
-	if (texImporter != NULL)
+	if (texImporter != NULL) {
 		delete texImporter;
+		texImporter = NULL;
+	}
+	if (animation != NULL) 
+	{
+		delete animation;
+		animation = NULL;
+	}
+
 }
-//============================================
-void Sprite::Draw()
+
+void Sprite::BindBufferSprite()
 {
+	unsigned int countElementsForVertex = 5;
+
+	glBindBuffer(GL_ARRAY_BUFFER, _vbo);
+	glVertexAttribPointer(_positionLocation, 3, GL_FLOAT, GL_FALSE, countElementsForVertex * sizeof(float), 0);
+	glEnableVertexAttribArray(_positionLocation);
+	glVertexAttribPointer(_texLocation, 2, GL_FLOAT, GL_FALSE, countElementsForVertex * sizeof(float), (void*)(3 * sizeof(float)));
+	glEnableVertexAttribArray(_texLocation);
+}
+
+//============================================
+
+void Sprite::SetAttribsSprite()
+{
+	int countElementsForVertex = 5;
+	
+	_positionLocation = glGetAttribLocation(renderer->GetCurrentShaderUse().getId(), "position");
+	glVertexAttribPointer(_positionLocation, 3, GL_FLOAT, GL_FALSE, countElementsForVertex * sizeof(float), 0);
+	glEnableVertexAttribArray(_positionLocation);
+	glUniform1i(_texLocation = glGetUniformLocation(renderer->GetCurrentShaderUse().getId(), "ourTexture"), 0);
+	glVertexAttribPointer(_texLocation, 2, GL_FLOAT, GL_FALSE, countElementsForVertex * sizeof(float), (void*)(3 * sizeof(float)));
+	glEnableVertexAttribArray(_texLocation);
+}
+
+void Sprite::BindBuffer(){}
+
+void Sprite::Draw(bool & wireFrameActive){}
+
+void Sprite::Draw(Time& timer)
+{
+	UpdateSprite(timer);
+
+	BindBufferSprite();
 	if (renderer != NULL) 
 	{
 		CheckIsModel();
 
 		if (_transparency)
 			BlendSprite();
+
 		glEnable(GL_TEXTURE_2D);
-
-		//renderer->UpdateModel(internalData.model);
-
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, texture);
 
-		renderer->DrawSprite(GL_QUADS, 4, _vbo, renderer->GetShaderTexture(), internalData.model);
+		renderer->DrawSprite(GL_QUADS, 4, _vbo, renderer->GetCurrentShaderUse(), internalData.model);
 
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
+		glBindTexture(GL_TEXTURE_2D, 0);
 		glDisable(GL_TEXTURE_2D);
 
 		if (_transparency)
 			UnBlendSprite();
-
-		//renderer->EndDraw(refWindow);
 	}
 }
 //============================================
-void Sprite::UpdateSprite(Time & timer)
+void Sprite::UpdateSprite(Time& timer)
 {
 	if (!animation) {
-		cout << "ANIMACION NULA" << endl;
+		//cout << "ANIMACION NULA" << endl;
 		return;
 	}
-
+	//cout << "TODAS PUTAS UWU" << endl;
 	animation->Update(timer);
 
 	_currentFrame = animation->GetCurrentFrame();
@@ -140,10 +162,5 @@ int Sprite::getHeigth()
 int Sprite::getNrChannels()
 {
 	return nrChannels;
-}
-//============================================
-void Sprite::SetAttribsSprite()
-{
-	renderer->SetAttribsSprite();
 }
 //============================================

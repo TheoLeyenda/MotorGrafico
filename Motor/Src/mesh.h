@@ -29,12 +29,16 @@ struct ENGINE_API Texture {
 
 class ENGINE_API Mesh : public Entity 
 {
+protected:
+	void BindBuffer() override;
+
 public:
 	// mesh data
 	vector<Vertex>       vertices;
 	vector<unsigned int> indices;
 	vector<Texture>      textures;
 
+	void Draw(bool& wireFrameActive) override;
 
 	Mesh(vector<Vertex> vertices, vector<unsigned int> indices, vector<Texture> textures, Renderer* render);
 	void Draw(Shader &shader);

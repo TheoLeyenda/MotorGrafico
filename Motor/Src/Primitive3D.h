@@ -92,16 +92,8 @@ private:
 		11,8,9, 9,10,11
 	};
 	TypeModel _type;
-	unsigned int _ibo;
-	unsigned int _vbo;
-	unsigned int _vao;
 
-	unsigned int _posAttrib;
-	unsigned int _colAttrib;
-	unsigned int _normalAttrib;
-	unsigned int _uvAttrib;
-
-	//Texture
+	//Texture Importer
 	bool _useTexture = true;
 	unsigned char* data;
 	int _height;
@@ -114,18 +106,16 @@ private:
 
 	Material* my_Mat;
 protected:
+	void BindGeneralData();
 	void SetVAO();
 	void SetVBO();
 	void SetIBO();
-	void BindVAO();
-	void BindIBO();
-	void BindVBO();
 	void UnbindBuffers();
-	void UnbindIBO();
-	void UnbindVAO();
 	void CreateDataModel();
 	void BlendSprite();
 	void UnBlendSprite();
+	void BindBuffer() override;
+
 public:
 	Primitive3D(Renderer* renderer);
 	Primitive3D(Renderer* renderer, TypeModel typeModel);
@@ -136,9 +126,9 @@ public:
 	//FUNCTIONS
 	void UseMyMaterial();
 	void SetNewMaterial(Material* mat);
-	void Draw(bool& wireFrameActive);
 	void LoadTexture(const char* path, bool transparent);
 	void SetUseTexture(bool useTexture) { _useTexture = useTexture; }
+	void Draw(bool& wireFrameActive) override;
 	
 };
 #endif // !MODEL_H

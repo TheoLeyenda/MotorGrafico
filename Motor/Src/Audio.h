@@ -11,8 +11,13 @@ private:
 	irrklang::ISoundSource *SoundSource = NULL;
 	irrklang::IAudioRecorder* SoundRecorder = NULL;
 	bool isPlaying = false;
+
+protected:
+	void BindBuffer() override;
 public:
 	Audio(Renderer* render);
+
+	void Draw(bool& wireFrameActive) override;
 
 	void PlayAudio2D(const char* pathMusicFile, bool loop);
 

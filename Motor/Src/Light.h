@@ -22,13 +22,11 @@ public:
 		Spot
 	};
 
-	Light(Renderer* _render, TypeLight type);
+	Light(Renderer* _render, TypeLight type, Camera* camera);
 	Light(glm::vec3 colour, glm::vec3 ambient, glm::vec3 diffuse
-		, glm::vec3 specular, Renderer* render, TypeLight type);
+		, glm::vec3 specular, Renderer* render, TypeLight type, Camera* camera);
 
-	void UseLight(Camera* cameraIn);
-
-	void Draw();
+	void UseLight();
 
 	void SetColorLight(float r, float g, float b);
 	glm::vec3 GetColorLight();
@@ -125,9 +123,6 @@ public:
 	unsigned int GetUniformPosCameraLocation() { return _uniformPosCameraLocation; }
 	
 	//==============================
-	void SetUniformPosLightLocation(Shader& shader);
-	unsigned int GetUniformPosLightLocation() { return _uniformPosLightPointLoc; }
-	
 	
 	void SetColour(glm::vec3 colour) { _colour = colour; }
 	void SetAmbient(glm::vec3 ambient) { _ambient = ambient; }
@@ -142,16 +137,16 @@ public:
 	void SetTypeLightSpot();
 	void SetTypeLightDirectional();
 
+	void SetCurrentCamera(Camera* camera) { _currentCamera = camera; }
+	
+	void Draw(bool& wireFrameActive) override;
+
 	~Light();
 protected:
+	void BindBuffer() override;
 	void SetVAO();
 	void SetVBO();
 	void SetIBO();
-	void BindVAO();
-	void BindIBO();
-	void BindVBO();
-	void UnbindIBO();
-	void UnbindVAO();
 	void UnbindBuffers();
 	void CreateDataLight();
 
@@ -171,6 +166,9 @@ protected:
 
 	void SetCountLightInShader(Shader shader);
 	void UpdateCountLightInShader(Shader shader);
+
+
+	Camera* _currentCamera;
 
 private:
 	float lightSourceCube[lightCubeCount] = {
@@ -199,13 +197,7 @@ private:
 	6, 7, 3
 	};
 
-	unsigned int _posAttribLight;
-	unsigned int _colAttribLight;
-	unsigned int _vboLight;
-	unsigned int _iboLight;
-	unsigned int _vaoLight;
-
-
+	
 	//=========================================
 	//Directional
 	unsigned int _uniformDirectionLocation;

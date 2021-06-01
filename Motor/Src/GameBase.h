@@ -28,12 +28,13 @@ private:
 
 	vector<Light*> _lights;
 	void HandleCamera();				//Funcion interna del engine
-	void HandleLight(Camera* camera);	//Funcion interna del engine
+	void HandleLight();	//Funcion interna del engine
 
 	bool useDebugWindows = true;
 
 protected:
 	static vector<Entity*> entitysDebugInGame;
+
 
 	Windows* windows = NULL;
 	Renderer* render = NULL;
@@ -53,9 +54,9 @@ public:
 	void UpdateEngine();
 	void DestroyEngine();
 
-	void AddObjectInDenugGame(Entity* entity);
+	static void AddObjectInDenugGame(Entity* entity);
 
-	void RemoveObjectInDebugGame(Entity* entity);
+	static void RemoveObjectInDebugGame(Entity* entity);
 
 	void SetUseDebugWindows(bool value) { useDebugWindows = value; }
 
@@ -64,9 +65,9 @@ public:
 	void RemoveLight(int id);
 	void SetLightPosition(int id, glm::vec3 position);
 	void SetTypeLightDefault(int id, Light::TypeLight setType);
-	void SetTypeLightCustom(int id, glm::vec3 direction);
-	void SetTypeLightCustom(int id, float linearVal, float quadraticVal, float cutOffValue);
-	void SetTypeLightCustom(int id, float linearVal, float quadraticVal, float cutOffValue, float outerCutOffValue);
+	void SetSettingsLightCustom(int id, glm::vec3 direction);
+	void SetSettingsLightCustom(int id, float linearVal, float quadraticVal, float cutOffValue);
+	void SetSettingsLightCustom(int id, float linearVal, float quadraticVal, float cutOffValue, float outerCutOffValue);
 	void ChangeColorLight(int id, glm::vec3 color );
 	void GetMyLightsID();
 

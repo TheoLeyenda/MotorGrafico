@@ -85,50 +85,43 @@ vec3 CalcSpotLight(SpotLight spotLigh, vec3 normal, vec3 fragPos, vec3 viewDir);
 
 void main()
 {
-	//if (isModel == 0) 
-	//{
-		vec3 outPutDirectional = vec3(0.0);
-		vec3 outPutPoint = vec3(0.0);
-		vec3 outPutSpot = vec3(0.0);
+	vec3 outPutDirectional = vec3(0.0);
+	vec3 outPutPoint = vec3(0.0);
+	vec3 outPutSpot = vec3(0.0);
 
-		vec3 viewDir = normalize(cameraPos - FragPos);
-		vec3 norm = normalize(Normal);
+	vec3 viewDir = normalize(cameraPos - FragPos);
+	vec3 norm = normalize(Normal);
 
-		int aux = nr_of_directional_light;
-		if(aux >= SIZE_DIRECTIONAL_LIGHTS)
-			aux = SIZE_DIRECTIONAL_LIGHTS;
+	int aux = nr_of_directional_light;
+	if(aux >= SIZE_DIRECTIONAL_LIGHTS)
+		aux = SIZE_DIRECTIONAL_LIGHTS;
 
-		for (int i = 0; i < aux; i++)
-		{
-			outPutDirectional += CalcDirLight(dirLight[i], norm,viewDir);
-		}
+	for (int i = 0; i < aux; i++)
+	{
+		outPutDirectional += CalcDirLight(dirLight[i], norm,viewDir);
+	}
 
-		aux = nr_of_point_lights;
-		if(aux >= SIZE_POINT_LIGHTS)
-			aux = SIZE_POINT_LIGHTS;
+	aux = nr_of_point_lights;
+	if(aux >= SIZE_POINT_LIGHTS)
+		aux = SIZE_POINT_LIGHTS;
 
-		for (int i = 0; i < aux; i++)
-		{
-			outPutPoint += CalcPointLight(pointLight[i], norm, FragPos, viewDir);
-		}
+	for (int i = 0; i < aux; i++)
+	{
+		outPutPoint += CalcPointLight(pointLight[i], norm, FragPos, viewDir);
+	}
 
-		aux = nr_of_spot_light;
-		if(aux >= SIZE_SPOT_LIGHTS)
-			aux = SIZE_SPOT_LIGHTS;
+	aux = nr_of_spot_light;
+	if(aux >= SIZE_SPOT_LIGHTS)
+		aux = SIZE_SPOT_LIGHTS;
 
-		for (int i = 0; i < aux; i++)
-		{
-			outPutSpot += CalcSpotLight(spotLight[i], norm, FragPos, viewDir);
-		}
-		vec4 outPutShader = vec4((outPutDirectional+outPutPoint+outPutSpot), 1.0);
-		vec4 result = (outPutShader + texture(ourTexture, texCoord));
+	for (int i = 0; i < aux; i++)
+	{
+		outPutSpot += CalcSpotLight(spotLight[i], norm, FragPos, viewDir);
+	}
+	vec4 outPutShader = vec4((outPutDirectional+outPutPoint+outPutSpot), 1.0);
+	vec4 result = (outPutShader + texture(ourTexture, texCoord));
 
-		FragColor = result;
-	//}
-	//else if (isModel == 1)
-	//{
-	//	FragColor = texture(texture_diffuse1, texCoord);
-	//}
+	FragColor = result;
 }
 
 vec3 CalcDirLight(DireLight directionalLight, vec3 normal, vec3 viewDir)

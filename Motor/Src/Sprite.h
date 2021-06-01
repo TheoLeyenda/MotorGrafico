@@ -25,17 +25,24 @@ private:
 	int nrChannels;
 	TextureImporter* texImporter;
 	bool _transparency;
-	Animation* animation;
+	Animation* animation = NULL;
 	int _currentFrame;
 	int _previusFrame;
 	unsigned int _vbo;
 
 	void InitTextureVertexCoord();
+	void BindBufferSprite();
+protected:
+	void BindBuffer() override;
+	void UpdateSprite(Time& timer);
 public:
-	Sprite(Renderer *_renderer, Material* _material, const char* filePath, bool transparency);
+	void Draw(bool& wireFrameActive) override;
+	
+	void SetAttribsSprite();
+
 	Sprite(Renderer * _renderer, const char* filePath, bool transparency);
 	~Sprite();
-	void Draw();
+	void Draw(Time& timer);
 	void SetTextureCoordinates(float u0, float v0,
 							   float u1, float v1,
 							   float u2, float v2,
@@ -43,11 +50,9 @@ public:
 	TextureImporter* GetTextureImporter() { return texImporter; }
 	void SetAnimation(Animation* _animation);
 	Animation* GetAnimation() { return animation; }
-	void UpdateSprite(Time& timer);
 	int getWidth();
 	int getHeigth();
 	int getNrChannels();
-	void SetAttribsSprite();
 	void SetCurrentAnimationIndex(int currentAnimation) { if (animation != NULL) animation->SetCurrentAnimation(currentAnimation); }
 
 private:

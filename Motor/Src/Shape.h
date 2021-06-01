@@ -11,11 +11,6 @@ static enum TypeShape
 	TRIANGLE = 0x0004,
 	QUAD = 0x0007,
 };
-static enum TypeColorShape 
-{
-	SolidColor,
-	VertexColor,
-};
 static enum TypeMaterial 
 {
 	TextureType = 1,
@@ -28,7 +23,6 @@ private:
 	float* _vertexBuffer;
 	unsigned int _vbo;
 	unsigned int _currentShape;
-	TypeColorShape _typeColorShape;
 	TypeMaterial _typeMaterial;
 
 	//Texture
@@ -48,32 +42,33 @@ private:
 	//int width;
 	//int height;
 	//int nrChannels;
+protected:
+	void BindBuffer() override;
+	void SetVAO();
+	void SetVBO();
+	void SetIBO();
+	void UnbindBuffers();
+	void CreateDataShape();
+	void BlendSprite();
+	void UnBlendSprite();
+	void UseShape(int indices, Shader& shader, bool& wireFrameActive);
+	void LoadTexture(const char* path, bool transparent);
 public:
+
+	void Draw(bool& wireFrameActive) override;
+
 	unsigned int _texture;
 
 	Shape(Renderer *_renderer, TypeShape typeShape, const char* filePath);
-	Shape(Renderer *_renderer, TypeShape typeShape, Material* _material, const char* filePath);
-	Shape(Renderer *_renderer, TypeShape typeShape, TypeColorShape typeColorShape);
-	Shape(Renderer *_renderer, Material* _material, TypeShape typeShape, TypeColorShape typeColorShape);
+	Shape(Renderer *_renderer, TypeShape typeShape);
 	~Shape();
 
 	//Textures
 
-	void SetShape(unsigned int typeShape, TypeColorShape typeColorShape);
-	void CreateVbo(float* vertexBuffer);
+	void SetNewMaterial(Material * mat);
+
+	void BindGeneralData();
 	unsigned int GetVbo();
-	float* GetVertexBuffer();
-	void SetVertexMaterial(glm::vec4 material,float* VBA, int start,int offset, int repeticiones);
-	void SetVertexMaterial(glm::vec4* materials, float* VBA, int start, int offset, int repeticiones, int countElementsForRepe);
-	void Draw(unsigned int figura, int vertexs);
-	void SetSolidColor(float r, float g, float b);
-	void SetTypeColorShape(TypeColorShape typeColorShape) { _typeColorShape = typeColorShape; }
-	TypeColorShape GetTypeColorShape() { return _typeColorShape; }
 	unsigned int GetCurrentShape() { return _currentShape; }
-	void SetVertexsAttribShape(TypeMaterial typeMaterial);
-	
-	void BlendSprite();
-	void UnBlendSprite();
-	void LoadTexture(const char* path, bool transparent);
 };
 #endif

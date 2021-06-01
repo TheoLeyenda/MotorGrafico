@@ -78,7 +78,22 @@ protected:
 	string nameEntity;
 	bool showInDebug = false;
 
+	unsigned int _ibo;
+	unsigned int _vbo;
+	unsigned int _vao;
+	unsigned int _uniformModelLocation;
+	unsigned int _uniformViewLocation;
+	unsigned int _uniformProjectionLocation;
+	unsigned int _positionLocation;
+	unsigned int _texLocation;
+	unsigned int _colorLocation;
+	unsigned int _normalLocation;
+
+	virtual void BindBuffer() = 0;
+
 public:
+	virtual void Draw(bool& wireFrameActive) = 0;
+
 	void SetShowInDebug(float value) { showInDebug = value; }
 	bool GetShowInDebug() { return showInDebug; }
 	Entity(Renderer *_renderer);

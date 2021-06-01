@@ -35,12 +35,17 @@ private:
 	glm::vec3 _up;
 	glm::vec3 _right;
 	glm::vec3 _worldUp;
-
+	matrixMVP _MVP;
 	float _yaw;
 	float _pitch;
-
+protected:
+	void BindBuffer() override;
 public:
-
+	void Draw(bool& wireFrameActive) override;
+	void UseCamera(Shader& shader, glm::mat4 trsCamera);
+	void SetView();
+	void SetProjectionPerspective(float FOV, float aspect, float, float front);
+	void SetProjectionOrtho(float left, float right, float bottom, float top, float, float front);
 	TypeProjectionCamera typeProjectionCamera;
 	ProjectionDataPerspective projectionDataPerspective;
 	ProjectionDataOrtho projectionDataOrtho;
@@ -61,6 +66,10 @@ public:
 	void ChangePerspective(TypeProjectionCamera _typeProjectionCamera);
 
 	void UseProjection();
+
+	glm::mat4 getViewMat();
+
+	glm::mat4 getProjMat();
 
 	void RotateCameraX(float speed);
 	void RotateCameraY(float speed);

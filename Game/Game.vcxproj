@@ -182,9 +182,11 @@
     <Image Include="res\modelos\Alfator\textures\1.png" />
     <Image Include="res\modelos\Alfator\textures\2.png" />
     <Image Include="res\modelos\BanioSovietico\source\texturaRusaDeMadera.png" />
+    <Image Include="res\texturas\Algun dia.png" />
     <Image Include="res\texturas\bokitaElMasGrandePapa.png" />
     <Image Include="res\texturas\caminataPiola.png" />
     <Image Include="res\texturas\Facharda.jpg" />
+    <Image Include="res\texturas\nave.png" />
     <Image Include="res\texturas\PlayerShit.png" />
   </ItemGroup>
   <ItemGroup>

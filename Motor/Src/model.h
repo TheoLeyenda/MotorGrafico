@@ -21,7 +21,10 @@ class Time;
 
 class ENGINE_API Model : public Entity
 {
+protected:
+	void BindBuffer() override;
 public:
+	void Draw(bool& wireFrameActive) override;
 	vector<Texture> textures_loaded;	// stores all the textures loaded so far, optimization to make sure textures aren't loaded more than once.
 	vector<Mesh> meshes;
 	string directory;

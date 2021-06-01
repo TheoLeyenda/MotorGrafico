@@ -4,53 +4,38 @@
 #include <GLFW/glfw3.h>
 #include "stb_image.h"
 
-#define FINALARRAY 5
+const int countElementsForVertex = 5;
 
-float vertexBufferTextureTri[] = {
-	//X		  Y		 Z		R	  G	    B  	  S	    T
-	-0.5f , -0.5f , 0.0f, 0.0f , 0.0f ,0.0f, 0.0f, 0.0f,
-	 0.5f , -0.5f , 0.0f, 0.0f , 0.0f ,0.0f, 1.0f, 0.0f,
-	 0.0f ,  0.5f , 0.0f, 0.0f , 0.0f, 0.0f, 0.5f, 1.0f, FINALARRAY
+const int countElementsBufferTri = 15;
+const int countElementsIndexBufferTri = 4;
+
+const int countElementsBufferQuad = 20;
+const int countElementsIndexBufferQuad = 6;
+
+float vertexBufferTri[countElementsBufferTri] = {
+	//X		  Y		 Z     U	 V
+	-0.5f , -0.5f , 0.0f, 0.0f, 0.0f,
+	 0.5f , -0.5f , 0.0f, 1.0f, 0.0f,
+	 0.0f ,  0.5f , 0.0f, 0.5f, 1.0f,
 };
 
-float vertexBufferTextureQuad[] = {
-	//X		  Y		 Z		R	  G	    B      S     T
-	-0.5f ,  0.5f , 0.0f, 0.0f , 0.0f , 0.0f, 0.0f, 1.0f,
-	-0.5f , -0.5f , 0.0f, 0.0f , 0.0f , 0.0f, 0.0f, 0.0f,
-	 0.5f , -0.5f , 0.0f, 0.0f , 0.0f , 0.0f, 1.0f, 0.0f,
-	 0.5f ,  0.5f , 0.0f, 0.0f , 0.0f , 0.0f, 1.0f, 1.0f,FINALARRAY
+float vertexBufferQuad[countElementsBufferQuad] = {
+	//X		  Y		 Z		U     V
+	-0.5f , -0.5f , 0.0f,  0.0f, 0.0f,
+	 0.5f , -0.5f , 0.0f,  1.0f, 0.0f,
+	 0.5f ,  0.5f , 0.0f,  1.0f, 1.0f,
+	-0.5f ,  0.5f , 0.0f,  0.0f, 1.0f,
 };
 
-float vertexBufferColorTri[] = {
-	//X		  Y		 Z		R	  G	    B	  A
-	-0.5f , -0.5f , 0.0f, 0.0f , 0.0f ,0.0f, 1.0f,
-	 0.5f , -0.5f , 0.0f, 0.0f , 0.0f ,0.0f, 1.0f,
-	 0.0f ,  0.5f , 0.0f, 0.0f , 0.0f, 0.0f, 1.0f,FINALARRAY
-};
-
-float vertexBufferColorQuad[] = {
-	//X		  Y		 Z	   R	  G	     B	   A
-	-0.5f ,  0.5f , 0.0f, 0.0f , 0.0f , 0.0f, 1.0f,
-	-0.5f , -0.5f , 0.0f, 0.0f , 0.0f , 0.0f, 1.0f,
-	 0.5f , -0.5f , 0.0f, 0.0f , 0.0f , 0.0f, 1.0f,
-	 0.5f ,  0.5f , 0.0f, 0.0f , 0.0f , 0.0f, 1.0f,FINALARRAY
-};
-
-float ColorTri[]
+unsigned int indexBufferTri[countElementsIndexBufferTri] =
 {
-	1.0f,0.0f,0.0f,1.0f,
-	0.0f,1.0f,0.0f,1.0f,
-	0.0f,0.0f,1.0f,1.0f,
+	0,1,2,0,
 };
 
-float ColorQuad[]
+unsigned int indexBufferQuad[countElementsIndexBufferQuad] =
 {
-	1.0f,0.0f,0.0f,1.0f,
-	0.0f,1.0f,0.0f,1.0f,
-	0.0f,0.0f,1.0f,1.0f,
-	1.0f,0.0f,1.0f,1.0f,
+	0, 1, 2, 2, 3, 0,
 };
-
 
 Shape::Shape(Renderer * _renderer,TypeShape typeShape, const char * filePath): Entity2D(_renderer)
 {
@@ -60,10 +45,10 @@ Shape::Shape(Renderer * _renderer,TypeShape typeShape, const char * filePath): E
 	_transparency = false;
 	texImporter = new TextureImporter();
 
+	material = NULL;
 	_typeMaterial = TypeMaterial::TextureType;
 
-	SetShape(_currentShape, _typeColorShape);
-	SetVertexsAttribShape(_typeMaterial);
+	CreateDataShape();
 
 	if (_transparency)
 		BlendSprite();
@@ -71,50 +56,13 @@ Shape::Shape(Renderer * _renderer,TypeShape typeShape, const char * filePath): E
 	LoadTexture(_path, _transparency);
 }
 
-Shape::Shape(Renderer * _renderer, TypeShape typeShape, Material * _material,  const char * filePath): Entity2D(_renderer, _material)
+Shape::Shape(Renderer * _renderer, TypeShape typeShape) : Entity2D(_renderer)
 {
 	_currentShape = typeShape;
-	renderer = _renderer;
-
-	_path = filePath;
-	_transparency = false;
-	texImporter = new TextureImporter();
-
-	material = _material;
-	_typeMaterial = TypeMaterial::TextureType;
-
-	SetShape(_currentShape, _typeColorShape);
-	SetVertexsAttribShape(_typeMaterial);
-	if(_transparency)
-		BlendSprite();
-
-	LoadTexture(_path, _transparency);
-}
-
-Shape::Shape(Renderer *_renderer, TypeShape typeShape, TypeColorShape typeColorShape): Entity2D(_renderer)
-{
-	_currentShape = typeShape;
-	_typeColorShape = typeColorShape;
 	renderer = _renderer;
 	_typeMaterial = TypeMaterial::ColorType;
-	
 	_path = "None Path";
-	SetShape(_currentShape, _typeColorShape);
-	SetVertexsAttribShape(_typeMaterial);
-
-}
-
-Shape::Shape(Renderer * _renderer, Material * _material, TypeShape typeShape, TypeColorShape typeColorShape) : Entity2D(_renderer, _material)
-{
-	_currentShape = typeShape;
-	_typeColorShape = typeColorShape;
-	renderer = _renderer;
-	material = _material;
-	_typeMaterial = TypeMaterial::ColorType;
-
-	_path = "None Path";
-	SetShape(_currentShape, _typeColorShape);
-	SetVertexsAttribShape(_typeMaterial);
+	CreateDataShape();
 
 }
 Shape::~Shape()
@@ -122,116 +70,29 @@ Shape::~Shape()
 	if (texImporter != NULL)
 		delete texImporter;
 }
-//==============================================
-void Shape:: BlendSprite() {
-	glEnable(GL_BLEND);
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-}
-void Shape::UnBlendSprite() {
-	glDisable(GL_BLEND);
-}
-void Shape::LoadTexture(const char* path, bool transparent) {
-	_transparency = transparent;
-	texImporter->LoadTexture(path, data, _texture, _width, _height, _nrChannels, _transparency);
-}
-//==============================================
-void Shape::SetVertexsAttribShape(TypeMaterial typeMaterial)
+void Shape::SetNewMaterial(Material * mat)
 {
-	renderer->SetVertexsAttribShape(typeMaterial);
+	material = mat;
+
+	renderer->SetMaterial(material);
 }
-void Shape::SetShape(unsigned int typeShape, TypeColorShape typeColorShape)
+
+void Shape::Draw(bool& wireFrameActive) 
 {
-	_currentShape = typeShape;
-	_typeColorShape = typeColorShape;
-	switch (typeShape)
+	BindBuffer();
+	switch(_currentShape)
 	{
-	case GL_TRIANGLES:
-		if (_typeMaterial == TypeMaterial::TextureType) 
-		{
-			_vertexBuffer = vertexBufferTextureTri;
-		}
-		else 
-		{
-			_vertexBuffer = vertexBufferColorTri;
-			if (_typeColorShape == TypeColorShape::SolidColor) {
-				material->SetMaterialValue(0.5f, 0.3f, 0.2f, 1.0f);
-				SetVertexMaterial(material->GetColorRGBA(), vertexBufferColorTri, 3, 4, 3);
-			}
-			else if (_typeColorShape == TypeColorShape::VertexColor) {
-				material->SetMaterialValue(ColorTri, 4, 3);
-				SetVertexMaterial(material->GetVertexColorRGBA(), vertexBufferColorTri, 3, 4, 3, 4);
-			}
-		}
-		break;
-	case GL_QUADS:
-		if (_typeMaterial == TypeMaterial::TextureType) 
-		{
-			_vertexBuffer = vertexBufferTextureQuad;
-		}
-		else 
-		{
-			_vertexBuffer = vertexBufferColorQuad;
-			if (_typeColorShape == TypeColorShape::SolidColor) {
-				material->SetMaterialValue(0.5f, 0.3f, 0.2f, 1.0f);
-				SetVertexMaterial(material->GetColorRGBA(),vertexBufferColorQuad,3,4,4);
-			}
-			else if (_typeColorShape == TypeColorShape::VertexColor) {
-				material->SetMaterialValue(ColorQuad, 4, 4);
-				SetVertexMaterial(material->GetVertexColorRGBA(), vertexBufferColorQuad, 3, 4, 4, 4);
-			}
-		}
-		break;
-	}
-	CreateVbo(_vertexBuffer);
-}
-
-void Shape::CreateVbo(float* vertexBuffer)
-{
-	int tam = 0;
-	while (vertexBuffer[tam] <= 1 && vertexBuffer[tam] >= -1){
-		tam++;
-	}
-	glGenBuffers(1, &_vbo);
-	glBindBuffer(GL_ARRAY_BUFFER, _vbo);
-	glBufferData(GL_ARRAY_BUFFER, tam * sizeof(float), vertexBuffer, GL_DYNAMIC_DRAW);
-}
-
-unsigned int Shape::GetVbo(){
-	return _vbo;
-}
-
-float* Shape::GetVertexBuffer()
-{
-	return _vertexBuffer;
-}
-
-void Shape::SetVertexMaterial(glm::vec4 material, float* VBA, int offset, int stride, int repeticiones){
-	
-	for (int i = 0; i < repeticiones; i++){
-		for (int j = offset; j < stride+offset; j++){
-			VBA[j + (offset + stride) * i] = material[j-offset];
-		}
+		case TypeShape::QUAD:
+			UseShape(countElementsIndexBufferQuad, renderer->GetCurrentShaderUse(), wireFrameActive);
+			break;
+		case TypeShape::TRIANGLE:
+			UseShape(countElementsIndexBufferTri, renderer->GetCurrentShaderUse(), wireFrameActive);
+			break;
 	}
 }
 
-void Shape::SetVertexMaterial(glm::vec4* materials, float* VBA, int start, int offset, int repeticiones, int countElementsForRepe)
+void Shape::UseShape(int indices, Shader& shader, bool& wireFrameActive)
 {
-	int k = 0;
-	for (int i = 0; i < repeticiones; i++) 
-	{
-		for (int j = start; j < offset + start; j++) 
-		{
-			VBA[j + (start + offset) * i] = materials[i][k];
-			std::cout << VBA[j + (start + offset) * i];
-			k++;
-		}
-		k = 0;
-	}
-}
-
-void Shape::Draw(unsigned int figura,int vertexs)
-{
-	_currentShape = figura;
 	if (renderer != NULL)
 	{
 		CheckIsModel();
@@ -240,44 +101,126 @@ void Shape::Draw(unsigned int figura,int vertexs)
 		{
 			if (_transparency)
 				BlendSprite();
-			glEnable(GL_TEXTURE_2D);
 
+			glEnable(GL_TEXTURE_2D);
 			glActiveTexture(GL_TEXTURE0);
 			glBindTexture(GL_TEXTURE_2D, _texture);
+		}
+		
+		if(material != NULL)
+			material->UseMaterial(shader);
+		
+		renderer->Draw(indices, shader, internalData.model, wireFrameActive);
 
-			renderer->DrawShape(figura, vertexs, GetVbo(), renderer->GetShaderTexture(), internalData.model, true);
-
+		if (_typeMaterial == TypeMaterial::TextureType) 
+		{
 			glBindBuffer(GL_ARRAY_BUFFER, 0);
+			glBindTexture(GL_TEXTURE_2D, 0);
 			glDisable(GL_TEXTURE_2D);
 
 			if (_transparency)
 				UnBlendSprite();
-			
-		}
-		else if(_typeMaterial == TypeMaterial::ColorType)
-		{
-			renderer->DrawShape(figura, vertexs, GetVbo(), renderer->GetShaderColor(), internalData.model, false);
 		}
 	}
 }
 
-void Shape::SetSolidColor(float r, float g, float b)
+//==============================================
+void Shape:: BlendSprite() {
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+}
+void Shape::UnBlendSprite()
 {
-	material->SetMaterialValue(r, g, b,1.0f);
+	glDisable(GL_BLEND);
+}
+void Shape::LoadTexture(const char* path, bool transparent) {
+	_transparency = transparent;
+	texImporter->LoadTexture(path, data, _texture, _width, _height, _nrChannels, _transparency);
+}
+//==============================================
+
+unsigned int Shape::GetVbo(){
+	return _vbo;
+}
+
+#pragma region FUNCIONES DE INICIALIZACION DE DATA
+
+void Shape::CreateDataShape()
+{
+	//---
+	SetVAO();
+	//---
+	SetIBO();
+	//---
+	SetVBO();
+	//---
+	UnbindBuffers();
+	//---
+}
+
+void Shape::BindBuffer()
+{
+	glBindBuffer(GL_ARRAY_BUFFER, _vbo);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _ibo);
+	BindGeneralData();
+}
+
+void Shape::BindGeneralData()
+{
+	glVertexAttribPointer(_positionLocation, 3, GL_FLOAT, GL_FALSE, countElementsForVertex * sizeof(float), 0);
+	glEnableVertexAttribArray(_positionLocation);
+	glVertexAttribPointer(_texLocation, 2, GL_FLOAT, GL_FALSE, countElementsForVertex * sizeof(float), (void*)(3 * sizeof(float)));
+	glEnableVertexAttribArray(_texLocation);
+}
+
+void Shape::SetVAO()
+{
+	glGenVertexArrays(1, &_vao);
+	glBindVertexArray(_vao);
+}
+
+void Shape::SetIBO()
+{
+	glGenBuffers(1, &_ibo);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _ibo);
 	switch (_currentShape)
 	{
-	case GL_TRIANGLES:
-		SetVertexMaterial(material->GetColorRGBA(), vertexBufferColorTri, 3, 4, 3);
+	case TypeShape::QUAD:
+		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indexBufferQuad), indexBufferQuad, GL_STATIC_DRAW);
 		break;
-	case GL_QUADS:
-		SetVertexMaterial(material->GetColorRGBA(), vertexBufferColorQuad, 3, 4, 4);
+	case TypeShape::TRIANGLE:
+		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indexBufferTri), indexBufferTri, GL_STATIC_DRAW);
 		break;
 	}
-	glBindBuffer(GL_ARRAY_BUFFER, _vbo);
-	int tam = 0;
-	while (_vertexBuffer[tam] <= 1 && _vertexBuffer[tam] >= -1) {
-		tam++;
-	}
-	glBufferData(GL_ARRAY_BUFFER, tam * sizeof(float), _vertexBuffer, GL_DYNAMIC_DRAW);
-	//renderer->SetShader();
 }
+
+void Shape::SetVBO()
+{
+	glGenBuffers(1, &_vbo);
+	glBindBuffer(GL_ARRAY_BUFFER, _vbo);
+
+	switch (_currentShape)
+	{
+	case TypeShape::QUAD:
+		glBufferData(GL_ARRAY_BUFFER, sizeof(vertexBufferQuad), vertexBufferQuad, GL_DYNAMIC_DRAW);
+		break;
+	case TypeShape::TRIANGLE:
+		glBufferData(GL_ARRAY_BUFFER, sizeof(vertexBufferTri), vertexBufferTri, GL_DYNAMIC_DRAW);
+		break;
+	}
+
+	_positionLocation = glGetAttribLocation(renderer->GetCurrentShaderUse().getId(), "position");
+	glUniform1i(_texLocation = glGetUniformLocation(renderer->GetCurrentShaderUse().getId(), "ourTexture"),_texture);
+	BindGeneralData();
+}
+
+void Shape::UnbindBuffers()
+{
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	glBindVertexArray(0);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+}
+
+#pragma endregion
+
+

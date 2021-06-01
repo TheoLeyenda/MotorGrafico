@@ -61,6 +61,12 @@
     <Image Include="res\modelos\Alfator\textures\2.png">
       <Filter>Archivos de recursos</Filter>
     </Image>
+    <Image Include="res\texturas\Algun dia.png">
+      <Filter>Archivos de recursos</Filter>
+    </Image>
+    <Image Include="res\texturas\nave.png">
+      <Filter>Archivos de recursos</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <None Include="res\shaders\FragmentColor.shader" />

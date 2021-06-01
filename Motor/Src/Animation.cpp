@@ -1,8 +1,6 @@
 #include "Animation.h"
 #include <iostream>
 
-
-
 Animation::Animation()
 {
 	_currentTime = 0;
@@ -18,7 +16,7 @@ Animation::~Animation()
 		_totalFrames.clear();
 }
 
-void Animation::Update(Time & timer)
+void Animation::Update(Time& timer)
 {
 	_currentTime += (timer.deltaTime());
 	
@@ -33,16 +31,6 @@ void Animation::Update(Time & timer)
 
 	//std::cout << "CurrenTime frame anim: "<<_currentFrame << std::endl;
 }
-
-/*
-float textureVertex[] = {
-	//    x     y     z     u     v
-	   -0.5f,  0.5f, 0.0f, 0.0f, 1.0f,
-		0.5f,  0.5f, 0.0f, 1.0f, 1.0f,
-		0.5f, -0.5f, 0.0f, 1.0f, 0.0f,
-	   -0.5f, -0.5f, 0.0f, 0.0f, 0.0f
-};
-*/
 void Animation::AddFrame(float frameX, float frameY, int spriteWidth, int spriteHeigth, int textureWidth, int textureHeigth, float timeToAnim, int totalFrames, int countFramesForFilas)
 {
 	_length = timeToAnim;
@@ -95,7 +83,7 @@ void Animation::AddFrame(float frameX, float frameY, int spriteWidth, int sprite
 
 	//for (int i = 0; i < _animations.size(); i++) 
 	//{
-		//cout << "TAM ANIM " << i<<":" << _animations[i].size() << endl;
+	//	cout << "TAM ANIM " << i<<":" << _animations[i].size() << endl;
 	//}
 }
 void Animation::AddFrame(float frameX, float frameY, int spriteWidth, int spriteHeigth, int textureWidth, int textureHeigth, float timeToAnim)
