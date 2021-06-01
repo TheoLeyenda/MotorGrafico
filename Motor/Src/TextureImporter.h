@@ -7,6 +7,6 @@ class ENGINE_API TextureImporter {
 public:
 	TextureImporter();
 	~TextureImporter();
-	void LoadTexture(const char* path, unsigned char* data, unsigned int& texture, int width, int height, int channels, bool transparent);
+	bool LoadTexture(const char* path, unsigned char* data, unsigned int& texture, int width, int height, int channels, bool transparent);
 };
 #endif

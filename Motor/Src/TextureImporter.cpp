@@ -13,13 +13,13 @@ TextureImporter::TextureImporter() {
 }
 TextureImporter::~TextureImporter() {
 }
-void TextureImporter::LoadTexture(const char* path, unsigned char* data, unsigned int& texture, int width, int height, int channels, bool transparent) {
+bool TextureImporter::LoadTexture(const char* path, unsigned char* data, unsigned int& texture, int width, int height, int channels, bool transparent) {
 	stbi_set_flip_vertically_on_load(true);
 
 	data = stbi_load(path, &width, &height, &channels, 0);
 	if (!data) {
 		std::cout << "No Carga Textura" << std::endl;
-		return;
+		return false;
 	}
 
 	glGenTextures(1, &texture);
@@ -40,4 +40,6 @@ void TextureImporter::LoadTexture(const char* path, unsigned char* data, unsigne
 	glBindTexture(GL_TEXTURE_2D, 0);
 
 	stbi_image_free(data);
+
+	return true;
 }

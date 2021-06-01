@@ -5,60 +5,27 @@
 #include <string>
 #include <vector>
 
-class Material;
+const int elementsForVertex = 8;
 
-struct ENGINE_API Vertex
+class ENGINE_API Mesh : public Entity
 {
-	// position
-	glm::vec3 Position;
-	// normal
-	glm::vec3 Normal;
-	// texCoords
-	glm::vec2 TexCoords;
-	// tangent
-	//glm::vec3 Tangent;
-	// bitangent
-	//glm::vec3 Bitangent;
-};
+private:	
+	int countIndices;
 
-struct ENGINE_API Texture {
-	unsigned int id;
-	string type;
-	string path;
-};
-
-class ENGINE_API Mesh : public Entity 
-{
 protected:
+	void SetVBO(float* vertices, unsigned int numVertices);
+	void SetVAO();
+	void SetIBO(unsigned int* indices, unsigned int numIndices);
+
+	void BindDataMesh();
+	void UnbindBuffers();
+
 	void BindBuffer() override;
-
 public:
-	// mesh data
-	vector<Vertex>       vertices;
-	vector<unsigned int> indices;
-	vector<Texture>      textures;
+	Mesh(Renderer* render);
+	~Mesh();
 
+	void CreateMesh(float* vertices, unsigned int* indices, unsigned int numVertices, unsigned int numOfIndices);
 	void Draw(bool& wireFrameActive) override;
-
-	Mesh(vector<Vertex> vertices, vector<unsigned int> indices, vector<Texture> textures, Renderer* render);
-	void Draw(Shader &shader);
-
-	void SetNewMaterial(Material* mat);
-	void UseMyMaterial();
-
-private:
-	//  render data
-	unsigned int VAO, VBO, EBO;
-	Material* my_Mat;
-
-	unsigned int _normAttrib;
-	unsigned int _textureAttrib;
-	unsigned int _tangentAttrib;
-	unsigned int _bitangentAttrib;
-	unsigned int _posAttrib;
-	void SetupMesh();
-	void BindMesh();
-
 };
-
 #endif

@@ -81,6 +81,7 @@ protected:
 	unsigned int _ibo;
 	unsigned int _vbo;
 	unsigned int _vao;
+
 	unsigned int _uniformModelLocation;
 	unsigned int _uniformViewLocation;
 	unsigned int _uniformProjectionLocation;

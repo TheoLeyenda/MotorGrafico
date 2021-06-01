@@ -69,7 +69,6 @@ void Renderer::UnbindBuffer() {
 	ClearShader();
 }
 
-
 void Renderer::SetLighting(Light * _light, int iteration)
 {
 	if (_light != NULL)
@@ -138,7 +137,6 @@ void Renderer::BeignDraw() {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
-
 void Renderer::Draw(int indices, Shader& shaderProg, glm::mat4 model, bool& wireframeActive)
 {
 	UseShaderEnt(shaderProg, model);
@@ -160,9 +158,7 @@ void Renderer::DrawSprite(unsigned int figura, int vertexs, unsigned int vbo, Sh
 	UnbindBuffer();
 }
 
-
 void Renderer::EndDraw(Windows* refWindow) {
 	ClearShader();
 	refWindow->SwapBuffersWindows();
 }
-

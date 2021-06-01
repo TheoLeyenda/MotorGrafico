@@ -54,10 +54,10 @@ Game::~Game() {}
 
 void Game::InitGame()
 {
-	//model = new Model("res/modelos/Alfator/source/alfator.fbx", "res/modelos/Alfator/textures/" , false, render);
-	//model->SetScaleModel(50.0f, 50.0f, 50.0f);
-	//model->SetRotationModelX(-90.0f);
-	//model->SetNewMaterial(goldMaterial);
+	model = new Model(render);
+	model->LoadModel("res/modelos/pochita.fbx", "res/modelos/");
+	model->SetScaleModel(100.0f, 100.0f, 100.0f);
+	model->SetName("POCHITA PERRI");
 	
 	//COLORES PARA TESTEAR
 	glm::vec3 red = glm::vec3(1.0f, 0.0f, 0.0f);
@@ -91,6 +91,8 @@ void Game::InitGame()
 	AddObjectInDenugGame(GetLight(6));
 	AddObjectInDenugGame(GetLight(0));
 	AddObjectInDenugGame(GetLight(87));
+
+	AddObjectInDenugGame(model);
 
 	//ChangeColorLight(1, red);
 	//ChangeColorLight(2, yellow);
@@ -300,7 +302,7 @@ void Game::UpdateGame(Windows *_window, Renderer *_render, Input *_input)
 		spriteAnimado->Draw(GetTimeClock());
 
 	if (model != NULL)
-		model->Draw(render->GetCurrentShaderUse());
+		model->Draw(motorasoGui->GetIfWireFrameIsActive());
 }
 
 void Game::DestroyGame()

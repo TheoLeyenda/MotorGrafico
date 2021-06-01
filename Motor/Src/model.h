@@ -1,60 +1,44 @@
 #ifndef MODEL_H
 #define MODEL_H
 
-#include "Mesh.h"
-//#include <glad/glad.h> 
+#include <vector>
+#include <string>
 
-#include <glm/glm.hpp>
-//#include <stb_image.h>
 #include <assimp/Importer.hpp>
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
 
-#include <fstream>
-#include <sstream>
-#include <iostream>
-#include <map>
+#include "Mesh.h"
+#include "Texture.h"
 
 using namespace std;
 
-class Time;
-
 class ENGINE_API Model : public Entity
 {
-protected:
-	void BindBuffer() override;
 public:
-	void Draw(bool& wireFrameActive) override;
-	vector<Texture> textures_loaded;	// stores all the textures loaded so far, optimization to make sure textures aren't loaded more than once.
-	vector<Mesh> meshes;
-	string directory;
-	bool gammaCorrection;
+	Model(Renderer* render);
+	~Model();
 
-	Model(string const &path,string const& _directory, bool gamma, Renderer* render);
-	
-	void Draw(Shader &shader);
-	
-	void MoveModel(glm::vec3 direction, float speed, Time* timer);
-	void MoveModel(glm::vec3 direction, float speed, Time timer);
+	void LoadModel(const string& filePath, const string& texturePath);
+	void Draw(bool& wireFrameActive) override;
+	void UnloadModel();
 
 	void SetScaleModel(float x, float y, float z);
+	void SetScaleModel(glm::vec3 scale);
+	void SetPositionModel(float x, float y, float z);
+	void SetPositionModel(glm::vec3 position);
+	void SetRotation(float x, float y, float z);
+protected:
+	void BindBuffer() override;
 
-	void SetRotationModelX(float RotateX);
-	void SetRotationModelY(float RotateY);
-	void SetRotationModelZ(float RotateZ);
-
-	void SetNewMaterial(Material* mat);
 private:
+	vector<Mesh*> meshList;
+	vector<Texture*> textureList;
+	vector<unsigned int> meshToTex;
 
-	void CenterPivotPositionModel();
-	unsigned int TextureFromFile(const char * path, const string & directory, bool gamma, string num);
-	void LoadModel(string path);
-	void ProcessNode(aiNode *node, const aiScene *scene);
-	Mesh ProcessMesh(aiMesh *mesh, const aiScene *scene);
-	vector<Texture> LoadMaterialTextures(aiMaterial *mat, aiTextureType type,
-		string typeName);
-
-	Material* my_Mat;
+	void LoadNode(aiNode* node, const aiScene* scene);
+	void LoadMesh(aiMesh* mesh, const aiScene* scene);
+	void LoadMaterial(const aiScene* scene,const string& texturePath);
 };
 
 #endif
