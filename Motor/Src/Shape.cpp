@@ -79,15 +79,17 @@ void Shape::SetNewMaterial(Material * mat)
 
 void Shape::Draw(bool& wireFrameActive) 
 {
-	BindBuffer();
-	switch(_currentShape)
-	{
+	if (isAlive) {
+		BindBuffer();
+		switch (_currentShape)
+		{
 		case TypeShape::QUAD:
 			UseShape(countElementsIndexBufferQuad, renderer->GetCurrentShaderUse(), wireFrameActive);
 			break;
 		case TypeShape::TRIANGLE:
 			UseShape(countElementsIndexBufferTri, renderer->GetCurrentShaderUse(), wireFrameActive);
 			break;
+		}
 	}
 }
 

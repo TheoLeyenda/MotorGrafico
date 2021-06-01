@@ -58,6 +58,10 @@ public:
 
 	static void RemoveObjectInDebugGame(Entity* entity);
 
+	static void DisableObjectInGame(Entity* entity);
+
+	static void EnableObjectInGame(Entity* entity);
+
 	void SetUseDebugWindows(bool value) { useDebugWindows = value; }
 
 	Light* GetLight(int id);

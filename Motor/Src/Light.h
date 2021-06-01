@@ -140,9 +140,15 @@ public:
 	void SetCurrentCamera(Camera* camera) { _currentCamera = camera; }
 	
 	void Draw(bool& wireFrameActive) override;
+	
 
 	~Light();
 protected:
+	bool _enableBackUpDataLight = true;
+	glm::vec3 _auxColour;
+	glm::vec3 _auxAmbient;
+	glm::vec3 _auxDiffuse;
+	glm::vec3 _auxSpecular;
 	void BindBuffer() override;
 	void SetVAO();
 	void SetVBO();
@@ -167,10 +173,10 @@ protected:
 	void SetCountLightInShader(Shader shader);
 	void UpdateCountLightInShader(Shader shader);
 
-
 	Camera* _currentCamera;
 
 private:
+	
 	float lightSourceCube[lightCubeCount] = {
 		//	x		y		z	
 		  -1.0,   -1.0,    1.0,   1.0,   1.0,    1.0,

@@ -131,6 +131,8 @@ void Game::InitGame()
 	cube2->SetNewMaterial(goldMaterial);
 	cube2->SetName("cube2");
 
+	AddObjectInDenugGame(cube2);
+
 	cube3 = new Primitive3D(render, Cube);
 	cube3->SetPosition(360.0f, 250.0f, -50.0f);
 	cube3->SetScale(50.0f, 50.0f, 50.0f);
@@ -138,7 +140,11 @@ void Game::InitGame()
 	cube3->LoadTexture("res/texturas/Facharda.jpg", false);
 	cube3->SetName("cube3");
 	
+	AddObjectInDenugGame(cube3);
+
 	audio = new Audio(render);
+	audio->SetName("audio");
+	AddObjectInDenugGame(audio);
 
 	shape1 = new Shape(render,TypeShape::QUAD, "res/texturas/Algun dia.png");
 	shape1->SetPosition(-190.0f, 200.0f, 10.0);
@@ -286,8 +292,6 @@ void Game::UpdateGame(Windows *_window, Renderer *_render, Input *_input)
 		cube2->Draw(motorasoGui->GetIfWireFrameIsActive());
 	if(cube3 != NULL)
 		cube3->Draw(motorasoGui->GetIfWireFrameIsActive());
-
-	//cout << timeClock.deltaTime() << endl;
 
 	if (sprite != NULL)
 		sprite->Draw(GetTimeClock());

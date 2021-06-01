@@ -171,6 +171,16 @@ void GameBase::RemoveObjectInDebugGame(Entity* entity)
 	}
 }
 
+void GameBase::DisableObjectInGame(Entity* entity)
+{
+	entity->SetIsAlive(false);
+}
+
+void GameBase::EnableObjectInGame(Entity * entity)
+{
+	entity->SetIsAlive(true);
+}
+
 Light * GameBase::GetLight(int id)
 {
 	for (int i = 0; i < _lights.size(); i++) 

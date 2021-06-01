@@ -62,28 +62,30 @@ void Sprite::Draw(bool & wireFrameActive){}
 
 void Sprite::Draw(Time& timer)
 {
-	UpdateSprite(timer);
+	if (isAlive) {
+		UpdateSprite(timer);
 
-	BindBufferSprite();
-	if (renderer != NULL) 
-	{
-		CheckIsModel();
+		BindBufferSprite();
+		if (renderer != NULL)
+		{
+			CheckIsModel();
 
-		if (_transparency)
-			BlendSprite();
+			if (_transparency)
+				BlendSprite();
 
-		glEnable(GL_TEXTURE_2D);
-		glActiveTexture(GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_2D, texture);
+			glEnable(GL_TEXTURE_2D);
+			glActiveTexture(GL_TEXTURE0);
+			glBindTexture(GL_TEXTURE_2D, texture);
 
-		renderer->DrawSprite(GL_QUADS, 4, _vbo, renderer->GetCurrentShaderUse(), internalData.model);
+			renderer->DrawSprite(GL_QUADS, 4, _vbo, renderer->GetCurrentShaderUse(), internalData.model);
 
-		glBindBuffer(GL_ARRAY_BUFFER, 0);
-		glBindTexture(GL_TEXTURE_2D, 0);
-		glDisable(GL_TEXTURE_2D);
+			glBindBuffer(GL_ARRAY_BUFFER, 0);
+			glBindTexture(GL_TEXTURE_2D, 0);
+			glDisable(GL_TEXTURE_2D);
 
-		if (_transparency)
-			UnBlendSprite();
+			if (_transparency)
+				UnBlendSprite();
+		}
 	}
 }
 //============================================

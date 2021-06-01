@@ -5,11 +5,12 @@ Audio::Audio(Renderer* render) : Entity(render)
 {
 	SoundEngine = irrklang::createIrrKlangDevice();
 	SoundRecorder = irrklang::createIrrKlangAudioRecorder(SoundEngine);
+	InmortalObject = true;
 }
 
 void Audio::BindBuffer(){}
 
-void Audio::Draw(bool & wireFrameActive){}
+void Audio::Draw(bool & wireFrameActive) {  }
 
 void Audio::PlayAudio2D(const char * pathMusicFile, bool loop)
 {

@@ -91,6 +91,9 @@ protected:
 
 	virtual void BindBuffer() = 0;
 
+	bool isAlive = true;
+	bool InmortalObject = false;
+
 public:
 	virtual void Draw(bool& wireFrameActive) = 0;
 
@@ -111,5 +114,8 @@ public:
 	void SetRotationZ(float z);
 	void InitIsModelShader();
 	void CheckIsModel();
+	bool GetIsAlive() { return isAlive; }
+	void SetIsAlive(bool value) { isAlive = value; }
+	bool GetIsInmortal() { return InmortalObject; }
 };
 #endif

@@ -27,16 +27,25 @@ void MotorasoGui::UpdateMotorasoGui()
 
 void MotorasoGui::UpdateMotorasoGui(vector<Entity*> entitysData)
 {
-	ImGui::Text("Inspector");
+	ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f),"Inspector");
 	float p = 0;
 	float speedPosition = 15.0f;
 	float speedRotation = 1.0f;
 	float speedScalated = 50.0f;
+	ImVec4 color;
 	for(int i = 0; i < entitysData.size(); i++)
 	{
 		if (entitysData[i] != NULL) 
 		{
-			if (ImGui::Button(entitysData[i]->GetName().c_str()))
+			if (entitysData[i]->GetIsAlive()) 
+				color = ImVec4(0.0,1.0f,0.0f,1.0f);
+			else
+				color = ImVec4(1.0, 0.0f, 0.0f, 1.0f);
+
+
+			ImGui::TextColored(ImVec4(1.0f, 1.0f , 1.0f, 1.0f),entitysData[i]->GetName().c_str());
+
+			if (ImGui::ColorButton(entitysData[i]->GetName().c_str(), color))
 			{
 				entitysData[i]->SetShowInDebug(!entitysData[i]->GetShowInDebug());
 				for (int j = 0; j < entitysData.size(); j++)
@@ -64,7 +73,21 @@ void MotorasoGui::UpdateMotorasoGui(vector<Entity*> entitysData)
 				entitysData[i]->SetRotationY(entitysData[i]->transform.rotation.y);
 				entitysData[i]->SetRotationZ(entitysData[i]->transform.rotation.z);
 				entitysData[i]->SetScale(entitysData[i]->transform.scale.x, entitysData[i]->transform.scale.x, entitysData[i]->transform.scale.x);
+				
+				if (!entitysData[i]->GetIsInmortal()) 
+				{
+					if (entitysData[i]->GetIsAlive()) {
+						if (ImGui::Button("Disable object")) {
+							GameBase::DisableObjectInGame(entitysData[i]);
+						}
+					}
 
+					if (!entitysData[i]->GetIsAlive()) {
+						if (ImGui::Button("Enable object")) {
+							GameBase::EnableObjectInGame(entitysData[i]);
+						}
+					}
+				}
 			}
 		}
 	}

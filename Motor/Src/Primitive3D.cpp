@@ -59,44 +59,46 @@ void Primitive3D::SetNewMaterial(Material * mat)
 
 void Primitive3D::Draw(bool& wireFrameActive)
 {
-	CheckIsModel();
-	//----
-	BindBuffer();
-
-	if (_useTexture)
+	if (isAlive) 
 	{
-		if (_transparency)
-			BlendSprite();
+		CheckIsModel();
+		//----
+		BindBuffer();
 
-		glEnable(GL_TEXTURE_2D);
-		glActiveTexture(GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_2D, _texture);
+		if (_useTexture)
+		{
+			if (_transparency)
+				BlendSprite();
 
+			glEnable(GL_TEXTURE_2D);
+			glActiveTexture(GL_TEXTURE0);
+			glBindTexture(GL_TEXTURE_2D, _texture);
+
+		}
+
+		if (my_Mat != NULL)
+			UseMyMaterial();
+		//----
+		switch (_type)
+		{
+		case Cube:
+			renderer->Draw(indicesCubeCount, renderer->GetCurrentShaderUse(), internalData.model, wireFrameActive);
+			break;
+		case Pyramid:
+			renderer->Draw(indicesCubeCount, renderer->GetCurrentShaderUse(), internalData.model, wireFrameActive);
+			break;
+		}
+
+		if (_useTexture)
+		{
+			glBindBuffer(GL_ARRAY_BUFFER, 0);
+			glBindTexture(GL_TEXTURE_2D, 0);
+			glDisable(GL_TEXTURE_2D);
+
+			if (_transparency)
+				UnBlendSprite();
+		}
 	}
-	
-	if(my_Mat != NULL)
-		UseMyMaterial();
-	//----
-	switch (_type)
-	{
-	case Cube:
-		renderer->Draw(indicesCubeCount, renderer->GetCurrentShaderUse(),internalData.model, wireFrameActive);
-		break;
-	case Pyramid:
-		renderer->Draw(indicesCubeCount, renderer->GetCurrentShaderUse(), internalData.model, wireFrameActive);
-		break;
-	}
-
-	if (_useTexture)
-	{
-		glBindBuffer(GL_ARRAY_BUFFER, 0);
-		glBindTexture(GL_TEXTURE_2D, 0);
-		glDisable(GL_TEXTURE_2D);
-
-		if (_transparency)
-			UnBlendSprite();
-	}
-
 	//----
 }
 

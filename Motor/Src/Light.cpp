@@ -103,8 +103,29 @@ void Light::BindBuffer()
 
 void Light::Draw(bool& wireFrameActive)
 {
+	if (!isAlive && _enableBackUpDataLight) {
+		_auxColour = _colour;
+		_auxAmbient = _ambient;
+		_auxDiffuse = _diffuse;
+		_auxSpecular = _specular;
+		SetAmbient(glm::vec3(0.0f, 0.0f, 0.0f));
+		SetDiffuse(glm::vec3(0.0f, 0.0f, 0.0f));
+		SetSpecular(glm::vec3(0.0f, 0.0f, 0.0f));
+		_enableBackUpDataLight = false;
+	}
 	UseLight();
-	renderer->Draw(lightIndicesCubeCount,renderer->GetCurrentShaderUse(), internalData.model, wireFrameActive);
+	
+	if (isAlive) {
+		if (!_enableBackUpDataLight) {
+			_colour = _auxColour;
+			_ambient = _auxAmbient;
+			_diffuse = _auxDiffuse;
+			_specular = _auxSpecular;
+			_enableBackUpDataLight = true;
+		}
+
+		renderer->Draw(lightIndicesCubeCount, renderer->GetCurrentShaderUse(), internalData.model, wireFrameActive);
+	}
 }
 
 void Light::UseLight()
