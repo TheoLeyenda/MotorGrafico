@@ -84,11 +84,31 @@ void Entity::SetPosition(float x, float y, float z)
 	UpdateMatrixModel();
 }
 
+void Entity::SetPosition(glm::vec3 position)
+{
+	transform.position[0] = position.x;
+	transform.position[1] = position.y;
+	transform.position[2] = position.z;
+
+	internalData.translate = glm::translate(glm::mat4(1.0f), transform.position);
+	UpdateMatrixModel();
+}
+
 void Entity::SetScale(float x, float y, float z)
 {
 	transform.scale[0] = x;
 	transform.scale[1] = y;
 	transform.scale[2] = z;
+
+	internalData.scale = glm::scale(glm::mat4(1.0f), transform.scale);
+	UpdateMatrixModel();
+}
+
+void Entity::SetScale(glm::vec3 scale)
+{
+	transform.scale[0] = scale.x;
+	transform.scale[1] = scale.y;
+	transform.scale[2] = scale.z;
 
 	internalData.scale = glm::scale(glm::mat4(1.0f), transform.scale);
 	UpdateMatrixModel();

@@ -12,7 +12,7 @@ Mesh::Mesh(Renderer* render) : Entity(render)
 
 	_uniformIsModelLocation = glGetUniformLocation(render->GetCurrentShaderUse().getId(), "model");
 	_uniformProjectionLocation = glGetUniformLocation(render->GetCurrentShaderUse().getId(), "projection");
-	_uniformViewLocation = glGetUniformLocation(render->GetCurrentShaderUse().getId(), "projection");
+	_uniformViewLocation = glGetUniformLocation(render->GetCurrentShaderUse().getId(), "view");
 
 	_positionLocation = glGetAttribLocation(render->GetCurrentShaderUse().getId(), "position");
 	_texLocation = glGetAttribLocation(render->GetCurrentShaderUse().getId(), "m_TexCoord");
@@ -77,8 +77,11 @@ void Mesh::CreateMesh(float * vertices, unsigned int * indices, unsigned int num
 
 void Mesh::Draw(bool& wireFrameActive)
 {
-	BindBuffer();
-	renderer->Draw(countIndices, renderer->GetCurrentShaderUse(), internalData.model, wireFrameActive);
+	if (isAlive) 
+	{
+		BindBuffer();
+		renderer->Draw(countIndices, renderer->GetCurrentShaderUse(), internalData.model, wireFrameActive);
+	}
 }
 
 void Mesh::UnbindBuffers()

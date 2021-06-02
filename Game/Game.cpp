@@ -98,22 +98,24 @@ void Game::InitGame()
 
 	model = new Model(render);
 	model->LoadModel("res/modelos/source/pose3.fbx", "res/modelos/textures/");
-	model->SetScaleModel(1.0f, 1.0f, 1.0f);
+	model->SetScale(1.0f, 1.0f, 1.0f);
 	model->SetName("LOCA DEL DRAGON");
-	model->SetRotationModel(-1.45, 0, -0.5);
-	model->SetPositionModel(1300, 0, 0);
+	model->SetRotationX(-1.45);
+	model->SetRotationY(0);
+	model->SetRotationZ(-0.5);
+	model->SetPosition(1300, 0, 0);
 	model->SetMaterial(goldMaterial);
 
 	model2 = new Model(render);
 	model2->LoadModel("res/modelos/pochita.fbx", "res/modelos/");
-	model2->SetScaleModel(50, 50, 50);
+	model2->SetScale(50, 50, 50);
 	model2->SetName("POCHITA");
 	model2->SetMaterial(greenRubberMaterial);
 
 	model3 = new Model(render);
 	model3->LoadModel("res/modelos/merkava-tank/Merkava_Tank.obj", "res/modelos/merkava-tank/textures/");
-	model3->SetScaleModel(0.5, 0.5, 0.5);
-	model3->SetPositionModel(1000, 10, 10);
+	model3->SetScale(0.5, 0.5, 0.5);
+	model3->SetPosition(1000, 10, 10);
 	model3->SetName("MERKAVA TANQUE PAPARDOOO");
 	model3->SetMaterial(goldMaterial);
 

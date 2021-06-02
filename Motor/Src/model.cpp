@@ -77,58 +77,83 @@ void Model::SetMaterial(Material * mat)
 	renderer->SetMaterial(myMat);
 }
 
-void Model::SetScaleModel(float x, float y, float z)
+void Model::SetScale(float x, float y, float z)
 {
-	SetScale(x, y, z);
+	Entity::SetScale(x, y, z);
 	for (int i = 0; i < meshList.size(); i++)
 	{
 		meshList[i]->SetScale(x, y, z);
 	}
 }
 
-void Model::SetScaleModel(glm::vec3 scale)
+void Model::SetScale(glm::vec3 scale)
 {
-	SetScale(scale.x, scale.y, scale.z);
+	Entity::SetScale(scale.x, scale.y, scale.z);
 	for (int i = 0; i < meshList.size(); i++)
 	{
 		meshList[i]->SetScale(scale.x, scale.y, scale.z);
 	}
 }
 
-void Model::SetPositionModel(float x, float y, float z)
+void Model::SetPosition(float x, float y, float z)
 {
-	SetPosition(x, y, z);
+	Entity::SetPosition(x, y, z);
 	for (int i = 0; i < meshList.size(); i++)
 	{
 		meshList[i]->SetPosition(x, y, z);
 	}
 }
 
-void Model::SetPositionModel(glm::vec3 position)
+void Model::SetPosition(glm::vec3 position)
 {
-	SetPosition(position.x, position.y, position.z);
+	Entity::SetPosition(position.x, position.y, position.z);
 	for (int i = 0; i < meshList.size(); i++)
 	{
 		meshList[i]->SetPosition(position.x, position.y, position.z);
 	}
 }
 
-void Model::SetRotationModel(float x, float y, float z)
+void Model::SetRotationX(float x)
 {
-	SetRotationX(x);
-	SetRotationY(y);
-	SetRotationZ(z);
+	Entity::SetRotationX(x);
+
 	for (int i = 0; i < meshList.size(); i++)
 	{
 		meshList[i]->SetRotationX(x);
+	}
+}
+
+void Model::SetRotationY(float y)
+{
+	Entity::SetRotationY(y);
+
+	for (int i = 0; i < meshList.size(); i++)
+	{
 		meshList[i]->SetRotationY(y);
+	}
+}
+
+void Model::SetRotationZ(float z)
+{
+	Entity::SetRotationZ(z);
+
+	for (int i = 0; i < meshList.size(); i++)
+	{
 		meshList[i]->SetRotationZ(z);
 	}
 }
 
-void Model::BindBuffer()
+void Model::SetIsAlive(bool value)
 {
+	Entity::SetIsAlive(value);
+
+	for (int i = 0; i < meshList.size(); i++)
+	{
+		meshList[i]->SetIsAlive(value);
+	}
 }
+
+void Model::BindBuffer(){}
 
 void Model::LoadNode(aiNode* node, const aiScene* scene)
 {
