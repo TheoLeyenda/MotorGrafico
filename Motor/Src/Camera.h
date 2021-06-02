@@ -71,6 +71,8 @@ public:
 
 	glm::mat4 getProjMat();
 
+	virtual void SetRotationY(float rotY);
+	virtual void SetRotationX(float rotX);
 	void RotateCameraX(float speed);
 	void RotateCameraY(float speed);
 	void RotateCameraZ(float speed);

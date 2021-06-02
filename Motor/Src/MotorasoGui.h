@@ -14,12 +14,14 @@ using namespace std;
 
 class Entity;
 
-class ENGINE_API MotorasoGui 
+class ENGINE_API MotorasoGui
 {
 private:
 	Windows* _window;
 	float xPosition = 0;
-	
+	float speedPosition;
+	float speedRotation;
+	float speedScalated;
 	bool _wireFrameActive;
 public:
 	MotorasoGui(Windows* window);
@@ -28,6 +30,7 @@ public:
 	void UpdateMotorasoGui(vector<Entity*> entitysData);
 	void CreateFrame();
 	void RenderGui();
+	float GetSpeedRotation() { return speedRotation; };
 	~MotorasoGui();
 };
 

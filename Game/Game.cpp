@@ -40,11 +40,15 @@ bool useCamera = true;
 bool useModels = true;
 bool rotateBokitaSkybox = true;
 bool useSkybox = false;
+bool thirdPerson = true;
+glm::vec3 posThirdPersonCam;
+glm::vec3 offsetThirdPerson;
 //---------------------//
 
 //LIGHT
 float ambientIntensity;
 float diffuseIntensity;
+
 
 Game::Game() :GameBase() {}
 
@@ -88,29 +92,26 @@ void Game::InitGame()
 	AddObjectInDenugGame(GetLight(0));
 	AddObjectInDenugGame(GetLight(87));
 
-	ChangeColorLight(1, red);
-	ChangeColorLight(2, yellow);
-	ChangeColorLight(6, cyan);
-	ChangeColorLight(87, brown);
-	ChangeColorLight(0, magenta);
+	//ChangeColorLight(1, red);
+	//ChangeColorLight(2, yellow);
+	//ChangeColorLight(6, cyan);
+	//ChangeColorLight(87, brown);
+	//ChangeColorLight(0, magenta);
 
 	GetMyLightsID();
 
 	model = new Model(render);
-	model->LoadModel("res/modelos/source/pose3.fbx", "res/modelos/textures/");
-	model->SetScale(1.0f, 1.0f, 1.0f);
+	model->LoadModel("res/modelos/source/alex.obj", "res/modelos/textures/");
+	model->SetScale(50.0f, 50.0f, 50.0f);
 	model->SetName("LOCA DEL DRAGON");
-	model->SetRotationX(-1.45);
-	model->SetRotationY(0);
-	model->SetRotationZ(-0.5);
-	model->SetPosition(1300, 0, 0);
+	model->SetPosition(800, 0, -200);
 	model->SetMaterial(goldMaterial);
-
-	model2 = new Model(render);
-	model2->LoadModel("res/modelos/pochita.fbx", "res/modelos/");
-	model2->SetScale(50, 50, 50);
-	model2->SetName("POCHITA");
-	model2->SetMaterial(greenRubberMaterial);
+	//
+	//model2 = new Model(render);
+	//model2->LoadModel("res/modelos/pochita.fbx", "res/modelos/");
+	//model2->SetScale(50, 50, 50);
+	//model2->SetName("POCHITA");
+	//model2->SetMaterial(greenRubberMaterial);
 
 	model3 = new Model(render);
 	model3->LoadModel("res/modelos/merkava-tank/Merkava_Tank.obj", "res/modelos/merkava-tank/textures/");
@@ -122,6 +123,7 @@ void Game::InitGame()
 	AddObjectInDenugGame(model);
 	AddObjectInDenugGame(model2);
 	AddObjectInDenugGame(model3);
+
 
 	pyramid = new Primitive3D(render,Pyramid);
 	pyramid->SetPosition(500.0f, 250.0f, -50.0f);
@@ -259,6 +261,16 @@ void Game::InitGame()
 	//spriteAnimado->SetAnimation(animations);
 	//spriteAnimado->SetAttribsSprite();
 
+	if (thirdPerson)
+	{
+		offsetThirdPerson = glm::vec3(0, 300, -400);
+		camera->SetRotationX(-31);
+		camera->SetRotationY(-269);
+		posThirdPersonCam = (model3->transform.position) + offsetThirdPerson;
+		camera->SetPosition(posThirdPersonCam);
+	}
+
+
 	SetUseDebugWindows(true);
 }
 
@@ -285,6 +297,13 @@ void Game::UpdateGame(Windows *_window, Renderer *_render, Input *_input)
 	if (useCamera)
 		TempInputCamera();
 
+	if (thirdPerson)
+	{
+		posThirdPersonCam = (model3->transform.position) + offsetThirdPerson;
+		camera->SetPosition(posThirdPersonCam);
+		//model3->SetRotationY(camera->transform.rotation.y + model3->transform.rotation.y);
+		//cout << "Rot cameraY:" << camera->transform.rotation.y << endl;
+	}
 
 	//TempInputsPlayer1(windows, spriteAnimado);
 
@@ -498,9 +517,8 @@ void Game::TempInputCamera()
 	}
 
 	//MANEJO DE DATOS
-	camera->SetPosition(newPositionCamX, newPositionCamY, newPositionCamZ);
-
-	camera->SetView();
+	if(!thirdPerson)
+		camera->SetPosition(newPositionCamX, newPositionCamY, newPositionCamZ);
 	//render->RotateCamera(newRotationCamZ, camera->GetInternalData().model);
 	
 #pragma endregion

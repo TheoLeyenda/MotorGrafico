@@ -53,6 +53,7 @@ int GameBase::InitEngine()
 	camera->SetPosition(300.0f, 100.0f, 200.0f);
 	camera->InitCamera(camera->transform.position, glm::vec3(0.0f, 1.0f, 0.0f), -90, 0);
 	camera->SetView();
+	camera->SetName("Camera");
 
 #pragma endregion
 

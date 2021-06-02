@@ -8,6 +8,10 @@ MotorasoGui::MotorasoGui(Windows* window)
 	ImGuiIO& io = ImGui::GetIO(); (void)io;
 	ImGui_ImplGlfwGL3_Init(window->GetWindowsPtr(), true);
 	_window = window;
+
+	speedPosition = 15.0f;
+	speedRotation = 1.0f;
+	speedScalated = 50.0f;
 }
 
 void MotorasoGui::UpdateMotorasoGui()
@@ -29,9 +33,6 @@ void MotorasoGui::UpdateMotorasoGui(vector<Entity*> entitysData)
 {
 	ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f),"Inspector");
 	float p = 0;
-	float speedPosition = 15.0f;
-	float speedRotation = 1.0f;
-	float speedScalated = 50.0f;
 	ImVec4 color;
 	for(int i = 0; i < entitysData.size(); i++)
 	{

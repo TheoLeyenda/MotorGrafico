@@ -8,6 +8,7 @@ Camera::Camera(Renderer* _render, TypeProjectionCamera _typeProjectionCamera) : 
 	_MVP.view = glm::mat4(1.0f);
 	_MVP.projection = glm::mat4(1.0f);
 	typeProjectionCamera = _typeProjectionCamera;
+	InmortalObject = true;
 }
 
 Camera::~Camera(){}
@@ -141,16 +142,32 @@ glm::mat4 Camera::getProjMat()
 	return _MVP.projection;
 }
 
+void Camera::SetRotationY(float rotY)
+{
+	_yaw = rotY;
+	UpdateCamera();
+	Entity::SetRotationY(rotY);
+}
+
+void Camera::SetRotationX(float rotX)
+{
+	_pitch = rotX;
+	UpdateCamera();
+	Entity::SetRotationX(rotX);
+}
+
 void Camera::RotateCameraX(float speed)
 {
 	_pitch = _pitch + speed;
 	UpdateCamera();
+	Entity::SetRotationX(_pitch);
 }
 
 void Camera::RotateCameraY(float speed)
 {
 	_yaw = _yaw + speed;
 	UpdateCamera();
+	Entity::SetRotationY(_yaw);
 }
 
 void Camera::RotateCameraZ(float speed)
