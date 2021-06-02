@@ -25,11 +25,14 @@ public:
 	void UnloadModel();
 
 	void SetMaterial(Material* mat);
-	void SetScaleModel(float x, float y, float z);
-	void SetScaleModel(glm::vec3 scale);
-	void SetPositionModel(float x, float y, float z);
-	void SetPositionModel(glm::vec3 position);
-	void SetRotationModel(float x, float y, float z);
+	virtual void SetScale(float x, float y, float z);
+	virtual void SetScale(glm::vec3 scale);
+	virtual void SetPosition(float x, float y, float z);
+	virtual void SetPosition(glm::vec3 position);
+	virtual void SetRotationX(float x);
+	virtual void SetRotationY(float y);
+	virtual void SetRotationZ(float z);
+	virtual void SetIsAlive(bool value);
 protected:
 	void BindBuffer() override;
 

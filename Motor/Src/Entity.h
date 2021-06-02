@@ -106,17 +106,19 @@ public:
 	Transform transform;
 	Renderer* GetRenderer();
 	InternalData GetInternalData();
-	void SetPosition(float x, float y, float z);
+	virtual void SetPosition(float x, float y, float z);
+	virtual void SetPosition(glm::vec3 position);
 	virtual void SetScale(float x, float y, float z);
+	virtual void SetScale(glm::vec3 scale);
+	virtual void SetRotationX(float x);
+	virtual void SetRotationY(float y);
+	virtual void SetRotationZ(float z);
 	void SetName(string name);
 	string GetName();
-	void SetRotationX(float x);
-	void SetRotationY(float y);
-	void SetRotationZ(float z);
 	void InitIsModelShader();
 	void CheckIsModel();
 	bool GetIsAlive() { return isAlive; }
-	void SetIsAlive(bool value) { isAlive = value; }
+	virtual void SetIsAlive(bool value) { isAlive = value; }
 	bool GetIsInmortal() { return InmortalObject; }
 };
 #endif
