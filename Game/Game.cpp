@@ -96,6 +96,31 @@ void Game::InitGame()
 
 	GetMyLightsID();
 
+	model = new Model(render);
+	model->LoadModel("res/modelos/source/pose3.fbx", "res/modelos/textures/");
+	model->SetScaleModel(1.0f, 1.0f, 1.0f);
+	model->SetName("LOCA DEL DRAGON");
+	model->SetRotationModel(-1.45, 0, -0.5);
+	model->SetPositionModel(1300, 0, 0);
+	model->SetMaterial(goldMaterial);
+
+	model2 = new Model(render);
+	model2->LoadModel("res/modelos/pochita.fbx", "res/modelos/");
+	model2->SetScaleModel(50, 50, 50);
+	model2->SetName("POCHITA");
+	model2->SetMaterial(greenRubberMaterial);
+
+	model3 = new Model(render);
+	model3->LoadModel("res/modelos/merkava-tank/Merkava_Tank.obj", "res/modelos/merkava-tank/textures/");
+	model3->SetScaleModel(0.5, 0.5, 0.5);
+	model3->SetPositionModel(1000, 10, 10);
+	model3->SetName("MERKAVA TANQUE PAPARDOOO");
+	model3->SetMaterial(goldMaterial);
+
+	AddObjectInDenugGame(model);
+	AddObjectInDenugGame(model2);
+	AddObjectInDenugGame(model3);
+
 	pyramid = new Primitive3D(render,Pyramid);
 	pyramid->SetPosition(500.0f, 250.0f, -50.0f);
 	if(useSkybox)
@@ -140,18 +165,18 @@ void Game::InitGame()
 	audio->SetName("audio");
 	AddObjectInDenugGame(audio);
 
-	shape1 = new Shape(render,TypeShape::QUAD, "res/texturas/Algun dia.png");
-	shape1->SetPosition(-190.0f, 200.0f, 10.0);
-	shape1->SetScale(120.0f, 120.0f, 120.0f);
-	shape1->SetName("Shape1");
-	AddObjectInDenugGame(shape1);
+	//shape1 = new Shape(render,TypeShape::QUAD, "res/texturas/Algun dia.png");
+	//shape1->SetPosition(-190.0f, 200.0f, 10.0);
+	//shape1->SetScale(120.0f, 120.0f, 120.0f);
+	//shape1->SetName("Shape1");
+	//AddObjectInDenugGame(shape1);
 	
-	shape2 = new Shape(render, TypeShape::TRIANGLE, "res/texturas/bokitaElMasGrandePapa.png");
-	shape2->SetPosition(-320.0f, 200.0f, 10.0);
-	shape2->SetScale(120.0f, 120.0f, 120.0f);
+	//shape2 = new Shape(render, TypeShape::TRIANGLE, "res/texturas/bokitaElMasGrandePapa.png");
+	//shape2->SetPosition(-320.0f, 200.0f, 10.0);
+	//shape2->SetScale(120.0f, 120.0f, 120.0f);
 	//shape2->SetNewMaterial(textureMaterialForLight);
-	shape2->SetName("Shape2");
-	AddObjectInDenugGame(shape2);
+	//shape2->SetName("Shape2");
+	//AddObjectInDenugGame(shape2);
 
 	shape3 = new Shape(render, TypeShape::QUAD);
 	shape3->SetPosition(-450.0f, 200.0f, 10.0);
@@ -174,88 +199,63 @@ void Game::InitGame()
 	sprite->SetName("Sprite");
 	AddObjectInDenugGame(sprite);
 
-	spriteAnimado = new Sprite(render, "res/texturas/PlayerShit.png", true);
+	//spriteAnimado = new Sprite(render, "res/texturas/PlayerShit.png", true);
 	//spriteAnimado->SetPosition(windows->GetSizeX() / 2, windows->GetSizeY() / 2, 0.0f);
-	spriteAnimado->SetPosition(0, windows->GetSizeY()/2, 0.0f);
-	spriteAnimado->SetScale(120.0f, 120.0f, 120.0f);
-	spriteAnimado->SetRotationZ(91.1f);
-	spriteAnimado->SetName("SpriteAnimado");
-	AddObjectInDenugGame(spriteAnimado);
+	//spriteAnimado->SetPosition(0, windows->GetSizeY()/2, 0.0f);
+	//spriteAnimado->SetScale(120.0f, 120.0f, 120.0f);
+	//spriteAnimado->SetRotationZ(91.1f);
+	//spriteAnimado->SetName("SpriteAnimado");
+	//AddObjectInDenugGame(spriteAnimado);
 
-	animations = new Animation();
-
-	float durationAnim = 0.75f;
-	// ANIMACION CAMINATA HACIA ARRIBA
-	animations->AddFrame((480 - 60 * 8), 0.0f, 60, 60, 480, 240, durationAnim);
-	animations->AddFrame((480 - 60 * 7), 0.0f, 60, 60, 480, 240, durationAnim);
-	animations->AddFrame((480 - 60 * 6), 0.0f, 60, 60, 480, 240, durationAnim);
-	animations->AddFrame((480 - 60 * 5), 0.0f, 60, 60, 480, 240, durationAnim);
-	animations->AddFrame((480 - 60 * 4), 0.0f, 60, 60, 480, 240, durationAnim);
-	animations->AddFrame((480 - 60 * 3), 0.0f, 60, 60, 480, 240, durationAnim);
-	animations->AddFrame((480 - 60 * 2), 0.0f, 60, 60, 480, 240, durationAnim);
-	animations->AddFrame((480 - 60 * 1), 0.0f, 60, 60, 480, 240, durationAnim);
-	animations->AddAnimation();
-
-	// ANIMACION CAMINATA HACIA DERECHA
-	animations->AddFrame((480 - 60 * 8), 60, 60, 60, 480, 240, durationAnim);
-	animations->AddFrame((480 - 60 * 7), 60, 60, 60, 480, 240, durationAnim);
-	animations->AddFrame((480 - 60 * 6), 60, 60, 60, 480, 240, durationAnim);
-	animations->AddFrame((480 - 60 * 5), 60, 60, 60, 480, 240, durationAnim);
-	animations->AddFrame((480 - 60 * 4), 60, 60, 60, 480, 240, durationAnim);
-	animations->AddFrame((480 - 60 * 3), 60, 60, 60, 480, 240, durationAnim);
-	animations->AddFrame((480 - 60 * 2), 60, 60, 60, 480, 240, durationAnim);
-	animations->AddFrame((480 - 60 * 1), 60, 60, 60, 480, 240, durationAnim);
-	animations->AddAnimation();
-
-	// ANIMACION CAMINATA HACIA IZQUIERDA
-	animations->AddFrame((480 - 60 * 8), 120, 60, 60, 480, 240, durationAnim);
-	animations->AddFrame((480 - 60 * 7), 120, 60, 60, 480, 240, durationAnim);
-	animations->AddFrame((480 - 60 * 6), 120, 60, 60, 480, 240, durationAnim);
-	animations->AddFrame((480 - 60 * 5), 120, 60, 60, 480, 240, durationAnim);
-	animations->AddFrame((480 - 60 * 4), 120, 60, 60, 480, 240, durationAnim);
-	animations->AddFrame((480 - 60 * 3), 120, 60, 60, 480, 240, durationAnim);
-	animations->AddFrame((480 - 60 * 2), 120, 60, 60, 480, 240, durationAnim);
-	animations->AddFrame((480 - 60 * 1), 120, 60, 60, 480, 240, durationAnim);
-	animations->AddAnimation();
-
-	// ANIMACION CAMINATA HACIA ABAJO
-	animations->AddFrame((480 - 60 * 8), 180, 60, 60, 480, 240, durationAnim);
-	animations->AddFrame((480 - 60 * 7), 180, 60, 60, 480, 240, durationAnim);
-	animations->AddFrame((480 - 60 * 6), 180, 60, 60, 480, 240, durationAnim);
-	animations->AddFrame((480 - 60 * 5), 180, 60, 60, 480, 240, durationAnim);
-	animations->AddFrame((480 - 60 * 4), 180, 60, 60, 480, 240, durationAnim);
-	animations->AddFrame((480 - 60 * 3), 180, 60, 60, 480, 240, durationAnim);
-	animations->AddFrame((480 - 60 * 2), 180, 60, 60, 480, 240, durationAnim);
-	animations->AddFrame((480 - 60 * 1), 180, 60, 60, 480, 240, durationAnim);
-	animations->AddAnimation();
-
-	spriteAnimado->SetAnimation(animations);
-	spriteAnimado->SetAttribsSprite();
-
-	model = new Model(render);
-	model->LoadModel("res/modelos/source/pose3.fbx", "res/modelos/textures/");
-	model->SetScaleModel(1.0f, 1.0f, 1.0f);
-	model->SetName("LOCA DEL DRAGON");
-	model->SetRotationModel(-1.45, 0, -0.5);
-	model->SetPositionModel(1300, 0, 0);
-	model->SetMaterial(goldMaterial);
-	
-	model2 = new Model(render);
-	model2->LoadModel("res/modelos/pochita.fbx", "res/modelos/");
-	model2->SetScaleModel(50, 50, 50);
-	model2->SetName("POCHITA");
-	model2->SetMaterial(greenRubberMaterial);
-
-	model3 = new Model(render);
-	model3->LoadModel("res/modelos/Merkava_Tank.obj","res/modelos/merkava-tank/textures/");
-	model3->SetScaleModel(0.5, 0.5, 0.5);
-	model3->SetPositionModel(1000, 10, 10);
-	model3->SetName("MERKAVA TANQUE PAPARDOOO");
-	model3->SetMaterial(goldMaterial);
-
-	AddObjectInDenugGame(model);
-	AddObjectInDenugGame(model2);
-	AddObjectInDenugGame(model3);
+	//animations = new Animation();
+	//
+	//float durationAnim = 0.75f;
+	//// ANIMACION CAMINATA HACIA ARRIBA
+	//animations->AddFrame((480 - 60 * 8), 0.0f, 60, 60, 480, 240, durationAnim);
+	//animations->AddFrame((480 - 60 * 7), 0.0f, 60, 60, 480, 240, durationAnim);
+	//animations->AddFrame((480 - 60 * 6), 0.0f, 60, 60, 480, 240, durationAnim);
+	//animations->AddFrame((480 - 60 * 5), 0.0f, 60, 60, 480, 240, durationAnim);
+	//animations->AddFrame((480 - 60 * 4), 0.0f, 60, 60, 480, 240, durationAnim);
+	//animations->AddFrame((480 - 60 * 3), 0.0f, 60, 60, 480, 240, durationAnim);
+	//animations->AddFrame((480 - 60 * 2), 0.0f, 60, 60, 480, 240, durationAnim);
+	//animations->AddFrame((480 - 60 * 1), 0.0f, 60, 60, 480, 240, durationAnim);
+	//animations->AddAnimation();
+	//
+	//// ANIMACION CAMINATA HACIA DERECHA
+	//animations->AddFrame((480 - 60 * 8), 60, 60, 60, 480, 240, durationAnim);
+	//animations->AddFrame((480 - 60 * 7), 60, 60, 60, 480, 240, durationAnim);
+	//animations->AddFrame((480 - 60 * 6), 60, 60, 60, 480, 240, durationAnim);
+	//animations->AddFrame((480 - 60 * 5), 60, 60, 60, 480, 240, durationAnim);
+	//animations->AddFrame((480 - 60 * 4), 60, 60, 60, 480, 240, durationAnim);
+	//animations->AddFrame((480 - 60 * 3), 60, 60, 60, 480, 240, durationAnim);
+	//animations->AddFrame((480 - 60 * 2), 60, 60, 60, 480, 240, durationAnim);
+	//animations->AddFrame((480 - 60 * 1), 60, 60, 60, 480, 240, durationAnim);
+	//animations->AddAnimation();
+	//
+	//// ANIMACION CAMINATA HACIA IZQUIERDA
+	//animations->AddFrame((480 - 60 * 8), 120, 60, 60, 480, 240, durationAnim);
+	//animations->AddFrame((480 - 60 * 7), 120, 60, 60, 480, 240, durationAnim);
+	//animations->AddFrame((480 - 60 * 6), 120, 60, 60, 480, 240, durationAnim);
+	//animations->AddFrame((480 - 60 * 5), 120, 60, 60, 480, 240, durationAnim);
+	//animations->AddFrame((480 - 60 * 4), 120, 60, 60, 480, 240, durationAnim);
+	//animations->AddFrame((480 - 60 * 3), 120, 60, 60, 480, 240, durationAnim);
+	//animations->AddFrame((480 - 60 * 2), 120, 60, 60, 480, 240, durationAnim);
+	//animations->AddFrame((480 - 60 * 1), 120, 60, 60, 480, 240, durationAnim);
+	//animations->AddAnimation();
+	//
+	//// ANIMACION CAMINATA HACIA ABAJO
+	//animations->AddFrame((480 - 60 * 8), 180, 60, 60, 480, 240, durationAnim);
+	//animations->AddFrame((480 - 60 * 7), 180, 60, 60, 480, 240, durationAnim);
+	//animations->AddFrame((480 - 60 * 6), 180, 60, 60, 480, 240, durationAnim);
+	//animations->AddFrame((480 - 60 * 5), 180, 60, 60, 480, 240, durationAnim);
+	//animations->AddFrame((480 - 60 * 4), 180, 60, 60, 480, 240, durationAnim);
+	//animations->AddFrame((480 - 60 * 3), 180, 60, 60, 480, 240, durationAnim);
+	//animations->AddFrame((480 - 60 * 2), 180, 60, 60, 480, 240, durationAnim);
+	//animations->AddFrame((480 - 60 * 1), 180, 60, 60, 480, 240, durationAnim);
+	//animations->AddAnimation();
+	//
+	//spriteAnimado->SetAnimation(animations);
+	//spriteAnimado->SetAttribsSprite();
 
 	SetUseDebugWindows(true);
 }
