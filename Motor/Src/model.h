@@ -10,6 +10,7 @@
 
 #include "Mesh.h"
 #include "Texture.h"
+#include "Material.h"
 
 using namespace std;
 
@@ -23,11 +24,12 @@ public:
 	void Draw(bool& wireFrameActive) override;
 	void UnloadModel();
 
+	void SetMaterial(Material* mat);
 	void SetScaleModel(float x, float y, float z);
 	void SetScaleModel(glm::vec3 scale);
 	void SetPositionModel(float x, float y, float z);
 	void SetPositionModel(glm::vec3 position);
-	void SetRotation(float x, float y, float z);
+	void SetRotationModel(float x, float y, float z);
 protected:
 	void BindBuffer() override;
 
@@ -35,6 +37,8 @@ private:
 	vector<Mesh*> meshList;
 	vector<Texture*> textureList;
 	vector<unsigned int> meshToTex;
+
+	Material* myMat;
 
 	void LoadNode(aiNode* node, const aiScene* scene);
 	void LoadMesh(aiMesh* mesh, const aiScene* scene);

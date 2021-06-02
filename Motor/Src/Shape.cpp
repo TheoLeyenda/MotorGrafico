@@ -43,7 +43,6 @@ Shape::Shape(Renderer * _renderer,TypeShape typeShape, const char * filePath): E
 	renderer = _renderer;
 	_path = filePath;
 	_transparency = false;
-	texImporter = new TextureImporter();
 
 	material = NULL;
 	_typeMaterial = TypeMaterial::TextureType;
@@ -65,11 +64,7 @@ Shape::Shape(Renderer * _renderer, TypeShape typeShape) : Entity2D(_renderer)
 	CreateDataShape();
 
 }
-Shape::~Shape()
-{
-	if (texImporter != NULL)
-		delete texImporter;
-}
+Shape::~Shape(){}
 void Shape::SetNewMaterial(Material * mat)
 {
 	material = mat;
@@ -137,7 +132,7 @@ void Shape::UnBlendSprite()
 }
 void Shape::LoadTexture(const char* path, bool transparent) {
 	_transparency = transparent;
-	texImporter->LoadTexture(path, data, _texture, _width, _height, _nrChannels, _transparency);
+	texImporter.LoadTexture(path, data, _texture, _width, _height, _nrChannels, _transparency);
 }
 //==============================================
 

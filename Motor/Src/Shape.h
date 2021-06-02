@@ -32,7 +32,7 @@ private:
 	int _nrChannels;
 	const char* _path;
 	bool _transparency;
-	TextureImporter* texImporter;
+	TextureImporter texImporter;
 
 	//Texture
 	//unsigned int texture;

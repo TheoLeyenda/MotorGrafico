@@ -5,15 +5,20 @@
 
 Model::Model(Renderer * render) : Entity(render)
 {
-
+	myMat = NULL;
 }
 
-Model::~Model() { UnloadModel(); }
+Model::~Model()
+{
+	if (!myMat)
+		delete myMat;
+	UnloadModel();
+}
 
 void Model::LoadModel(const string & filePath, const string& texturePath)
 {
 	Assimp::Importer imporeter;
-	const aiScene* scene = imporeter.ReadFile(filePath, 
+	const aiScene* scene = imporeter.ReadFile(filePath,
 		aiProcess_Triangulate | aiProcess_GenSmoothNormals | aiProcess_JoinIdenticalVertices);
 	if (!scene)
 	{
@@ -33,13 +38,15 @@ void Model::Draw(bool & wireFrameActive)
 		unsigned int materialIndex = meshToTex[i];
 
 		if (materialIndex < textureList.size() && textureList[materialIndex])
-		{
 			textureList[materialIndex]->BindTexture();
 
-			meshList[i]->Draw(wireFrameActive);
+		if (myMat != NULL)
+			myMat->UseMaterial(renderer->GetCurrentShaderUse());
 
+		meshList[i]->Draw(wireFrameActive);
+
+		if (materialIndex < textureList.size() && textureList[materialIndex])
 			textureList[materialIndex]->UnbindTexture();
-		}
 	}
 }
 
@@ -63,12 +70,19 @@ void Model::UnloadModel()
 	}
 }
 
+void Model::SetMaterial(Material * mat)
+{
+	myMat = mat;
+
+	renderer->SetMaterial(myMat);
+}
+
 void Model::SetScaleModel(float x, float y, float z)
 {
 	SetScale(x, y, z);
 	for (int i = 0; i < meshList.size(); i++)
 	{
-		meshList[i]->SetScale(x,y,z);
+		meshList[i]->SetScale(x, y, z);
 	}
 }
 
@@ -99,7 +113,7 @@ void Model::SetPositionModel(glm::vec3 position)
 	}
 }
 
-void Model::SetRotation(float x, float y, float z)
+void Model::SetRotationModel(float x, float y, float z)
 {
 	SetRotationX(x);
 	SetRotationY(y);
@@ -137,9 +151,9 @@ void Model::LoadMesh(aiMesh* mesh, const aiScene* scene)
 	for (int i = 0; i < mesh->mNumVertices; i++)
 	{
 		vertices.insert(vertices.end(), { mesh->mVertices[i].x,mesh->mVertices[i].y,mesh->mVertices[i].z });
-		if (mesh->mTextureCoords[0]) 
+		if (mesh->mTextureCoords[0])
 		{
-			vertices.insert(vertices.end(), { mesh->mTextureCoords[0][i].x, mesh->mTextureCoords[0][i].y});
+			vertices.insert(vertices.end(), { mesh->mTextureCoords[0][i].x, mesh->mTextureCoords[0][i].y });
 		}
 		else {
 			vertices.insert(vertices.end(), { 0.0f,  0.0f });
@@ -172,15 +186,17 @@ void Model::LoadMaterial(const aiScene * scene, const string& texturePath)
 
 		textureList[i] = nullptr;
 
-		if (material->GetTextureCount(aiTextureType_DIFFUSE)) 
+		if (material->GetTextureCount(aiTextureType_DIFFUSE))
 		{
 			aiString path;
 			if (material->GetTexture(aiTextureType_DIFFUSE, 0, &path) == AI_SUCCESS)
 			{
 				int index = string(path.data).rfind("\\");
-				string fileName = string(path.data).substr(index+1);
+				string fileName = string(path.data).substr(index + 1);
 
 				string texPath = texturePath + fileName;
+
+				cout << "Texture name:" << texPath << endl;
 
 				textureList[i] = new Texture(texPath.c_str());
 
@@ -190,7 +206,13 @@ void Model::LoadMaterial(const aiScene * scene, const string& texturePath)
 					delete textureList[i];
 					textureList[i] = nullptr;
 				}
+
 			}
+		}
+
+		if (!textureList[i]) {
+			textureList[i] = new Texture("res/textures/plain.png");
+			textureList[i]->LoadTexture(false);
 		}
 	}
 }

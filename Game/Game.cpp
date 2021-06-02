@@ -54,11 +54,8 @@ Game::~Game() {}
 
 void Game::InitGame()
 {
-	model = new Model(render);
-	model->LoadModel("res/modelos/pochita.fbx", "res/modelos/");
-	model->SetScaleModel(100.0f, 100.0f, 100.0f);
-	model->SetName("POCHITA PERRI");
-	
+	InitMaterials();
+
 	//COLORES PARA TESTEAR
 	glm::vec3 red = glm::vec3(1.0f, 0.0f, 0.0f);
 	glm::vec3 blue = glm::vec3(0.0f, 0.0f, 1.0f);
@@ -79,30 +76,25 @@ void Game::InitGame()
 	AddLight(Light::TypeLight::Point, 6);
 
 	AddLight(Light::TypeLight::Directional, 0);
+	SetSettingsLightCustom(0, glm::vec3(0, 2, -6));
 	SetLightPosition(6, glm::vec3(100, -50, 0));
 	
 	AddLight(Light::TypeLight::Spot, 87);
 	SetLightPosition(87, glm::vec3(-50, -50, 0));
 	
-	SetSettingsLightCustom(0, glm::vec3(0, 2, -6));
-
 	AddObjectInDenugGame(GetLight(1));
 	AddObjectInDenugGame(GetLight(2));
 	AddObjectInDenugGame(GetLight(6));
 	AddObjectInDenugGame(GetLight(0));
 	AddObjectInDenugGame(GetLight(87));
 
-	AddObjectInDenugGame(model);
-
 	//ChangeColorLight(1, red);
 	//ChangeColorLight(2, yellow);
 	//ChangeColorLight(6, cyan);
 	//ChangeColorLight(87, brown);
-	//ChangeColorLight(0, blue);
+	//ChangeColorLight(0, magenta);
 
 	GetMyLightsID();
-
-	InitMaterials();
 
 	pyramid = new Primitive3D(render,Pyramid);
 	pyramid->SetPosition(500.0f, 250.0f, -50.0f);
@@ -153,11 +145,11 @@ void Game::InitGame()
 	shape1->SetScale(120.0f, 120.0f, 120.0f);
 	shape1->SetName("Shape1");
 	AddObjectInDenugGame(shape1);
-
+	
 	shape2 = new Shape(render, TypeShape::TRIANGLE, "res/texturas/bokitaElMasGrandePapa.png");
 	shape2->SetPosition(-320.0f, 200.0f, 10.0);
 	shape2->SetScale(120.0f, 120.0f, 120.0f);
-	shape2->SetNewMaterial(textureMaterialForLight);
+	//shape2->SetNewMaterial(textureMaterialForLight);
 	shape2->SetName("Shape2");
 	AddObjectInDenugGame(shape2);
 
@@ -237,10 +229,33 @@ void Game::InitGame()
 	animations->AddFrame((480 - 60 * 1), 180, 60, 60, 480, 240, durationAnim);
 	animations->AddAnimation();
 
-	//animations->SetCurrentAnimation(3);
 	spriteAnimado->SetAnimation(animations);
-
 	spriteAnimado->SetAttribsSprite();
+
+	model = new Model(render);
+	model->LoadModel("res/modelos/source/pose3.fbx", "res/modelos/textures/");
+	model->SetScaleModel(1.0f, 1.0f, 1.0f);
+	model->SetName("LOCA DEL DRAGON");
+	model->SetRotationModel(-1.45, 0, -0.5);
+	model->SetPositionModel(1300, 0, 0);
+	model->SetMaterial(goldMaterial);
+	
+	model2 = new Model(render);
+	model2->LoadModel("res/modelos/pochita.fbx", "res/modelos/");
+	model2->SetScaleModel(50, 50, 50);
+	model2->SetName("POCHITA");
+	model2->SetMaterial(greenRubberMaterial);
+
+	model3 = new Model(render);
+	model3->LoadModel("res/modelos/Merkava_Tank.obj","res/modelos/merkava-tank/textures/");
+	model3->SetScaleModel(0.5, 0.5, 0.5);
+	model3->SetPositionModel(1000, 10, 10);
+	model3->SetName("MERKAVA TANQUE PAPARDOOO");
+	model3->SetMaterial(goldMaterial);
+
+	AddObjectInDenugGame(model);
+	AddObjectInDenugGame(model2);
+	AddObjectInDenugGame(model3);
 
 	SetUseDebugWindows(true);
 }
@@ -258,7 +273,6 @@ void Game::UpdateGame(Windows *_window, Renderer *_render, Input *_input)
 		audio->PlayAudio2D("res/audio/Dale Dale Boca.mp3", true);
 		RemoveObjectInDebugGame(cube);
 		AddObjectInDenugGame(cube2);
-		GetLight(0)->SetName("BANERO SAPEEEE");
 	}
 
 	if (rotateBokitaSkybox && useSkybox)
@@ -303,6 +317,10 @@ void Game::UpdateGame(Windows *_window, Renderer *_render, Input *_input)
 
 	if (model != NULL)
 		model->Draw(motorasoGui->GetIfWireFrameIsActive());
+	if (model2 != NULL)
+		model2->Draw(motorasoGui->GetIfWireFrameIsActive());
+	if (model3 != NULL)
+		model3->Draw(motorasoGui->GetIfWireFrameIsActive());
 }
 
 void Game::DestroyGame()
@@ -381,6 +399,14 @@ void Game::DestroyGame()
 	if (model != NULL) {
 		delete model;
 		model = NULL;
+	}
+	if (model2 != NULL) {
+		delete model2;
+		model2 = NULL;
+	}
+	if (model3 != NULL) {
+		delete model3;
+		model3 = NULL;
 	}
 }
 

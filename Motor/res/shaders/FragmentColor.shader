@@ -118,7 +118,7 @@ void main()
 	{
 		outPutSpot += CalcSpotLight(spotLight[i], norm, FragPos, viewDir);
 	}
-	vec4 outPutShader = vec4((outPutDirectional+outPutPoint+outPutSpot), 1.0);
+	vec4 outPutShader = vec4((outPutDirectional + outPutPoint + outPutSpot), 1.0);
 	vec4 result = (outPutShader + texture(ourTexture, texCoord));
 
 	FragColor = result;

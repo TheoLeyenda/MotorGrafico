@@ -3,6 +3,8 @@
 #include <glew.h>
 #include <GLFW/glfw3.h>
 
+#include <iostream>
+
 Texture::Texture(const char* path)
 {
 	_path = path;
@@ -38,7 +40,7 @@ void Texture::BindTexture()
 
 void Texture::UnbindTexture()
 {
-	glActiveTexture(0);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindTexture(GL_TEXTURE_2D, 0);
 	glDisable(GL_TEXTURE_2D);
 }
@@ -53,4 +55,5 @@ void Texture::UnloadTexture()
 	_height = 0;
 	_bitDepth = 0;
 	_channels = 0;
+	std::cout << "Textura descargada" << std::endl;
 }

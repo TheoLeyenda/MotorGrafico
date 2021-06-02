@@ -31,7 +31,8 @@ private:
 	Audio* audio = NULL;
 
 	Model* model = NULL;
-
+	Model* model2 = NULL;
+	Model* model3 = NULL;
 public:
 	Game();
 	~Game();
