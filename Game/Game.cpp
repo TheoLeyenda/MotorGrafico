@@ -40,7 +40,7 @@ bool useCamera = true;
 bool useModels = true;
 bool rotateBokitaSkybox = true;
 bool useSkybox = false;
-bool thirdPerson = true;
+bool thirdPerson = false;
 glm::vec3 posThirdPersonCam;
 glm::vec3 offsetThirdPerson;
 //---------------------//
@@ -104,14 +104,15 @@ void Game::InitGame()
 	model->LoadModel("res/modelos/source/alex.obj", "res/modelos/textures/");
 	model->SetScale(50.0f, 50.0f, 50.0f);
 	model->SetName("LOCA DEL DRAGON");
-	model->SetPosition(800, 0, -200);
+	model->SetPosition(660, 12, -16);
+	model->SetRotationY(-0.5);
 	model->SetMaterial(goldMaterial);
-	//
-	//model2 = new Model(render);
-	//model2->LoadModel("res/modelos/pochita.fbx", "res/modelos/");
-	//model2->SetScale(50, 50, 50);
-	//model2->SetName("POCHITA");
-	//model2->SetMaterial(greenRubberMaterial);
+	
+	model2 = new Model(render);
+	model2->LoadModel("res/modelos/pochita.fbx", "res/modelos/");
+	model2->SetScale(50, 50, 50);
+	model2->SetName("POCHITA");
+	model2->SetMaterial(greenRubberMaterial);
 
 	model3 = new Model(render);
 	model3->LoadModel("res/modelos/merkava-tank/Merkava_Tank.obj", "res/modelos/merkava-tank/textures/");
@@ -301,8 +302,7 @@ void Game::UpdateGame(Windows *_window, Renderer *_render, Input *_input)
 	{
 		posThirdPersonCam = (model3->transform.position) + offsetThirdPerson;
 		camera->SetPosition(posThirdPersonCam);
-		//model3->SetRotationY(camera->transform.rotation.y + model3->transform.rotation.y);
-		//cout << "Rot cameraY:" << camera->transform.rotation.y << endl;
+		cout << "Rot cameraY:" << camera->transform.rotation.y << endl;
 	}
 
 	//TempInputsPlayer1(windows, spriteAnimado);
