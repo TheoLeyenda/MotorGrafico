@@ -4,15 +4,17 @@
 #include <vector>
 #include <string>
 
-#include <assimp/Importer.hpp>
-#include <assimp/scene.h>
-#include <assimp/postprocess.h>
-
 #include "Mesh.h"
 #include "Texture.h"
 #include "Material.h"
 
 using namespace std;
+
+struct aiNode;
+struct aiMesh;
+struct aiScene;
+
+enum aiTextureType;
 
 class ENGINE_API Model : public Entity
 {
@@ -35,7 +37,6 @@ public:
 	virtual void SetIsAlive(bool value);
 protected:
 	void BindBuffer() override;
-
 private:
 	vector<Mesh*> meshList;
 	vector<Texture*> textureList;
@@ -45,6 +46,7 @@ private:
 
 	void LoadNode(aiNode* node, const aiScene* scene);
 	void LoadMesh(aiMesh* mesh, const aiScene* scene);
+	void LoadTextureFromFile(aiTextureType type);
 	void LoadMaterial(const aiScene* scene,const string& texturePath);
 };
 

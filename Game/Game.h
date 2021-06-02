@@ -30,9 +30,12 @@ private:
 
 	Audio* audio = NULL;
 
-	Model* model = NULL;
-	Model* model2 = NULL;
-	Model* model3 = NULL;
+	Model* modelOBJ = NULL;
+	Model* modelOBJ2 = NULL;
+	Model* modelFBX = NULL;
+	Model* model3DS = NULL;
+	Model* modelCOLLADA = NULL;
+	Model* modelSTL = NULL;
 public:
 	Game();
 	~Game();

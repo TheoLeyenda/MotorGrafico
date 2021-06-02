@@ -3,6 +3,10 @@
 #include <glew.h>
 #include <GLFW/glfw3.h>
 
+#include <assimp/Importer.hpp>
+#include <assimp/scene.h>
+#include <assimp/postprocess.h>
+
 Model::Model(Renderer * render) : Entity(render)
 {
 	myMat = NULL;
@@ -201,6 +205,11 @@ void Model::LoadMesh(aiMesh* mesh, const aiScene* scene)
 	meshToTex.push_back(mesh->mMaterialIndex);
 }
 
+void Model::LoadTextureFromFile(aiTextureType type)
+{
+
+}
+
 void Model::LoadMaterial(const aiScene * scene, const string& texturePath)
 {
 	textureList.resize(scene->mNumMaterials);
@@ -231,7 +240,6 @@ void Model::LoadMaterial(const aiScene * scene, const string& texturePath)
 					delete textureList[i];
 					textureList[i] = nullptr;
 				}
-
 			}
 		}
 

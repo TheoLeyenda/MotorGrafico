@@ -100,31 +100,63 @@ void Game::InitGame()
 
 	GetMyLightsID();
 
-	model = new Model(render);
-	model->LoadModel("res/modelos/source/alex.obj", "res/modelos/textures/");
-	model->SetScale(50.0f, 50.0f, 50.0f);
-	model->SetName("LOCA DEL DRAGON");
-	model->SetPosition(660, 12, -16);
-	model->SetRotationY(-0.5);
-	model->SetMaterial(goldMaterial);
+	modelOBJ = new Model(render);
+	modelOBJ->LoadModel("res/modelos/source/alex.obj", "res/modelos/textures/");
+	modelOBJ->SetScale(50.0f, 50.0f, 50.0f);
+	modelOBJ->SetName("ALEX-MODEL_OBJ");
+	modelOBJ->SetPosition(660, 12, -16);
+	modelOBJ->SetRotationY(-0.5);
+	modelOBJ->SetMaterial(goldMaterial);
 	
-	model2 = new Model(render);
-	model2->LoadModel("res/modelos/pochita.fbx", "res/modelos/");
-	model2->SetScale(50, 50, 50);
-	model2->SetName("POCHITA");
-	model2->SetMaterial(greenRubberMaterial);
+	modelFBX = new Model(render);
+	modelFBX->LoadModel("res/modelos/pochita.fbx", "res/modelos/");
+	modelFBX->SetScale(50, 50, 50);
+	modelFBX->SetName("POCHITA-MODEL_FBX");
+	modelFBX->SetMaterial(greenRubberMaterial);
+	
+	modelOBJ2 = new Model(render);
+	modelOBJ2->LoadModel("res/modelos/merkava-tank/Merkava_Tank.obj", "res/modelos/merkava-tank/textures/");
+	modelOBJ2->SetScale(0.5, 0.5, 0.5);
+	modelOBJ2->SetPosition(1000, 10, 10);
+	modelOBJ2->SetName("TANQUE-MODEL_OBJ2)");
+	modelOBJ2->SetMaterial(goldMaterial);
+	
+	model3DS = new Model(render);
+	model3DS->LoadModel("res/modelos/3ds/Dragon 2.5_3ds.3ds","res/modelos/3ds/textures/");
+	model3DS->SetPosition(390, 347, -81);
+	model3DS->SetScale(5.0f, 5.0f, 5.0f);
+	model3DS->SetRotationX(-1.25);
+	model3DS->SetRotationY(31.40);
+	model3DS->SetRotationZ(12.195);
+	model3DS->SetMaterial(esmeraldMaterial);
+	model3DS->SetName("DRAGON-MODEL_3DS)");
 
-	model3 = new Model(render);
-	model3->LoadModel("res/modelos/merkava-tank/Merkava_Tank.obj", "res/modelos/merkava-tank/textures/");
-	model3->SetScale(0.5, 0.5, 0.5);
-	model3->SetPosition(1000, 10, 10);
-	model3->SetName("MERKAVA TANQUE PAPARDOOO");
-	model3->SetMaterial(goldMaterial);
+	modelCOLLADA = new Model(render);
+	modelCOLLADA->LoadModel("res/modelos/dae/Dragon 2.5_dae.dae", "res/modelos/dae/textures/");
+	modelCOLLADA->SetPosition(0, 347, -81);
+	modelCOLLADA->SetScale(5.0f, 5.0f, 5.0f);
+	modelCOLLADA->SetRotationX(-1.25);
+	modelCOLLADA->SetRotationY(31.40);
+	modelCOLLADA->SetRotationZ(12.195);
+	modelCOLLADA->SetMaterial(silverMaterial);
+	modelCOLLADA->SetName("DRAGON-MODEL_COLLADA)");
 
-	AddObjectInDenugGame(model);
-	AddObjectInDenugGame(model2);
-	AddObjectInDenugGame(model3);
+	modelSTL = new Model(render);
+	modelSTL->LoadModel("res/modelos/stl/Dragon 2.5_stl.stl", "res/modelos/stl/textures/");
+	modelSTL->SetPosition(150, 647, -81);
+	modelSTL->SetScale(5.0f, 5.0f, 5.0f);
+	modelSTL->SetRotationX(-1.25);
+	modelSTL->SetRotationY(31.40);
+	modelSTL->SetRotationZ(12.195);
+	modelSTL->SetMaterial(goldMaterial);
+	modelSTL->SetName("DRAGON-MODEL_STL)");
 
+	AddObjectInDenugGame(modelOBJ);
+	AddObjectInDenugGame(modelFBX);
+	AddObjectInDenugGame(modelOBJ2);
+	AddObjectInDenugGame(model3DS);
+	AddObjectInDenugGame(modelCOLLADA);
+	AddObjectInDenugGame(modelSTL);
 
 	pyramid = new Primitive3D(render,Pyramid);
 	pyramid->SetPosition(500.0f, 250.0f, -50.0f);
@@ -267,10 +299,9 @@ void Game::InitGame()
 		offsetThirdPerson = glm::vec3(0, 300, -400);
 		camera->SetRotationX(-31);
 		camera->SetRotationY(-269);
-		posThirdPersonCam = (model3->transform.position) + offsetThirdPerson;
+		posThirdPersonCam = (modelOBJ2->transform.position) + offsetThirdPerson;
 		camera->SetPosition(posThirdPersonCam);
 	}
-
 
 	SetUseDebugWindows(true);
 }
@@ -300,7 +331,7 @@ void Game::UpdateGame(Windows *_window, Renderer *_render, Input *_input)
 
 	if (thirdPerson)
 	{
-		posThirdPersonCam = (model3->transform.position) + offsetThirdPerson;
+		posThirdPersonCam = (modelOBJ2->transform.position) + offsetThirdPerson;
 		camera->SetPosition(posThirdPersonCam);
 		cout << "Rot cameraY:" << camera->transform.rotation.y << endl;
 	}
@@ -336,12 +367,20 @@ void Game::UpdateGame(Windows *_window, Renderer *_render, Input *_input)
 	if (spriteAnimado != NULL)
 		spriteAnimado->Draw(GetTimeClock());
 
-	if (model != NULL)
-		model->Draw(motorasoGui->GetIfWireFrameIsActive());
-	if (model2 != NULL)
-		model2->Draw(motorasoGui->GetIfWireFrameIsActive());
-	if (model3 != NULL)
-		model3->Draw(motorasoGui->GetIfWireFrameIsActive());
+	//MODELS DRAW
+
+	if (modelOBJ != NULL)
+		modelOBJ->Draw(motorasoGui->GetIfWireFrameIsActive());
+	if (modelFBX != NULL)
+		modelFBX->Draw(motorasoGui->GetIfWireFrameIsActive());
+	if (modelOBJ2 != NULL)
+		modelOBJ2->Draw(motorasoGui->GetIfWireFrameIsActive());
+	if (model3DS != NULL)
+		model3DS->Draw(motorasoGui->GetIfWireFrameIsActive());
+	if (modelCOLLADA != NULL)
+		modelCOLLADA->Draw(motorasoGui->GetIfWireFrameIsActive());
+	if (modelSTL != NULL)
+		modelSTL->Draw(motorasoGui->GetIfWireFrameIsActive());
 }
 
 void Game::DestroyGame()
@@ -417,17 +456,29 @@ void Game::DestroyGame()
 	if (animations != NULL)
 		delete animations;
 
-	if (model != NULL) {
-		delete model;
-		model = NULL;
+	if (modelOBJ != NULL) {
+		delete modelOBJ;
+		modelOBJ = NULL;
 	}
-	if (model2 != NULL) {
-		delete model2;
-		model2 = NULL;
+	if (modelFBX != NULL) {
+		delete modelFBX;
+		modelFBX = NULL;
 	}
-	if (model3 != NULL) {
-		delete model3;
-		model3 = NULL;
+	if (modelOBJ2 != NULL) {
+		delete modelOBJ2;
+		modelOBJ2 = NULL;
+	}
+	if (model3DS != NULL) {
+		delete model3DS;
+		model3DS = NULL;
+	}
+	if (modelCOLLADA != NULL) {
+		delete modelCOLLADA;
+		modelCOLLADA = NULL;
+	}
+	if (modelSTL != NULL) {
+		delete modelSTL;
+		modelSTL = NULL;
 	}
 }
 
