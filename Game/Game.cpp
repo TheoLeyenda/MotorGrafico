@@ -88,11 +88,11 @@ void Game::InitGame()
 	AddObjectInDenugGame(GetLight(0));
 	AddObjectInDenugGame(GetLight(87));
 
-	//ChangeColorLight(1, red);
-	//ChangeColorLight(2, yellow);
-	//ChangeColorLight(6, cyan);
-	//ChangeColorLight(87, brown);
-	//ChangeColorLight(0, magenta);
+	ChangeColorLight(1, red);
+	ChangeColorLight(2, yellow);
+	ChangeColorLight(6, cyan);
+	ChangeColorLight(87, brown);
+	ChangeColorLight(0, magenta);
 
 	GetMyLightsID();
 
