@@ -52,7 +52,7 @@ int GameBase::InitEngine()
 	camera->UseProjection();
 	camera->SetPosition(300.0f, 100.0f, 200.0f);
 	camera->InitCamera(camera->transform.position, glm::vec3(0.0f, 1.0f, 0.0f), -90, 0);
-	camera->SetView();
+	camera->SetViewFirstPerson();
 	camera->SetName("Camera");
 
 #pragma endregion
@@ -379,12 +379,17 @@ void GameBase::GetMyLightsID()
 
 void GameBase::HandleCamera()
 {
-	camera->SetView();
+	switch (camera->GetTypeCamera())
+	{
+	case TypeCamera::FirstPerson:
+		camera->SetViewFirstPerson();
+		break;
+	case TypeCamera::ThirdPerson:
+		camera->SetViewThirdPerson();
+		break;
+	}
+
 	camera->UseCamera(render->GetCurrentShaderUse(), camera->GetInternalData().model);
-
-	//HACER UN FRAGMENT SHADER QUE CONTENGA EL COLOR Y LA TEXTURA.
-
-	//render->drawCamera(render->GetShaderTexture(), camera->GetInternalData().model);
 }
 
 void GameBase::HandleLight()

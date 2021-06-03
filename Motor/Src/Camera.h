@@ -8,7 +8,11 @@ static enum TypeProjectionCamera
 	Perspective,
 	Ortho,
 };
-
+static enum TypeCamera
+{
+	FirstPerson,
+	ThirdPerson,
+};
 static struct ProjectionDataOrtho
 {
 	float left;
@@ -31,6 +35,10 @@ public:
 class ENGINE_API Camera : public Entity
 {
 private:
+
+	TypeCamera typeCamera;
+	Entity* targetThirdPerson;
+
 	glm::vec3 _front;
 	glm::vec3 _up;
 	glm::vec3 _right;
@@ -40,10 +48,26 @@ private:
 	float _pitch;
 protected:
 	void BindBuffer() override;
+
+	float CalculateDistanceOfTarget();
+
+	float CalculateHorizontalDistanceOfTarget();
+
+	float CalculateVerticalDistanceOfTarget();
+
+	void CalculateThirdPersonPosition();
+	
+	float offsetThirdPersonY = 350;
+
 public:
+
+	void SetOffsetThirdPersonY(float value) { offsetThirdPersonY = value; }
+	void SetTargetThirdPerson(Entity* target) { targetThirdPerson = target; }
+	Entity* GetTargetThirdPerson() { return targetThirdPerson; }
 	void Draw(bool& wireFrameActive) override;
 	void UseCamera(Shader& shader, glm::mat4 trsCamera);
-	void SetView();
+	void SetViewFirstPerson();
+	void SetViewThirdPerson();
 	void SetProjectionPerspective(float FOV, float aspect, float, float front);
 	void SetProjectionOrtho(float left, float right, float bottom, float top, float, float front);
 	TypeProjectionCamera typeProjectionCamera;
@@ -76,5 +100,8 @@ public:
 	void RotateCameraX(float speed);
 	void RotateCameraY(float speed);
 	void RotateCameraZ(float speed);
+
+	void SetTypeCamera(TypeCamera value) { typeCamera = value; }
+	TypeCamera GetTypeCamera() { return typeCamera; }
 };
 #endif
