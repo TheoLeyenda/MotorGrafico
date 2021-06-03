@@ -40,7 +40,7 @@ bool useCamera = true;
 bool useModels = true;
 bool rotateBokitaSkybox = true;
 bool useSkybox = false;
-bool thirdPerson = false;
+bool thirdPerson = true;
 glm::vec3 posThirdPersonCam;
 glm::vec3 offsetThirdPerson;
 //---------------------//
@@ -100,19 +100,19 @@ void Game::InitGame()
 
 	GetMyLightsID();
 
-	modelOBJ = new Model(render);
-	modelOBJ->LoadModel("res/modelos/source/alex.obj", "res/modelos/textures/");
-	modelOBJ->SetScale(50.0f, 50.0f, 50.0f);
-	modelOBJ->SetName("ALEX-MODEL_OBJ");
-	modelOBJ->SetPosition(660, 12, -16);
-	modelOBJ->SetRotationY(-0.5);
-	modelOBJ->SetMaterial(goldMaterial);
-	
-	modelFBX = new Model(render);
-	modelFBX->LoadModel("res/modelos/pochita.fbx", "res/modelos/");
-	modelFBX->SetScale(50, 50, 50);
-	modelFBX->SetName("POCHITA-MODEL_FBX");
-	modelFBX->SetMaterial(greenRubberMaterial);
+	//modelOBJ = new Model(render);
+	//modelOBJ->LoadModel("res/modelos/source/alex.obj", "res/modelos/textures/");
+	//modelOBJ->SetScale(50.0f, 50.0f, 50.0f);
+	//modelOBJ->SetName("ALEX-MODEL_OBJ");
+	//modelOBJ->SetPosition(660, 12, -16);
+	//modelOBJ->SetRotationY(-0.5);
+	//modelOBJ->SetMaterial(goldMaterial);
+	//
+	//modelFBX = new Model(render);
+	//modelFBX->LoadModel("res/modelos/pochita.fbx", "res/modelos/");
+	//modelFBX->SetScale(50, 50, 50);
+	//modelFBX->SetName("POCHITA-MODEL_FBX");
+	//modelFBX->SetMaterial(greenRubberMaterial);
 	
 	modelOBJ2 = new Model(render);
 	modelOBJ2->LoadModel("res/modelos/merkava-tank/Merkava_Tank.obj", "res/modelos/merkava-tank/textures/");
@@ -121,35 +121,35 @@ void Game::InitGame()
 	modelOBJ2->SetName("TANQUE-MODEL_OBJ2)");
 	modelOBJ2->SetMaterial(goldMaterial);
 	
-	model3DS = new Model(render);
-	model3DS->LoadModel("res/modelos/3ds/Dragon 2.5_3ds.3ds","res/modelos/3ds/textures/");
-	model3DS->SetPosition(390, 347, -81);
-	model3DS->SetScale(5.0f, 5.0f, 5.0f);
-	model3DS->SetRotationX(-1.25);
-	model3DS->SetRotationY(31.40);
-	model3DS->SetRotationZ(12.195);
-	model3DS->SetMaterial(esmeraldMaterial);
-	model3DS->SetName("DRAGON-MODEL_3DS)");
+	//model3DS = new Model(render);
+	//model3DS->LoadModel("res/modelos/3ds/Dragon 2.5_3ds.3ds","res/modelos/3ds/textures/");
+	//model3DS->SetPosition(390, 347, -81);
+	//model3DS->SetScale(5.0f, 5.0f, 5.0f);
+	//model3DS->SetRotationX(-1.25);
+	//model3DS->SetRotationY(31.40);
+	//model3DS->SetRotationZ(12.195);
+	//model3DS->SetMaterial(esmeraldMaterial);
+	//model3DS->SetName("DRAGON-MODEL_3DS)");
+	//
+	//modelCOLLADA = new Model(render);
+	//modelCOLLADA->LoadModel("res/modelos/dae/Dragon 2.5_dae.dae", "res/modelos/dae/textures/");
+	//modelCOLLADA->SetPosition(0, 347, -81);
+	//modelCOLLADA->SetScale(5.0f, 5.0f, 5.0f);
+	//modelCOLLADA->SetRotationX(-1.25);
+	//modelCOLLADA->SetRotationY(31.40);
+	//modelCOLLADA->SetRotationZ(12.195);
+	//modelCOLLADA->SetMaterial(silverMaterial);
+	//modelCOLLADA->SetName("DRAGON-MODEL_COLLADA)");
 
-	modelCOLLADA = new Model(render);
-	modelCOLLADA->LoadModel("res/modelos/dae/Dragon 2.5_dae.dae", "res/modelos/dae/textures/");
-	modelCOLLADA->SetPosition(0, 347, -81);
-	modelCOLLADA->SetScale(5.0f, 5.0f, 5.0f);
-	modelCOLLADA->SetRotationX(-1.25);
-	modelCOLLADA->SetRotationY(31.40);
-	modelCOLLADA->SetRotationZ(12.195);
-	modelCOLLADA->SetMaterial(silverMaterial);
-	modelCOLLADA->SetName("DRAGON-MODEL_COLLADA)");
-
-	modelSTL = new Model(render);
-	modelSTL->LoadModel("res/modelos/stl/Dragon 2.5_stl.stl", "res/modelos/stl/textures/");
-	modelSTL->SetPosition(150, 647, -81);
-	modelSTL->SetScale(5.0f, 5.0f, 5.0f);
-	modelSTL->SetRotationX(-1.25);
-	modelSTL->SetRotationY(31.40);
-	modelSTL->SetRotationZ(12.195);
-	modelSTL->SetMaterial(goldMaterial);
-	modelSTL->SetName("DRAGON-MODEL_STL)");
+	//modelSTL = new Model(render);
+	//modelSTL->LoadModel("res/modelos/stl/Dragon 2.5_stl.stl", "res/modelos/stl/textures/");
+	//modelSTL->SetPosition(150, 647, -81);
+	//modelSTL->SetScale(5.0f, 5.0f, 5.0f);
+	//modelSTL->SetRotationX(-1.25);
+	//modelSTL->SetRotationY(31.40);
+	//modelSTL->SetRotationZ(12.195);
+	//modelSTL->SetMaterial(goldMaterial);
+	//modelSTL->SetName("DRAGON-MODEL_STL)");
 
 	AddObjectInDenugGame(modelOBJ);
 	AddObjectInDenugGame(modelFBX);
@@ -296,13 +296,15 @@ void Game::InitGame()
 
 	if (thirdPerson)
 	{
-		offsetThirdPerson = glm::vec3(0, 300, -400);
-		camera->SetRotationX(-31);
-		camera->SetRotationY(-269);
-		posThirdPersonCam = (modelOBJ2->transform.position) + offsetThirdPerson;
-		camera->SetPosition(posThirdPersonCam);
+		camera->SetTargetThirdPerson(modelOBJ2);
+		//RemoveObjectInDebugGame(pyramid);
+		camera->SetTypeCamera(TypeCamera::ThirdPerson);
+		camera->SetViewThirdPerson();
 	}
-
+	else 
+	{
+		camera->SetTypeCamera(TypeCamera::FirstPerson);
+	}
 	SetUseDebugWindows(true);
 }
 
@@ -328,13 +330,6 @@ void Game::UpdateGame(Windows *_window, Renderer *_render, Input *_input)
 
 	if (useCamera)
 		TempInputCamera();
-
-	if (thirdPerson)
-	{
-		posThirdPersonCam = (modelOBJ2->transform.position) + offsetThirdPerson;
-		camera->SetPosition(posThirdPersonCam);
-		cout << "Rot cameraY:" << camera->transform.rotation.y << endl;
-	}
 
 	//TempInputsPlayer1(windows, spriteAnimado);
 
@@ -567,10 +562,9 @@ void Game::TempInputCamera()
 		camera->RotateCameraX(-speed);
 	}
 
-	//MANEJO DE DATOS
+	
 	if(!thirdPerson)
 		camera->SetPosition(newPositionCamX, newPositionCamY, newPositionCamZ);
-	//render->RotateCamera(newRotationCamZ, camera->GetInternalData().model);
 	
 #pragma endregion
 }

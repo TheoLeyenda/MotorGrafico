@@ -126,13 +126,14 @@ string Entity::GetName()
 
 void Entity::SetRotationX(float x)
 {
+	
 	transform.rotation[0] = x;
 	glm::vec3 axis;
 	axis[0] = 1.0f;
 	axis[1] = 0.0f;
 	axis[2] = 0.0f;
 
-	internalData.rotateX = glm::rotate(glm::mat4(1.0f), x, axis);
+	internalData.rotateX = glm::rotate(glm::mat4(1.0f), glm::radians(x), axis);
 	UpdateMatrixModel();
 }
 
@@ -144,7 +145,7 @@ void Entity::SetRotationY(float y)
 	axis[1] = 1.0f;
 	axis[2] = 0.0f;
 
-	internalData.rotateY = glm::rotate(glm::mat4(1.0f), y, axis);
+	internalData.rotateY = glm::rotate(glm::mat4(1.0f), glm::radians(y), axis);
 	UpdateMatrixModel();
 }
 
@@ -156,7 +157,7 @@ void Entity::SetRotationZ(float z)
 	axis[1] = 0.0f;
 	axis[2] = 1.0f;
 
-	internalData.rotateZ = glm::rotate(glm::mat4(1.0f), z, axis);
+	internalData.rotateZ = glm::rotate(glm::mat4(1.0f), glm::radians(z), axis);
 	UpdateMatrixModel();
 }
 

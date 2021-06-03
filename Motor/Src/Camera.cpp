@@ -8,6 +8,7 @@ Camera::Camera(Renderer* _render, TypeProjectionCamera _typeProjectionCamera) : 
 	_MVP.view = glm::mat4(1.0f);
 	_MVP.projection = glm::mat4(1.0f);
 	typeProjectionCamera = _typeProjectionCamera;
+	typeCamera = FirstPerson;
 	InmortalObject = true;
 }
 
@@ -29,9 +30,47 @@ void Camera::UseCamera(Shader& shader, glm::mat4 trsCamera)
 	glUniformMatrix4fv(projectionLoc, 1, GL_FALSE, glm::value_ptr(_MVP.projection));
 	glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(_MVP.view));
 }
-void Camera::SetView()
+void Camera::SetViewFirstPerson()
 {
 	_MVP.view = CalculateViewMatrix();
+}
+
+void Camera::SetViewThirdPerson()
+{
+	_MVP.view = glm::lookAt(transform.position, targetThirdPerson->transform.position + _front, _up);
+	CalculateThirdPersonPosition();
+}
+
+void Camera::CalculateThirdPersonPosition() 
+{
+	float theta = targetThirdPerson->transform.rotation.y;
+	float posX = CalculateHorizontalDistanceOfTarget() * glm::sin(glm::radians(theta));
+	float posY = targetThirdPerson->transform.position.y + CalculateVerticalDistanceOfTarget();
+	float posZ = CalculateHorizontalDistanceOfTarget() * glm::cos(glm::radians(theta));
+
+	float finalPosX = targetThirdPerson->transform.position.x - posX;
+	float finalPosY = posY;
+	float finalPosZ = targetThirdPerson->transform.position.z - posZ;
+
+	_yaw = 180 - glm::radians(targetThirdPerson->transform.rotation.y);
+	cout << CalculateVerticalDistanceOfTarget() << endl;
+	SetPosition(finalPosX, finalPosY, finalPosZ);
+	UpdateCamera();
+}
+
+float Camera::CalculateVerticalDistanceOfTarget() 
+{
+	return CalculateDistanceOfTarget() * glm::sin(glm::radians(_pitch));
+}
+
+float Camera::CalculateDistanceOfTarget()
+{
+	return glm::distance(transform.position, targetThirdPerson->transform.position);
+}
+
+float Camera::CalculateHorizontalDistanceOfTarget()
+{
+	return CalculateDistanceOfTarget() * glm::cos(glm::radians(_pitch));
 }
 
 void Camera::SetProjectionPerspective(float FOV, float aspect, float near, float front)
