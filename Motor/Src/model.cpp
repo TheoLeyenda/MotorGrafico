@@ -232,7 +232,7 @@ void Model::LoadMaterial(const aiScene * scene, const string& texturePath)
 
 				cout << "Texture name:" << texPath << endl;
 
-				textureList[i] = new Texture(texPath.c_str());
+				textureList[i] = new Texture(texPath.c_str(), false);
 
 				if (!textureList[i]->LoadTexture(false))
 				{
@@ -244,7 +244,7 @@ void Model::LoadMaterial(const aiScene * scene, const string& texturePath)
 		}
 
 		if (!textureList[i]) {
-			textureList[i] = new Texture("res/textures/plain.png");
+			textureList[i] = new Texture("res/textures/plain.png", false);
 			textureList[i]->LoadTexture(false);
 		}
 	}

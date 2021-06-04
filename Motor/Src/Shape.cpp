@@ -49,10 +49,12 @@ Shape::Shape(Renderer * _renderer,TypeShape typeShape, const char * filePath): E
 
 	CreateDataShape();
 
-	if (_transparency)
-		BlendSprite();
+	texImporter = new Texture(filePath, _transparency);
 
-	LoadTexture(_path, _transparency);
+	if (_transparency)
+		texImporter->BlendTexture();
+
+	texImporter->LoadTexture(_path, _transparency);
 }
 
 Shape::Shape(Renderer * _renderer, TypeShape typeShape) : Entity2D(_renderer)
@@ -64,7 +66,15 @@ Shape::Shape(Renderer * _renderer, TypeShape typeShape) : Entity2D(_renderer)
 	CreateDataShape();
 
 }
-Shape::~Shape(){}
+Shape::~Shape()
+{
+	UnbindBuffers();
+	if (texImporter != NULL) 
+	{
+		delete texImporter;
+		texImporter = NULL;
+	}
+}
 void Shape::SetNewMaterial(Material * mat)
 {
 	material = mat;
@@ -96,12 +106,7 @@ void Shape::UseShape(int indices, Shader& shader, bool& wireFrameActive)
 
 		if (_typeMaterial == TypeMaterial::TextureType)
 		{
-			if (_transparency)
-				BlendSprite();
-
-			glEnable(GL_TEXTURE_2D);
-			glActiveTexture(GL_TEXTURE0);
-			glBindTexture(GL_TEXTURE_2D, _texture);
+			texImporter->BindTexture();
 		}
 		
 		if(material != NULL)
@@ -111,28 +116,9 @@ void Shape::UseShape(int indices, Shader& shader, bool& wireFrameActive)
 
 		if (_typeMaterial == TypeMaterial::TextureType) 
 		{
-			glBindBuffer(GL_ARRAY_BUFFER, 0);
-			glBindTexture(GL_TEXTURE_2D, 0);
-			glDisable(GL_TEXTURE_2D);
-
-			if (_transparency)
-				UnBlendSprite();
+			texImporter->UnbindTexture();
 		}
 	}
-}
-
-//==============================================
-void Shape:: BlendSprite() {
-	glEnable(GL_BLEND);
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-}
-void Shape::UnBlendSprite()
-{
-	glDisable(GL_BLEND);
-}
-void Shape::LoadTexture(const char* path, bool transparent) {
-	_transparency = transparent;
-	texImporter.LoadTexture(path, data, _texture, _width, _height, _nrChannels, _transparency);
 }
 //==============================================
 

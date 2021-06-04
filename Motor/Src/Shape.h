@@ -4,7 +4,7 @@
 
 #include "Entity2D.h"
 #include "../Lib/glm/vec4.hpp"
-#include "TextureImporter.h"
+#include "Texture.h"
 
 static enum TypeShape 
 {
@@ -32,7 +32,7 @@ private:
 	int _nrChannels;
 	const char* _path;
 	bool _transparency;
-	TextureImporter texImporter;
+	Texture* texImporter = NULL;
 
 	//Texture
 	//unsigned int texture;
@@ -49,10 +49,7 @@ protected:
 	void SetIBO();
 	void UnbindBuffers();
 	void CreateDataShape();
-	void BlendSprite();
-	void UnBlendSprite();
 	void UseShape(int indices, Shader& shader, bool& wireFrameActive);
-	void LoadTexture(const char* path, bool transparent);
 public:
 
 	void Draw(bool& wireFrameActive) override;

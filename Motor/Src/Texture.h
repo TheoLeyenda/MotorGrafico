@@ -14,12 +14,17 @@ private:
 	int _height;
 	int _bitDepth;
 	int _channels;
+	bool _transparency;
 	TextureImporter _myImporter;
 public:
-	Texture(const char* path);
+	Texture(const char* path, bool transparency);
 	~Texture();
 	bool LoadTexture(bool hasAlpha);
 	bool LoadTexture(const char* path, bool hasAlpha);
+
+	void BlendTexture();
+
+	void UnblendTexture();
 
 	void BindTexture();
 	void UnbindTexture();
