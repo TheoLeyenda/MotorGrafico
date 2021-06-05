@@ -9,16 +9,11 @@ Entity2D::Entity2D(Renderer * _renderer, Material* _material): Entity(_renderer)
 
 Entity2D::Entity2D(Renderer * _renderer) : Entity(_renderer)
 {
-	material = new Material();
 	boxColliderSize2D = transform.scale;
 }
 
 Entity2D::~Entity2D()
 {
-	if (material != NULL)
-	{
-		delete material;
-	}
 }
 
 void Entity2D::SetScale(float x, float y, float z)
