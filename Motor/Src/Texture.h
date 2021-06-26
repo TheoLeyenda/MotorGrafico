@@ -25,7 +25,7 @@ public:
 	void BlendTexture();
 
 	void UnblendTexture();
-
+	unsigned int GetTexture() { return _textureID; }
 	void BindTexture();
 	void UnbindTexture();
 

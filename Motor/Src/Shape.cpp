@@ -47,7 +47,6 @@ Shape::Shape(Renderer * _renderer,TypeShape typeShape, const char * filePath): E
 	material = NULL;
 	_typeMaterial = TypeMaterial::TextureType;
 
-	CreateDataShape();
 
 	texImporter = new Texture(filePath, _transparency);
 
@@ -55,6 +54,8 @@ Shape::Shape(Renderer * _renderer,TypeShape typeShape, const char * filePath): E
 		texImporter->BlendTexture();
 
 	texImporter->LoadTexture(_path, _transparency);
+	
+	CreateDataShape();
 }
 
 Shape::Shape(Renderer * _renderer, TypeShape typeShape) : Entity2D(_renderer)
@@ -119,6 +120,11 @@ void Shape::UseShape(int indices, Shader& shader, bool& wireFrameActive)
 			texImporter->UnbindTexture();
 		}
 	}
+}
+
+void Shape::LoadTexture(const char* filePath) 
+{
+	texImporter->LoadTexture(filePath, false);
 }
 //==============================================
 
@@ -193,7 +199,12 @@ void Shape::SetVBO()
 	}
 
 	_positionLocation = glGetAttribLocation(renderer->GetCurrentShaderUse().getId(), "position");
-	glUniform1i(_texLocation = glGetUniformLocation(renderer->GetCurrentShaderUse().getId(), "ourTexture"),_texture);
+	if (texImporter != NULL) 
+	{
+		cout << "TODAS PUTAS" << endl;
+		glUniform1i(_texLocation = glGetUniformLocation(renderer->GetCurrentShaderUse().getId(), "ourTexture"), texImporter->GetTexture());
+		cout << "ENTRE: "+ texImporter->GetTexture() << endl;
+	}
 	BindGeneralData();
 }
 

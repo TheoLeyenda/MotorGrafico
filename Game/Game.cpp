@@ -40,7 +40,7 @@ bool useCamera = true;
 bool useModels = true;
 bool rotateBokitaSkybox = true;
 bool useSkybox = false;
-bool thirdPerson = false;
+bool thirdPerson = true;
 glm::vec3 posThirdPersonCam;
 glm::vec3 offsetThirdPerson;
 //---------------------//

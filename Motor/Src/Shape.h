@@ -51,6 +51,7 @@ protected:
 	void CreateDataShape();
 	void UseShape(int indices, Shader& shader, bool& wireFrameActive);
 public:
+	void LoadTexture(const char* filePath);
 
 	void Draw(bool& wireFrameActive) override;
 
