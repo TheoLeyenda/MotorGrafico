@@ -173,3 +173,12 @@ void Entity::CheckIsModel()
 	//cout << _uniformIsModelLocation << endl;
 	glUniform1f(_uniformIsModelLocation, isModel);
 }
+
+glm::vec3 Entity::GetForward()
+{
+	float dx = (float)(1 * mathLibrary.sin(mathLibrary.ToRadians(transform.rotation.y)));
+	float dz = (float)(1 * mathLibrary.cos(mathLibrary.ToRadians(transform.rotation.y)));
+
+	return glm::vec3(dx, 0, dz);
+}
+

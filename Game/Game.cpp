@@ -111,7 +111,6 @@ void Game::InitGame()
 	modelFBX = new Model(render);
 	modelFBX->LoadModel("res/modelos/pochita.fbx", "res/modelos/");
 	modelFBX->SetScale(50, 50, 50);
-	modelFBX->SetName("POCHITA-MODEL_FBX");
 	modelFBX->SetMaterial(greenRubberMaterial);
 	
 	modelOBJ2 = new Model(render);
@@ -146,7 +145,6 @@ void Game::InitGame()
 	modelSTL->SetName("DRAGON-MODEL_STL)");
 
 	AddObjectInDenugGame(modelOBJ);
-	AddObjectInDenugGame(modelFBX);
 	AddObjectInDenugGame(modelOBJ2);
 	AddObjectInDenugGame(model3DS);
 	AddObjectInDenugGame(modelCOLLADA);
@@ -290,9 +288,12 @@ void Game::InitGame()
 
 	if (thirdPerson)
 	{
-		camera->SetTargetThirdPerson(modelFBX);
+		player3D = new PlayerController3D(render);
+		player3D->SetMyModel(modelFBX);
+		camera->SetTargetThirdPerson(player3D);
 		camera->SetTypeCamera(TypeCamera::ThirdPerson);
 		camera->SetViewThirdPerson();
+		camera->SetInitOffsetCameraThirdPerson(250.0f);
 	}
 	else 
 	{
@@ -304,6 +305,27 @@ void Game::InitGame()
 void Game::UpdateGame(Windows *_window, Renderer *_render, Input *_input)
 {
 	//timeClock.FPS();
+
+	if (player3D != NULL)
+		player3D->Move(input, timeClock);
+
+	//cout << "Player Pos X: " << player3D->transform.position.x << endl;
+	//cout << "Player Pos Y: " << player3D->transform.position.y << endl;
+	//cout << "Player Pos Z: " << player3D->transform.position.z <<endl;
+
+	//cout << "Player Rot X: " << player3D->transform.rotation.x << endl;
+	//cout << "Player Rot Y: " << player3D->transform.rotation.y << endl;
+	//cout << "Player Rot Z: " << player3D->transform.rotation.z << endl;
+
+	//cout << "Player Scal X: " << player3D->transform.scale.x << endl;
+	//cout << "Player Scal Y: " << player3D->transform.scale.y << endl;
+	//cout << "Player Scal Z: " << player3D->transform.scale.z << endl;
+	//
+	//cout << "Camera Vertical Distance: " << camera->CalculateVerticalDistanceOfTarget() << endl;
+	//cout << "Camera Horizontal Distance: " << camera->CalculateHorizontalDistanceOfTarget() << endl;
+	//cout << "Camera Distance: "<< camera->CalculateDistanceOfTarget() << endl;
+
+	//system("cls");
 
 	if (input->GetKey(KeyBoard::KEY_RIGHT_SHIFT) && audio->GetIsPlayingAudio2D("res/audio/Dale Dale Boca.mp3"))
 	{
@@ -468,6 +490,9 @@ void Game::DestroyGame()
 		delete modelSTL;
 		modelSTL = NULL;
 	}
+
+	if (player3D != NULL)
+		delete player3D;
 }
 
 void Game::TempColorInput(Windows* windows, Shape* shape)

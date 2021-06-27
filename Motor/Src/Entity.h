@@ -33,7 +33,7 @@ Renderer* GetRenderer();
 #include "../Lib/glm/ext/scalar_constants.hpp"
 #include "PrivateClass/Export.h"
 
-#include "MyMathLibrary.h"
+#include "MathLibrary.h"
 
 #include "Renderer.h"
 
@@ -71,7 +71,7 @@ protected:
 	Renderer* renderer;
 	InternalData internalData;
 	void UpdateMatrixModel();
-	MyMathLibrary myMathLibrary;
+	MathLibrary mathLibrary;
 	float isModel;
 
 	unsigned int _uniformIsModelLocation;
@@ -120,5 +120,7 @@ public:
 	bool GetIsAlive() { return isAlive; }
 	virtual void SetIsAlive(bool value) { isAlive = value; }
 	bool GetIsInmortal() { return InmortalObject; }
+
+	glm::vec3 GetForward();
 };
 #endif

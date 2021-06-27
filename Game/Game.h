@@ -1,10 +1,14 @@
 #ifndef GAME_H
 #define GAME_H
 #include "GameBase.h"
+#include "PlayerController3D.h"
 class Game: public GameBase
 {
 private:
 	int resultInit;
+
+	PlayerController3D* player3D = NULL;
+
 	Shape* shape1 = NULL;
 	Shape* shape2 = NULL;
 	Shape* shape3 = NULL;

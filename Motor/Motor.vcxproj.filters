@@ -84,9 +84,6 @@
     <ClInclude Include="Src\Light.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
-    <ClInclude Include="Src\MyMathLibrary.h">
-      <Filter>Archivos de encabezado</Filter>
-    </ClInclude>
     <ClInclude Include="Src\Mesh.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
@@ -124,6 +121,9 @@
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
     <ClInclude Include="Src\Texture.h">
+      <Filter>Archivos de encabezado</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\MathLibrary.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
   </ItemGroup>
@@ -182,9 +182,6 @@
     <ClCompile Include="Src\Light.cpp">
       <Filter>Archivos de origen</Filter>
     </ClCompile>
-    <ClCompile Include="Src\MyMathLibrary.cpp">
-      <Filter>Archivos de origen</Filter>
-    </ClCompile>
     <ClCompile Include="Src\Mesh.cpp">
       <Filter>Archivos de origen</Filter>
     </ClCompile>
@@ -213,6 +210,9 @@
       <Filter>Archivos de origen</Filter>
     </ClCompile>
     <ClCompile Include="Src\Texture.cpp">
+      <Filter>Archivos de origen</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\MathLibrary.cpp">
       <Filter>Archivos de origen</Filter>
     </ClCompile>
   </ItemGroup>

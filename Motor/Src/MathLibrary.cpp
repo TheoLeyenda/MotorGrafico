@@ -1,4 +1,4 @@
-#include "MyMathLibrary.h"
+#include "MathLibrary.h"
 #include "../../glm/glm.hpp"
 #include "../Lib/glm/vec4.hpp"
 #include "../Lib/glm/vec3.hpp"
@@ -7,11 +7,11 @@
 #include "../Lib/glm/mat3x3.hpp"
 #include "../Lib/glm/mat2x2.hpp"
 
-MyMathLibrary::MyMathLibrary(){}
+MathLibrary::MathLibrary(){}
 
-MyMathLibrary::~MyMathLibrary(){}
+MathLibrary::~MathLibrary(){}
 
-void MyMathLibrary::CalcAverageNormals(unsigned int * indices, unsigned int indiceCount, 
+void MathLibrary::CalcAverageNormals(unsigned int * indices, unsigned int indiceCount, 
 	float * vertices, unsigned int verticeCount, unsigned int vLength, unsigned int normalOffset) {
 	for (int i = 0; i < indiceCount; i += 3) {
 		unsigned int in0 = indices[i] * vLength;
@@ -34,4 +34,83 @@ void MyMathLibrary::CalcAverageNormals(unsigned int * indices, unsigned int indi
 		vec = glm::normalize(vec);
 		vertices[nOffset] = vec.x; vertices[nOffset + 1] = vec.y; vertices[nOffset + 2] = vec.z;
 	}
+}
+
+float MathLibrary::ToRadians(float num)
+{
+	return glm::radians(num);
+}
+
+float MathLibrary::sin(float num)
+{
+	return glm::sin(num);
+}
+
+float MathLibrary::cos(float num)
+{
+	return glm::cos(num);
+}
+float MathLibrary::cosh(float num)
+{
+	return glm::cosh(num);
+}
+
+float MathLibrary::distance(float num)
+{
+	return distance(num);
+}
+
+float MathLibrary::tan(float num)
+{
+	return glm::tan(num);
+}
+
+float MathLibrary::abs(float num)
+{
+	return glm::abs(num);
+}
+
+float MathLibrary::acos(float num)
+{
+	return glm::acos(num);
+}
+
+float MathLibrary::acosh(float num)
+{
+	return acosh(num);
+}
+
+float MathLibrary::asin(float num)
+{
+	return glm::asin(num);
+}
+
+float MathLibrary::asinh(float num)
+{
+	return asinh(num);
+}
+
+float MathLibrary::atan(float num)
+{
+	return glm::atan(num);
+}
+
+float MathLibrary::atanh(float num)
+{
+	return glm::atanh(num);
+}
+
+int MathLibrary::bitCount(int num)
+{
+	return glm::bitCount(num);
+}
+
+double MathLibrary::ceil(double num)
+{
+	return glm::ceil(num);
+}
+
+double MathLibrary::clamp(double num, double min, double max)
+{
+	return glm::clamp(num, min, max);
 }

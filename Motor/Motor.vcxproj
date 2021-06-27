@@ -42,7 +42,7 @@
     <ClInclude Include="Src\Model.h" />
     <ClInclude Include="Src\MotorasoGui.h" />
     <ClInclude Include="Src\Primitive3D.h" />
-    <ClInclude Include="Src\MyMathLibrary.h" />
+    <ClInclude Include="Src\MathLibrary.h" />
     <ClInclude Include="Src\PrivateClass\Export.h" />
     <ClInclude Include="Src\Renderer.h" />
     <ClInclude Include="Src\shader.h" />
@@ -74,7 +74,7 @@
     <ClCompile Include="Src\Model.cpp" />
     <ClCompile Include="Src\MotorasoGui.cpp" />
     <ClCompile Include="Src\Primitive3D.cpp" />
-    <ClCompile Include="Src\MyMathLibrary.cpp" />
+    <ClCompile Include="Src\MathLibrary.cpp" />
     <ClCompile Include="Src\Renderer.cpp" />
     <ClCompile Include="Src\shader.cpp" />
     <ClCompile Include="Src\Shape.cpp" />

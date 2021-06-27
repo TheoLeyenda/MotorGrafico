@@ -47,22 +47,28 @@ private:
 	float _yaw;
 	float _pitch;
 protected:
+	float initOffsetCameraThirdPerson = 1.6f;
+	glm::vec3 lastPositionTarget = glm::vec3(0.0f);
+	float lastDistance = 0.0f;
+
 	void BindBuffer() override;
 
-	float CalculateDistanceOfTarget();
+	void CalculateThirdPersonPositionCamera();
 
-	float CalculateHorizontalDistanceOfTarget();
-
-	float CalculateVerticalDistanceOfTarget();
-
-	void CalculateThirdPersonPosition();
-	
 	float offsetThirdPersonY = 350;
 
 public:
-
+	void SetInitOffsetCameraThirdPerson(float value) { initOffsetCameraThirdPerson = value; }
+	float CalculateHorizontalDistanceOfTarget();
+	float CalculateVerticalDistanceOfTarget();
+	float CalculateDistanceOfTarget();
 	void SetOffsetThirdPersonY(float value) { offsetThirdPersonY = value; }
-	void SetTargetThirdPerson(Entity* target) { targetThirdPerson = target; }
+	void SetTargetThirdPerson(Entity* target) 
+	{
+		targetThirdPerson = target;
+		if (targetThirdPerson != NULL)
+			lastPositionTarget = targetThirdPerson->transform.position;
+	}
 	Entity* GetTargetThirdPerson() { return targetThirdPerson; }
 	void Draw(bool& wireFrameActive) override;
 	void UseCamera(Shader& shader, glm::mat4 trsCamera);

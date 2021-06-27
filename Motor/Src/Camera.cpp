@@ -38,10 +38,10 @@ void Camera::SetViewFirstPerson()
 void Camera::SetViewThirdPerson()
 {
 	_MVP.view = glm::lookAt(transform.position, targetThirdPerson->transform.position + _front, _up);
-	CalculateThirdPersonPosition();
+	CalculateThirdPersonPositionCamera();
 }
 
-void Camera::CalculateThirdPersonPosition() 
+void Camera::CalculateThirdPersonPositionCamera()
 {
 	float theta = targetThirdPerson->transform.rotation.y;
 	float posX = CalculateHorizontalDistanceOfTarget() * glm::sin(glm::radians(theta));
@@ -53,10 +53,28 @@ void Camera::CalculateThirdPersonPosition()
 	float finalPosZ = targetThirdPerson->transform.position.z - posZ;
 
 	_yaw = 180 - glm::radians(targetThirdPerson->transform.rotation.y);
-	cout << CalculateVerticalDistanceOfTarget() << endl;
+
+	/*cout << "finalPosX: " << finalPosX << endl;
+	cout << "finalPosY: " << finalPosY << endl;
+	cout << "finalPosZ: " << finalPosZ << endl;
+	system("cls");*/
+
 	SetPosition(finalPosX, finalPosY, finalPosZ);
+	
+	if (lastPositionTarget != targetThirdPerson->transform.position)
+	{
+		float _calcDistance = CalculateDistanceOfTarget() - initOffsetCameraThirdPerson;
+
+		glm::vec3 vec = glm::vec3(targetThirdPerson->GetForward().x * _calcDistance, targetThirdPerson->GetForward().y * _calcDistance, targetThirdPerson->GetForward().z* _calcDistance);
+		glm::vec3 addVector = transform.position + vec;
+		SetPosition(addVector);
+		
+
+		lastPositionTarget = targetThirdPerson->transform.position;
+	}
 	UpdateCamera();
 }
+
 
 float Camera::CalculateVerticalDistanceOfTarget() 
 {

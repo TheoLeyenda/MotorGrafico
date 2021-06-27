@@ -170,10 +170,11 @@
   <ItemGroup>
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="PlayerController3D.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h" />
-    <ClInclude Include="PlayerController.h" />
+    <ClInclude Include="PlayerController3D.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\modelos\Alfator\source\0.png" />
