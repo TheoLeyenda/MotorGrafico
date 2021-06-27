@@ -290,6 +290,8 @@ void Game::InitGame()
 	{
 		player3D = new PlayerController3D(render);
 		player3D->SetMyModel(modelFBX);
+		player3D->SetRUN_SPEED(350);
+		player3D->SetTURN_SPEED(400);
 		camera->SetTargetThirdPerson(player3D);
 		camera->SetTypeCamera(TypeCamera::ThirdPerson);
 		camera->SetViewThirdPerson();
