@@ -49,6 +49,11 @@ void PlayerController3D::CheckInputs(Input* input)
 		currentSpeed = -RUN_SPEED;
 	else
 		currentSpeed = 0;
+	
+	if (input->GetKey(KeyBoard::KEY_UP) && model != NULL)
+		model->SetPosition(model->transform.position.x, model->transform.position.y + UP_SPEED, model->transform.position.z);
+	else if (input->GetKey(KeyBoard::KEY_DOWN) && model != NULL)
+		model->SetPosition(model->transform.position.x, model->transform.position.y - UP_SPEED, model->transform.position.z);
 
 	if (input->GetKey(KeyBoard::KEY_D))
 		currentTurnSpeed = -TURN_SPEED;
