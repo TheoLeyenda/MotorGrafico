@@ -47,7 +47,9 @@ private:
 	float _yaw;
 	float _pitch;
 protected:
-	float initOffsetCameraThirdPerson = 1.6f;
+	float initOffsetCameraThirdPersonX = 0.0f;
+	float initOffsetCameraThirdPersonY = 0.0f;
+	float initOffsetCameraThirdPersonZ = 1.6f;
 	glm::vec3 lastPositionTarget = glm::vec3(0.0f);
 	float lastDistance = 0.0f;
 
@@ -58,7 +60,9 @@ protected:
 	float offsetThirdPersonY = 350;
 
 public:
-	void SetInitOffsetCameraThirdPerson(float value) { initOffsetCameraThirdPerson = value; }
+	void SetInitOffsetCameraThirdPersonX(float value) { initOffsetCameraThirdPersonX = value; }
+	void SetInitOffsetCameraThirdPersonY(float value) { initOffsetCameraThirdPersonY = value; }
+	void SetInitOffsetCameraThirdPersonZ(float value) { initOffsetCameraThirdPersonZ = value; }
 	float CalculateHorizontalDistanceOfTarget();
 	float CalculateVerticalDistanceOfTarget();
 	float CalculateDistanceOfTarget();

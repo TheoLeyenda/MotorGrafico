@@ -61,17 +61,17 @@ void Camera::CalculateThirdPersonPositionCamera()
 
 	SetPosition(finalPosX, finalPosY, finalPosZ);
 	
-	if (lastPositionTarget != targetThirdPerson->transform.position)
-	{
-		float _calcDistance = CalculateDistanceOfTarget() - initOffsetCameraThirdPerson;
+	//if (lastPositionTarget != targetThirdPerson->transform.position)
+	//{
+		float _calcDistanceZ = CalculateDistanceOfTarget() - initOffsetCameraThirdPersonZ;
 
-		glm::vec3 vec = glm::vec3(targetThirdPerson->GetForward().x * _calcDistance, targetThirdPerson->GetForward().y * _calcDistance, targetThirdPerson->GetForward().z* _calcDistance);
+		glm::vec3 vec = glm::vec3(initOffsetCameraThirdPersonX, initOffsetCameraThirdPersonY, targetThirdPerson->GetForward().z* _calcDistanceZ);
 		glm::vec3 addVector = transform.position + vec;
 		SetPosition(addVector);
 		
 
 		lastPositionTarget = targetThirdPerson->transform.position;
-	}
+	//}
 	UpdateCamera();
 }
 

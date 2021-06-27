@@ -293,7 +293,9 @@ void Game::InitGame()
 		camera->SetTargetThirdPerson(player3D);
 		camera->SetTypeCamera(TypeCamera::ThirdPerson);
 		camera->SetViewThirdPerson();
-		camera->SetInitOffsetCameraThirdPerson(250.0f);
+		camera->SetInitOffsetCameraThirdPersonX(0.0f);
+		camera->SetInitOffsetCameraThirdPersonY(0.0f);
+		camera->SetInitOffsetCameraThirdPersonZ(250.0f);
 	}
 	else 
 	{
