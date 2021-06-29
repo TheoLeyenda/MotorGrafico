@@ -10,14 +10,12 @@
 
 using namespace std;
 
-struct aiNode;
-struct aiMesh;
-struct aiScene;
-
-enum aiTextureType;
+class ModelImporter;
 
 class ENGINE_API Model : public Entity
 {
+private:
+	ModelImporter* modelImporter = NULL;
 public:
 	Model(Renderer* render);
 	~Model();
@@ -43,11 +41,6 @@ private:
 	vector<unsigned int> meshToTex;
 
 	Material* myMat;
-
-	void LoadNode(aiNode* node, const aiScene* scene);
-	void LoadMesh(aiMesh* mesh, const aiScene* scene);
-	void LoadTextureFromFile(aiTextureType type);
-	void LoadMaterial(const aiScene* scene,const string& texturePath);
 };
 
 #endif
