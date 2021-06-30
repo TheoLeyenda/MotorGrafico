@@ -124,7 +124,7 @@ void Light::Draw(bool& wireFrameActive)
 			_enableBackUpDataLight = true;
 		}
 
-		renderer->Draw(lightIndicesCubeCount, renderer->GetCurrentShaderUse(), internalData.model, wireFrameActive);
+		renderer->Draw(lightIndicesCubeCount, renderer->GetCurrentShaderUse(), internalData.localModel, wireFrameActive);
 	}
 }
 

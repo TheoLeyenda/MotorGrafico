@@ -58,7 +58,8 @@ struct ENGINE_API Transform
 };
 struct ENGINE_API InternalData
 {
-	glm::mat4 model;
+	glm::mat4 localModel;
+	glm::mat4 globalModel;
 	glm::mat4 translate;
 	glm::mat4 rotateX;
 	glm::mat4 rotateY;
@@ -68,6 +69,8 @@ struct ENGINE_API InternalData
 class ENGINE_API Entity
 {
 protected:
+	Entity* parent = NULL;
+	vector<Entity*> childrens;
 	Renderer* renderer;
 	InternalData internalData;
 	void UpdateMatrixModel();
@@ -97,7 +100,6 @@ protected:
 
 public:
 	virtual void Draw(bool& wireFrameActive) = 0;
-
 	void SetShowInDebug(float value) { showInDebug = value; }
 	bool GetShowInDebug() { return showInDebug; }
 	Entity(Renderer *_renderer);
@@ -120,6 +122,9 @@ public:
 	bool GetIsAlive() { return isAlive; }
 	virtual void SetIsAlive(bool value) { isAlive = value; }
 	bool GetIsInmortal() { return InmortalObject; }
+
+	void AddChildren(Entity* children);
+	void RemoveChildren(Entity* children);
 
 	glm::vec3 GetForward();
 };

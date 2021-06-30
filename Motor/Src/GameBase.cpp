@@ -389,7 +389,7 @@ void GameBase::HandleCamera()
 		break;
 	}
 
-	camera->UseCamera(render->GetCurrentShaderUse(), camera->GetInternalData().model);
+	camera->UseCamera(render->GetCurrentShaderUse(), camera->GetInternalData().localModel);
 }
 
 void GameBase::HandleLight()

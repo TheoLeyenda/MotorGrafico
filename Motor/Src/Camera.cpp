@@ -18,7 +18,7 @@ void Camera::BindBuffer(){}
 
 void Camera::Draw(bool & wireFrameActive)
 {
-	UseCamera(renderer->GetCurrentShaderUse(), internalData.model);
+	UseCamera(renderer->GetCurrentShaderUse(), internalData.localModel);
 }
 void Camera::UseCamera(Shader& shader, glm::mat4 trsCamera)
 {

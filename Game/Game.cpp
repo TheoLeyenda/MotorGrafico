@@ -188,6 +188,9 @@ void Game::InitGame()
 	cube3->LoadTexture("res/texturas/Facharda.jpg", false);
 	cube3->SetName("cube3");
 	
+	cube->AddChildren(cube2);
+	cube->AddChildren(cube3);
+
 	AddObjectInDenugGame(cube3);
 
 	audio = new Audio(render);

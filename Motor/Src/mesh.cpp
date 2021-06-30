@@ -80,7 +80,7 @@ void Mesh::Draw(bool& wireFrameActive)
 	if (isAlive) 
 	{
 		BindBuffer();
-		renderer->Draw(countIndices, renderer->GetCurrentShaderUse(), internalData.model, wireFrameActive);
+		renderer->Draw(countIndices, renderer->GetCurrentShaderUse(), internalData.localModel, wireFrameActive);
 	}
 }
 

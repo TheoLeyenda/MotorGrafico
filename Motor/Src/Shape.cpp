@@ -113,7 +113,7 @@ void Shape::UseShape(int indices, Shader& shader, bool& wireFrameActive)
 		if(material != NULL)
 			material->UseMaterial(shader);
 		
-		renderer->Draw(indices, shader, internalData.model, wireFrameActive);
+		renderer->Draw(indices, shader, internalData.localModel, wireFrameActive);
 
 		if (_typeMaterial == TypeMaterial::TextureType) 
 		{

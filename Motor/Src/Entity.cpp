@@ -3,14 +3,18 @@
 #include <GLFW/glfw3.h>
 void Entity::UpdateMatrixModel()
 {
-	internalData.model = internalData.translate * internalData.rotateX * internalData.rotateY * internalData.rotateZ * internalData.scale;
+	internalData.localModel = internalData.translate * internalData.rotateX * internalData.rotateY * internalData.rotateZ * internalData.scale;
+	if (parent != NULL)
+		internalData.globalModel = parent->GetInternalData().globalModel * internalData.localModel;
+	else
+		internalData.globalModel = internalData.localModel;
 }
 
 Entity::Entity(Renderer * _renderer)
 {
 	renderer = _renderer;
 
-	internalData.model = glm::mat4(1.0f);
+	internalData.localModel = glm::mat4(1.0f);
 	internalData.rotateX = glm::mat4(1.0f);
 	internalData.rotateY = glm::mat4(1.0f);
 	internalData.rotateZ = glm::mat4(1.0f);
@@ -38,7 +42,7 @@ Entity::Entity(Renderer * _renderer, float _isModel)
 {
 	renderer = _renderer;
 
-	internalData.model = glm::mat4(1.0f);
+	internalData.localModel = glm::mat4(1.0f);
 	internalData.rotateX = glm::mat4(1.0f);
 	internalData.rotateY = glm::mat4(1.0f);
 	internalData.rotateZ = glm::mat4(1.0f);
@@ -172,6 +176,44 @@ void Entity::CheckIsModel()
 	InitIsModelShader();
 	//cout << _uniformIsModelLocation << endl;
 	glUniform1f(_uniformIsModelLocation, isModel);
+}
+
+void Entity::AddChildren(Entity * children)
+{
+	if (children == NULL)
+	{
+		cout << "el chidren es nulo" << endl;
+		return;
+	}
+	for (int i = 0; i < childrens.size(); i++)
+	{
+		if (childrens[i] == children)
+		{
+			cout << "el chidren ya existe" << endl;
+			return;
+		}
+	}
+	children->parent = this;
+	childrens.push_back(children);
+	children->UpdateMatrixModel();
+}
+
+void Entity::RemoveChildren(Entity * children)
+{
+	int index = -1;
+	for (int i = 0; i < childrens.size(); i++)
+	{
+		if (childrens[i] == children)
+		{
+			children->parent = NULL;
+			children->UpdateMatrixModel();
+			index = i;
+			i = childrens.size();
+		}
+	}
+	if (index != -1) {
+		childrens.erase(childrens.begin() + index);
+	}
 }
 
 glm::vec3 Entity::GetForward()

@@ -77,7 +77,7 @@ void Sprite::Draw(Time& timer)
 			glActiveTexture(GL_TEXTURE0);
 			glBindTexture(GL_TEXTURE_2D, texture);
 
-			renderer->DrawSprite(GL_QUADS, 4, _vbo, renderer->GetCurrentShaderUse(), internalData.model);
+			renderer->DrawSprite(GL_QUADS, 4, _vbo, renderer->GetCurrentShaderUse(), internalData.localModel);
 
 			glBindBuffer(GL_ARRAY_BUFFER, 0);
 			glBindTexture(GL_TEXTURE_2D, 0);

@@ -82,10 +82,10 @@ void Primitive3D::Draw(bool& wireFrameActive)
 		switch (_type)
 		{
 		case Cube:
-			renderer->Draw(indicesCubeCount, renderer->GetCurrentShaderUse(), internalData.model, wireFrameActive);
+			renderer->Draw(indicesCubeCount, renderer->GetCurrentShaderUse(), internalData.localModel, wireFrameActive);
 			break;
 		case Pyramid:
-			renderer->Draw(indicesCubeCount, renderer->GetCurrentShaderUse(), internalData.model, wireFrameActive);
+			renderer->Draw(indicesCubeCount, renderer->GetCurrentShaderUse(), internalData.localModel, wireFrameActive);
 			break;
 		}
 
