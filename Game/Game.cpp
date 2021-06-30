@@ -189,7 +189,7 @@ void Game::InitGame()
 	cube3->SetName("cube3");
 	
 	cube->AddChildren(cube2);
-	cube->AddChildren(cube3);
+	cube2->AddChildren(cube3);
 	cube2->SetScale(1, 1, 1);
 	cube3->SetScale(1, 1, 1);
 	cube2->SetPosition(-3, 0, 0);

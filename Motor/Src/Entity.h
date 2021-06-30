@@ -120,7 +120,14 @@ public:
 	void InitIsModelShader();
 	void CheckIsModel();
 	bool GetIsAlive() { return isAlive; }
-	virtual void SetIsAlive(bool value) { isAlive = value; }
+	virtual void SetIsAlive(bool value) 
+	{
+		isAlive = value; 
+		for (int i = 0; i < childrens.size(); i++)
+		{
+			childrens[i]->isAlive = value;
+		}
+	}
 	bool GetIsInmortal() { return InmortalObject; }
 
 	void AddChildren(Entity* children);
