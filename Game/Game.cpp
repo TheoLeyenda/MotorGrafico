@@ -194,6 +194,7 @@ void Game::InitGame()
 	cube3->SetScale(1, 1, 1);
 	cube2->SetPosition(-3, 0, 0);
 	cube3->SetPosition(-3, 3, 0);
+	//cube->RemoveChildren(cube3);
 
 	AddObjectInDenugGame(cube3);
 
