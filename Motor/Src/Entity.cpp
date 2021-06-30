@@ -8,6 +8,13 @@ void Entity::UpdateMatrixModel()
 		internalData.globalModel = parent->GetInternalData().globalModel * internalData.localModel;
 	else
 		internalData.globalModel = internalData.localModel;
+
+	internalData.localModel = internalData.globalModel;
+
+	for (int i = 0; i < childrens.size(); i++) 
+	{
+		childrens[i]->UpdateMatrixModel();
+	}
 }
 
 Entity::Entity(Renderer * _renderer)
