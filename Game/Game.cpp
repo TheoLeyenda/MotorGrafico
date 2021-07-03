@@ -107,19 +107,23 @@ void Game::InitGame()
 	modelOBJ->SetPosition(660, 12, -16);
 	modelOBJ->SetRotationY(-0.5);
 	modelOBJ->SetMaterial(goldMaterial);
+	AddObjectInDenugGame(modelOBJ);
 	
 	modelFBX = new Model(render);
 	modelFBX->LoadModel("res/modelos/pochita.fbx", "res/modelos/");
 	modelFBX->SetScale(50, 50, 50);
 	modelFBX->SetMaterial(greenRubberMaterial);
-	
+	modelFBX->SetName("POCHITA_FBX");
+	AddObjectInDenugGame(modelFBX);
+
 	modelOBJ2 = new Model(render);
 	modelOBJ2->LoadModel("res/modelos/merkava-tank/Merkava_Tank.obj", "res/modelos/merkava-tank/textures/");
 	modelOBJ2->SetScale(50, 50, 50);
 	modelOBJ2->SetPosition(1000, 10, 10);
 	modelOBJ2->SetName("TANQUE-MODEL_OBJ2)");
 	modelOBJ2->SetMaterial(goldMaterial);
-	
+	AddObjectInDenugGame(modelOBJ2);
+
 	model3DS = new Model(render);
 	model3DS->LoadModel("res/modelos/3ds/Dragon 2.5_3ds.3ds","res/modelos/3ds/textures/");
 	model3DS->SetPosition(390, 347, -81);
@@ -127,7 +131,8 @@ void Game::InitGame()
 	model3DS->SetRotationX(-90);
 	model3DS->SetMaterial(esmeraldMaterial);
 	model3DS->SetName("DRAGON-MODEL_3DS)");
-	
+	AddObjectInDenugGame(model3DS);
+
 	modelCOLLADA = new Model(render);
 	modelCOLLADA->LoadModel("res/modelos/dae/Dragon 2.5_dae.dae", "res/modelos/dae/textures/");
 	modelCOLLADA->SetPosition(0, 347, -81);
@@ -135,6 +140,7 @@ void Game::InitGame()
 	modelCOLLADA->SetRotationX(-90);
 	modelCOLLADA->SetMaterial(silverMaterial);
 	modelCOLLADA->SetName("DRAGON-MODEL_COLLADA)");
+	AddObjectInDenugGame(modelCOLLADA);
 
 	modelSTL = new Model(render);
 	modelSTL->LoadModel("res/modelos/stl/Dragon 2.5_stl.stl", "res/modelos/stl/textures/");
@@ -143,12 +149,9 @@ void Game::InitGame()
 	modelSTL->SetRotationX(-90);
 	modelSTL->SetMaterial(goldMaterial);
 	modelSTL->SetName("DRAGON-MODEL_STL)");
-
-	AddObjectInDenugGame(modelOBJ);
-	AddObjectInDenugGame(modelOBJ2);
-	AddObjectInDenugGame(model3DS);
-	AddObjectInDenugGame(modelCOLLADA);
 	AddObjectInDenugGame(modelSTL);
+
+
 
 	pyramid = new Primitive3D(render,Pyramid);
 	pyramid->SetPosition(500.0f, 250.0f, -50.0f);
@@ -162,7 +165,6 @@ void Game::InitGame()
 	pyramid->SetNewMaterial(textureMaterialForLight);
 	pyramid->LoadTexture("res/texturas/bokitaElMasGrandePapa.png", false);
 	pyramid->SetName("pyramid");
-
 	AddObjectInDenugGame(pyramid);
 
 	cube = new Primitive3D(render, Cube);
@@ -170,7 +172,6 @@ void Game::InitGame()
 	cube->SetScale(50.0f, 50.0f, 50.0f);
 	cube->SetNewMaterial(greenRubberMaterial);
 	cube->SetName("cube");
-	
 	AddObjectInDenugGame(cube);
 
 	cube2 = new Primitive3D(render, Cube);
@@ -178,7 +179,6 @@ void Game::InitGame()
 	cube2->SetScale(50.0f, 50.0f, 50.0f);
 	cube2->SetNewMaterial(goldMaterial);
 	cube2->SetName("cube2");
-
 	AddObjectInDenugGame(cube2);
 
 	cube3 = new Primitive3D(render, Cube);
@@ -187,15 +187,6 @@ void Game::InitGame()
 	cube3->SetNewMaterial(textureMaterialDefault);
 	cube3->LoadTexture("res/texturas/Facharda.jpg", false);
 	cube3->SetName("cube3");
-	
-	cube->AddChildren(cube2);
-	cube2->AddChildren(cube3);
-	cube2->SetScale(1, 1, 1);
-	cube3->SetScale(1, 1, 1);
-	cube2->SetPosition(-3, 0, 0);
-	cube3->SetPosition(-3, 3, 0);
-	//cube->RemoveChildren(cube3);
-
 	AddObjectInDenugGame(cube3);
 
 	audio = new Audio(render);
@@ -312,6 +303,26 @@ void Game::InitGame()
 		camera->SetTypeCamera(TypeCamera::FirstPerson);
 	}
 	SetUseDebugWindows(true);
+
+	//Armo arboles de jerarquias//
+	pyramid->AddChildren(shape1);
+	cube->AddChildren(cube2);
+	cube2->AddChildren(cube3);
+	cube2->AddChildren(pyramid);
+	cube3->AddChildren(sprite);
+	cube2->SetScale(1, 1, 1);
+	cube3->SetScale(1, 1, 1);
+	cube2->SetPosition(-3, 0, 0);
+	cube3->SetPosition(-3, 3, 0);
+
+	//cube->GetEntityNode(cube3->GetName())->SetIsAlive(false);
+	
+	cube->RemoveChildren(cube3, GetRootScene());
+	//cube->RemoveChildren(cube2, GetRootScene());
+	cout << endl;
+	GetRootScene()->PrintTree();
+	cout << endl;
+	//Armo arboles de jerarquias//
 }
 
 void Game::UpdateGame(Windows *_window, Renderer *_render, Input *_input)

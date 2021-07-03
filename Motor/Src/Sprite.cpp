@@ -165,4 +165,8 @@ int Sprite::getNrChannels()
 {
 	return nrChannels;
 }
+string Sprite::GetClassName()
+{
+	return "Sprite";
+}
 //============================================

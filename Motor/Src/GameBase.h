@@ -21,7 +21,7 @@
 
 #define INIT_ERROR -1
 
-
+class EmptyObject;
 
 class ENGINE_API GameBase {
 private:
@@ -32,9 +32,10 @@ private:
 
 	bool useDebugWindows = true;
 
+	EmptyObject* rootScene;
+
 protected:
 	static vector<Entity*> entitysDebugInGame;
-
 
 	Windows* windows = NULL;
 	Renderer* render = NULL;
@@ -54,9 +55,9 @@ public:
 	void UpdateEngine();
 	void DestroyEngine();
 
-	static void AddObjectInDenugGame(Entity* entity);
+	void AddObjectInDenugGame(Entity* entity);
 
-	static void RemoveObjectInDebugGame(Entity* entity);
+	void RemoveObjectInDebugGame(Entity* entity);
 
 	static void DisableObjectInGame(Entity* entity);
 
@@ -84,5 +85,6 @@ public:
 	Windows* GetWindows();
 	Renderer* GetRenderer();
 	Input* GetInput();
+	Entity* GetRootScene() { return (Entity*)rootScene; }
 };
 #endif

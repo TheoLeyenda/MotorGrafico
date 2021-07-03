@@ -93,6 +93,8 @@ public:
 	float GetPitch();
 	float GetYaw();
 
+	string GetClassName() override;
+
 	void SetDataPerspective(float FOV, float sizeScreenX, float sizeScreenY, float near, float front);
 
 	void SetDataOrtho(float left, float right, float bottom, float top, float near, float front);

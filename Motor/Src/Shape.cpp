@@ -99,6 +99,11 @@ void Shape::Draw(bool& wireFrameActive)
 	}
 }
 
+string Shape::GetClassName()
+{
+	return "Shape";
+}
+
 void Shape::UseShape(int indices, Shader& shader, bool& wireFrameActive)
 {
 	if (renderer != NULL)

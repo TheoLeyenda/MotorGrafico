@@ -68,6 +68,11 @@ void Model::UnloadModel()
 	}
 }
 
+string Model::GetClassName()
+{
+	return "Model";
+}
+
 void Model::SetMaterial(Material * mat)
 {
 	myMat = mat;

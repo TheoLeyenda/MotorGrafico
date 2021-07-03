@@ -141,6 +141,11 @@ float Camera::GetYaw() {
 	return _yaw;
 }
 
+string Camera::GetClassName()
+{
+	return "Camera";
+}
+
 void Camera::SetDataPerspective(float FOV, float sizeScreenX, float sizeScreenY, float near, float front)
 {
 	projectionDataPerspective.FOV = FOV;

@@ -24,6 +24,8 @@ public:
 	void Draw(bool& wireFrameActive) override;
 	void UnloadModel();
 
+	string GetClassName() override;
+
 	void SetMaterial(Material* mat);
 	virtual void SetScale(float x, float y, float z);
 	virtual void SetScale(glm::vec3 scale);

@@ -28,6 +28,8 @@ public:
 
 	void UseLight();
 
+	string GetClassName() override;
+
 	void SetColorLight(float r, float g, float b);
 	glm::vec3 GetColorLight();
 
@@ -37,6 +39,7 @@ public:
 	void SetDirectionalLightCustom(glm::vec3 direction);
 
 	TypeLight GetTypeLight() { return _typeLight; }
+	string GetTypeLightString();
 
 	void SetIdLight(int id) { my_Id = id; }
 	int GetMyId() { return my_Id; }
@@ -125,9 +128,38 @@ public:
 	//==============================
 	
 	void SetColour(glm::vec3 colour) { _colour = colour; }
+	void SetColour(float v1, float v2, float v3) 
+	{
+		_colour[0] = v1;
+		_colour[1] = v2;
+		_colour[2] = v3;
+	}
 	void SetAmbient(glm::vec3 ambient) { _ambient = ambient; }
+	void SetAmbient(float v1, float v2, float v3) 
+	{
+		_ambient[0] = v1;
+		_ambient[1] = v2;
+		_ambient[2] = v3;
+	}
 	void SetDiffuse(glm::vec3 diffuse) { _diffuse = diffuse; }
+	void SetDiffuse(float v1, float v2, float v3) 
+	{
+		_diffuse[0] = v1;
+		_diffuse[1] = v2;
+		_diffuse[2] = v3;
+	}
 	void SetSpecular(glm::vec3 specular) { _specular = specular; }
+	void SetSpecular(float v1, float v2, float v3) 
+	{ 
+		_specular[0] = v1;
+		_specular[1] = v2; 
+		_specular[2] = v3;
+	}
+
+	glm::vec3 GetColour() { return _colour; }
+	glm::vec3 GetAmbient() { return _ambient; }
+	glm::vec3 GetDiffuse() { return _diffuse; }
+	glm::vec3 GetSpecular() { return _specular; }
 
 	void SetTypeLightPoint(float linearVal, float quadraticVal, float cutOffValue);
 	void SetTypeLightSpot(float linearVal, float quadraticVal, float cutOffValue, float outerCutOffValue);

@@ -55,6 +55,8 @@ public:
 
 	void Draw(bool& wireFrameActive) override;
 
+	string GetClassName() override;
+
 	unsigned int _texture;
 
 	Shape(Renderer *_renderer, TypeShape typeShape, const char* filePath);

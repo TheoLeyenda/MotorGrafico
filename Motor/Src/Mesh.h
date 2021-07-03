@@ -25,6 +25,8 @@ public:
 	Mesh(Renderer* render);
 	~Mesh();
 
+	string GetClassName() override;
+
 	void CreateMesh(float* vertices, unsigned int* indices, unsigned int numVertices, unsigned int numOfIndices);
 	void Draw(bool& wireFrameActive) override;
 };

@@ -3,8 +3,8 @@
 
 #include "PrivateClass/Export.h"
 #include "Windows.h"
-#include "Gui/imgui.h"
-#include "Gui/imgui_impl_glfw_gl3.h"
+
+
 #include <vector>
 #include <fstream>
 #include <sstream>
@@ -13,24 +13,42 @@
 using namespace std;
 
 class Entity;
+class Light;
 
 class ENGINE_API MotorasoGui
 {
 private:
 	Windows* _window;
 	float xPosition = 0;
-	float speedPosition;
-	float speedRotation;
-	float speedScalated;
+	static float speedPosition;
+	static float speedRotation;
+	static float speedScalated;
 	bool _wireFrameActive;
+	
+	static Entity* lastEntitySelected;
+	static Entity* currentEntitySelected;
+	static void _TreeEntitys(Entity* entity);
 public:
 	MotorasoGui(Windows* window);
+	static void CreateContext(Windows* window);
+	static void Destroy();
+	static void NewFrame();
+	static void Render();
+	static void TreeEntitys(Entity* entityNode);
+	static void ShowTransform(Entity* entityNode);
+	static void ShowEntityNodeInfo(Entity* entityNode);
+	static void ShowEntityInfo(Entity* entityNode);
+	static void ShowLightInfo(Light* light);
+	static void Text(const string& text);
+	static void Begin(const string& windowName, bool opened, size_t flags);
+	static void End();
+
 	bool& GetIfWireFrameIsActive() { return _wireFrameActive; }
-	void UpdateMotorasoGui();
-	void UpdateMotorasoGui(vector<Entity*> entitysData);
-	void CreateFrame();
-	void RenderGui();
+	void UpdateWireFrameGui();
 	float GetSpeedRotation() { return speedRotation; };
+	void SetSpeedPositionChange(float value) { speedPosition = value; }
+	void SetSpeedRotationChange(float value) { speedRotation = value; }
+	void SetSpeedScalatedChange(float value) { speedScalated = value; }
 	~MotorasoGui();
 };
 

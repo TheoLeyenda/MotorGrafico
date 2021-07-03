@@ -15,6 +15,7 @@ public:
 	void SetSizeCollider2D(glm::vec3 resize) { boxColliderSize2D = resize; }
 	glm::vec3 GetBoxColliderSize2D() { return boxColliderSize2D; }
 	void SetScale(float x, float y, float z) override;
+	string GetClassName() override;
 };
 #endif
 

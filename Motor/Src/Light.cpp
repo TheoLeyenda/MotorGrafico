@@ -204,6 +204,10 @@ void Light::UseLight()
 
 	glUseProgram(0);
 }
+string Light::GetClassName()
+{
+	return "Light";
+}
 void Light::CreateDataLight()
 {
 	//---
@@ -255,6 +259,23 @@ void Light::SetSpotLightCustom(float linearVal, float quadraticVal, float cutOff
 void Light::SetDirectionalLightCustom(glm::vec3 direction)
 {
 	SetTypeLightDirectional(direction);
+}
+string Light::GetTypeLightString()
+{
+	string localTypeLightString = "None";
+	switch (_typeLight)
+	{
+	case Light::Point:
+		localTypeLightString = "Point";
+		break;
+	case Light::Directional:
+		localTypeLightString = "Directional";
+		break;
+	case Light::Spot:
+		localTypeLightString = "Spot";
+		break;
+	}
+	return localTypeLightString;
 }
 //================================================
 //DIRECTIONAL LIGHT

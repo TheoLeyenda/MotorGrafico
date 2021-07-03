@@ -44,6 +44,11 @@ Primitive3D::Primitive3D(Renderer* renderer, TypeModel typeModel, const char* fi
 Primitive3D::~Primitive3D(){}
 
 
+string Primitive3D::GetClassName()
+{
+	return "Primitive3D";
+}
+
 void Primitive3D::UseMyMaterial()
 {
 	if (my_Mat != NULL)

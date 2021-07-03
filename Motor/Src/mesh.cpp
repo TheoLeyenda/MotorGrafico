@@ -21,6 +21,11 @@ Mesh::Mesh(Renderer* render) : Entity(render)
 
 Mesh::~Mesh(){}
 
+string Mesh::GetClassName()
+{
+	return "Mesh";
+}
+
 void Mesh::SetVBO(float* vertices, unsigned int numVertices)
 {
 	glGenBuffers(1, &_vbo);

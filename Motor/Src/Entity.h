@@ -68,9 +68,18 @@ struct ENGINE_API InternalData
 };
 class ENGINE_API Entity
 {
+private:
+	//JERARQUIA//
+	void _GetEntityNode(string nameID, vector<Entity*>& res);
+	void _AddChildren(Entity* children, Entity* newParent);
+	//---------//
 protected:
+	
+	//JERARQUIA//
 	Entity* parent = NULL;
 	vector<Entity*> childrens;
+	//-----------//
+
 	Renderer* renderer;
 	InternalData internalData;
 	void UpdateMatrixModel();
@@ -79,7 +88,12 @@ protected:
 
 	unsigned int _uniformIsModelLocation;
 	string nameEntity;
+
+	//UI//
+	bool isUILocked = false;
 	bool showInDebug = false;
+	//---//
+
 
 	unsigned int _ibo;
 	unsigned int _vbo;
@@ -100,8 +114,7 @@ protected:
 
 public:
 	virtual void Draw(bool& wireFrameActive) = 0;
-	void SetShowInDebug(float value) { showInDebug = value; }
-	bool GetShowInDebug() { return showInDebug; }
+
 	Entity(Renderer *_renderer);
 	Entity(Renderer *_renderer, float _isModel);
 	~Entity();
@@ -123,15 +136,32 @@ public:
 	virtual void SetIsAlive(bool value) 
 	{
 		isAlive = value; 
-		for (int i = 0; i < childrens.size(); i++)
-		{
-			childrens[i]->isAlive = value;
-		}
 	}
 	bool GetIsInmortal() { return InmortalObject; }
 
+	virtual string GetClassName() 
+	{
+		return "Entity"; // Aplicar override en todas las clases hijo.
+	}
+
+	//UI//
+	void ShowUI();
+	void SetShowInDebug(float value) { showInDebug = value; }
+	bool GetShowInDebug() { return showInDebug; }
+	void SetIsUILocked(float value) { isUILocked = value; }
+	bool GetIsUILocked() { return isUILocked; }
+	//------//
+
+	//JERARQUIA//
+	Entity* GetParent() { return parent; }
 	void AddChildren(Entity* children);
-	void RemoveChildren(Entity* children);
+	void RemoveChildren(Entity* children, Entity* newParent);
+	Entity* GetEntityNode(string name);
+	Entity* GetChild(int childIndex) const;
+	void PrintTree();
+	vector<Entity*> GetChildrens() { return childrens; }
+	//-----------//
+
 
 	glm::vec3 GetForward();
 };

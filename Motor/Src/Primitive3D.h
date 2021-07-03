@@ -124,6 +124,7 @@ public:
 	//GETERS
 	TypeModel GetTypeModel() { return _type; }
 	//FUNCTIONS
+	string GetClassName() override;
 	void UseMyMaterial();
 	void SetNewMaterial(Material* mat);
 	void LoadTexture(const char* path, bool transparent);

@@ -1,13 +1,13 @@
 #include "GameBase.h"
-
+#include "EmptyObject.h"
 #include "glew.h"
 #include "GLFW/glfw3.h"
 
 vector<Entity*> GameBase::entitysDebugInGame = vector<Entity*>();
 
+
 GameBase::GameBase() {}
 GameBase::~GameBase() {}
-
 int GameBase::InitEngine()
 {
 	bool initGLFW = glfwInit();
@@ -16,9 +16,13 @@ int GameBase::InitEngine()
 	render = new Renderer();
 	input = new Input(windows->GetWindowsPtr());
 	camera = new Camera(render, TypeProjectionCamera::Ortho);
-	motorasoGui = new MotorasoGui(windows);
 
 	collisionManager = new CollisionManager();
+
+	motorasoGui = new MotorasoGui(windows);
+	
+	rootScene = new EmptyObject(render);
+	rootScene->SetName("Hierarchy Objects");
 
 	textureMaterialForLight = new Material();
 	textureMaterialForLight->SetAmbientMat(glm::vec3(0.5f, 0.5f, 0.5f));
@@ -70,10 +74,14 @@ void GameBase::UpdateEngine()
 		//---------------------//
 		timeClock.tick();
 		//---------------------//
-		if (useDebugWindows) 
+		if (useDebugWindows)
 		{
-			motorasoGui->CreateFrame();
-			motorasoGui->UpdateMotorasoGui(entitysDebugInGame);
+			//motorasoGui->Begin("Entity Hierarchy", 0, 4);
+			motorasoGui->NewFrame();
+			motorasoGui->TreeEntitys(rootScene);
+			/*for (int i = 0; i < entitysDebugInGame.size(); i++) 
+			{
+			}*/
 		}
 		//---------------------//
 		HandleCamera();
@@ -82,9 +90,10 @@ void GameBase::UpdateEngine()
 		//---------------------//
 		UpdateGame(windows, render, input);
 		//---------------------//
-		if (useDebugWindows) 
+		if (useDebugWindows)
 		{
-			motorasoGui->RenderGui();
+			motorasoGui->Render();
+			//motorasoGui->End();
 		}
 		//---------------------//	
 		glfwPollEvents();
@@ -152,6 +161,7 @@ void GameBase::AddObjectInDenugGame(Entity* entity)
 			}
 		}
 		entitysDebugInGame.push_back(entity);
+		rootScene->AddChildren(entity);
 	}
 }
 
@@ -169,7 +179,9 @@ void GameBase::RemoveObjectInDebugGame(Entity* entity)
 	}
 	if (index != -1) {
 		entitysDebugInGame.erase(entitysDebugInGame.begin() + index);
+		rootScene->RemoveChildren(entity, rootScene);
 	}
+
 }
 
 void GameBase::DisableObjectInGame(Entity* entity)
@@ -402,6 +414,8 @@ void GameBase::HandleLight()
 		}
 	}
 }
+
+
 
 Time& GameBase::GetTimeClock()
 {

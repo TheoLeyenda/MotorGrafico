@@ -8,6 +8,11 @@ Audio::Audio(Renderer* render) : Entity(render)
 	InmortalObject = true;
 }
 
+string Audio::GetClassName()
+{
+	return "Audio";
+}
+
 void Audio::BindBuffer(){}
 
 void Audio::Draw(bool & wireFrameActive) {  }

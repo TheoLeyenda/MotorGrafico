@@ -11,13 +11,12 @@
 #include "Camera.h"
 #include "Light.h"
 #include "Material.h"
+
 Renderer::Renderer() {
 }
 Renderer::~Renderer() {
 	_shaderUse.deleteShader();
 }
-
-
 
 void Renderer::SetCurrentShaderUse(const char* pathVertex, const char* pathFragment)
 {

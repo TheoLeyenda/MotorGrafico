@@ -1,6 +1,9 @@
 #include "Entity.h"
 #include <glew.h>
 #include <GLFW/glfw3.h>
+
+#include "MotorasoGui.h"
+
 void Entity::UpdateMatrixModel()
 {
 	internalData.localModel = internalData.translate * internalData.rotateX * internalData.rotateY * internalData.rotateZ * internalData.scale;
@@ -185,6 +188,59 @@ void Entity::CheckIsModel()
 	glUniform1f(_uniformIsModelLocation, isModel);
 }
 
+glm::vec3 Entity::GetForward()
+{
+	float dx = (float)(1 * mathLibrary.sin(mathLibrary.ToRadians(transform.rotation.y)));
+	float dz = (float)(1 * mathLibrary.cos(mathLibrary.ToRadians(transform.rotation.y)));
+
+	return glm::vec3(dx, 0, dz);
+}
+
+
+#pragma region UI
+
+void Entity::ShowUI()
+{
+	MotorasoGui::ShowEntityNodeInfo(this);
+}
+
+#pragma endregion
+
+#pragma region JERARQUIA DE ENTIDADES (NODOS)
+
+void Entity::_GetEntityNode(string nameID, vector<Entity*>& res)
+{
+	for (Entity* child : childrens) {
+		if (child->GetName() == nameID) {
+			res.push_back(child);
+		}
+		if (!res.empty()) {
+			return;
+		}
+		child->_GetEntityNode(nameID, res);
+	}
+}
+
+void Entity::_AddChildren(Entity* children, Entity* newParent)
+{
+	if (children == NULL)
+	{
+		cout << "el chidren es nulo" << endl;
+		return;
+	}
+	for (int i = 0; i < newParent->childrens.size(); i++)
+	{
+		if (newParent->childrens[i] == children)
+		{
+			cout << "el chidren ya existe" << endl;
+			return;
+		}
+	}
+	children->parent = newParent;
+	newParent->childrens.push_back(children);
+	children->UpdateMatrixModel();
+}
+
 void Entity::AddChildren(Entity * children)
 {
 	if (children == NULL)
@@ -200,19 +256,44 @@ void Entity::AddChildren(Entity * children)
 			return;
 		}
 	}
-	children->parent = this;
-	childrens.push_back(children);
+
+	if (children->parent) {
+		Entity* p = (Entity*)children->parent;
+		p->RemoveChildren(children, this);
+	}
+	else 
+	{
+		children->parent = this;
+		childrens.push_back(children);
+	}
+
 	children->UpdateMatrixModel();
 }
 
-void Entity::RemoveChildren(Entity * children)
+void Entity::RemoveChildren(Entity* children, Entity* newParent)
 {
 	int index = -1;
+	
 	for (int i = 0; i < childrens.size(); i++)
 	{
 		if (childrens[i] == children)
 		{
-			children->parent = NULL;
+			//cout << "ENTRE CHE" << endl;
+			children->parent = newParent;
+			bool push = true;
+			
+			for (int j = 0; j < newParent->childrens.size(); j++) {
+				//cout << children->GetName() << " = " << newParent->childrens[j]->GetName() << endl;
+				if (newParent->childrens[j] == children) 
+				{
+					push = false;
+					cout << "Entre" << endl;
+				}
+			}
+			if (push) 
+			{
+				newParent->childrens.push_back(children);
+			}
 			children->UpdateMatrixModel();
 			index = i;
 			i = childrens.size();
@@ -221,13 +302,48 @@ void Entity::RemoveChildren(Entity * children)
 	if (index != -1) {
 		childrens.erase(childrens.begin() + index);
 	}
+	else 
+	{
+		Entity* entity = NULL;
+		entity = GetEntityNode(children->GetName());
+		if (entity != NULL) 
+		{
+			Entity* p = NULL;
+			p =	(Entity*)entity->parent;
+			if (p != NULL) {
+				p->RemoveChildren(entity, newParent);
+				_AddChildren(children, newParent);
+			}
+			entity->parent = newParent;
+			//cout << "Parent: " << entity->parent->GetName() << endl;
+		}
+	}
+	cout << endl;
+	//newParent->PrintTree();
+	cout << endl;
 }
-
-glm::vec3 Entity::GetForward()
+Entity* Entity::GetEntityNode(string name)
 {
-	float dx = (float)(1 * mathLibrary.sin(mathLibrary.ToRadians(transform.rotation.y)));
-	float dz = (float)(1 * mathLibrary.cos(mathLibrary.ToRadians(transform.rotation.y)));
-
-	return glm::vec3(dx, 0, dz);
+	vector<Entity*> vecNode;
+	_GetEntityNode(name, vecNode);
+	Entity* current = nullptr;
+	if (!vecNode.empty()) {
+		current = vecNode.at(0);
+	}
+	return current;
 }
-
+Entity * Entity::GetChild(int childIndex) const
+{
+	if (childIndex < 0 || childIndex > childrens.size()) {
+		return NULL;
+	}
+	return childrens[childIndex];
+}
+void Entity::PrintTree()
+{
+	cout << nameEntity << endl;
+	for (Entity* child : childrens) {
+		child->PrintTree();
+	}
+}
+#pragma endregion 

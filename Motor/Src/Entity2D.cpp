@@ -26,3 +26,8 @@ void Entity2D::SetScale(float x, float y, float z)
 	UpdateMatrixModel();
 	SetSizeCollider2D(glm::vec3(x,y,z));
 }
+
+string Entity2D::GetClassName()
+{
+	return "Entity2D";
+}

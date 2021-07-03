@@ -17,6 +17,8 @@ protected:
 public:
 	Audio(Renderer* render);
 
+	string GetClassName() override;
+
 	void Draw(bool& wireFrameActive) override;
 
 	void PlayAudio2D(const char* pathMusicFile, bool loop);

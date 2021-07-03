@@ -55,6 +55,8 @@ public:
 	int getNrChannels();
 	void SetCurrentAnimationIndex(int currentAnimation) { if (animation != NULL) animation->SetCurrentAnimation(currentAnimation); }
 
+	string GetClassName() override;
+
 private:
 	void BlendSprite();
 	void UnBlendSprite();
