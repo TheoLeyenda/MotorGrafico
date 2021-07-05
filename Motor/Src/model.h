@@ -11,6 +11,7 @@
 using namespace std;
 
 class ModelImporter;
+class ModelNode;
 
 class ENGINE_API Model : public Entity
 {
@@ -38,9 +39,11 @@ public:
 protected:
 	void BindBuffer() override;
 private:
-	vector<Mesh*> meshList;
+	//vector<Mesh*> meshList;
+	//vector<unsigned int> meshToTex;
 	vector<Texture*> textureList;
-	vector<unsigned int> meshToTex;
+	vector<ModelNode*> modelChildrens;
+	ModelNode* rootNode;
 
 	Material* myMat;
 };

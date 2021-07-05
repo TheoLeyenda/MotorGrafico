@@ -30,7 +30,7 @@ void MotorasoGui::TreeEntitys(Entity * entityNode)
 		currentEntitySelected->ShowUI();
 		End();
 	}
-	if (lastEntitySelected) {
+	if (lastEntitySelected) { 
 		if (lastEntitySelected != currentEntitySelected) {
 			//lastEntitySelected->HideUI();
 			lastEntitySelected = currentEntitySelected;

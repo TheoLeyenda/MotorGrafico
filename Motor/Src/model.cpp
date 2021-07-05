@@ -5,9 +5,12 @@
 
 #include "ModelImporter.h"
 
+#include "ModelNode.h"
+
 Model::Model(Renderer * render) : Entity(render)
 {
 	myMat = NULL;
+	rootNode = NULL;
 	modelImporter = new ModelImporter();
 }
 
@@ -18,6 +21,7 @@ Model::~Model()
 
 	if (!myMat)
 		delete myMat;
+
 	UnloadModel();
 }
 
@@ -25,13 +29,32 @@ void Model::LoadModel(const string & filePath, const string & texturePath)
 {
 	if (modelImporter != NULL) 
 	{
-		modelImporter->LoadModel(filePath, texturePath, textureList, meshList, meshToTex, renderer);
+		rootNode = modelImporter->LoadModel(filePath, texturePath, rootNode ,modelChildrens, textureList ,renderer);
+	}
+
+	if (rootNode != NULL) {
+		AddChildren(rootNode);
+		rootNode->_textureList = textureList;
+	}
+	
+	for (int i = 0; i < modelChildrens.size(); i++)
+	{
+		if(modelChildrens[i] != NULL)
+			modelChildrens[i]->_textureList = textureList;
 	}
 }
 
 void Model::Draw(bool & wireFrameActive)
 {
-	for (int i = 0; i < meshList.size(); i++)
+	if (rootNode != NULL)
+		rootNode->Draw(wireFrameActive);
+
+	for (int i = 0; i < modelChildrens.size(); i++)
+	{
+		if (modelChildrens[i] != NULL)
+			modelChildrens[i]->Draw(wireFrameActive);
+	}
+	/*for (int i = 0; i < meshList.size(); i++)
 	{
 		unsigned int materialIndex = meshToTex[i];
 
@@ -45,25 +68,31 @@ void Model::Draw(bool & wireFrameActive)
 
 		if (materialIndex < textureList.size() && textureList[materialIndex])
 			textureList[materialIndex]->UnbindTexture();
-	}
+	}*/
 }
 
 void Model::UnloadModel()
 {
-	for (int i = 0; i < meshList.size(); i++)
+	if (rootNode != NULL)
 	{
-		if (meshList[i])
+		delete rootNode;
+		rootNode = NULL;
+	}
+
+	for (int i = 0; i < modelChildrens.size(); i++)
+	{
+		if (modelChildrens[i] != NULL) 
 		{
-			delete meshList[i];
-			meshList[i] = nullptr;
+			delete modelChildrens[i];
+			modelChildrens[i] = NULL;
 		}
 	}
 	for (int i = 0; i < textureList.size(); i++)
 	{
-		if (textureList[i])
+		if (textureList[i] != NULL)
 		{
 			delete textureList[i];
-			textureList[i] = nullptr;
+			textureList[i] = NULL;
 		}
 	}
 }
@@ -77,83 +106,70 @@ void Model::SetMaterial(Material * mat)
 {
 	myMat = mat;
 
-	renderer->SetMaterial(myMat);
+	if (rootNode != NULL)
+		rootNode->SetMaterialNode(myMat);
+
+	for (int i = 0; i < modelChildrens.size(); i++)
+	{
+		if (modelChildrens[i] != NULL)
+			modelChildrens[i]->SetMaterialNode(myMat);
+	}
 }
 
 void Model::SetScale(float x, float y, float z)
 {
 	Entity::SetScale(x, y, z);
-	for (int i = 0; i < meshList.size(); i++)
-	{
-		meshList[i]->SetScale(x, y, z);
-	}
+	if(rootNode != NULL)
+		rootNode->SetScale(x, y, z);
 }
 
 void Model::SetScale(glm::vec3 scale)
 {
-	Entity::SetScale(scale.x, scale.y, scale.z);
-	for (int i = 0; i < meshList.size(); i++)
-	{
-		meshList[i]->SetScale(scale.x, scale.y, scale.z);
-	}
+	Entity::SetScale(scale);
+	if (rootNode != NULL)
+		rootNode->SetScale(scale);
 }
 
 void Model::SetPosition(float x, float y, float z)
 {
-	Entity::SetPosition(x, y, z);
-	for (int i = 0; i < meshList.size(); i++)
-	{
-		meshList[i]->SetPosition(x, y, z);
-	}
+	Entity::SetPosition(x,y,z);
+	if (rootNode != NULL)
+		rootNode->SetPosition(x,y,z);
 }
 
 void Model::SetPosition(glm::vec3 position)
 {
-	Entity::SetPosition(position.x, position.y, position.z);
-	for (int i = 0; i < meshList.size(); i++)
-	{
-		meshList[i]->SetPosition(position.x, position.y, position.z);
-	}
+	Entity::SetPosition(position);
+	if (rootNode != NULL)
+		rootNode->SetPosition(position);
 }
 
 void Model::SetRotationX(float x)
 {
 	Entity::SetRotationX(x);
-
-	for (int i = 0; i < meshList.size(); i++)
-	{
-		meshList[i]->SetRotationX(x);
-	}
+	if (rootNode != NULL)
+		rootNode->SetRotationX(x);
 }
 
 void Model::SetRotationY(float y)
 {
 	Entity::SetRotationY(y);
-
-	for (int i = 0; i < meshList.size(); i++)
-	{
-		meshList[i]->SetRotationY(y);
-	}
+	if (rootNode != NULL)
+		rootNode->SetRotationY(y);
 }
 
 void Model::SetRotationZ(float z)
 {
 	Entity::SetRotationZ(z);
-
-	for (int i = 0; i < meshList.size(); i++)
-	{
-		meshList[i]->SetRotationZ(z);
-	}
+	if (rootNode != NULL)
+		rootNode->SetRotationZ(z);
 }
 
 void Model::SetIsAlive(bool value)
 {
 	Entity::SetIsAlive(value);
-
-	for (int i = 0; i < meshList.size(); i++)
-	{
-		meshList[i]->SetIsAlive(value);
-	}
+	if (rootNode != NULL)
+		rootNode->SetIsAlive(value);
 }
 
 void Model::BindBuffer(){}

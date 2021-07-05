@@ -40,7 +40,7 @@ bool useCamera = true;
 bool useModels = true;
 bool rotateBokitaSkybox = true;
 bool useSkybox = false;
-bool thirdPerson = true;
+bool thirdPerson = false;
 glm::vec3 posThirdPersonCam;
 glm::vec3 offsetThirdPerson;
 //---------------------//
@@ -108,7 +108,7 @@ void Game::InitGame()
 	modelOBJ->SetRotationY(-0.5);
 	modelOBJ->SetMaterial(goldMaterial);
 	AddObjectInDenugGame(modelOBJ);
-	
+
 	modelFBX = new Model(render);
 	modelFBX->LoadModel("res/modelos/pochita.fbx", "res/modelos/");
 	modelFBX->SetScale(50, 50, 50);
@@ -150,8 +150,6 @@ void Game::InitGame()
 	modelSTL->SetMaterial(goldMaterial);
 	modelSTL->SetName("DRAGON-MODEL_STL)");
 	AddObjectInDenugGame(modelSTL);
-
-
 
 	pyramid = new Primitive3D(render,Pyramid);
 	pyramid->SetPosition(500.0f, 250.0f, -50.0f);

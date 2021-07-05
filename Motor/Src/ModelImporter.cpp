@@ -4,6 +4,8 @@
 #include "Texture.h"
 #include "Material.h"
 
+#include "ModelNode.h"
+
 #include <glew.h>
 #include <GLFW/glfw3.h>
 
@@ -11,13 +13,11 @@
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
 
-ModelImporter::ModelImporter() {}
+ModelImporter::ModelImporter() { indexChildrenLoad = 0; }
 
 ModelImporter::~ModelImporter() {}
 
-void ModelImporter::LoadModel(const string& filePath, const string& texturePath, 
-							vector<Texture*> &textureList, vector<Mesh*> &meshList,
-							vector<unsigned int> &meshToTex, Renderer* render)
+ModelNode* ModelImporter::LoadModel(const string& filePath, const string& texturePath, ModelNode* rootNode, vector<ModelNode*> &childrens, vector<Texture*> &textureList,Renderer* render)
 {
 	Assimp::Importer imporeter;
 	const aiScene* scene = imporeter.ReadFile(filePath,
@@ -25,23 +25,53 @@ void ModelImporter::LoadModel(const string& filePath, const string& texturePath,
 	if (!scene)
 	{
 		cout << "ERROR IMPORTER: Model failed to load, Location:" << filePath << " " << imporeter.GetErrorString() << endl;
-		return;
+		return NULL;
 	}
 
-	LoadNode(scene->mRootNode, scene, meshList, meshToTex, render);
+	rootNode = new ModelNode(render, scene->mRootNode);
+	auxiliarNodes.push(rootNode);
+	LoadNode(scene->mRootNode, scene, childrens, render);
 
 	LoadMaterial(scene, texturePath, textureList);
+
+	return rootNode;
 }
-void ModelImporter::LoadNode(aiNode* node, const aiScene* scene, vector<Mesh*> &meshList, vector<unsigned int> &meshToTex, Renderer* render)
+void ModelImporter::LoadNode(aiNode* node, const aiScene* scene, vector<ModelNode*> &childrens, Renderer* render)
 {
-	for (int i = 0; i < node->mNumMeshes; i++)
+	if (!auxiliarNodes.empty())
 	{
-		LoadMesh(scene->mMeshes[node->mMeshes[i]], scene, meshList, meshToTex, render);
+		for (int j = 0; j < node->mNumMeshes; j++)
+		{
+			LoadMesh(scene->mMeshes[node->mMeshes[j]], scene, auxiliarNodes.top() ,render);
+		}
 	}
 
-	for (int i = 0; i < node->mNumChildren; i++)
+	int i = 0;
+
+	for (i = 0; i < node->mNumChildren; i++)
 	{
-		LoadNode(node->mChildren[i], scene, meshList, meshToTex, render);
+		ModelNode* n = new ModelNode(render, node->mChildren[i]);
+
+		childrens.push_back(n);
+
+		if (auxiliarNodes.size() > 0) {
+			if(!auxiliarNodes.top()->allchildrensDone)
+				auxiliarNodes.top()->AddChildren(n);
+
+			if (i >= node->mNumChildren - 1) 
+			{
+				auxiliarNodes.top()->allchildrensDone = true;
+			}
+		}
+
+		if (node->mChildren[i]->mNumChildren > 0) {
+			auxiliarNodes.push(n);
+		}
+		LoadNode(node->mChildren[i], scene, childrens, render);
+	}
+
+	while (node != scene->mRootNode && !auxiliarNodes.empty() && auxiliarNodes.top()->allchildrensDone) {
+		auxiliarNodes.pop();
 	}
 }
 
@@ -84,7 +114,7 @@ void ModelImporter::LoadMaterial(const aiScene * scene, const string& texturePat
 		}
 	}
 }
-void ModelImporter::LoadMesh(aiMesh* mesh, const aiScene* scene, vector<Mesh*> &meshList, vector<unsigned int> &meshToTex, Renderer* render)
+void ModelImporter::LoadMesh(aiMesh* mesh, const aiScene* scene, ModelNode* &nodeMesh, Renderer* render)
 {
 	vector<float> vertices;
 	vector<unsigned int> indices;
@@ -113,10 +143,9 @@ void ModelImporter::LoadMesh(aiMesh* mesh, const aiScene* scene, vector<Mesh*> &
 
 	Mesh* newMesh = new Mesh(render);
 	newMesh->CreateMesh(&vertices[0], &indices[0], vertices.size(), indices.size());
-	meshList.push_back(newMesh);
-	meshToTex.push_back(mesh->mMaterialIndex);
+	nodeMesh->_meshList.push_back(newMesh);
+	nodeMesh->_meshToTex.push_back(mesh->mMaterialIndex);
 }
 void ModelImporter::LoadTextureFromFile(aiTextureType type)
 {
-
 }
