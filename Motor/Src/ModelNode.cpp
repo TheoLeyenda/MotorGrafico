@@ -38,6 +38,13 @@ aiNode* ModelNode::GetNode()
 	return _myNode;
 }
 
+void ModelNode::PrintMyInfo()
+{
+	cout << "My Name is: " << GetName() << endl;
+	cout << "cout meshes: " << _meshList.size() << endl;
+	cout << "cout meshToTex: " << _meshToTex.size() << endl;
+}
+
 void ModelNode::BindBuffer()
 {
 }

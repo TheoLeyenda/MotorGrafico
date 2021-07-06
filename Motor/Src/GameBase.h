@@ -18,6 +18,7 @@
 #include "Model.h"
 #include "Audio.h"
 #include "MotorasoGui.h"
+#include "ModelNode.h"
 
 #define INIT_ERROR -1
 

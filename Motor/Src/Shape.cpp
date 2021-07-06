@@ -206,7 +206,6 @@ void Shape::SetVBO()
 	_positionLocation = glGetAttribLocation(renderer->GetCurrentShaderUse().getId(), "position");
 	if (texImporter != NULL) 
 	{
-		cout << "TODAS PUTAS" << endl;
 		glUniform1i(_texLocation = glGetUniformLocation(renderer->GetCurrentShaderUse().getId(), "ourTexture"), texImporter->GetTexture());
 		cout << "ENTRE: "+ texImporter->GetTexture() << endl;
 	}

@@ -37,6 +37,9 @@ public:
 	string GetNodeName();
 	aiNode* GetNode();
 	bool allchildrensDone;
+
+	void PrintMyInfo();
+
 protected:
 	void BindBuffer() override;
 private:

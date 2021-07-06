@@ -36,6 +36,7 @@ public:
 	virtual void SetRotationY(float y);
 	virtual void SetRotationZ(float z);
 	virtual void SetIsAlive(bool value);
+	vector<ModelNode*> GetModelChildrens() { return modelChildrens; }
 protected:
 	void BindBuffer() override;
 private:
