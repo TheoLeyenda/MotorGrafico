@@ -17,7 +17,7 @@ Mesh::Mesh(Renderer* render) : Entity(render)
 	_positionLocation = glGetAttribLocation(render->GetCurrentShaderUse().getId(), "position");
 	_texLocation = glGetAttribLocation(render->GetCurrentShaderUse().getId(), "m_TexCoord");
 	_normalLocation = glGetAttribLocation(render->GetCurrentShaderUse().getId(), "norm");
-	enableShowInDebug = false;
+	SetName("Mesh");
 }
 
 Mesh::~Mesh(){}

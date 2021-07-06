@@ -111,7 +111,6 @@ protected:
 
 	bool isAlive = true;
 	bool InmortalObject = false;
-	bool enableShowInDebug = true;
 
 public:
 	virtual void Draw(bool& wireFrameActive) = 0;
