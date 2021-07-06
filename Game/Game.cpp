@@ -116,12 +116,6 @@ void Game::InitGame()
 	modelFBX->SetName("POCHITA_FBX");
 	AddObjectInDenugGame(modelFBX);
 
-	for(int i = 0; i < modelFBX->GetModelChildrens().size(); i++)
-	{
-		ModelNode* node = modelFBX->GetModelChildrens()[i];
-		node->PrintMyInfo();
-	}
-
 	/*modelOBJ2 = new Model(render);
 	modelOBJ2->LoadModel("res/modelos/merkava-tank/Merkava_Tank.obj", "res/modelos/merkava-tank/textures/");
 	modelOBJ2->SetScale(50, 50, 50);
@@ -307,6 +301,12 @@ void Game::InitGame()
 		camera->SetTypeCamera(TypeCamera::FirstPerson);
 	}
 	SetUseDebugWindows(true);
+
+	for (int i = 0; i < modelFBX->GetModelChildrens().size(); i++)
+	{
+		ModelNode* node = modelFBX->GetModelChildrens()[i];
+		node->PrintMyInfo();
+	}
 
 	//Armo arboles de jerarquias//
 	pyramid->AddChildren(shape1);

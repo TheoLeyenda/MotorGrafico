@@ -33,11 +33,6 @@ string ModelNode::GetNodeName()
 	return _myNode->mName.C_Str();
 }
 
-aiNode* ModelNode::GetNode()
-{
-	return _myNode;
-}
-
 void ModelNode::PrintMyInfo()
 {
 	cout << "My Name is: " << GetName() << endl;

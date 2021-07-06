@@ -35,7 +35,6 @@ public:
 	vector<unsigned int> _meshToTex;
 
 	string GetNodeName();
-	aiNode* GetNode();
 	bool allchildrensDone;
 
 	void PrintMyInfo();
