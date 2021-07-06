@@ -116,22 +116,22 @@ void Game::InitGame()
 	modelFBX->SetName("POCHITA_FBX");
 	AddObjectInDenugGame(modelFBX);
 
-	/*modelOBJ2 = new Model(render);
+	modelOBJ2 = new Model(render);
 	modelOBJ2->LoadModel("res/modelos/merkava-tank/Merkava_Tank.obj", "res/modelos/merkava-tank/textures/");
 	modelOBJ2->SetScale(50, 50, 50);
 	modelOBJ2->SetPosition(1000, 10, 10);
 	modelOBJ2->SetName("TANQUE-MODEL_OBJ2)");
 	modelOBJ2->SetMaterial(goldMaterial);
-	AddObjectInDenugGame(modelOBJ2);*/
+	AddObjectInDenugGame(modelOBJ2);
 
-	/*model3DS = new Model(render);
+	model3DS = new Model(render);
 	model3DS->LoadModel("res/modelos/3ds/Dragon 2.5_3ds.3ds","res/modelos/3ds/textures/");
 	model3DS->SetPosition(390, 347, -81);
 	model3DS->SetScale(5.0f, 5.0f, 5.0f);
 	model3DS->SetRotationX(-90);
 	model3DS->SetMaterial(esmeraldMaterial);
 	model3DS->SetName("DRAGON-MODEL_3DS)");
-	AddObjectInDenugGame(model3DS);*/
+	AddObjectInDenugGame(model3DS);
 
 	modelCOLLADA = new Model(render);
 	modelCOLLADA->LoadModel("res/modelos/dae/Dragon 2.5_dae.dae", "res/modelos/dae/textures/");
@@ -142,14 +142,14 @@ void Game::InitGame()
 	modelCOLLADA->SetName("DRAGON-MODEL_COLLADA)");
 	AddObjectInDenugGame(modelCOLLADA);
 
-	/*modelSTL = new Model(render);
+	modelSTL = new Model(render);
 	modelSTL->LoadModel("res/modelos/stl/Dragon 2.5_stl.stl", "res/modelos/stl/textures/");
 	modelSTL->SetPosition(150, 647, -81);
 	modelSTL->SetScale(5.0f, 5.0f, 5.0f);
 	modelSTL->SetRotationX(-90);
 	modelSTL->SetMaterial(goldMaterial);
 	modelSTL->SetName("DRAGON-MODEL_STL)");
-	AddObjectInDenugGame(modelSTL);*/
+	AddObjectInDenugGame(modelSTL);
 
 	pyramid = new Primitive3D(render,Pyramid);
 	pyramid->SetPosition(500.0f, 250.0f, -50.0f);
