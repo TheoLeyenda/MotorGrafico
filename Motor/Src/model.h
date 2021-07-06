@@ -28,20 +28,12 @@ public:
 	string GetClassName() override;
 
 	void SetMaterial(Material* mat);
-	virtual void SetScale(float x, float y, float z);
-	virtual void SetScale(glm::vec3 scale);
-	virtual void SetPosition(float x, float y, float z);
-	virtual void SetPosition(glm::vec3 position);
-	virtual void SetRotationX(float x);
-	virtual void SetRotationY(float y);
-	virtual void SetRotationZ(float z);
 	virtual void SetIsAlive(bool value);
+	
 	vector<ModelNode*> GetModelChildrens() { return modelChildrens; }
 protected:
 	void BindBuffer() override;
 private:
-	//vector<Mesh*> meshList;
-	//vector<unsigned int> meshToTex;
 	vector<Texture*> textureList;
 	vector<ModelNode*> modelChildrens;
 	ModelNode* rootNode;

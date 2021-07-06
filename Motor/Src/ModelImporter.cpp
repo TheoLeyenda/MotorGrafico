@@ -19,6 +19,9 @@ ModelImporter::~ModelImporter() {}
 
 ModelNode* ModelImporter::LoadModel(const string& filePath, const string& texturePath, ModelNode* rootNode, vector<ModelNode*> &childrens, vector<Texture*> &textureList,Renderer* render)
 {
+	ClearNodesOldModel();
+	ClearAuxiliarNodesOldModel();
+
 	Assimp::Importer imporeter;
 	const aiScene* scene = imporeter.ReadFile(filePath,
 		aiProcess_Triangulate | aiProcess_GenSmoothNormals | aiProcess_JoinIdenticalVertices);
@@ -32,22 +35,23 @@ ModelNode* ModelImporter::LoadModel(const string& filePath, const string& textur
 	auxiliarNodes.push(rootNode);
 	LoadNode(scene->mRootNode, scene, childrens, render);
 
+
+	LoadMesh(rootNode, scene, render);
+	LoadMesh(childrens, scene, render);
+
 	LoadMaterial(scene, texturePath, textureList);
 
 	return rootNode;
 }
+
+
 void ModelImporter::LoadNode(aiNode* node, const aiScene* scene, vector<ModelNode*> &childrens, Renderer* render)
 {
-	if (!auxiliarNodes.empty())
-	{
-		for (int j = 0; j < node->mNumMeshes; j++)
-		{
-			LoadMesh(scene->mMeshes[node->mMeshes[j]], scene, auxiliarNodes.top() ,render);
-		}
-	}
-
 	int i = 0;
-
+	if (node != scene->mRootNode) 
+	{
+		nodes.push_back(node);
+	}
 	for (i = 0; i < node->mNumChildren; i++)
 	{
 		ModelNode* n = new ModelNode(render, node->mChildren[i]);
@@ -55,8 +59,10 @@ void ModelImporter::LoadNode(aiNode* node, const aiScene* scene, vector<ModelNod
 		childrens.push_back(n);
 
 		if (auxiliarNodes.size() > 0) {
-			if(!auxiliarNodes.top()->allchildrensDone)
+			if (!auxiliarNodes.top()->allchildrensDone) {
 				auxiliarNodes.top()->AddChildren(n);
+				auxiliarNodes.top()->SetScale(1, 1, 1);
+			}
 
 			if (i >= node->mNumChildren - 1) 
 			{
@@ -73,6 +79,59 @@ void ModelImporter::LoadNode(aiNode* node, const aiScene* scene, vector<ModelNod
 	while (node != scene->mRootNode && !auxiliarNodes.empty() && auxiliarNodes.top()->allchildrensDone) {
 		auxiliarNodes.pop();
 	}
+}
+
+void ModelImporter::LoadMesh(vector<ModelNode*> childrens, const aiScene* scene, Renderer* render)
+{
+	for (int i = 0; i < nodes.size(); i++)
+	{
+		for (int j = 0; j < nodes[i]->mNumMeshes; j++)
+		{
+			LoadMesh(scene->mMeshes[nodes[i]->mMeshes[j]], scene, childrens[i], render);
+		}
+	}
+}
+
+void ModelImporter::LoadMesh(ModelNode * rootNode, const aiScene * scene, Renderer * render)
+{
+	for (int j = 0; j < scene->mRootNode->mNumMeshes; j++)
+	{
+		LoadMesh(scene->mMeshes[scene->mRootNode->mMeshes[j]], scene, rootNode, render);
+	}
+}
+
+void ModelImporter::LoadMesh(aiMesh* mesh, const aiScene* scene, ModelNode* &nodeMesh, Renderer* render)
+{
+	vector<float> vertices;
+	vector<unsigned int> indices;
+
+	for (int i = 0; i < mesh->mNumVertices; i++)
+	{
+		vertices.insert(vertices.end(), { mesh->mVertices[i].x,mesh->mVertices[i].y,mesh->mVertices[i].z });
+		if (mesh->mTextureCoords[0])
+		{
+			vertices.insert(vertices.end(), { mesh->mTextureCoords[0][i].x, mesh->mTextureCoords[0][i].y });
+		}
+		else {
+			vertices.insert(vertices.end(), { 0.0f,  0.0f });
+		}
+		vertices.insert(vertices.end(), { mesh->mNormals[i].x,mesh->mNormals[i].y,mesh->mNormals[i].z });
+	}
+
+	for (int i = 0; i < mesh->mNumFaces; i++)
+	{
+		aiFace face = mesh->mFaces[i];
+		for (int j = 0; j < face.mNumIndices; j++)
+		{
+			indices.push_back(face.mIndices[j]);
+		}
+	}
+
+	Mesh* newMesh = new Mesh(render);
+	newMesh->CreateMesh(&vertices[0], &indices[0], vertices.size(), indices.size());
+	nodeMesh->_meshList.push_back(newMesh);
+	nodeMesh->_meshToTex.push_back(mesh->mMaterialIndex);
+	nodeMesh->AddChildren(newMesh);
 }
 
 void ModelImporter::LoadMaterial(const aiScene * scene, const string& texturePath, vector<Texture*> &textureList)
@@ -114,38 +173,21 @@ void ModelImporter::LoadMaterial(const aiScene * scene, const string& texturePat
 		}
 	}
 }
-void ModelImporter::LoadMesh(aiMesh* mesh, const aiScene* scene, ModelNode* &nodeMesh, Renderer* render)
+
+void ModelImporter::ClearNodesOldModel()
 {
-	vector<float> vertices;
-	vector<unsigned int> indices;
-
-	for (int i = 0; i < mesh->mNumVertices; i++)
-	{
-		vertices.insert(vertices.end(), { mesh->mVertices[i].x,mesh->mVertices[i].y,mesh->mVertices[i].z });
-		if (mesh->mTextureCoords[0])
-		{
-			vertices.insert(vertices.end(), { mesh->mTextureCoords[0][i].x, mesh->mTextureCoords[0][i].y });
-		}
-		else {
-			vertices.insert(vertices.end(), { 0.0f,  0.0f });
-		}
-		vertices.insert(vertices.end(), { mesh->mNormals[i].x,mesh->mNormals[i].y,mesh->mNormals[i].z });
-	}
-
-	for (int i = 0; i < mesh->mNumFaces; i++)
-	{
-		aiFace face = mesh->mFaces[i];
-		for (int j = 0; j < face.mNumIndices; j++)
-		{
-			indices.push_back(face.mIndices[j]);
-		}
-	}
-
-	Mesh* newMesh = new Mesh(render);
-	newMesh->CreateMesh(&vertices[0], &indices[0], vertices.size(), indices.size());
-	nodeMesh->_meshList.push_back(newMesh);
-	nodeMesh->_meshToTex.push_back(mesh->mMaterialIndex);
+	nodes.clear();
 }
+
+void ModelImporter::ClearAuxiliarNodesOldModel()
+{
+	//Vaciar el stack del modelo anterior
+	while (!auxiliarNodes.empty()) 
+	{
+		auxiliarNodes.pop();
+	}
+}
+
 void ModelImporter::LoadTextureFromFile(aiTextureType type)
 {
 }

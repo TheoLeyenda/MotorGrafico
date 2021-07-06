@@ -21,15 +21,7 @@ public:
 	
 	void SetMaterialNode(Material* mat);
 	void SetTexturesList(vector<Texture*> &textureList);
-	virtual void SetScale(float x, float y, float z);
-	virtual void SetScale(glm::vec3 scale);
-	virtual void SetPosition(float x, float y, float z);
-	virtual void SetPosition(glm::vec3 position);
-	virtual void SetRotationX(float x);
-	virtual void SetRotationY(float y);
-	virtual void SetRotationZ(float z);
 	virtual void SetIsAlive(bool value);
-
 	vector<Mesh*> _meshList;
 	vector<Texture*> _textureList;
 	vector<unsigned int> _meshToTex;

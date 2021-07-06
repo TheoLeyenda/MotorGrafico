@@ -54,21 +54,6 @@ void Model::Draw(bool & wireFrameActive)
 		if (modelChildrens[i] != NULL)
 			modelChildrens[i]->Draw(wireFrameActive);
 	}
-	/*for (int i = 0; i < meshList.size(); i++)
-	{
-		unsigned int materialIndex = meshToTex[i];
-
-		if (materialIndex < textureList.size() && textureList[materialIndex])
-			textureList[materialIndex]->BindTexture();
-
-		if (myMat != NULL)
-			myMat->UseMaterial(renderer->GetCurrentShaderUse());
-
-		meshList[i]->Draw(wireFrameActive);
-
-		if (materialIndex < textureList.size() && textureList[materialIndex])
-			textureList[materialIndex]->UnbindTexture();
-	}*/
 }
 
 void Model::UnloadModel()
@@ -116,60 +101,17 @@ void Model::SetMaterial(Material * mat)
 	}
 }
 
-void Model::SetScale(float x, float y, float z)
-{
-	Entity::SetScale(x, y, z);
-	if(rootNode != NULL)
-		rootNode->SetScale(x, y, z);
-}
-
-void Model::SetScale(glm::vec3 scale)
-{
-	Entity::SetScale(scale);
-	if (rootNode != NULL)
-		rootNode->SetScale(scale);
-}
-
-void Model::SetPosition(float x, float y, float z)
-{
-	Entity::SetPosition(x,y,z);
-	if (rootNode != NULL)
-		rootNode->SetPosition(x,y,z);
-}
-
-void Model::SetPosition(glm::vec3 position)
-{
-	Entity::SetPosition(position);
-	if (rootNode != NULL)
-		rootNode->SetPosition(position);
-}
-
-void Model::SetRotationX(float x)
-{
-	Entity::SetRotationX(x);
-	if (rootNode != NULL)
-		rootNode->SetRotationX(x);
-}
-
-void Model::SetRotationY(float y)
-{
-	Entity::SetRotationY(y);
-	if (rootNode != NULL)
-		rootNode->SetRotationY(y);
-}
-
-void Model::SetRotationZ(float z)
-{
-	Entity::SetRotationZ(z);
-	if (rootNode != NULL)
-		rootNode->SetRotationZ(z);
-}
-
 void Model::SetIsAlive(bool value)
 {
 	Entity::SetIsAlive(value);
 	if (rootNode != NULL)
 		rootNode->SetIsAlive(value);
+
+	for (int i = 0; i < modelChildrens.size(); i++)
+	{
+		if (modelChildrens[i] != NULL)
+			modelChildrens[i]->SetIsAlive(value);
+	}
 }
 
 void Model::BindBuffer(){}

@@ -302,11 +302,7 @@ void Game::InitGame()
 	}
 	SetUseDebugWindows(true);
 
-	for (int i = 0; i < modelFBX->GetModelChildrens().size(); i++)
-	{
-		ModelNode* node = modelFBX->GetModelChildrens()[i];
-		node->PrintMyInfo();
-	}
+	
 
 	//Armo arboles de jerarquias//
 	pyramid->AddChildren(shape1);
@@ -332,7 +328,15 @@ void Game::InitGame()
 void Game::UpdateGame(Windows *_window, Renderer *_render, Input *_input)
 {
 	//timeClock.FPS();
-
+	
+	if (input->GetKey(KeyBoard::KEY_P)) {
+		system("cls");
+		for (int i = 0; i < modelFBX->GetModelChildrens().size(); i++)
+		{
+			ModelNode* node = modelFBX->GetModelChildrens()[i];
+			node->PrintMyInfo();
+		}
+	}
 	if (player3D != NULL)
 		player3D->Move(input, timeClock);
 

@@ -36,8 +36,13 @@ string ModelNode::GetNodeName()
 void ModelNode::PrintMyInfo()
 {
 	cout << "My Name is: " << GetName() << endl;
-	cout << "cout meshes: " << _meshList.size() << endl;
-	cout << "cout meshToTex: " << _meshToTex.size() << endl;
+	//cout << "cout meshes: " << _meshList.size() << endl;
+	//cout << "cout meshToTex: " << _meshToTex.size() << endl;
+	cout << "Position X: " << transform.position.x << endl;
+	cout << "Position Y: " << transform.position.y << endl;
+	cout << "Position Z: " << transform.position.z << endl;
+	cout << "---------------------------------------------" << endl;
+	
 }
 
 void ModelNode::BindBuffer()
@@ -72,69 +77,6 @@ void ModelNode::SetMaterialNode(Material * mat)
 void ModelNode::SetTexturesList(vector<Texture*> &textureList)
 {
 	_textureList = textureList;
-}
-
-void ModelNode::SetScale(float x, float y, float z)
-{
-	Entity::SetScale(x, y ,z);
-	for (int i = 0; i < _meshList.size(); i++)
-	{
-		_meshList[i]->SetScale(x, y, z);
-	}
-}
-
-void ModelNode::SetScale(glm::vec3 scale)
-{
-	Entity::SetScale(scale);
-	for (int i = 0; i < _meshList.size(); i++)
-	{
-		_meshList[i]->SetScale(scale);
-	}
-}
-
-void ModelNode::SetPosition(float x, float y, float z)
-{
-	Entity::SetPosition(x, y, z);
-	for (int i = 0; i < _meshList.size(); i++)
-	{
-		_meshList[i]->SetPosition(x, y, z);
-	}
-}
-
-void ModelNode::SetPosition(glm::vec3 position)
-{
-	Entity::SetPosition(position.x, position.y, position.z);
-	for (int i = 0; i < _meshList.size(); i++)
-	{
-		_meshList[i]->SetPosition(position.x, position.y, position.z);
-	}
-}
-
-void ModelNode::SetRotationX(float x)
-{
-	Entity::SetRotationX(x);
-	for (int i = 0; i < _meshList.size(); i++)
-	{
-		_meshList[i]->SetRotationX(x);
-	}
-}
-
-void ModelNode::SetRotationY(float y)
-{
-	Entity::SetRotationY(y);
-	for (int i = 0; i < _meshList.size(); i++)
-	{
-		_meshList[i]->SetRotationY(y);
-	}
-}
-
-void ModelNode::SetRotationZ(float z)
-{
-	Entity::SetRotationZ(z);
-	for (int i = 0; i < _meshList.size(); i++)
-	{
-		_meshList[i]->SetRotationZ(z);
-	}
 }
 
 void ModelNode::SetIsAlive(bool value)
