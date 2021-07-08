@@ -152,7 +152,7 @@ public:
 	bool GetIsUILocked() { return isUILocked; }
 	//------//
 
-	//JERARQUIA//
+	// JERARQUIA // 
 	Entity* GetParent() { return parent; }
 	void AddChildren(Entity* children);
 	void RemoveChildren(Entity* children, Entity* newParent);

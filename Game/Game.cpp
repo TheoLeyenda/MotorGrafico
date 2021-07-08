@@ -317,6 +317,13 @@ void Game::InitGame()
 
 	//cube->GetEntityNode(cube3->GetName())->SetIsAlive(false);
 	
+	Entity* cierra = modelFBX->GetEntityNode("cierra");
+	Entity* cierra1 = modelFBX->GetEntityNode("cierra.001");
+	Entity* cierra2 = modelFBX->GetEntityNode("cierra.002");
+	cierra->AddChildren(cierra1);
+	cierra1->AddChildren(cierra2);
+
+
 	cube->RemoveChildren(cube3, GetRootScene());
 	//cube->RemoveChildren(cube2, GetRootScene());
 	/*cout << endl;

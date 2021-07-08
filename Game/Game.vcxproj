@@ -196,6 +196,7 @@
     <None Include="res\modelos\BanioSovietico\source\BanioSovietico.fbx" />
     <None Include="res\modelos\baseCamp_bunkerSmall.fbx" />
     <None Include="res\modelos\Camioneta_Texturizada.fbx" />
+    <None Include="res\modelos\dae\TankLowPoly.dae" />
     <None Include="res\modelos\untitled.fbx" />
     <None Include="res\shaders\FragmentColor.shader" />
     <None Include="res\shaders\FragmentTexture.shader" />

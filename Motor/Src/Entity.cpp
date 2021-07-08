@@ -318,9 +318,9 @@ void Entity::RemoveChildren(Entity* children, Entity* newParent)
 			//cout << "Parent: " << entity->parent->GetName() << endl;
 		}
 	}
-	cout << endl;
+	//cout << endl;
 	//newParent->PrintTree();
-	cout << endl;
+	//cout << endl;
 }
 Entity* Entity::GetEntityNode(string name)
 {
