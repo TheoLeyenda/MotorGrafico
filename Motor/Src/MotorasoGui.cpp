@@ -17,6 +17,7 @@ Entity* MotorasoGui::currentEntitySelected;
 float MotorasoGui::speedPosition = 15.0f;
 float MotorasoGui::speedRotation = 1.0f;
 float MotorasoGui::speedScalated = 50.0f;
+bool MotorasoGui::_wireFrameActive = false;
 
 MotorasoGui::MotorasoGui(Windows* window)
 {
@@ -111,6 +112,13 @@ void MotorasoGui::_TreeEntitys(Entity * entity)
 	}
 }
 
+void MotorasoGui::UpdateWireFrameGui()
+{
+	if (ImGui::Button("WIREFRAME"))                            // Buttons return true when clicked (NB: most widgets return true when edited/activated)
+		_wireFrameActive = !_wireFrameActive;
+	ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
+}
+
 void MotorasoGui::ShowEntityNodeInfo(Entity * entity)
 {
 	ImGui::Begin("Properties");
@@ -146,7 +154,6 @@ void MotorasoGui::ShowEntityNodeInfo(Entity * entity)
 		ImGui::ColorButton(entity->GetName().c_str(), color);
 	}
 
-
 	ImGui::Separator();
 
 	ShowEntityInfo(entity);
@@ -154,7 +161,10 @@ void MotorasoGui::ShowEntityNodeInfo(Entity * entity)
 	ImGui::Separator();
 	if (entity->GetClassName() == "Light")
 		ShowLightInfo((Light*)entity);
+	
+	ImGui::Separator();
 
+	UpdateWireFrameGui();
 }
 
 void MotorasoGui::ShowEntityInfo(Entity * entityNode)
@@ -226,12 +236,6 @@ void MotorasoGui::Render()
 	ImGui_ImplGlfwGL3_RenderDrawData(ImGui::GetDrawData());
 }
 
-void MotorasoGui::UpdateWireFrameGui()
-{
-	if (ImGui::Button("WIREFRAME"))                            // Buttons return true when clicked (NB: most widgets return true when edited/activated)
-		_wireFrameActive = !_wireFrameActive;
-	ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
-}
 
 void MotorasoGui::End()
 {

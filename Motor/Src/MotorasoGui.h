@@ -23,7 +23,7 @@ private:
 	static float speedPosition;
 	static float speedRotation;
 	static float speedScalated;
-	bool _wireFrameActive;
+	static bool _wireFrameActive;
 	
 	static Entity* lastEntitySelected;
 	static Entity* currentEntitySelected;
@@ -44,7 +44,7 @@ public:
 	static void End();
 
 	bool& GetIfWireFrameIsActive() { return _wireFrameActive; }
-	void UpdateWireFrameGui();
+	static void UpdateWireFrameGui();
 	float GetSpeedRotation() { return speedRotation; };
 	void SetSpeedPositionChange(float value) { speedPosition = value; }
 	void SetSpeedRotationChange(float value) { speedRotation = value; }
