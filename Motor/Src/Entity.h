@@ -37,6 +37,9 @@ Renderer* GetRenderer();
 
 #include "Renderer.h"
 
+//#include "AxisAlignedBoundingBox.h"
+class AxisAlignedBoundingBox;
+
 #include "stb_image.h"
 
 #define ENTITY_2DIMENTIONS 1
@@ -75,6 +78,12 @@ private:
 	//---------//
 protected:
 	
+	void CreateMyAxisAlignedBoundingBox();
+
+	//FRUSTRUM CULLING
+	AxisAlignedBoundingBox* axisAlignedBoundingBox = NULL;
+	//---------------//
+
 	//JERARQUIA//
 	Entity* parent = NULL;
 	vector<Entity*> childrens;
@@ -120,6 +129,7 @@ public:
 	~Entity();
 	Transform transform;
 	Renderer* GetRenderer();
+
 	InternalData GetInternalData();
 	virtual void SetPosition(float x, float y, float z);
 	virtual void SetPosition(glm::vec3 position);

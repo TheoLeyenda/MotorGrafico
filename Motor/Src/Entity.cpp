@@ -1,24 +1,9 @@
 #include "Entity.h"
 #include <glew.h>
 #include <GLFW/glfw3.h>
-
+#include "AxisAlignedBoundingBox.h"
 #include "MotorasoGui.h"
 
-void Entity::UpdateMatrixModel()
-{
-	internalData.localModel = internalData.translate * internalData.rotateX * internalData.rotateY * internalData.rotateZ * internalData.scale;
-	if (parent != NULL)
-		internalData.globalModel = parent->GetInternalData().globalModel * internalData.localModel;
-	else
-		internalData.globalModel = internalData.localModel;
-
-	internalData.localModel = internalData.globalModel;
-
-	for (int i = 0; i < childrens.size(); i++) 
-	{
-		childrens[i]->UpdateMatrixModel();
-	}
-}
 
 Entity::Entity(Renderer * _renderer)
 {
@@ -46,6 +31,7 @@ Entity::Entity(Renderer * _renderer)
 
 	isModel = 0;
 	nameEntity = "Entity sin nombre";
+
 }
 
 Entity::Entity(Renderer * _renderer, float _isModel)
@@ -75,12 +61,40 @@ Entity::Entity(Renderer * _renderer, float _isModel)
 	isModel = _isModel;
 
 	nameEntity = "Entity sin nombre";
+
 }
 
-Entity::~Entity() {}
+Entity::~Entity() 
+{
+	if (axisAlignedBoundingBox != NULL) {
+		delete axisAlignedBoundingBox;
+		axisAlignedBoundingBox = NULL;
+	}
+}
+
+void Entity::UpdateMatrixModel()
+{
+	internalData.localModel = internalData.translate * internalData.rotateX * internalData.rotateY * internalData.rotateZ * internalData.scale;
+	if (parent != NULL)
+		internalData.globalModel = parent->GetInternalData().globalModel * internalData.localModel;
+	else
+		internalData.globalModel = internalData.localModel;
+
+	internalData.localModel = internalData.globalModel;
+
+	for (int i = 0; i < childrens.size(); i++)
+	{
+		childrens[i]->UpdateMatrixModel();
+	}
+}
 
 Renderer * Entity::GetRenderer() {
 	return renderer;
+}
+
+void Entity::CreateMyAxisAlignedBoundingBox()
+{
+	axisAlignedBoundingBox = new AxisAlignedBoundingBox(renderer);
 }
 
 InternalData Entity::GetInternalData()

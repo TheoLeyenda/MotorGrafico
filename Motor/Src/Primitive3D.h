@@ -4,7 +4,7 @@
 #include "PrivateClass/Export.h"
 #include "Entity.h"
 #include "TextureImporter.h"
-
+#include <vector>
 ENGINE_API enum TypeModel
 {
 	Cube,
@@ -87,7 +87,7 @@ private:
 		8, 9, 22, 22, 23, 8    //Arriba
 	};
 	unsigned int indexPyramid[indicesPyramidCount] = {
-		0,3,1, 13,7,14,
+		0,3,1,13,7,14,
 		12,5,15, 4,6,2,
 		11,8,9, 9,10,11
 	};
@@ -105,6 +105,8 @@ private:
 	TextureImporter texImporter;
 
 	Material* my_Mat;
+
+	vector<glm::vec3> FilterVertexDataXYZ(float * vertex, unsigned int countElementsForVerte, unsigned int sizeArrVertex);
 protected:
 	void BindGeneralData();
 	void SetVAO();
