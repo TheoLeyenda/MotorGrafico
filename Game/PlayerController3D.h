@@ -22,6 +22,7 @@ private:
 	void CheckInputs(Input* input);
 protected:
 	void BindBuffer() override;
+	void SetEnableDrawAABB(bool value) override;
 public:
 	PlayerController3D(Renderer *_renderer);
 	void Move(Input* input, Time time);

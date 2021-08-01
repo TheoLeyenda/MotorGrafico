@@ -1,5 +1,5 @@
 #include "Audio.h"
-
+#include "AxisAlignedBoundingBox.h"
 
 Audio::Audio(Renderer* render) : Entity(render)
 {
@@ -14,6 +14,12 @@ string Audio::GetClassName()
 }
 
 void Audio::BindBuffer(){}
+
+void Audio::SetEnableDrawAABB(bool value)
+{
+	if (axisAlignedBoundingBox != NULL)
+		axisAlignedBoundingBox->SetEnableDraw(value);
+}
 
 void Audio::Draw(bool & wireFrameActive) {  }
 

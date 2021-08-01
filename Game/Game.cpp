@@ -302,8 +302,6 @@ void Game::InitGame()
 	}
 	SetUseDebugWindows(true);
 
-	
-
 	//Armo arboles de jerarquias//
 	pyramid->AddChildren(shape1);
 	cube->AddChildren(cube2);
@@ -324,6 +322,9 @@ void Game::InitGame()
 
 
 	cube->RemoveChildren(cube3, GetRootScene());
+
+	SetEnableAABB_DebugGame(true);
+
 	//cube->RemoveChildren(cube2, GetRootScene());
 	/*cout << endl;
 	GetRootScene()->PrintTree();

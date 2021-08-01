@@ -2,6 +2,7 @@
 #include "Camera.h"
 #include <glew.h>
 #include <GLFW/glfw3.h>
+#include "AxisAlignedBoundingBox.h"
 
 Camera::Camera(Renderer* _render, TypeProjectionCamera _typeProjectionCamera) : Entity(_render)
 {
@@ -13,6 +14,12 @@ Camera::Camera(Renderer* _render, TypeProjectionCamera _typeProjectionCamera) : 
 }
 
 Camera::~Camera(){}
+
+void Camera::SetEnableDrawAABB(bool value)
+{
+	if (axisAlignedBoundingBox != NULL)
+		axisAlignedBoundingBox->SetEnableDraw(value);
+}
 
 void Camera::BindBuffer(){}
 

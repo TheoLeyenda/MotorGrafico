@@ -34,6 +34,7 @@ private:
 	void BindBufferSprite();
 protected:
 	void BindBuffer() override;
+	void SetEnableDrawAABB(bool value) override;
 	void UpdateSprite(Time& timer);
 public:
 	void Draw(bool& wireFrameActive) override;

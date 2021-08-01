@@ -67,6 +67,12 @@ void Mesh::BindBuffer()
 	BindDataMesh();
 }
 
+void Mesh::SetEnableDrawAABB(bool value)
+{
+	if(axisAlignedBoundingBox != NULL)
+		axisAlignedBoundingBox->SetEnableDraw(value);
+}
+
 void Mesh::CreateMesh(float * vertices, unsigned int * indices, unsigned int numVertices, unsigned int numOfIndices)
 {
 	countIndices = numOfIndices;

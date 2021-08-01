@@ -118,11 +118,13 @@ protected:
 
 	virtual void BindBuffer() = 0;
 
+
 	bool isAlive = true;
 	bool InmortalObject = false;
 
 public:
 	virtual void Draw(bool& wireFrameActive) = 0;
+	virtual void SetEnableDrawAABB(bool value) = 0;
 
 	Entity(Renderer *_renderer);
 	Entity(Renderer *_renderer, float _isModel);

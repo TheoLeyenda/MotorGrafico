@@ -5,6 +5,8 @@
 #include "Texture.h"
 #include "Material.h"
 
+#include "AxisAlignedBoundingBox.h"
+
 #include <assimp/Importer.hpp>
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
@@ -14,6 +16,8 @@ ModelNode::ModelNode(Renderer* render, aiNode* node) : Entity(render)
 	_myNode = node;
 	SetName(_myNode->mName.C_Str());
 	allchildrensDone = false;
+
+	axisAlignedBoundingBox = new AxisAlignedBoundingBox(render);
 }
 
 ModelNode::~ModelNode()
@@ -25,6 +29,12 @@ ModelNode::~ModelNode()
 			delete _meshList[i];
 			_meshList[i] = NULL;
 		}
+	}
+
+	if (axisAlignedBoundingBox != NULL) 
+	{
+		delete axisAlignedBoundingBox;
+		axisAlignedBoundingBox = NULL;
 	}
 }
 
@@ -47,6 +57,17 @@ void ModelNode::PrintMyInfo()
 
 void ModelNode::BindBuffer()
 {
+}
+
+void ModelNode::SetEnableDrawAABB(bool value)
+{
+	axisAlignedBoundingBox->SetEnableDraw(value);
+	for (int i = 0; i < _meshList.size(); i++)
+	{
+		if (_meshList[i]->GetAABB() != NULL) {
+			_meshList[i]->GetAABB()->SetEnableDraw(value);
+		}
+	}
 }
 
 void ModelNode::Draw(bool& wireFrameActive)

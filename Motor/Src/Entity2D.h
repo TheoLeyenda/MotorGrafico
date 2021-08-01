@@ -7,6 +7,8 @@ class ENGINE_API Entity2D : public Entity
 {
 protected:
 	glm::vec3 boxColliderSize2D;
+	void BindBuffer() override;
+	void SetEnableDrawAABB(bool value) override;
 public:
 	Entity2D(Renderer *_renderer, Material* _material);
 	Entity2D(Renderer *_renderer);

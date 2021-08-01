@@ -4,6 +4,7 @@
 #include "glew.h"
 #include "GLFW/glfw3.h"
 #include <sstream>
+#include "AxisAlignedBoundingBox.h"
 
 int Light::nr_of_directional_light = 0;
 int Light::nr_of_point_light = 0;
@@ -89,6 +90,12 @@ Light::~Light()
 		break;
 	}
 	UpdateCountLightInShader(renderer->GetCurrentShaderUse());
+}
+
+void Light::SetEnableDrawAABB(bool value)
+{
+	if (axisAlignedBoundingBox != NULL)
+		axisAlignedBoundingBox->SetEnableDraw(value);
 }
 
 void Light::BindBuffer()

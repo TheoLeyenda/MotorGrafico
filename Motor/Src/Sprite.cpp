@@ -1,6 +1,6 @@
 #include "Sprite.h"
 #include "glew.h"
-
+#include "AxisAlignedBoundingBox.h"
 
 //============================================
 Sprite::Sprite(Renderer * _renderer, const char* filePath, bool transparency):Entity2D(_renderer)
@@ -57,6 +57,12 @@ void Sprite::SetAttribsSprite()
 }
 
 void Sprite::BindBuffer(){}
+
+void Sprite::SetEnableDrawAABB(bool value)
+{
+	if (axisAlignedBoundingBox != NULL)
+		axisAlignedBoundingBox->SetEnableDraw(value);
+}
 
 void Sprite::Draw(bool & wireFrameActive){}
 

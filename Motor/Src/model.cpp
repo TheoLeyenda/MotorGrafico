@@ -7,6 +7,8 @@
 
 #include "ModelNode.h"
 
+#include "AxisAlignedBoundingBox.h"
+
 Model::Model(Renderer * render) : Entity(render)
 {
 	myMat = NULL;
@@ -115,3 +117,9 @@ void Model::SetIsAlive(bool value)
 }
 
 void Model::BindBuffer(){}
+
+void Model::SetEnableDrawAABB(bool value)
+{
+	if (axisAlignedBoundingBox != NULL)
+		axisAlignedBoundingBox->SetEnableDraw(value);
+}

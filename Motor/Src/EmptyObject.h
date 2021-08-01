@@ -8,6 +8,7 @@ class ENGINE_API EmptyObject : public Entity
 {
 private:
 	void BindBuffer() override;
+	void SetEnableDrawAABB(bool value) override;
 public:
 	void Draw(bool& wireFrameActive) override;
 	EmptyObject(Renderer* renderer);

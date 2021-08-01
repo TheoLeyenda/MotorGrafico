@@ -30,6 +30,7 @@ public:
 	bool allchildrensDone;
 
 	void PrintMyInfo();
+	void SetEnableDrawAABB(bool value) override;
 
 protected:
 	void BindBuffer() override;

@@ -2,12 +2,13 @@
 #include "EmptyObject.h"
 #include "glew.h"
 #include "GLFW/glfw3.h"
+#include "AxisAlignedBoundingBox.h"
 
 vector<Entity*> GameBase::entitysDebugInGame = vector<Entity*>();
 
-
 GameBase::GameBase() {}
 GameBase::~GameBase() {}
+
 int GameBase::InitEngine()
 {
 	bool initGLFW = glfwInit();
@@ -149,6 +150,14 @@ void GameBase::DestroyEngine()
 	}
 }
 
+void GameBase::SetEnableAABB_DebugGame(bool value)
+{
+	if (value)
+		ActivateAABB_DebugGame();
+	else
+		DisableAABB_DebugGame();
+}
+
 void GameBase::AddObjectInDenugGame(Entity* entity)
 {
 	if (entity != NULL) 
@@ -192,6 +201,50 @@ void GameBase::DisableObjectInGame(Entity* entity)
 void GameBase::EnableObjectInGame(Entity * entity)
 {
 	entity->SetIsAlive(true);
+}
+
+void GameBase::ActivateAABB_DebugGame()
+{
+	Model* model = nullptr;
+	for (int i = 0; i < entitysDebugInGame.size(); i++) 
+	{
+		entitysDebugInGame[i]->SetEnableDrawAABB(true);
+		if (entitysDebugInGame[i]->GetClassName() == "Model") 
+		{
+			model = (Model*)(entitysDebugInGame[i]);
+			if (model != nullptr && model != NULL)
+			{
+				for (int j = 0; j < model->GetModelChildrens().size(); j++)
+				{
+					if (model->GetModelChildrens()[j] != NULL && model->GetModelChildrens()[j] != nullptr)
+						model->GetModelChildrens()[j]->SetEnableDrawAABB(true);
+				}
+				model->GetMyModelNode()->SetEnableDrawAABB(true);
+			}
+		}
+	}
+}
+
+void GameBase::DisableAABB_DebugGame()
+{
+	Model* model = nullptr;
+	for (int i = 0; i < entitysDebugInGame.size(); i++)
+	{
+		entitysDebugInGame[i]->SetEnableDrawAABB(false);
+		if (entitysDebugInGame[i]->GetClassName() == "Model")
+		{
+			model = (Model*)(entitysDebugInGame[i]);
+			if (model != nullptr && model != NULL)
+			{
+				for (int j = 0; j < model->GetModelChildrens().size(); j++)
+				{
+					if (model->GetModelChildrens()[j] != NULL && model->GetModelChildrens()[j] != nullptr)
+						model->GetModelChildrens()[j]->SetEnableDrawAABB(false);
+				}
+			}
+			model->GetMyModelNode()->SetEnableDrawAABB(false);
+		}
+	}
 }
 
 Light * GameBase::GetLight(int id)

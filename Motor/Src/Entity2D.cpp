@@ -1,4 +1,5 @@
 #include "Entity2D.h"
+#include "AxisAlignedBoundingBox.h"
 
 Entity2D::Entity2D(Renderer * _renderer, Material* _material): Entity(_renderer)
 {
@@ -14,6 +15,14 @@ Entity2D::Entity2D(Renderer * _renderer) : Entity(_renderer)
 
 Entity2D::~Entity2D()
 {
+}
+
+void Entity2D::BindBuffer() {}
+
+void Entity2D::SetEnableDrawAABB(bool value)
+{
+	if (axisAlignedBoundingBox != NULL)
+		axisAlignedBoundingBox->SetEnableDraw(value);
 }
 
 void Entity2D::SetScale(float x, float y, float z)

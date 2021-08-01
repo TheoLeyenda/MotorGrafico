@@ -1,7 +1,7 @@
 #include "EmptyObject.h"
 #include <glew.h>
 #include <GLFW/glfw3.h>
-
+#include "AxisAlignedBoundingBox.h"
 
 EmptyObject::EmptyObject(Renderer* render) :Entity(render) 
 {
@@ -9,6 +9,11 @@ EmptyObject::EmptyObject(Renderer* render) :Entity(render)
 }
 
 void EmptyObject::BindBuffer() {}
+void EmptyObject::SetEnableDrawAABB(bool value)
+{
+	if (axisAlignedBoundingBox != NULL)
+		axisAlignedBoundingBox->SetEnableDraw(value);
+}
 void EmptyObject::Draw(bool & wireFrameActive)
 {
 	renderer->Draw(0, renderer->GetCurrentShaderUse(), internalData.localModel, wireFrameActive);

@@ -113,18 +113,34 @@ void MotorasoGui::_TreeEntitys(Entity * entity)
 
 void MotorasoGui::UpdateWireFrameGui()
 {
+	ImGui::Separator();
+
 	if (ImGui::Button("WIREFRAME"))                            // Buttons return true when clicked (NB: most widgets return true when edited/activated)
 		_wireFrameActive = !_wireFrameActive;
 }
 
 void MotorasoGui::UpdateAABB(Entity* entityNode)
 {
-	if (ImGui::Button("AABB"))
+	ImGui::Separator();
+	ModelNode* modelNode = nullptr;
+	modelNode = (ModelNode*)(entityNode);
+	if (entityNode->GetAABB() != NULL && (modelNode == nullptr || modelNode == NULL))
 	{
-		if(entityNode->GetAABB() != NULL)
-			entityNode->GetAABB()->SetEnableDraw(!entityNode->GetAABB()->GetEnableDraw());
+		if (ImGui::Button("AABB"))
+		{
+			entityNode->SetEnableDrawAABB(!entityNode->GetAABB()->GetEnableDraw());
+		}
 	}
-	ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
+	else if(entityNode->GetAABB() != NULL)
+	{
+		if (modelNode->_meshList.size() > 0) 
+		{
+			if (ImGui::Button("AABB"))
+			{
+				entityNode->SetEnableDrawAABB(!entityNode->GetAABB()->GetEnableDraw());
+			}
+		}
+	}
 }
 
 void MotorasoGui::ShowEntityNodeInfo(Entity * entity)
@@ -169,14 +185,14 @@ void MotorasoGui::ShowEntityNodeInfo(Entity * entity)
 	ImGui::Separator();
 	if (entity->GetClassName() == "Light")
 		ShowLightInfo((Light*)entity);
-	
-	ImGui::Separator();
 
 	UpdateWireFrameGui();
 
+	UpdateAABB(entity);
+
 	ImGui::Separator();
 
-	UpdateAABB(entity);
+	ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
 
 	ImGui::Separator();
 }

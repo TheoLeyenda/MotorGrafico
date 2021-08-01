@@ -35,7 +35,11 @@ private:
 
 	EmptyObject* rootScene;
 
+	void ActivateAABB_DebugGame();
+	void DisableAABB_DebugGame();
+
 protected:
+
 	static vector<Entity*> entitysDebugInGame;
 
 	Windows* windows = NULL;
@@ -55,6 +59,8 @@ public:
 	int InitEngine();
 	void UpdateEngine();
 	void DestroyEngine();
+
+	void SetEnableAABB_DebugGame(bool value);
 
 	void AddObjectInDenugGame(Entity* entity);
 

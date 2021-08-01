@@ -21,6 +21,7 @@ protected:
 	void UnbindBuffers();
 
 	void BindBuffer() override;
+	void SetEnableDrawAABB(bool value) override;
 public:
 	Mesh(Renderer* render);
 	~Mesh();

@@ -3,6 +3,7 @@
 #include <glew.h>
 #include <GLFW/glfw3.h>
 #include "stb_image.h"
+#include "AxisAlignedBoundingBox.h"
 
 const int countElementsForVertex = 5;
 
@@ -157,6 +158,12 @@ void Shape::BindBuffer()
 	glBindBuffer(GL_ARRAY_BUFFER, _vbo);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _ibo);
 	BindGeneralData();
+}
+
+void Shape::SetEnableDrawAABB(bool value)
+{
+	if (axisAlignedBoundingBox != NULL)
+		axisAlignedBoundingBox->SetEnableDraw(value);
 }
 
 void Shape::BindGeneralData()

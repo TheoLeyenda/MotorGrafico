@@ -181,6 +181,8 @@ protected:
 	glm::vec3 _auxAmbient;
 	glm::vec3 _auxDiffuse;
 	glm::vec3 _auxSpecular;
+
+	void SetEnableDrawAABB(bool value) override;
 	void BindBuffer() override;
 	void SetVAO();
 	void SetVBO();

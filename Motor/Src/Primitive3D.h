@@ -117,6 +117,7 @@ protected:
 	void BlendSprite();
 	void UnBlendSprite();
 	void BindBuffer() override;
+	void SetEnableDrawAABB(bool value) override;
 
 public:
 	Primitive3D(Renderer* renderer);

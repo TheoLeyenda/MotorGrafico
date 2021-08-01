@@ -94,11 +94,11 @@ glm::vec3 * AxisAlignedBoundingBox::GenerateAxisAlignedBoundingBoxPos(vector<glm
 	returnArrPositions[6] = glm::vec3(max_x, max_y, min_z);
 	returnArrPositions[7] = glm::vec3(min_x, max_y, min_z);
 
-	cout << "DATA AABB" << endl;
+	/*cout << "DATA AABB" << endl;
 	for (int i = 0; i < countVerticesCollider; i++)
 	{
 		cout << i << "_[" << returnArrPositions[i].x << "][" << returnArrPositions[i].y << "][" << returnArrPositions[i].z << "]." << endl;
-	}
+	}*/
 
 	return returnArrPositions;
 }
@@ -173,6 +173,11 @@ void AxisAlignedBoundingBox::BindBuffer()
 	glBindBuffer(GL_ARRAY_BUFFER, _vbo);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _ibo);
 	BindGeneralData();
+}
+
+void AxisAlignedBoundingBox::SetEnableDrawAABB(bool value)
+{
+	SetEnableDraw(value);
 }
 
 void AxisAlignedBoundingBox::UseMyMaterial()

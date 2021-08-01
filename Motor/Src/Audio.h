@@ -14,6 +14,7 @@ private:
 
 protected:
 	void BindBuffer() override;
+	void SetEnableDrawAABB(bool value) override;
 public:
 	Audio(Renderer* render);
 

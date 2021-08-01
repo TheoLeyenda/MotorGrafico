@@ -44,6 +44,7 @@ private:
 	//int nrChannels;
 protected:
 	void BindBuffer() override;
+	void SetEnableDrawAABB(bool value) override;
 	void SetVAO();
 	void SetVBO();
 	void SetIBO();

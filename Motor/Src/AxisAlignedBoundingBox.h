@@ -18,7 +18,6 @@ private:
 
 	bool enableDraw = true;
 	bool enableInitData = true;
-
 	Transform entityTransform;
 	InternalData internalDataAttach;
 	glm::vec3 verticesColliderPositions[countVerticesCollider];
@@ -49,6 +48,7 @@ private:
 	void UnbindBuffers();
 protected:
 	void BindBuffer() override;
+	void SetEnableDrawAABB(bool value) override;
 	void UseMyMaterial();
 
 public:

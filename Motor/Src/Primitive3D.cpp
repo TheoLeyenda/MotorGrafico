@@ -232,6 +232,12 @@ void Primitive3D::BindBuffer()
 	BindGeneralData();
 }
 
+void Primitive3D::SetEnableDrawAABB(bool value)
+{
+	if (axisAlignedBoundingBox != NULL)
+		axisAlignedBoundingBox->SetEnableDraw(value);
+}
+
 vector<glm::vec3> Primitive3D::FilterVertexDataXYZ(float * vertex, unsigned int countElementsForVertex, unsigned int sizeArrVertex)
 {
 	vector<vector<float>> vertices;

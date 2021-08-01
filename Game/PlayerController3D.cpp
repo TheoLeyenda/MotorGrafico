@@ -1,6 +1,8 @@
 #include "PlayerController3D.h"
 #include "Input.h"
 #include "model.h"
+#include "AxisAlignedBoundingBox.h"
+
 PlayerController3D::PlayerController3D(Renderer * _renderer) : Entity(_renderer){}
 
 PlayerController3D::~PlayerController3D() {}
@@ -64,3 +66,9 @@ void PlayerController3D::CheckInputs(Input* input)
 }
 
 void PlayerController3D::BindBuffer(){}
+
+void PlayerController3D::SetEnableDrawAABB(bool value)
+{
+	if (axisAlignedBoundingBox != NULL)
+		axisAlignedBoundingBox->SetEnableDraw(value);
+}
