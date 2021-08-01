@@ -1,9 +1,29 @@
 #include "AxisAlignedBoundingBox.h"
 #include <glew.h>
 #include <GLFW/glfw3.h>
+#include "Material.h"
 
 AxisAlignedBoundingBox::AxisAlignedBoundingBox(Renderer * render) : Entity(render)
-{}
+{
+	my_Mat = new Material();
+	my_Mat->SetAmbientMat(glm::vec3(0.0215f, 0.1745f, 0.0215f));
+	my_Mat->SetDiffuseMat(glm::vec3(0.07568f, 0.61424f, 0.07568f));
+	my_Mat->SetSpecularMat(glm::vec3(0.633f, 0.727811f, 0.633f));
+	my_Mat->SetNewShininess(0.6f, 124);
+
+	SetNewMaterial(my_Mat);
+
+	SetIsAlive(true);
+	for (int i = 0; i < countVerticesCollider; i++)
+	{
+		verticesColliderPositions[i] = glm::vec3(0,0,0);
+		verticesColliderColor[i] = glm::vec4(0.0);
+	}
+	for (int j = 0; j < verticesDataCountArr; j++)
+	{
+		verticesData[j] = 0.0f;
+	}
+}
 
 AxisAlignedBoundingBox::~AxisAlignedBoundingBox(){}
 
@@ -42,12 +62,10 @@ float AxisAlignedBoundingBox::GetMaxNum(vector<float> _values)
 	return max;
 }
 
-glm::vec3 * AxisAlignedBoundingBox::GenerateAxisAlignedBoundingBox(vector<glm::vec3> _values)
+glm::vec3 * AxisAlignedBoundingBox::GenerateAxisAlignedBoundingBoxPos(vector<glm::vec3> _values)
 {
 	if (_values.size() <= 0)
 		return NULL;
-
-	glm::vec3 returnArr[TAM_COLLIDER];
 
 	vector<float> values_x;
 	vector<float> values_y;
@@ -60,23 +78,39 @@ glm::vec3 * AxisAlignedBoundingBox::GenerateAxisAlignedBoundingBox(vector<glm::v
 		values_z.push_back(_values[i].z);
 	}
 
-	float min_x = GetMinNum(values_x);
-	float max_x = GetMaxNum(values_x);
-	float min_y = GetMinNum(values_y);
-	float max_y = GetMaxNum(values_y);
-	float min_z = GetMinNum(values_z);
-	float max_z = GetMaxNum(values_z);
+	float min_x = GetMinNum(values_x) - 0.5f;
+	float max_x = GetMaxNum(values_x) + 0.5f;
+	float min_y = GetMinNum(values_y) - 0.5f;
+	float max_y = GetMaxNum(values_y) + 0.5f;
+	float min_z = GetMinNum(values_z) - 0.5f;
+	float max_z = GetMaxNum(values_z) + 0.5f;
 
-	returnArr[0] = glm::vec3(min_x, max_y, min_z);
-	returnArr[1] = glm::vec3(min_x, min_y, min_z);
-	returnArr[2] = glm::vec3(max_x, min_y, min_z);
-	returnArr[3] = glm::vec3(max_x, max_y, min_z);
-	returnArr[4] = glm::vec3(min_x, max_y, max_z);
-	returnArr[5] = glm::vec3(min_x, min_y, max_z);
-	returnArr[6] = glm::vec3(max_x, min_y, max_z);
-	returnArr[7] = glm::vec3(max_x, max_y, max_z);
+	returnArrPositions[0] = glm::vec3(min_x, min_y, max_z);
+	returnArrPositions[1] = glm::vec3(max_x, min_y, max_z);
+	returnArrPositions[2] = glm::vec3(max_x, max_y, max_z);
+	returnArrPositions[3] = glm::vec3(min_x, max_y, max_z);
+	returnArrPositions[4] = glm::vec3(min_x, min_y, min_z);
+	returnArrPositions[5] = glm::vec3(max_x, min_y, min_z);
+	returnArrPositions[6] = glm::vec3(max_x, max_y, min_z);
+	returnArrPositions[7] = glm::vec3(min_x, max_y, min_z);
 
-	return returnArr;
+	cout << "DATA AABB" << endl;
+	for (int i = 0; i < countVerticesCollider; i++)
+	{
+		cout << i << "_[" << returnArrPositions[i].x << "][" << returnArrPositions[i].y << "][" << returnArrPositions[i].z << "]." << endl;
+	}
+
+	return returnArrPositions;
+}
+
+glm::vec4 * AxisAlignedBoundingBox::GenerateAxisAlignedBoundingBoxCol()
+{
+	for (int i = 0; i < countVerticesCollider; i++)
+	{
+		returnArrColors[i] = glm::vec4(0.0f,1.0f,0.0f,1.0f);
+	}
+
+	return returnArrColors;
 }
 
 void AxisAlignedBoundingBox::CreateAxisAlignedBoundingBox()
@@ -94,8 +128,10 @@ void AxisAlignedBoundingBox::CreateAxisAlignedBoundingBox()
 
 void AxisAlignedBoundingBox::BindGeneralData()
 {
-	glVertexAttribPointer(_positionLocation, 3, GL_FLOAT, GL_FALSE, elementsForVertexCount * sizeof(float), 0);
+	glVertexAttribPointer(_positionLocation, 3, GL_FLOAT, GL_FALSE, elemForVertexCount * sizeof(float), 0);
 	glEnableVertexAttribArray(_positionLocation);
+	glVertexAttribPointer(_colorLocation, 4, GL_FLOAT, GL_FALSE, elemForVertexCount * sizeof(float), (void*)(3 * sizeof(float)));
+	glEnableVertexAttribArray(_colorLocation);
 }
 
 void AxisAlignedBoundingBox::SetVAO()
@@ -112,6 +148,7 @@ void AxisAlignedBoundingBox::SetVBO()
 	glBufferData(GL_ARRAY_BUFFER, sizeof(verticesData), verticesData, GL_STATIC_DRAW);
 	
 	_positionLocation = glGetAttribLocation(renderer->GetCurrentShaderUse().getId(), "position");
+	_colorLocation = glGetAttribLocation(renderer->GetCurrentShaderUse().getId(), "customColor");
 
 	BindGeneralData();
 }
@@ -138,17 +175,50 @@ void AxisAlignedBoundingBox::BindBuffer()
 	BindGeneralData();
 }
 
+void AxisAlignedBoundingBox::UseMyMaterial()
+{
+	if (my_Mat != NULL)
+		my_Mat->UseMaterial(renderer->GetCurrentShaderUse());
+}
+
+void AxisAlignedBoundingBox::SetNewMaterial(Material * mat)
+{
+	my_Mat = mat;
+
+	renderer->SetMaterial(my_Mat);
+}
+
 void AxisAlignedBoundingBox::UpdateVerticesData()
 {
+	cout << "VERTEX DATA POSITION" << endl;
 	int i = 0;
-	for (int j = 0; j < TAM_COLLIDER; j++) 
+	for (int j = 0; j < countVerticesCollider; j++)
 	{
-		if (i + 2 < TAM_VERTICES_DATA) {
+		if (i + 2 < verticesDataCountArr) {
 			verticesData[i] = verticesColliderPositions[j].x;
 			verticesData[i + 1] = verticesColliderPositions[j].y;
 			verticesData[i + 2] = verticesColliderPositions[j].z;
 
-			i = i + 3;
+			cout << "[" << verticesData[i] << "][" << verticesData[i + 1] <<
+				"][" << verticesData[i + 2] << "]." << endl;
+
+			i = i + 7;
+		}
+	}
+	i = 0;
+	cout << "VERTEX DATA COLOR" << endl;
+	for (int j = 0; j < countVerticesCollider; j++)
+	{
+		if (i + 6 < verticesDataCountArr) {
+			verticesData[i + 3] = verticesColliderColor[j].x;
+			verticesData[i + 4] = verticesColliderColor[j].y;
+			verticesData[i + 5] = verticesColliderColor[j].z;
+			verticesData[i + 6] = verticesColliderColor[j].w;
+
+			cout << "[" << verticesData[i + 3] << "][" << verticesData[i + 4] << "][" 
+				<< verticesData[i + 5] << "]["<< verticesData[i + 6]<<"]."<< endl;
+
+			i = i + 7;
 		}
 	}
 
@@ -158,19 +228,44 @@ void AxisAlignedBoundingBox::UpdateVerticesData()
 	}
 }
 
-void AxisAlignedBoundingBox::SetVerticesCollidersPositions(glm::vec3 values[TAM_COLLIDER])
+void AxisAlignedBoundingBox::AttachEntity(InternalData& entityInternalData, Transform& transformAttach)
 {
-	for (int i = 0; i < TAM_COLLIDER; i++) 
+	internalDataAttach = entityInternalData;
+	entityTransform = transformAttach;
+	internalData = internalDataAttach;
+	transform = entityTransform;
+	UpdateMatrixModel();
+}
+
+void AxisAlignedBoundingBox::UpdateInternalDataBoundingBox(InternalData & entityInternalData, Transform & transformAttach)
+{
+	internalDataAttach = entityInternalData;
+	entityTransform = transformAttach;
+	internalData = internalDataAttach;
+	transform = entityTransform;
+	UpdateMatrixModel();
+}
+
+void AxisAlignedBoundingBox::SetVerticesColliders(glm::vec3 values[countVerticesCollider], glm::vec4 colors[countVerticesCollider])
+{
+	for (int i = 0; i < countVerticesCollider; i++)
 	{
-		verticesColliderPositions[i] = values[i];
+		verticesColliderPositions[i].x = values[i].x;
+		verticesColliderPositions[i].y = values[i].y;
+		verticesColliderPositions[i].z = values[i].z;
+
+		verticesColliderColor[i].x = colors[i].x;
+		verticesColliderColor[i].y = colors[i].y;
+		verticesColliderColor[i].z = colors[i].z;
+		verticesColliderColor[i].w = colors[i].w;
 	}
 
 	UpdateVerticesData();
 }
 
-void AxisAlignedBoundingBox::SetVerticesCollidersPositions(unsigned int index, glm::vec3 value)
+void AxisAlignedBoundingBox::SetVerticesColliders(unsigned int index, glm::vec3 value)
 {
-	if (index >= TAM_COLLIDER || index < 0)
+	if (index >= countVerticesCollider || index < 0)
 		return;
 
 	verticesColliderPositions[index] = value;
@@ -183,14 +278,18 @@ string AxisAlignedBoundingBox::GetClassName()
 	return "AxisAlignedBoundingBox";
 }
 
-void AxisAlignedBoundingBox::Draw(bool & wireFrameActive)
+void AxisAlignedBoundingBox::Draw(bool & colliderDrawActive)
 {
 	if (isAlive && enableDraw)
 	{
-		//----
 		BindBuffer();
 		//----
-		renderer->Draw(TAM_INDICES_VERTEX_DATA, renderer->GetCurrentShaderUse(), internalDataAttach.localModel, wireFrameActive);
-
+		if (my_Mat != NULL)
+			UseMyMaterial();
+		//----
+		renderer->DrawColliders(indicesVertexCollider, renderer->GetCurrentShaderUse(), internalDataAttach.localModel, colliderDrawActive);
+	
+		cout << "VERTICE 2:(" << verticesData[7] << "," << verticesData[8] << "," << verticesData[9] << "," << verticesData[10] << "," <<
+			verticesData[11] << "," << verticesData[12] << "," << verticesData[13] << ")" << endl;
 	}
 }

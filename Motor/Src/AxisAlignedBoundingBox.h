@@ -5,10 +5,12 @@
 #include "Entity.h"
 #include <vector>
 
-#define TAM_COLLIDER 8
-#define TAM_VERTICES_DATA 24
-#define TAM_INDICES_VERTEX_DATA 36
 #define ERROR_CODE -999999
+
+const int countVerticesCollider = 8;
+const int verticesDataCountArr = 56;
+const int elemForVertexCount = 7;
+const int indicesVertexCollider = 36;
 
 class ENGINE_API AxisAlignedBoundingBox : public Entity
 {
@@ -17,19 +19,22 @@ private:
 	bool enableDraw = true;
 	bool enableInitData = true;
 
-	const int elementsForVertexCount = 3;
-
+	Transform entityTransform;
 	InternalData internalDataAttach;
-	glm::vec3 verticesColliderPositions[TAM_COLLIDER];
-	unsigned int indexsVerticesColliderPositions[TAM_INDICES_VERTEX_DATA] = {
-	0, 1, 2, 2, 3, 0,	   //Frente
-	14, 17, 18, 18, 13, 14,//Derecha
-	4, 7, 6, 6, 5, 4,      //Atras			DONE
-	16, 15, 12, 12, 19, 16,//Izquierda
-	20, 11, 10, 10, 21, 20,//Abajo
-	8, 9, 22, 22, 23, 8    //Arriba
+	glm::vec3 verticesColliderPositions[countVerticesCollider];
+	glm::vec4 verticesColliderColor[countVerticesCollider];
+	unsigned int indexsVerticesColliderPositions[indicesVertexCollider] = {
+		2,1,0,2,3,0,//FRENTE
+		5,6,7,7,4,5,//ATRAS
+		5,1,2,2,6,5,//DERECHO
+		0,4,7,7,3,0,//IZQUIERDO
+		0,4,5,5,1,0,//ABAJO
+		6,2,3,3,7,6 //ARRIBA
 	};
-	float verticesData[TAM_VERTICES_DATA];
+	float verticesData[verticesDataCountArr];
+	glm::vec3 returnArrPositions[countVerticesCollider];
+	glm::vec4 returnArrColors[countVerticesCollider];
+	Material* my_Mat;
 
 	void UpdateVerticesData();
 
@@ -44,18 +49,22 @@ private:
 	void UnbindBuffers();
 protected:
 	void BindBuffer() override;
+	void UseMyMaterial();
 
 public:
 	AxisAlignedBoundingBox(Renderer* render);
 	~AxisAlignedBoundingBox();
 
-	glm::vec3* GenerateAxisAlignedBoundingBox(vector<glm::vec3> _values);
+	glm::vec3* GenerateAxisAlignedBoundingBoxPos(vector<glm::vec3> _values);
+	glm::vec4* GenerateAxisAlignedBoundingBoxCol();
 
-	void AttachEntity(InternalData entityInternalData) { internalDataAttach = entityInternalData; }
-	void SetVerticesCollidersPositions(glm::vec3 values[TAM_COLLIDER]);
-	void SetVerticesCollidersPositions(unsigned int index, glm::vec3 value);
+	void SetNewMaterial(Material* mat);
+	void AttachEntity(InternalData& entityInternalData, Transform& transformAttach);
+	void UpdateInternalDataBoundingBox(InternalData& entityInternalData, Transform& transformAttach);
+	void SetVerticesColliders(glm::vec3 values[countVerticesCollider], glm::vec4 colors[countVerticesCollider]);
+	void SetVerticesColliders(unsigned int index, glm::vec3 value);
 	string GetClassName() override;
-	void Draw(bool& wireFrameActive) override;
+	void Draw(bool& colliderDrawActive) override;
 	void SetEnableDraw(bool value) { enableDraw = value; }
 	bool& GetEnableDraw() { return enableDraw; }
 };

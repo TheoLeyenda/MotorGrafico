@@ -148,6 +148,16 @@ void Renderer::Draw(int indices, Shader& shaderProg, glm::mat4 model, bool& wire
 	UnbindBuffer();
 }
 
+void Renderer::DrawColliders(int indices, Shader & shaderProg, glm::mat4 model, bool & drawActive)
+{
+	UseShaderEnt(shaderProg, model);
+
+	if(drawActive)
+		glDrawElements(GL_LINE_STRIP, indices, GL_UNSIGNED_INT, 0);
+
+	UnbindBuffer();
+}
+
 void Renderer::DrawSprite(unsigned int figura, int vertexs, unsigned int vbo, Shader& shaderProg, glm::mat4 model)
 {
 	UseShaderEnt(shaderProg, model);

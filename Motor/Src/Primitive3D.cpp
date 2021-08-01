@@ -9,7 +9,7 @@
 
 Primitive3D::Primitive3D(Renderer* renderer) : Entity(renderer)
 {
-	_type = Pyramid;
+	_type = Cube;
 
 	_path = "None Path";
 	_useTexture = false;
@@ -20,25 +20,27 @@ Primitive3D::Primitive3D(Renderer* renderer) : Entity(renderer)
 	CreateMyAxisAlignedBoundingBox();
 
 	//0. Atacheo mi internalData a mi AxisAlignedBoundingBox
-	axisAlignedBoundingBox->AttachEntity(internalData);
+	axisAlignedBoundingBox->AttachEntity(internalData, transform);
 
-	vector<glm::vec3> _data;
+	vector<glm::vec3> _dataXYZ;
+	//vector<glm::vec4> _data;
 
 	switch (_type)
 	{
 	case Cube:
 		// 1. OBTENER LA DATA XYZ EN LIMPIO
-		_data = FilterVertexDataXYZ(vertexCube, elementsForVertexCount, verticesCubeCount);
+		_dataXYZ = FilterVertexDataXYZ(vertexCube, elementsForVertexCount, verticesCubeCount);
 		// 2. PASAR LA DATA EN LIMPIO AL AxisAlignedBoundingBox 
 		// = SetVerticesCollidersPositions(GenerateAxisAlignedBoundingBox(vector<glm::vec3> _values))
-		axisAlignedBoundingBox->SetVerticesCollidersPositions(axisAlignedBoundingBox->GenerateAxisAlignedBoundingBox(_data));
+		axisAlignedBoundingBox->SetVerticesColliders(axisAlignedBoundingBox->GenerateAxisAlignedBoundingBoxPos(_dataXYZ),
+													 axisAlignedBoundingBox->GenerateAxisAlignedBoundingBoxCol());
 		break;
 	case Pyramid:
 		// 1. OBTENER LA DATA XYZ EN LIMPIO
-		_data = FilterVertexDataXYZ(vertexPyramid, elementsForVertexCount, verticesPyramidCount);
+		//_data = FilterVertexDataXYZ(vertexPyramid, elementsForVertexCount, verticesPyramidCount);
 		// 2. PASAR LA DATA EN LIMPIO AL AxisAlignedBoundingBox 
 		// = SetVerticesCollidersPositions(GenerateAxisAlignedBoundingBox(vector<glm::vec3> _values))
-		axisAlignedBoundingBox->SetVerticesCollidersPositions(axisAlignedBoundingBox->GenerateAxisAlignedBoundingBox(_data));
+		//axisAlignedBoundingBox->SetVerticesCollidersPositions(axisAlignedBoundingBox->GenerateAxisAlignedBoundingBox(_data));
 		break;
 	}
 }
@@ -56,25 +58,26 @@ Primitive3D::Primitive3D(Renderer * renderer, TypeModel typeModel) : Entity(rend
 	CreateMyAxisAlignedBoundingBox();
 
 	//0. Atacheo mi internalData a mi AxisAlignedBoundingBox
-	axisAlignedBoundingBox->AttachEntity(internalData);
+	axisAlignedBoundingBox->AttachEntity(internalData, transform);
 
-	vector<glm::vec3> _data;
+	vector<glm::vec3> _dataXYZ;
 
 	switch (_type)
 	{
 	case Cube:
 		// 1. OBTENER LA DATA XYZ EN LIMPIO
-		_data = FilterVertexDataXYZ(vertexCube, elementsForVertexCount, verticesCubeCount);
+		_dataXYZ = FilterVertexDataXYZ(vertexCube, elementsForVertexCount, verticesCubeCount);
 		// 2. PASAR LA DATA EN LIMPIO AL AxisAlignedBoundingBox 
 		// = SetVerticesCollidersPositions(GenerateAxisAlignedBoundingBox(vector<glm::vec3> _values))
-		axisAlignedBoundingBox->SetVerticesCollidersPositions(axisAlignedBoundingBox->GenerateAxisAlignedBoundingBox(_data));
+		axisAlignedBoundingBox->SetVerticesColliders(axisAlignedBoundingBox->GenerateAxisAlignedBoundingBoxPos(_dataXYZ),
+													 axisAlignedBoundingBox->GenerateAxisAlignedBoundingBoxCol());
 		break;
 	case Pyramid:
 		// 1. OBTENER LA DATA XYZ EN LIMPIO
-		_data = FilterVertexDataXYZ(vertexPyramid, elementsForVertexCount, verticesPyramidCount);
+		//_data = FilterVertexDataXYZ(vertexPyramid, elementsForVertexCount, verticesPyramidCount);
 		// 2. PASAR LA DATA EN LIMPIO AL AxisAlignedBoundingBox 
 		// = SetVerticesCollidersPositions(GenerateAxisAlignedBoundingBox(vector<glm::vec3> _values))
-		axisAlignedBoundingBox->SetVerticesCollidersPositions(axisAlignedBoundingBox->GenerateAxisAlignedBoundingBox(_data));
+		//axisAlignedBoundingBox->SetVerticesColliders(axisAlignedBoundingBox->GenerateAxisAlignedBoundingBoxPos(_data));
 		break;
 	}
 }
@@ -99,25 +102,26 @@ Primitive3D::Primitive3D(Renderer* renderer, TypeModel typeModel, const char* fi
 	CreateMyAxisAlignedBoundingBox();
 
 	//0. Atacheo mi internalData a mi AxisAlignedBoundingBox
-	axisAlignedBoundingBox->AttachEntity(internalData);
+	axisAlignedBoundingBox->AttachEntity(internalData, transform);
 
-	vector<glm::vec3> _data;
+	vector<glm::vec3> _dataXYZ;
 
 	switch (_type)
 	{
 	case Cube:
 		// 1. OBTENER LA DATA XYZ EN LIMPIO
-		_data = FilterVertexDataXYZ(vertexCube, elementsForVertexCount, verticesCubeCount);
+		_dataXYZ = FilterVertexDataXYZ(vertexCube, elementsForVertexCount, verticesCubeCount);
 		// 2. PASAR LA DATA EN LIMPIO AL AxisAlignedBoundingBox 
 		// = SetVerticesCollidersPositions(GenerateAxisAlignedBoundingBox(vector<glm::vec3> _values))
-		axisAlignedBoundingBox->SetVerticesCollidersPositions(axisAlignedBoundingBox->GenerateAxisAlignedBoundingBox(_data));
+		axisAlignedBoundingBox->SetVerticesColliders(axisAlignedBoundingBox->GenerateAxisAlignedBoundingBoxPos(_dataXYZ),
+													 axisAlignedBoundingBox->GenerateAxisAlignedBoundingBoxCol());
 		break;
 	case Pyramid:
 		// 1. OBTENER LA DATA XYZ EN LIMPIO
-		_data = FilterVertexDataXYZ(vertexPyramid, elementsForVertexCount, verticesPyramidCount);
+		//_data = FilterVertexDataXYZ(vertexPyramid, elementsForVertexCount, verticesPyramidCount);
 		// 2. PASAR LA DATA EN LIMPIO AL AxisAlignedBoundingBox 
 		// = SetVerticesCollidersPositions(GenerateAxisAlignedBoundingBox(vector<glm::vec3> _values))
-		axisAlignedBoundingBox->SetVerticesCollidersPositions(axisAlignedBoundingBox->GenerateAxisAlignedBoundingBox(_data));
+		//axisAlignedBoundingBox->SetVerticesCollidersPositions(axisAlignedBoundingBox->GenerateAxisAlignedBoundingBox(_data));
 		break;
 	}
 }
@@ -168,7 +172,11 @@ void Primitive3D::Draw(bool& wireFrameActive)
 		switch (_type)
 		{
 		case Cube:
+			axisAlignedBoundingBox->UpdateInternalDataBoundingBox(internalData, transform);
+
 			renderer->Draw(indicesCubeCount, renderer->GetCurrentShaderUse(), internalData.localModel, wireFrameActive);
+			// 3. LLAMAR AL DRAW DEL AxisAlignedBoundingBox en el draw de esta clase.
+			axisAlignedBoundingBox->Draw(axisAlignedBoundingBox->GetEnableDraw());
 			break;
 		case Pyramid:
 			renderer->Draw(indicesCubeCount, renderer->GetCurrentShaderUse(), internalData.localModel, wireFrameActive);
@@ -184,9 +192,6 @@ void Primitive3D::Draw(bool& wireFrameActive)
 			if (_transparency)
 				UnBlendSprite();
 		}
-
-		// 3. LLAMAR AL DRAW DEL AxisAlignedBoundingBox en el draw de esta clase.
-		axisAlignedBoundingBox->Draw(axisAlignedBoundingBox->GetEnableDraw());
 	}
 	//----
 }
@@ -234,8 +239,12 @@ vector<glm::vec3> Primitive3D::FilterVertexDataXYZ(float * vertex, unsigned int 
 		if (counter >= countElementsForVertex) 
 		{
 			counter = 0;
-			vertices.push_back(aux);
-			aux.clear();
+			vector<vector<float>>::iterator alreadyOnVertices = find(vertices.begin(), vertices.end(), aux);
+			if (alreadyOnVertices == vertices.end())
+			{
+				vertices.push_back(aux);
+				aux.clear();
+			}
 		}
 	}
 
@@ -243,9 +252,17 @@ vector<glm::vec3> Primitive3D::FilterVertexDataXYZ(float * vertex, unsigned int 
 
 	for (int i = 0; i < vertices.size(); i++) 
 	{
-		dataReturn.push_back(glm::vec3(vertices[i][0], vertices[i][1], vertices[i][2]));
+		vector<glm::vec3>::iterator alreadyOnData = find(dataReturn.begin(), dataReturn.end(), glm::vec3(vertices[i][0], vertices[i][1], vertices[i][2]));
+		if(alreadyOnData == dataReturn.end())
+			dataReturn.push_back(glm::vec3(vertices[i][0], vertices[i][1], vertices[i][2]));
 	}
 	
+	/*cout << "DATA PRIMITIVA" << endl;
+	for (int i = 0; i < dataReturn.size(); i++)
+	{
+		cout << i << "_[" << dataReturn[i].x << "][" << dataReturn[i].y << "][" << dataReturn[i].z << "]." << endl;
+	}*/
+
 	return dataReturn;
 }
 
