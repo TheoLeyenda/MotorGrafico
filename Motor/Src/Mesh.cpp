@@ -2,6 +2,7 @@
 #include "Material.h"
 #include <glew.h>
 #include <GLFW/glfw3.h>
+#include "AxisAlignedBoundingBox.h"
 
 Mesh::Mesh(Renderer* render) : Entity(render)
 {
@@ -78,6 +79,13 @@ void Mesh::CreateMesh(float * vertices, unsigned int * indices, unsigned int num
 
 	BindDataMesh();
 
+	CreateMyAxisAlignedBoundingBox();
+
+	axisAlignedBoundingBox->AttachEntity(internalData, transform);
+
+	axisAlignedBoundingBox->SetVerticesColliders(axisAlignedBoundingBox->GenerateAxisAlignedBoundingBoxPos(meshXYZVertices),
+		axisAlignedBoundingBox->GenerateAxisAlignedBoundingBoxCol());
+
 	UnbindBuffers();
 }
 
@@ -86,7 +94,12 @@ void Mesh::Draw(bool& wireFrameActive)
 	if (isAlive) 
 	{
 		BindBuffer();
+
+		GetAABB()->UpdateInternalDataBoundingBox(internalData, transform);
+
 		renderer->Draw(countIndices, renderer->GetCurrentShaderUse(), internalData.localModel, wireFrameActive);
+		
+		GetAABB()->Draw(GetAABB()->GetEnableDraw());
 	}
 }
 

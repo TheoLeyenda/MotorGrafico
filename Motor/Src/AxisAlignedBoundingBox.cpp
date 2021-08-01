@@ -190,7 +190,7 @@ void AxisAlignedBoundingBox::SetNewMaterial(Material * mat)
 
 void AxisAlignedBoundingBox::UpdateVerticesData()
 {
-	cout << "VERTEX DATA POSITION" << endl;
+	//cout << "VERTEX DATA POSITION" << endl;
 	int i = 0;
 	for (int j = 0; j < countVerticesCollider; j++)
 	{
@@ -199,14 +199,14 @@ void AxisAlignedBoundingBox::UpdateVerticesData()
 			verticesData[i + 1] = verticesColliderPositions[j].y;
 			verticesData[i + 2] = verticesColliderPositions[j].z;
 
-			cout << "[" << verticesData[i] << "][" << verticesData[i + 1] <<
-				"][" << verticesData[i + 2] << "]." << endl;
+			//cout << "[" << verticesData[i] << "][" << verticesData[i + 1] <<
+			//	"][" << verticesData[i + 2] << "]." << endl;
 
 			i = i + 7;
 		}
 	}
 	i = 0;
-	cout << "VERTEX DATA COLOR" << endl;
+	//cout << "VERTEX DATA COLOR" << endl;
 	for (int j = 0; j < countVerticesCollider; j++)
 	{
 		if (i + 6 < verticesDataCountArr) {
@@ -215,8 +215,8 @@ void AxisAlignedBoundingBox::UpdateVerticesData()
 			verticesData[i + 5] = verticesColliderColor[j].z;
 			verticesData[i + 6] = verticesColliderColor[j].w;
 
-			cout << "[" << verticesData[i + 3] << "][" << verticesData[i + 4] << "][" 
-				<< verticesData[i + 5] << "]["<< verticesData[i + 6]<<"]."<< endl;
+			//cout << "[" << verticesData[i + 3] << "][" << verticesData[i + 4] << "][" 
+			//	<< verticesData[i + 5] << "]["<< verticesData[i + 6]<<"]."<< endl;
 
 			i = i + 7;
 		}
@@ -288,8 +288,5 @@ void AxisAlignedBoundingBox::Draw(bool & colliderDrawActive)
 			UseMyMaterial();
 		//----
 		renderer->DrawColliders(indicesVertexCollider, renderer->GetCurrentShaderUse(), internalDataAttach.localModel, colliderDrawActive);
-	
-		cout << "VERTICE 2:(" << verticesData[7] << "," << verticesData[8] << "," << verticesData[9] << "," << verticesData[10] << "," <<
-			verticesData[11] << "," << verticesData[12] << "," << verticesData[13] << ")" << endl;
 	}
 }

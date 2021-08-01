@@ -26,6 +26,7 @@ public:
 	~Mesh();
 
 	string GetClassName() override;
+	vector<glm::vec3> meshXYZVertices;
 
 	void CreateMesh(float* vertices, unsigned int* indices, unsigned int numVertices, unsigned int numOfIndices);
 	void Draw(bool& wireFrameActive) override;

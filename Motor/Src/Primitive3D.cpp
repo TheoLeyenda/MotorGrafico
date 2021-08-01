@@ -264,12 +264,6 @@ vector<glm::vec3> Primitive3D::FilterVertexDataXYZ(float * vertex, unsigned int 
 		if(alreadyOnData == dataReturn.end())
 			dataReturn.push_back(glm::vec3(vertices[i][0], vertices[i][1], vertices[i][2]));
 	}
-	
-	/*cout << "DATA PRIMITIVA" << endl;
-	for (int i = 0; i < dataReturn.size(); i++)
-	{
-		cout << i << "_[" << dataReturn[i].x << "][" << dataReturn[i].y << "][" << dataReturn[i].z << "]." << endl;
-	}*/
 
 	return dataReturn;
 }

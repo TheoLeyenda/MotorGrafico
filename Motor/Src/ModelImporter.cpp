@@ -102,12 +102,14 @@ void ModelImporter::LoadMesh(ModelNode * rootNode, const aiScene * scene, Render
 
 void ModelImporter::LoadMesh(aiMesh* mesh, const aiScene* scene, ModelNode* &nodeMesh, Renderer* render)
 {
+	Mesh* newMesh = new Mesh(render);
 	vector<float> vertices;
 	vector<unsigned int> indices;
 
 	for (int i = 0; i < mesh->mNumVertices; i++)
 	{
 		vertices.insert(vertices.end(), { mesh->mVertices[i].x,mesh->mVertices[i].y,mesh->mVertices[i].z });
+		newMesh->meshXYZVertices.push_back(glm::vec3(mesh->mVertices[i].x, mesh->mVertices[i].y, mesh->mVertices[i].z));
 		if (mesh->mTextureCoords[0])
 		{
 			vertices.insert(vertices.end(), { mesh->mTextureCoords[0][i].x, mesh->mTextureCoords[0][i].y });
@@ -127,7 +129,6 @@ void ModelImporter::LoadMesh(aiMesh* mesh, const aiScene* scene, ModelNode* &nod
 		}
 	}
 
-	Mesh* newMesh = new Mesh(render);
 	newMesh->CreateMesh(&vertices[0], &indices[0], vertices.size(), indices.size());
 	nodeMesh->_meshList.push_back(newMesh);
 	nodeMesh->_meshToTex.push_back(mesh->mMaterialIndex);

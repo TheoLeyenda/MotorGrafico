@@ -115,7 +115,6 @@ void MotorasoGui::UpdateWireFrameGui()
 {
 	if (ImGui::Button("WIREFRAME"))                            // Buttons return true when clicked (NB: most widgets return true when edited/activated)
 		_wireFrameActive = !_wireFrameActive;
-	ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
 }
 
 void MotorasoGui::UpdateAABB(Entity* entityNode)
@@ -125,6 +124,7 @@ void MotorasoGui::UpdateAABB(Entity* entityNode)
 		if(entityNode->GetAABB() != NULL)
 			entityNode->GetAABB()->SetEnableDraw(!entityNode->GetAABB()->GetEnableDraw());
 	}
+	ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
 }
 
 void MotorasoGui::ShowEntityNodeInfo(Entity * entity)
@@ -177,6 +177,8 @@ void MotorasoGui::ShowEntityNodeInfo(Entity * entity)
 	ImGui::Separator();
 
 	UpdateAABB(entity);
+
+	ImGui::Separator();
 }
 
 void MotorasoGui::ShowEntityInfo(Entity * entityNode)
