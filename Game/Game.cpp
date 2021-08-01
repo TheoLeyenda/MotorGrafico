@@ -308,7 +308,6 @@ void Game::InitGame()
 	pyramid->AddChildren(shape1);
 	cube->AddChildren(cube2);
 	cube2->AddChildren(cube3);
-	cube2->AddChildren(pyramid);
 	cube3->AddChildren(sprite);
 	cube2->SetScale(1, 1, 1);
 	cube3->SetScale(1, 1, 1);

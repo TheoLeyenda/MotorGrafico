@@ -24,12 +24,12 @@ private:
 	glm::vec3 verticesColliderPositions[countVerticesCollider];
 	glm::vec4 verticesColliderColor[countVerticesCollider];
 	unsigned int indexsVerticesColliderPositions[indicesVertexCollider] = {
-		2,1,0,2,3,0,//FRENTE
-		5,6,7,7,4,5,//ATRAS
-		5,1,2,2,6,5,//DERECHO
-		0,4,7,7,3,0,//IZQUIERDO
-		0,4,5,5,1,0,//ABAJO
-		6,2,3,3,7,6 //ARRIBA
+		0,1,2,2,3,0,//FRENTE
+		4,5,6,6,7,4,//ATRAS
+		4,0,1,1,5,4,//IZQUIERDA
+		7,3,0,0,4,7,//ARRIBA
+		7,6,2,2,3,7,//DERECHA
+		6,2,1,1,5,6 //ARRIBA
 	};
 	float verticesData[verticesDataCountArr];
 	glm::vec3 returnArrPositions[countVerticesCollider];

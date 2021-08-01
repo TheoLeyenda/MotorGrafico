@@ -45,6 +45,7 @@ public:
 
 	bool& GetIfWireFrameIsActive() { return _wireFrameActive; }
 	static void UpdateWireFrameGui();
+	static void UpdateAABB(Entity* entityNode);
 	float GetSpeedRotation() { return speedRotation; };
 	void SetSpeedPositionChange(float value) { speedPosition = value; }
 	void SetSpeedRotationChange(float value) { speedRotation = value; }

@@ -6,9 +6,9 @@
 AxisAlignedBoundingBox::AxisAlignedBoundingBox(Renderer * render) : Entity(render)
 {
 	my_Mat = new Material();
-	my_Mat->SetAmbientMat(glm::vec3(0.0215f, 0.1745f, 0.0215f));
-	my_Mat->SetDiffuseMat(glm::vec3(0.07568f, 0.61424f, 0.07568f));
-	my_Mat->SetSpecularMat(glm::vec3(0.633f, 0.727811f, 0.633f));
+	my_Mat->SetAmbientMat(glm::vec3(1.0f, 1.0f, 1.0f));
+	my_Mat->SetDiffuseMat(glm::vec3(1.0f, 1.0f, 1.0f));
+	my_Mat->SetSpecularMat(glm::vec3(1.0f, 1.0f, 1.0f));
 	my_Mat->SetNewShininess(0.6f, 124);
 
 	SetNewMaterial(my_Mat);
@@ -78,12 +78,12 @@ glm::vec3 * AxisAlignedBoundingBox::GenerateAxisAlignedBoundingBoxPos(vector<glm
 		values_z.push_back(_values[i].z);
 	}
 
-	float min_x = GetMinNum(values_x) - 0.5f;
-	float max_x = GetMaxNum(values_x) + 0.5f;
-	float min_y = GetMinNum(values_y) - 0.5f;
-	float max_y = GetMaxNum(values_y) + 0.5f;
-	float min_z = GetMinNum(values_z) - 0.5f;
-	float max_z = GetMaxNum(values_z) + 0.5f;
+	float min_x = GetMinNum(values_x) - 0.1f;
+	float max_x = GetMaxNum(values_x) + 0.1f;
+	float min_y = GetMinNum(values_y) - 0.1f;
+	float max_y = GetMaxNum(values_y) + 0.1f;
+	float min_z = GetMinNum(values_z) - 0.1f;
+	float max_z = GetMaxNum(values_z) + 0.1f;
 
 	returnArrPositions[0] = glm::vec3(min_x, min_y, max_z);
 	returnArrPositions[1] = glm::vec3(max_x, min_y, max_z);

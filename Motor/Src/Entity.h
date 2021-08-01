@@ -131,6 +131,7 @@ public:
 	Renderer* GetRenderer();
 
 	InternalData GetInternalData();
+	AxisAlignedBoundingBox* GetAABB() { return axisAlignedBoundingBox; }
 	virtual void SetPosition(float x, float y, float z);
 	virtual void SetPosition(glm::vec3 position);
 	virtual void SetScale(float x, float y, float z);

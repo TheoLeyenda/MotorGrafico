@@ -7,9 +7,8 @@
 #include <glew.h>
 #include <GLFW/glfw3.h>
 #include "Gui/imgui.h"
-//#include "Gui/imgui_impl_opengl3.h"
 #include "Gui/imgui_impl_glfw_gl3.h"
-//#include "Gui/imgui_impl_glfw.h"
+#include "AxisAlignedBoundingBox.h"	 
 
 Entity* MotorasoGui::lastEntitySelected;
 Entity* MotorasoGui::currentEntitySelected;
@@ -119,6 +118,15 @@ void MotorasoGui::UpdateWireFrameGui()
 	ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
 }
 
+void MotorasoGui::UpdateAABB(Entity* entityNode)
+{
+	if (ImGui::Button("AABB"))
+	{
+		if(entityNode->GetAABB() != NULL)
+			entityNode->GetAABB()->SetEnableDraw(!entityNode->GetAABB()->GetEnableDraw());
+	}
+}
+
 void MotorasoGui::ShowEntityNodeInfo(Entity * entity)
 {
 	ImGui::Begin("Properties");
@@ -165,6 +173,10 @@ void MotorasoGui::ShowEntityNodeInfo(Entity * entity)
 	ImGui::Separator();
 
 	UpdateWireFrameGui();
+
+	ImGui::Separator();
+
+	UpdateAABB(entity);
 }
 
 void MotorasoGui::ShowEntityInfo(Entity * entityNode)
