@@ -14,6 +14,9 @@ Model::Model(Renderer * render) : Entity(render)
 	myMat = NULL;
 	rootNode = NULL;
 	modelImporter = new ModelImporter();
+
+	CreateMyAxisAlignedBoundingBox();
+	axisAlignedBoundingBox->AttachEntity(internalData, transform);
 }
 
 Model::~Model()
@@ -31,7 +34,7 @@ void Model::LoadModel(const string & filePath, const string & texturePath)
 {
 	if (modelImporter != NULL) 
 	{
-		rootNode = modelImporter->LoadModel(filePath, texturePath, rootNode ,modelChildrens, textureList ,renderer);
+		rootNode = modelImporter->LoadModel(modelMeshes, filePath, texturePath, rootNode ,modelChildrens, textureList ,renderer);
 	}
 
 	if (rootNode != NULL) {
@@ -44,10 +47,25 @@ void Model::LoadModel(const string & filePath, const string & texturePath)
 		if(modelChildrens[i] != NULL)
 			modelChildrens[i]->_textureList = textureList;
 	}
+
+	vector<glm::vec3> _dataXYZ;
+
+	for (int i = 0; i < modelMeshes.size(); i++) 
+	{
+		for (int j = 0; j < modelMeshes[i]->meshXYZVertices.size(); j++)
+		{
+			_dataXYZ.push_back(modelMeshes[i]->meshXYZVertices[j]);
+		}
+	}
+	//cout << GetName() << ": " << modelMeshes.size()<< " meshes" <<endl;
+	axisAlignedBoundingBox->SetVerticesColliders(axisAlignedBoundingBox->GenerateAxisAlignedBoundingBoxPos(_dataXYZ),
+		axisAlignedBoundingBox->GenerateAxisAlignedBoundingBoxCol());
 }
 
 void Model::Draw(bool & wireFrameActive)
 {
+	axisAlignedBoundingBox->UpdateInternalDataBoundingBox(internalData, transform);
+
 	if (rootNode != NULL)
 		rootNode->Draw(wireFrameActive);
 
@@ -56,6 +74,8 @@ void Model::Draw(bool & wireFrameActive)
 		if (modelChildrens[i] != NULL)
 			modelChildrens[i]->Draw(wireFrameActive);
 	}
+
+	axisAlignedBoundingBox->Draw(axisAlignedBoundingBox->GetEnableDraw());
 }
 
 void Model::UnloadModel()

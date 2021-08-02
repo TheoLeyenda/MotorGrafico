@@ -179,6 +179,7 @@ void Primitive3D::Draw(bool& wireFrameActive)
 			axisAlignedBoundingBox->UpdateInternalDataBoundingBox(internalData, transform);
 
 			renderer->Draw(indicesCubeCount, renderer->GetCurrentShaderUse(), internalData.localModel, wireFrameActive);
+
 			// 3. LLAMAR AL DRAW DEL AxisAlignedBoundingBox en el draw de esta clase.
 			axisAlignedBoundingBox->Draw(axisAlignedBoundingBox->GetEnableDraw());
 			break;
@@ -187,6 +188,7 @@ void Primitive3D::Draw(bool& wireFrameActive)
 
 			renderer->Draw(indicesCubeCount, renderer->GetCurrentShaderUse(), internalData.localModel, wireFrameActive);
 			
+			// 3. LLAMAR AL DRAW DEL AxisAlignedBoundingBox en el draw de esta clase.
 			axisAlignedBoundingBox->Draw(axisAlignedBoundingBox->GetEnableDraw());
 			break;
 		}

@@ -32,14 +32,16 @@ public:
 	
 	ModelNode* GetMyModelNode() { return rootNode; }
 	vector<ModelNode*> GetModelChildrens() { return modelChildrens; }
+	vector<Mesh*> GetModelMeshes() { return modelMeshes; }
+
 protected:
 	void BindBuffer() override;
 	void SetEnableDrawAABB(bool value) override;
 private:
 	vector<Texture*> textureList;
 	vector<ModelNode*> modelChildrens;
+	vector<Mesh*> modelMeshes;
 	ModelNode* rootNode;
-
 	Material* myMat;
 };
 

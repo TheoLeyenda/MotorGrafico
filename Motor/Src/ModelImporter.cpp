@@ -17,7 +17,7 @@ ModelImporter::ModelImporter() { indexChildrenLoad = 0; }
 
 ModelImporter::~ModelImporter() {}
 
-ModelNode* ModelImporter::LoadModel(const string& filePath, const string& texturePath, ModelNode* rootNode, vector<ModelNode*> &childrens, vector<Texture*> &textureList,Renderer* render)
+ModelNode* ModelImporter::LoadModel(vector<Mesh*> &modelMeshes, const string& filePath, const string& texturePath, ModelNode* rootNode, vector<ModelNode*> &childrens, vector<Texture*> &textureList,Renderer* render)
 {
 	ClearNodesOldModel();
 	ClearAuxiliarNodesOldModel();
@@ -36,8 +36,8 @@ ModelNode* ModelImporter::LoadModel(const string& filePath, const string& textur
 	LoadNode(scene->mRootNode, scene, childrens, render);
 
 
-	LoadMesh(rootNode, scene, render);
-	LoadMesh(childrens, scene, render);
+	LoadMesh(modelMeshes, rootNode, scene, render);
+	LoadMesh(modelMeshes, childrens, scene, render);
 
 	LoadMaterial(scene, texturePath, textureList);
 
@@ -81,26 +81,26 @@ void ModelImporter::LoadNode(aiNode* node, const aiScene* scene, vector<ModelNod
 	}
 }
 
-void ModelImporter::LoadMesh(vector<ModelNode*> childrens, const aiScene* scene, Renderer* render)
+void ModelImporter::LoadMesh(vector<Mesh*> &modelMeshes, vector<ModelNode*> childrens, const aiScene* scene, Renderer* render)
 {
 	for (int i = 0; i < nodes.size(); i++)
 	{
 		for (int j = 0; j < nodes[i]->mNumMeshes; j++)
 		{
-			LoadMesh(scene->mMeshes[nodes[i]->mMeshes[j]], scene, childrens[i], render);
+			LoadMesh(modelMeshes, scene->mMeshes[nodes[i]->mMeshes[j]], scene, childrens[i], render);
 		}
 	}
 }
 
-void ModelImporter::LoadMesh(ModelNode * rootNode, const aiScene * scene, Renderer * render)
+void ModelImporter::LoadMesh(vector<Mesh*> &modelMeshes, ModelNode * rootNode, const aiScene * scene, Renderer * render)
 {
 	for (int j = 0; j < scene->mRootNode->mNumMeshes; j++)
 	{
-		LoadMesh(scene->mMeshes[scene->mRootNode->mMeshes[j]], scene, rootNode, render);
+		LoadMesh(modelMeshes, scene->mMeshes[scene->mRootNode->mMeshes[j]], scene, rootNode, render);
 	}
 }
 
-void ModelImporter::LoadMesh(aiMesh* mesh, const aiScene* scene, ModelNode* &nodeMesh, Renderer* render)
+void ModelImporter::LoadMesh(vector<Mesh*> &modelMeshes, aiMesh* mesh, const aiScene* scene, ModelNode* &nodeMesh, Renderer* render)
 {
 	Mesh* newMesh = new Mesh(render);
 	vector<float> vertices;
@@ -133,6 +133,8 @@ void ModelImporter::LoadMesh(aiMesh* mesh, const aiScene* scene, ModelNode* &nod
 	nodeMesh->_meshList.push_back(newMesh);
 	nodeMesh->_meshToTex.push_back(mesh->mMaterialIndex);
 	nodeMesh->AddChildren(newMesh);
+
+	modelMeshes.push_back(newMesh);
 }
 
 void ModelImporter::LoadMaterial(const aiScene * scene, const string& texturePath, vector<Texture*> &textureList)

@@ -32,15 +32,15 @@ private:
 	vector<aiNode*> nodes;
 
 	void LoadNode(aiNode* node,const aiScene* scene, vector<ModelNode*> &childrens,Renderer* render);
-	void LoadMesh(vector<ModelNode*> childrens, const aiScene* scene, Renderer* render);
-	void LoadMesh(ModelNode* rootNode, const aiScene* scene, Renderer* render);
-	void LoadMesh(aiMesh* mesh, const aiScene* scene,ModelNode* &nodeMesh, Renderer* render);
+	void LoadMesh(vector<Mesh*> &modelMeshes, vector<ModelNode*> childrens, const aiScene* scene, Renderer* render);
+	void LoadMesh(vector<Mesh*> &modelMeshes, ModelNode* rootNode, const aiScene* scene, Renderer* render);
+	void LoadMesh(vector<Mesh*> &modelMeshes, aiMesh* mesh, const aiScene* scene,ModelNode* &nodeMesh, Renderer* render);
 	void LoadMaterial(const aiScene* scene, const string& texturePath, vector<Texture*> &textureList);
 	void LoadTextureFromFile(aiTextureType type);
 public:
 	ModelImporter();
 	~ModelImporter();
-	ModelNode* LoadModel(const string& filePath, const string& texturePath, ModelNode* rootNode, vector<ModelNode*> &childrens, vector<Texture*> &textureList, Renderer* render);
+	ModelNode* LoadModel(vector<Mesh*> &modelMeshes, const string& filePath, const string& texturePath, ModelNode* rootNode, vector<ModelNode*> &childrens, vector<Texture*> &textureList, Renderer* render);
 	void ClearNodesOldModel();
 	void ClearAuxiliarNodesOldModel();
 };

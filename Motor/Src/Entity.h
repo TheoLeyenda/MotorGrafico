@@ -103,7 +103,6 @@ protected:
 	bool showInDebug = false;
 	//---//
 
-
 	unsigned int _ibo;
 	unsigned int _vbo;
 	unsigned int _vao;
@@ -117,7 +116,6 @@ protected:
 	unsigned int _normalLocation;
 
 	virtual void BindBuffer() = 0;
-
 
 	bool isAlive = true;
 	bool InmortalObject = false;
