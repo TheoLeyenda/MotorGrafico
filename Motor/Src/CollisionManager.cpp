@@ -1,5 +1,8 @@
 #include "CollisionManager.h"
 
+#include "AxisAlignedBoundingBox.h"
+#include "Camera.h"
+#include <math.h>
 
 CollisionManager::CollisionManager() {}
 
@@ -102,6 +105,61 @@ bool CollisionManager::CheckCollision2D(Entity2D* myEntity, Entity2D* toCheckEnt
 		}
 
 		return true;
+	}
+	
+	return false;
+}
+
+bool CollisionManager::CheckEntitiesOnFrustrum(Camera* actualFrustrumCamera, Entity* entitiesOnGame)
+{
+	if (actualFrustrumCamera->GetActualFrustrumInUse() != NULL && entitiesOnGame->GetAABB() != NULL)
+	{
+		float cameraMinX = actualFrustrumCamera->transform.position.x + actualFrustrumCamera->GetActualFrustrumInUse()->GetAABBPositions()[0].x;
+		float cameraMaxX = actualFrustrumCamera->transform.position.x + actualFrustrumCamera->GetActualFrustrumInUse()->GetAABBPositions()[2].x;
+		float cameraMinY = actualFrustrumCamera->transform.position.y + actualFrustrumCamera->GetActualFrustrumInUse()->GetAABBPositions()[1].y;
+		float cameraMaxY = actualFrustrumCamera->transform.position.y + actualFrustrumCamera->GetActualFrustrumInUse()->GetAABBPositions()[3].y;
+		float cameraMinZ = actualFrustrumCamera->transform.position.z + actualFrustrumCamera->GetActualFrustrumInUse()->GetAABBPositions()[4].z;
+		float cameraMaxZ = actualFrustrumCamera->transform.position.z + actualFrustrumCamera->GetActualFrustrumInUse()->GetAABBPositions()[3].z;
+
+		float entitieMinX = entitiesOnGame->transform.position.x + entitiesOnGame->GetAABB()->GetAABBPositions()[0].x - entitiesOnGame->transform.scale.x;
+		float entitieMaxX = entitiesOnGame->transform.position.x + entitiesOnGame->GetAABB()->GetAABBPositions()[2].x + entitiesOnGame->transform.scale.x;
+		float entitieMinY = entitiesOnGame->transform.position.y + entitiesOnGame->GetAABB()->GetAABBPositions()[1].y - entitiesOnGame->transform.scale.y;
+		float entitieMaxY = entitiesOnGame->transform.position.y + entitiesOnGame->GetAABB()->GetAABBPositions()[3].y + entitiesOnGame->transform.scale.y;
+		float entitieMinZ = entitiesOnGame->transform.position.z + entitiesOnGame->GetAABB()->GetAABBPositions()[4].z - entitiesOnGame->transform.scale.z;
+		float entitieMaxZ = entitiesOnGame->transform.position.z + entitiesOnGame->GetAABB()->GetAABBPositions()[3].z + entitiesOnGame->transform.scale.z;
+
+		//cout << "CAM | MAX X:" << cameraMaxX << " MIN X:" << cameraMinX << endl;
+		//cout << "CAM | MAX Y:" << cameraMaxY << " MIN Y:" << cameraMinY << endl;
+		//cout << "CAM | MAX Z:" << cameraMaxZ << " MIN Z:" << cameraMinZ << endl;
+		//
+		//cout << "ENTITIE | MAX X:" << entitieMaxX << " MIN X:" << entitieMinX << endl;
+		//cout << "ENTITIE | MAX Y:" << entitieMaxY << " MIN Y:" << entitieMinY << endl;
+		//cout << "ENTITIE | MAX Z:" << entitieMaxZ << " MIN Z:" << entitieMinZ << endl;
+
+		switch (actualFrustrumCamera->typeProjectionCamera)		
+		{
+		case Perspective:
+			if (cameraMinX < entitieMaxX && cameraMaxX > entitieMinX &&
+				cameraMinY < entitieMaxY && cameraMaxY > entitieMinY &&
+				cameraMinZ < entitieMaxZ && cameraMaxZ > entitieMinZ)
+			{
+				return true;
+			}
+			else {
+				return false;
+			}
+			break;
+		case Ortho:
+			if (cameraMinX < entitieMaxX && cameraMaxX > entitieMinX &&
+				cameraMinY < entitieMaxY && cameraMaxY > entitieMinY)
+			{
+				return true;
+			}
+			else {
+				return false;
+			}
+			break;
+		}
 	}
 	
 	return false;

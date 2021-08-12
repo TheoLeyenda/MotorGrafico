@@ -32,7 +32,7 @@ Primitive3D::Primitive3D(Renderer* renderer) : Entity(renderer)
 		// 2. PASAR LA DATA EN LIMPIO AL AxisAlignedBoundingBox 
 		// = SetVerticesCollidersPositions(GenerateAxisAlignedBoundingBox(vector<glm::vec3> _values))
 		axisAlignedBoundingBox->SetVerticesColliders(axisAlignedBoundingBox->GenerateAxisAlignedBoundingBoxPos(_dataXYZ),
-													 axisAlignedBoundingBox->GenerateAxisAlignedBoundingBoxCol());
+			axisAlignedBoundingBox->GenerateAxisAlignedBoundingBoxCol());
 		break;
 	case Pyramid:
 		// 1. OBTENER LA DATA XYZ EN LIMPIO
@@ -41,7 +41,6 @@ Primitive3D::Primitive3D(Renderer* renderer) : Entity(renderer)
 		// = SetVerticesCollidersPositions(GenerateAxisAlignedBoundingBox(vector<glm::vec3> _values))
 		axisAlignedBoundingBox->SetVerticesColliders(axisAlignedBoundingBox->GenerateAxisAlignedBoundingBoxPos(_dataXYZ),
 			axisAlignedBoundingBox->GenerateAxisAlignedBoundingBoxCol());
-
 		break;
 	}
 }
@@ -172,6 +171,7 @@ void Primitive3D::Draw(bool& wireFrameActive)
 
 		if (my_Mat != NULL)
 			UseMyMaterial();
+
 		//----
 		switch (_type)
 		{

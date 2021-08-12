@@ -2,6 +2,7 @@
 #include "Camera.h"
 #include <glew.h>
 #include <GLFW/glfw3.h>
+#include "Material.h"
 #include "AxisAlignedBoundingBox.h"
 
 Camera::Camera(Renderer* _render, TypeProjectionCamera _typeProjectionCamera) : Entity(_render)
@@ -13,7 +14,31 @@ Camera::Camera(Renderer* _render, TypeProjectionCamera _typeProjectionCamera) : 
 	InmortalObject = true;
 }
 
-Camera::~Camera(){}
+Camera::~Camera()
+{
+	if (_AABBOrthographic != NULL && _AABBPerspective != NULL)
+	{
+		delete _AABBOrthographic;
+		delete _AABBPerspective;
+		_AABBOrthographic = NULL;
+		_AABBPerspective = NULL;
+	}
+}
+
+void Camera::ChangeActualFrustrum()
+{
+	switch (typeProjectionCamera)
+	{
+	case Perspective:
+		_actualFrustrumInUse = _AABBPerspective;
+		cout << "CHANGED TO PERSPECTIVE" << endl;
+		break;
+	case Ortho:
+		_actualFrustrumInUse = _AABBOrthographic;
+		cout << "CHANGED TO ORTHOGRAPHIC" << endl;
+		break;
+	}
+}
 
 void Camera::SetEnableDrawAABB(bool value)
 {
@@ -36,6 +61,24 @@ void Camera::UseCamera(Shader& shader, glm::mat4 trsCamera)
 	glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(trsCamera));
 	glUniformMatrix4fv(projectionLoc, 1, GL_FALSE, glm::value_ptr(_MVP.projection));
 	glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(_MVP.view));
+
+	switch (typeProjectionCamera)
+	{
+	case Perspective:
+		if (_AABBPerspective != NULL)
+		{
+			_AABBPerspective->UpdateInternalDataBoundingBox(internalData, transform);
+			_AABBPerspective->Draw(_AABBPerspective->GetEnableDraw());
+		}
+		break;
+	case Ortho:
+		if (_AABBOrthographic != NULL)
+		{
+			_AABBOrthographic->UpdateInternalDataBoundingBox(internalData, transform);
+			_AABBOrthographic->Draw(_AABBOrthographic->GetEnableDraw());
+		}
+		break;
+	}
 }
 void Camera::SetViewFirstPerson()
 {
@@ -61,24 +104,17 @@ void Camera::CalculateThirdPersonPositionCamera()
 
 	_yaw = 180 - glm::radians(targetThirdPerson->transform.rotation.y);
 
-	/*cout << "finalPosX: " << finalPosX << endl;
-	cout << "finalPosY: " << finalPosY << endl;
-	cout << "finalPosZ: " << finalPosZ << endl;
-	system("cls");*/
-
 	SetPosition(finalPosX, finalPosY, finalPosZ);
 	
-	//if (lastPositionTarget != targetThirdPerson->transform.position)
-	//{
-		float _calcDistanceZ = CalculateDistanceOfTarget() - initOffsetCameraThirdPersonZ;
+	float _calcDistanceZ = CalculateDistanceOfTarget() - initOffsetCameraThirdPersonZ;
 
-		glm::vec3 vec = glm::vec3(initOffsetCameraThirdPersonX, initOffsetCameraThirdPersonY, targetThirdPerson->GetForward().z* _calcDistanceZ);
-		glm::vec3 addVector = transform.position + vec;
-		SetPosition(addVector);
-		
+	glm::vec3 vec = glm::vec3(initOffsetCameraThirdPersonX, initOffsetCameraThirdPersonY, targetThirdPerson->GetForward().z* _calcDistanceZ);
+	glm::vec3 addVector = transform.position + vec;
+	SetPosition(addVector);
+	
 
-		lastPositionTarget = targetThirdPerson->transform.position;
-	//}
+	lastPositionTarget = targetThirdPerson->transform.position;
+
 	UpdateCamera();
 }
 
@@ -174,7 +210,97 @@ void Camera::SetDataOrtho(float left, float right, float bottom, float top, floa
 void Camera::ChangePerspective(TypeProjectionCamera _typeProjectionCamera)
 {
 	typeProjectionCamera = _typeProjectionCamera;
+	ChangeActualFrustrum();
 	UseProjection();
+}
+
+void Camera::SetFrustrumCulling()
+{
+	_AABBOrthographic = new AxisAlignedBoundingBox(renderer);
+	_AABBPerspective = new AxisAlignedBoundingBox(renderer);
+		
+	_AABBOrthographic->AttachEntity(internalData, transform);
+	_AABBPerspective->AttachEntity(internalData, transform);
+
+	float nearDist = ((transform.position.z + projectionDataPerspective.near) / (projectionDataPerspective.FOV / projectionDataPerspective.aspect));
+	float farDist = ((transform.position.z + projectionDataPerspective.front) / (projectionDataPerspective.FOV / projectionDataPerspective.aspect));
+
+	float nearZ = (transform.position.z + projectionDataPerspective.near);
+	float farZ = (transform.position.z + projectionDataPerspective.front);
+
+	vector<glm::vec3> _dataXYZOrtho;
+	vector<glm::vec3> _dataXYZPerspective;
+
+	float nearMinX = transform.position.x * (-nearDist);
+	float nearMaxX = transform.position.x * (nearDist);
+	float nearMinY = transform.position.y * (-nearDist);
+	float nearMaxY = transform.position.y * (nearDist);
+	
+	float farMinX = transform.position.x * (-(farDist));
+	float farMaxX = transform.position.x * ( (farDist));
+	float farMinY = transform.position.y * (-(farDist));
+	float farMaxY = transform.position.y * ( (farDist));
+
+	#pragma region ORTHOGRAPHIC VIEW 
+	//--------------------------------------------------------------------
+	//0
+	_dataXYZOrtho.push_back(glm::vec3(projectionDataOrtho.left , projectionDataOrtho.top, projectionDataOrtho.front));
+	//1
+	_dataXYZOrtho.push_back(glm::vec3(projectionDataOrtho.left , projectionDataOrtho.bottom,projectionDataOrtho.front));
+	//2
+	_dataXYZOrtho.push_back(glm::vec3(projectionDataOrtho.right, projectionDataOrtho.bottom,projectionDataOrtho.front));
+	//3
+	_dataXYZOrtho.push_back(glm::vec3(projectionDataOrtho.right, projectionDataOrtho.top,projectionDataOrtho.front));
+	
+	//4
+	_dataXYZOrtho.push_back(glm::vec3(projectionDataOrtho.left , projectionDataOrtho.top, projectionDataOrtho.near));
+	//5
+	_dataXYZOrtho.push_back(glm::vec3(projectionDataOrtho.left , projectionDataOrtho.bottom, projectionDataOrtho.near));
+	//6
+	_dataXYZOrtho.push_back(glm::vec3(projectionDataOrtho.right, projectionDataOrtho.bottom, projectionDataOrtho.near));
+	//7
+	_dataXYZOrtho.push_back(glm::vec3(projectionDataOrtho.right, projectionDataOrtho.top, projectionDataOrtho.near));
+
+	_AABBOrthographic->SetVerticesColliders(_AABBOrthographic->GenerateAxisAlignedBoundingBoxPos(_dataXYZOrtho),
+		_AABBOrthographic->GenerateAxisAlignedBoundingBoxCol());
+
+	cout << "DATA ORTOGRAPHIC FRUSTRUM" << endl;
+	for (int i = 0; i < _dataXYZOrtho.size(); i++)
+	{
+		cout << i << "_[" << _dataXYZOrtho[i].x << "][" << _dataXYZOrtho[i].y << "][" << _dataXYZOrtho[i].z << "]." << endl;
+	}
+	//-
+	//--------------------------------------------------------------------
+	#pragma endregion
+
+	#pragma region PERSPECTIVE VIEW
+	//0
+	_dataXYZPerspective.push_back(glm::vec3(nearMinX, nearMaxY, farZ));
+	//1
+	_dataXYZPerspective.push_back(glm::vec3(nearMinX, nearMinY, farZ));
+	//2
+	_dataXYZPerspective.push_back(glm::vec3(nearMaxX, nearMinY, farZ));
+	//3
+	_dataXYZPerspective.push_back(glm::vec3(nearMaxX, nearMaxY, farZ));
+	
+	//4
+	_dataXYZPerspective.push_back(glm::vec3(farMinX, farMaxY, nearZ));
+	//5
+	_dataXYZPerspective.push_back(glm::vec3(farMinX, farMinY, nearZ));
+	//6
+	_dataXYZPerspective.push_back(glm::vec3(farMaxX, farMinY, nearZ));
+	//7
+	_dataXYZPerspective.push_back(glm::vec3(farMaxX, farMaxY, nearZ));
+
+	cout << "DATA PERSPECTIVE FRUSTRUM" << endl;
+	for (int i = 0; i < _dataXYZPerspective.size(); i++)
+	{
+		cout << i << "_[" << _dataXYZPerspective[i].x << "][" << _dataXYZPerspective[i].y << "][" << _dataXYZPerspective[i].z << "]." << endl;
+	}
+
+	_AABBPerspective->SetVerticesColliders(_AABBPerspective->GenerateAABBFrustrumPerspective(_dataXYZPerspective),
+		_AABBPerspective->GenerateAxisAlignedBoundingBoxCol());
+	#pragma endregion
 }
 
 void Camera::UseProjection()

@@ -78,27 +78,57 @@ glm::vec3 * AxisAlignedBoundingBox::GenerateAxisAlignedBoundingBoxPos(vector<glm
 		values_z.push_back(_values[i].z);
 	}
 
-	float min_x = GetMinNum(values_x) - 0.1f;
-	float max_x = GetMaxNum(values_x) + 0.1f;
-	float min_y = GetMinNum(values_y) - 0.1f;
-	float max_y = GetMaxNum(values_y) + 0.1f;
-	float min_z = GetMinNum(values_z) - 0.1f;
-	float max_z = GetMaxNum(values_z) + 0.1f;
+	float min_x = GetMinNum(values_x) - 0.04f;
+	float max_x = GetMaxNum(values_x) + 0.04f;
+	float min_y = GetMinNum(values_y) - 0.04f;
+	float max_y = GetMaxNum(values_y) + 0.04f;
+	float min_z = GetMinNum(values_z) - 0.04f;
+	float max_z = GetMaxNum(values_z) + 0.04f;
 
-	returnArrPositions[0] = glm::vec3(min_x, min_y, max_z);
-	returnArrPositions[1] = glm::vec3(max_x, min_y, max_z);
-	returnArrPositions[2] = glm::vec3(max_x, max_y, max_z);
-	returnArrPositions[3] = glm::vec3(min_x, max_y, max_z);
-	returnArrPositions[4] = glm::vec3(min_x, min_y, min_z);
-	returnArrPositions[5] = glm::vec3(max_x, min_y, min_z);
-	returnArrPositions[6] = glm::vec3(max_x, max_y, min_z);
-	returnArrPositions[7] = glm::vec3(min_x, max_y, min_z);
+	returnArrPositions[0] = glm::vec3(min_x, max_y, min_z);
+	returnArrPositions[1] = glm::vec3(min_x, min_y, min_z);
+	returnArrPositions[2] = glm::vec3(max_x, min_y, min_z);
+	returnArrPositions[3] = glm::vec3(max_x, max_y, min_z);
+	returnArrPositions[4] = glm::vec3(min_x, max_y, max_z);
+	returnArrPositions[5] = glm::vec3(min_x, min_y, max_z);
+	returnArrPositions[6] = glm::vec3(max_x, min_y, max_z);
+	returnArrPositions[7] = glm::vec3(max_x, max_y, max_z);
 
 	/*cout << "DATA AABB" << endl;
 	for (int i = 0; i < countVerticesCollider; i++)
 	{
 		cout << i << "_[" << returnArrPositions[i].x << "][" << returnArrPositions[i].y << "][" << returnArrPositions[i].z << "]." << endl;
 	}*/
+
+	return returnArrPositions;
+}
+
+glm::vec3 * AxisAlignedBoundingBox::GenerateAABBFrustrumPerspective(vector<glm::vec3> _values)
+{
+	if (_values.size() <= 0)
+		return NULL;
+
+	vector<float> values_x;
+	vector<float> values_y;
+	vector<float> values_z;
+
+	for (int i = 0; i < _values.size(); i++)
+	{
+		values_x.push_back(_values[i].x);
+		values_y.push_back(_values[i].y);
+		values_z.push_back(_values[i].z);
+	}
+
+	for (int i = 0; i < countVerticesCollider; i++)
+	{
+		returnArrPositions[i] = glm::vec3(values_x[i], values_y[i], values_z[i]);
+	}
+
+	cout << "DATA AABB" << endl;
+	for (int i = 0; i < countVerticesCollider; i++)
+	{
+		cout << i << "_[" << returnArrPositions[i].x << "][" << returnArrPositions[i].y << "][" << returnArrPositions[i].z << "]." << endl;
+	}
 
 	return returnArrPositions;
 }

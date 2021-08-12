@@ -44,6 +44,12 @@ private:
 	glm::vec3 _right;
 	glm::vec3 _worldUp;
 	matrixMVP _MVP;
+
+	AxisAlignedBoundingBox* _AABBOrthographic;
+	AxisAlignedBoundingBox* _AABBPerspective;
+
+	AxisAlignedBoundingBox* _actualFrustrumInUse;
+
 	float _yaw;
 	float _pitch;
 protected:
@@ -61,6 +67,7 @@ protected:
 	float offsetThirdPersonY = 350;
 
 public:
+	void ChangeActualFrustrum();
 	void SetInitOffsetCameraThirdPersonX(float value) { initOffsetCameraThirdPersonX = value; }
 	void SetInitOffsetCameraThirdPersonY(float value) { initOffsetCameraThirdPersonY = value; }
 	void SetInitOffsetCameraThirdPersonZ(float value) { initOffsetCameraThirdPersonZ = value; }
@@ -74,6 +81,7 @@ public:
 		if (targetThirdPerson != NULL)
 			lastPositionTarget = targetThirdPerson->transform.position;
 	}
+	AxisAlignedBoundingBox* GetActualFrustrumInUse() { return _actualFrustrumInUse; }
 	Entity* GetTargetThirdPerson() { return targetThirdPerson; }
 	void Draw(bool& wireFrameActive) override;
 	void UseCamera(Shader& shader, glm::mat4 trsCamera);
@@ -101,6 +109,8 @@ public:
 	void SetDataOrtho(float left, float right, float bottom, float top, float near, float front);
 
 	void ChangePerspective(TypeProjectionCamera _typeProjectionCamera);
+
+	void SetFrustrumCulling();
 
 	void UseProjection();
 

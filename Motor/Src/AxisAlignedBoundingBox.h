@@ -56,7 +56,10 @@ public:
 	~AxisAlignedBoundingBox();
 
 	glm::vec3* GenerateAxisAlignedBoundingBoxPos(vector<glm::vec3> _values);
+	glm::vec3* GenerateAABBFrustrumPerspective(vector<glm::vec3> _values);
 	glm::vec4* GenerateAxisAlignedBoundingBoxCol();
+
+	glm::vec3* GetAABBPositions() { return returnArrPositions; }
 
 	void SetNewMaterial(Material* mat);
 	void AttachEntity(InternalData& entityInternalData, Transform& transformAttach);

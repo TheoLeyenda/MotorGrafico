@@ -109,47 +109,47 @@ void Game::InitGame()
 	modelOBJ->SetMaterial(goldMaterial);
 	AddObjectInDenugGame(modelOBJ);
 
-	modelFBX = new Model(render);
-	modelFBX->LoadModel("res/modelos/pochita.fbx", "res/modelos/");
-	modelFBX->SetScale(50, 50, 50);
-	modelFBX->SetMaterial(greenRubberMaterial);
-	modelFBX->SetName("POCHITA_FBX");
-	AddObjectInDenugGame(modelFBX);
-
-	modelOBJ2 = new Model(render);
-	modelOBJ2->LoadModel("res/modelos/merkava-tank/Merkava_Tank.obj", "res/modelos/merkava-tank/textures/");
-	modelOBJ2->SetScale(50, 50, 50);
-	modelOBJ2->SetPosition(1000, 10, 10);
-	modelOBJ2->SetName("TANQUE-MODEL_OBJ2)");
-	modelOBJ2->SetMaterial(goldMaterial);
-	AddObjectInDenugGame(modelOBJ2);
-
-	model3DS = new Model(render);
-	model3DS->LoadModel("res/modelos/3ds/Dragon 2.5_3ds.3ds","res/modelos/3ds/textures/");
-	model3DS->SetPosition(390, 347, -81);
-	model3DS->SetScale(5.0f, 5.0f, 5.0f);
-	model3DS->SetRotationX(-90);
-	model3DS->SetMaterial(esmeraldMaterial);
-	model3DS->SetName("DRAGON-MODEL_3DS)");
-	AddObjectInDenugGame(model3DS);
-
-	modelCOLLADA = new Model(render);
-	modelCOLLADA->LoadModel("res/modelos/dae/Dragon 2.5_dae.dae", "res/modelos/dae/textures/");
-	modelCOLLADA->SetPosition(0, 347, -81);
-	modelCOLLADA->SetScale(5.0f, 5.0f, 5.0f);
-	modelCOLLADA->SetRotationX(-90);
-	modelCOLLADA->SetMaterial(silverMaterial);
-	modelCOLLADA->SetName("DRAGON-MODEL_COLLADA)");
-	AddObjectInDenugGame(modelCOLLADA);
-
-	modelSTL = new Model(render);
-	modelSTL->LoadModel("res/modelos/stl/Dragon 2.5_stl.stl", "res/modelos/stl/textures/");
-	modelSTL->SetPosition(150, 647, -81);
-	modelSTL->SetScale(5.0f, 5.0f, 5.0f);
-	modelSTL->SetRotationX(-90);
-	modelSTL->SetMaterial(goldMaterial);
-	modelSTL->SetName("DRAGON-MODEL_STL)");
-	AddObjectInDenugGame(modelSTL);
+	//modelFBX = new Model(render);
+	//modelFBX->LoadModel("res/modelos/pochita.fbx", "res/modelos/");
+	//modelFBX->SetScale(50, 50, 50);
+	//modelFBX->SetMaterial(greenRubberMaterial);
+	//modelFBX->SetName("POCHITA_FBX");
+	//AddObjectInDenugGame(modelFBX);
+	//
+	//modelOBJ2 = new Model(render);
+	//modelOBJ2->LoadModel("res/modelos/merkava-tank/Merkava_Tank.obj", "res/modelos/merkava-tank/textures/");
+	//modelOBJ2->SetScale(50, 50, 50);
+	//modelOBJ2->SetPosition(1000, 10, 10);
+	//modelOBJ2->SetName("TANQUE-MODEL_OBJ2)");
+	//modelOBJ2->SetMaterial(goldMaterial);
+	//AddObjectInDenugGame(modelOBJ2);
+	//
+	//model3DS = new Model(render);
+	//model3DS->LoadModel("res/modelos/3ds/Dragon 2.5_3ds.3ds","res/modelos/3ds/textures/");
+	//model3DS->SetPosition(390, 347, -81);
+	//model3DS->SetScale(5.0f, 5.0f, 5.0f);
+	//model3DS->SetRotationX(-90);
+	//model3DS->SetMaterial(esmeraldMaterial);
+	//model3DS->SetName("DRAGON-MODEL_3DS)");
+	//AddObjectInDenugGame(model3DS);
+	//
+	//modelCOLLADA = new Model(render);
+	//modelCOLLADA->LoadModel("res/modelos/dae/Dragon 2.5_dae.dae", "res/modelos/dae/textures/");
+	//modelCOLLADA->SetPosition(0, 347, -81);
+	//modelCOLLADA->SetScale(5.0f, 5.0f, 5.0f);
+	//modelCOLLADA->SetRotationX(-90);
+	//modelCOLLADA->SetMaterial(silverMaterial);
+	//modelCOLLADA->SetName("DRAGON-MODEL_COLLADA)");
+	//AddObjectInDenugGame(modelCOLLADA);
+	//
+	//modelSTL = new Model(render);
+	//modelSTL->LoadModel("res/modelos/stl/Dragon 2.5_stl.stl", "res/modelos/stl/textures/");
+	//modelSTL->SetPosition(150, 647, -81);
+	//modelSTL->SetScale(5.0f, 5.0f, 5.0f);
+	//modelSTL->SetRotationX(-90);
+	//modelSTL->SetMaterial(goldMaterial);
+	//modelSTL->SetName("DRAGON-MODEL_STL)");
+	//AddObjectInDenugGame(modelSTL);
 
 	pyramid = new Primitive3D(render,Pyramid);
 	pyramid->SetPosition(500.0f, 250.0f, -50.0f);
@@ -314,11 +314,11 @@ void Game::InitGame()
 
 	//cube->GetEntityNode(cube3->GetName())->SetIsAlive(false);
 	
-	Entity* cierra = modelFBX->GetEntityNode("cierra");
-	Entity* cierra1 = modelFBX->GetEntityNode("cierra.001");
-	Entity* cierra2 = modelFBX->GetEntityNode("cierra.002");
-	cierra->AddChildren(cierra1);
-	cierra1->AddChildren(cierra2);
+	//Entity* cierra = modelFBX->GetEntityNode("cierra");
+	//Entity* cierra1 = modelFBX->GetEntityNode("cierra.001");
+	//Entity* cierra2 = modelFBX->GetEntityNode("cierra.002");
+	//cierra->AddChildren(cierra1);
+	//cierra1->AddChildren(cierra2);
 
 
 	cube->RemoveChildren(cube3, GetRootScene());
@@ -335,15 +335,6 @@ void Game::InitGame()
 void Game::UpdateGame(Windows *_window, Renderer *_render, Input *_input)
 {
 	//timeClock.FPS();
-	
-	if (input->GetKey(KeyBoard::KEY_P)) {
-		system("cls");
-		for (int i = 0; i < modelFBX->GetModelChildrens().size(); i++)
-		{
-			ModelNode* node = modelFBX->GetModelChildrens()[i];
-			node->PrintMyInfo();
-		}
-	}
 	if (player3D != NULL)
 		player3D->Move(input, timeClock);
 
@@ -429,6 +420,14 @@ void Game::UpdateGame(Windows *_window, Renderer *_render, Input *_input)
 		modelCOLLADA->Draw(motorasoGui->GetIfWireFrameIsActive());
 	if (modelSTL != NULL)
 		modelSTL->Draw(motorasoGui->GetIfWireFrameIsActive());
+
+	if (collisionManager != NULL)
+	{
+		if (collisionManager->CheckEntitiesOnFrustrum(camera, cube))
+			cout << "ESTA ADENTRO" << endl;
+		else
+			cout << "NO ESTA ADENTRO" << endl;
+	}
 }
 
 void Game::DestroyGame()
