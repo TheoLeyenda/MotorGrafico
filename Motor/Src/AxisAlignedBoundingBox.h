@@ -18,6 +18,8 @@ private:
 
 	bool enableDraw = true;
 	bool enableInitData = true;
+
+	bool isFrustrum;
 	Transform entityTransform;
 	InternalData internalDataAttach;
 	glm::vec3 verticesColliderPositions[countVerticesCollider];

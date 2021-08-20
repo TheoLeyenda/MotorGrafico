@@ -57,7 +57,7 @@ public:
 	//=====================
 
 	void Draw(int indices, Shader& shaderProg, glm::mat4 model, bool& wireframeActive);
-	void DrawColliders(int indices, Shader& shaderProg, glm::mat4 model, bool& wireframeActive);
+	void DrawColliders(int indices, Shader& shaderProg, glm::mat4 model, bool& wireframeActive, bool& isFrustrum);
 	//=====================
 	void DrawSprite(unsigned int figura, int vertexs, unsigned int vbo, Shader& shaderProg, glm::mat4 model);
 	void BeignDraw();

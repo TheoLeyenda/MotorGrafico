@@ -2,6 +2,7 @@
 #define CAMERA_H
 
 #include "Entity.h"
+#include "Plane.h"
 
 static enum TypeProjectionCamera
 {
@@ -50,6 +51,14 @@ private:
 
 	AxisAlignedBoundingBox* _actualFrustrumInUse;
 
+	MyPlane* _nearPlane = NULL;
+	MyPlane* _farPlane = NULL;
+	MyPlane* _rightPlane = NULL;
+	MyPlane* _leftPlane = NULL;
+	MyPlane* _downPlane = NULL;
+	MyPlane* _topPlane = NULL;
+
+
 	float _yaw;
 	float _pitch;
 protected:
@@ -68,6 +77,16 @@ protected:
 
 public:
 	void ChangeActualFrustrum();
+
+	bool positiveNear(glm::vec3 point);
+	bool positiveFar(glm::vec3 point);
+	bool positiveLeft(glm::vec3 point);
+	bool positiveRight(glm::vec3 point);
+	bool positiveTop(glm::vec3 point);
+	bool positiveDown(glm::vec3 point);
+
+	void updateFrustrumPlanes();
+
 	void SetInitOffsetCameraThirdPersonX(float value) { initOffsetCameraThirdPersonX = value; }
 	void SetInitOffsetCameraThirdPersonY(float value) { initOffsetCameraThirdPersonY = value; }
 	void SetInitOffsetCameraThirdPersonZ(float value) { initOffsetCameraThirdPersonZ = value; }

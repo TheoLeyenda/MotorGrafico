@@ -424,9 +424,7 @@ void Game::UpdateGame(Windows *_window, Renderer *_render, Input *_input)
 	if (collisionManager != NULL)
 	{
 		if (collisionManager->CheckEntitiesOnFrustrum(camera, cube))
-			cout << "ESTA ADENTRO" << endl;
-		else
-			cout << "NO ESTA ADENTRO" << endl;
+			cout << "ESTA ADENTRO DEL FRUSTRUM" << endl;
 	}
 }
 

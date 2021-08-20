@@ -63,6 +63,8 @@ int GameBase::InitEngine()
 
 	camera->SetFrustrumCulling();
 
+
+	AddObjectInDenugGame(camera);
 #pragma endregion
 
 	glEnable(GL_DEPTH_TEST);

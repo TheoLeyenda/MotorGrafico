@@ -13,6 +13,8 @@ AxisAlignedBoundingBox::AxisAlignedBoundingBox(Renderer * render) : Entity(rende
 
 	SetNewMaterial(my_Mat);
 
+	isFrustrum = false;
+
 	SetIsAlive(true);
 	for (int i = 0; i < countVerticesCollider; i++)
 	{
@@ -129,6 +131,8 @@ glm::vec3 * AxisAlignedBoundingBox::GenerateAABBFrustrumPerspective(vector<glm::
 	{
 		cout << i << "_[" << returnArrPositions[i].x << "][" << returnArrPositions[i].y << "][" << returnArrPositions[i].z << "]." << endl;
 	}
+
+	isFrustrum = true;
 
 	return returnArrPositions;
 }
@@ -322,6 +326,6 @@ void AxisAlignedBoundingBox::Draw(bool & colliderDrawActive)
 		if (my_Mat != NULL)
 			UseMyMaterial();
 		//----
-		renderer->DrawColliders(indicesVertexCollider, renderer->GetCurrentShaderUse(), internalDataAttach.localModel, colliderDrawActive);
+		renderer->DrawColliders(indicesVertexCollider, renderer->GetCurrentShaderUse(), internalDataAttach.localModel, colliderDrawActive, isFrustrum);
 	}
 }

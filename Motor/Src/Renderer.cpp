@@ -148,12 +148,17 @@ void Renderer::Draw(int indices, Shader& shaderProg, glm::mat4 model, bool& wire
 	UnbindBuffer();
 }
 
-void Renderer::DrawColliders(int indices, Shader & shaderProg, glm::mat4 model, bool & drawActive)
+void Renderer::DrawColliders(int indices, Shader & shaderProg, glm::mat4 model, bool & drawActive, bool& isFrustrum)
 {
 	UseShaderEnt(shaderProg, model);
 
-	if(drawActive)
-		glDrawElements(GL_LINE_STRIP, indices, GL_UNSIGNED_INT, 0);
+	if (drawActive)
+	{
+		if(!isFrustrum)
+			glDrawElements(GL_LINE_STRIP, indices, GL_UNSIGNED_INT, 0);
+		else
+			glDrawElements(GL_TRIANGLES, indices, GL_UNSIGNED_INT, 0);
+	}
 
 	UnbindBuffer();
 }
