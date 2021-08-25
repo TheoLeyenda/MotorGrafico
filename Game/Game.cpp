@@ -323,7 +323,7 @@ void Game::InitGame()
 
 	cube->RemoveChildren(cube3, GetRootScene());
 
-	SetEnableAABB_DebugGame(true);
+	SetEnableAABB_DebugGame(false);
 
 	//cube->RemoveChildren(cube2, GetRootScene());
 	/*cout << endl;

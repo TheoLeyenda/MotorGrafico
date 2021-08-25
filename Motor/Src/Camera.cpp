@@ -172,6 +172,12 @@ void Camera::SetEnableDrawAABB(bool value)
 {
 	if (axisAlignedBoundingBox != NULL)
 		axisAlignedBoundingBox->SetEnableDraw(value);
+
+	if (_AABBOrthographic != NULL)
+		_AABBOrthographic->SetEnableDraw(value);
+
+	if (_AABBPerspective != NULL)
+		_AABBPerspective->SetEnableDraw(value);
 }
 
 void Camera::BindBuffer(){}
