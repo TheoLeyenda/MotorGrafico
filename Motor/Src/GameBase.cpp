@@ -64,7 +64,8 @@ int GameBase::InitEngine()
 	camera->SetFrustrumCulling();
 
 
-	AddObjectInDenugGame(camera);
+	//AddObjectInDenugGame(camera);
+	camera->SetEnableDrawAABB(false);
 #pragma endregion
 
 	glEnable(GL_DEPTH_TEST);

@@ -68,7 +68,6 @@ protected:
 	glm::vec3 lastPositionTarget = glm::vec3(0.0f);
 	float lastDistance = 0.0f;
 
-	void SetEnableDrawAABB(bool value) override;
 	void BindBuffer() override;
 
 	void CalculateThirdPersonPositionCamera();
@@ -76,6 +75,7 @@ protected:
 	float offsetThirdPersonY = 350;
 
 public:
+	void SetEnableDrawAABB(bool value) override;
 	void ChangeActualFrustrum();
 
 	bool positiveNear(glm::vec3 point);

@@ -9,21 +9,7 @@ private:
 
 	PlayerController3D* player3D = NULL;
 
-	Shape* shape1 = NULL;
-	Shape* shape2 = NULL;
-	Shape* shape3 = NULL;
-	Shape* shape4 = NULL;
-
-	Sprite* sprite = NULL;
-	Sprite* spriteAnimado = NULL;
-
 	Animation* animations = NULL;
-
-	Primitive3D* pyramid = NULL;
-
-	Primitive3D* cube = NULL;
-	Primitive3D* cube2 = NULL;
-	Primitive3D* cube3 = NULL;
 
 	Material* goldMaterial = NULL;
 	Material* silverMaterial = NULL;
@@ -35,11 +21,7 @@ private:
 	Audio* audio = NULL;
 
 	Model* modelOBJ = NULL;
-	Model* modelOBJ2 = NULL;
-	Model* modelFBX = NULL;
-	Model* model3DS = NULL;
-	Model* modelCOLLADA = NULL;
-	Model* modelSTL = NULL;
+	Model* bobFBX = NULL;
 public:
 	Game();
 	~Game();

@@ -109,184 +109,20 @@ void Game::InitGame()
 	modelOBJ->SetMaterial(goldMaterial);
 	AddObjectInDenugGame(modelOBJ);
 
-	//modelFBX = new Model(render);
-	//modelFBX->LoadModel("res/modelos/pochita.fbx", "res/modelos/");
-	//modelFBX->SetScale(50, 50, 50);
-	//modelFBX->SetMaterial(greenRubberMaterial);
-	//modelFBX->SetName("POCHITA_FBX");
-	//AddObjectInDenugGame(modelFBX);
-	//
-	//modelOBJ2 = new Model(render);
-	//modelOBJ2->LoadModel("res/modelos/merkava-tank/Merkava_Tank.obj", "res/modelos/merkava-tank/textures/");
-	//modelOBJ2->SetScale(50, 50, 50);
-	//modelOBJ2->SetPosition(1000, 10, 10);
-	//modelOBJ2->SetName("TANQUE-MODEL_OBJ2)");
-	//modelOBJ2->SetMaterial(goldMaterial);
-	//AddObjectInDenugGame(modelOBJ2);
-	//
-	//model3DS = new Model(render);
-	//model3DS->LoadModel("res/modelos/3ds/Dragon 2.5_3ds.3ds","res/modelos/3ds/textures/");
-	//model3DS->SetPosition(390, 347, -81);
-	//model3DS->SetScale(5.0f, 5.0f, 5.0f);
-	//model3DS->SetRotationX(-90);
-	//model3DS->SetMaterial(esmeraldMaterial);
-	//model3DS->SetName("DRAGON-MODEL_3DS)");
-	//AddObjectInDenugGame(model3DS);
-	//
-	//modelCOLLADA = new Model(render);
-	//modelCOLLADA->LoadModel("res/modelos/dae/Dragon 2.5_dae.dae", "res/modelos/dae/textures/");
-	//modelCOLLADA->SetPosition(0, 347, -81);
-	//modelCOLLADA->SetScale(5.0f, 5.0f, 5.0f);
-	//modelCOLLADA->SetRotationX(-90);
-	//modelCOLLADA->SetMaterial(silverMaterial);
-	//modelCOLLADA->SetName("DRAGON-MODEL_COLLADA)");
-	//AddObjectInDenugGame(modelCOLLADA);
-	//
-	//modelSTL = new Model(render);
-	//modelSTL->LoadModel("res/modelos/stl/Dragon 2.5_stl.stl", "res/modelos/stl/textures/");
-	//modelSTL->SetPosition(150, 647, -81);
-	//modelSTL->SetScale(5.0f, 5.0f, 5.0f);
-	//modelSTL->SetRotationX(-90);
-	//modelSTL->SetMaterial(goldMaterial);
-	//modelSTL->SetName("DRAGON-MODEL_STL)");
-	//AddObjectInDenugGame(modelSTL);
+	bobFBX = new Model(render);
+	bobFBX->LoadModel("res/modelos/Bob.fbx", " ");
+	bobFBX->SetScale(50.0f, 50.0f, 50.0f);
+	bobFBX->SetName("Bob_Modelo");
+	bobFBX->SetPosition(0, 0, 0);
+	bobFBX->SetRotationX(-90);
+	bobFBX->SetMaterial(goldMaterial);
+	AddObjectInDenugGame(bobFBX);
 
-	pyramid = new Primitive3D(render,Pyramid);
-	pyramid->SetPosition(500.0f, 250.0f, -50.0f);
-	if(useSkybox)
-		pyramid->SetScale(5000.0f, 5000.0f, 5000.0f);
-	else
-		pyramid->SetScale(50.0f, 50.0f, 50.0f);
-
-	pyramid->SetRotationY(6.0f);
-	pyramid->SetNewMaterial(silverMaterial);
-	pyramid->SetNewMaterial(textureMaterialForLight);
-	pyramid->LoadTexture("res/texturas/bokitaElMasGrandePapa.png", false);
-	pyramid->SetName("pyramid");
-	AddObjectInDenugGame(pyramid);
-
-	cube = new Primitive3D(render, Cube);
-	cube->SetPosition(300, 100.0f, -50.0f);
-	cube->SetScale(50.0f, 50.0f, 50.0f);
-	cube->SetNewMaterial(greenRubberMaterial);
-	cube->SetName("cube");
-	AddObjectInDenugGame(cube);
-
-	cube2 = new Primitive3D(render, Cube);
-	cube2->SetPosition(420.0f, 100.0f, -50.0f);
-	cube2->SetScale(50.0f, 50.0f, 50.0f);
-	cube2->SetNewMaterial(goldMaterial);
-	cube2->SetName("cube2");
-	AddObjectInDenugGame(cube2);
-
-	cube3 = new Primitive3D(render, Cube);
-	cube3->SetPosition(360.0f, 250.0f, -50.0f);
-	cube3->SetScale(50.0f, 50.0f, 50.0f);
-	cube3->SetNewMaterial(textureMaterialDefault);
-	cube3->LoadTexture("res/texturas/Facharda.jpg", false);
-	cube3->SetName("cube3");
-	AddObjectInDenugGame(cube3);
-
-	audio = new Audio(render);
-	audio->SetName("audio");
-	AddObjectInDenugGame(audio);
-
-	shape1 = new Shape(render,TypeShape::QUAD, "res/texturas/Algun dia.png");
-	shape1->SetPosition(-190.0f, 200.0f, 10.0);
-	shape1->SetScale(120.0f, 120.0f, 120.0f);
-	shape1->SetName("Shape1");
-	AddObjectInDenugGame(shape1);
 	
-	shape2 = new Shape(render, TypeShape::TRIANGLE, "res/texturas/bokitaElMasGrandePapa.png");
-	shape2->SetPosition(-320.0f, 200.0f, 10.0);
-	shape2->SetScale(120.0f, 120.0f, 120.0f);
-	shape2->SetNewMaterial(textureMaterialForLight);
-	shape2->SetName("Shape2");
-	AddObjectInDenugGame(shape2);
-
-	shape3 = new Shape(render, TypeShape::QUAD);
-	shape3->SetPosition(-450.0f, 200.0f, 10.0);
-	shape3->SetScale(120.0f, 120.0f, 120.0f);
-	shape3->SetNewMaterial(mat_shape3);
-	shape3->SetName("Shape3");
-	AddObjectInDenugGame(shape3);
-
-	shape4 = new Shape(render, TypeShape::TRIANGLE);
-	shape4->SetPosition(-580.0f, 200.0f, 10.0);
-	shape4->SetScale(120.0f, 120.0f, 120.0f);
-	shape4->SetNewMaterial(mat_shape4);
-	shape4->SetName("Shape4");
-	AddObjectInDenugGame(shape4);
-
-	sprite = new Sprite(render,"res/texturas/nave.png", true);
-	sprite->SetPosition(-360.0f, 350.0f, 10.0);
-	sprite->SetScale(120.0f, 120.0f, 120.0f);
-	sprite->SetRotationZ(91.1f);
-	sprite->SetName("Sprite");
-	AddObjectInDenugGame(sprite);
-
-	//spriteAnimado = new Sprite(render, "res/texturas/PlayerShit.png", true);
-	//spriteAnimado->SetPosition(windows->GetSizeX() / 2, windows->GetSizeY() / 2, 0.0f);
-	//spriteAnimado->SetPosition(0, windows->GetSizeY()/2, 0.0f);
-	//spriteAnimado->SetScale(120.0f, 120.0f, 120.0f);
-	//spriteAnimado->SetRotationZ(91.1f);
-	//spriteAnimado->SetName("SpriteAnimado");
-	//AddObjectInDenugGame(spriteAnimado);
-
-	//animations = new Animation();
-	//
-	//float durationAnim = 0.75f;
-	//// ANIMACION CAMINATA HACIA ARRIBA
-	//animations->AddFrame((480 - 60 * 8), 0.0f, 60, 60, 480, 240, durationAnim);
-	//animations->AddFrame((480 - 60 * 7), 0.0f, 60, 60, 480, 240, durationAnim);
-	//animations->AddFrame((480 - 60 * 6), 0.0f, 60, 60, 480, 240, durationAnim);
-	//animations->AddFrame((480 - 60 * 5), 0.0f, 60, 60, 480, 240, durationAnim);
-	//animations->AddFrame((480 - 60 * 4), 0.0f, 60, 60, 480, 240, durationAnim);
-	//animations->AddFrame((480 - 60 * 3), 0.0f, 60, 60, 480, 240, durationAnim);
-	//animations->AddFrame((480 - 60 * 2), 0.0f, 60, 60, 480, 240, durationAnim);
-	//animations->AddFrame((480 - 60 * 1), 0.0f, 60, 60, 480, 240, durationAnim);
-	//animations->AddAnimation();
-	//
-	//// ANIMACION CAMINATA HACIA DERECHA
-	//animations->AddFrame((480 - 60 * 8), 60, 60, 60, 480, 240, durationAnim);
-	//animations->AddFrame((480 - 60 * 7), 60, 60, 60, 480, 240, durationAnim);
-	//animations->AddFrame((480 - 60 * 6), 60, 60, 60, 480, 240, durationAnim);
-	//animations->AddFrame((480 - 60 * 5), 60, 60, 60, 480, 240, durationAnim);
-	//animations->AddFrame((480 - 60 * 4), 60, 60, 60, 480, 240, durationAnim);
-	//animations->AddFrame((480 - 60 * 3), 60, 60, 60, 480, 240, durationAnim);
-	//animations->AddFrame((480 - 60 * 2), 60, 60, 60, 480, 240, durationAnim);
-	//animations->AddFrame((480 - 60 * 1), 60, 60, 60, 480, 240, durationAnim);
-	//animations->AddAnimation();
-	//
-	//// ANIMACION CAMINATA HACIA IZQUIERDA
-	//animations->AddFrame((480 - 60 * 8), 120, 60, 60, 480, 240, durationAnim);
-	//animations->AddFrame((480 - 60 * 7), 120, 60, 60, 480, 240, durationAnim);
-	//animations->AddFrame((480 - 60 * 6), 120, 60, 60, 480, 240, durationAnim);
-	//animations->AddFrame((480 - 60 * 5), 120, 60, 60, 480, 240, durationAnim);
-	//animations->AddFrame((480 - 60 * 4), 120, 60, 60, 480, 240, durationAnim);
-	//animations->AddFrame((480 - 60 * 3), 120, 60, 60, 480, 240, durationAnim);
-	//animations->AddFrame((480 - 60 * 2), 120, 60, 60, 480, 240, durationAnim);
-	//animations->AddFrame((480 - 60 * 1), 120, 60, 60, 480, 240, durationAnim);
-	//animations->AddAnimation();
-	//
-	//// ANIMACION CAMINATA HACIA ABAJO
-	//animations->AddFrame((480 - 60 * 8), 180, 60, 60, 480, 240, durationAnim);
-	//animations->AddFrame((480 - 60 * 7), 180, 60, 60, 480, 240, durationAnim);
-	//animations->AddFrame((480 - 60 * 6), 180, 60, 60, 480, 240, durationAnim);
-	//animations->AddFrame((480 - 60 * 5), 180, 60, 60, 480, 240, durationAnim);
-	//animations->AddFrame((480 - 60 * 4), 180, 60, 60, 480, 240, durationAnim);
-	//animations->AddFrame((480 - 60 * 3), 180, 60, 60, 480, 240, durationAnim);
-	//animations->AddFrame((480 - 60 * 2), 180, 60, 60, 480, 240, durationAnim);
-	//animations->AddFrame((480 - 60 * 1), 180, 60, 60, 480, 240, durationAnim);
-	//animations->AddAnimation();
-	//
-	//spriteAnimado->SetAnimation(animations);
-	//spriteAnimado->SetAttribsSprite();
-
 	if (thirdPerson)
 	{
 		player3D = new PlayerController3D(render);
-		player3D->SetMyModel(modelFBX);
+		player3D->SetMyModel(modelOBJ);
 		player3D->SetRUN_SPEED(350);
 		player3D->SetTURN_SPEED(400);
 		camera->SetTargetThirdPerson(player3D);
@@ -302,34 +138,7 @@ void Game::InitGame()
 	}
 	SetUseDebugWindows(true);
 
-	//Armo arboles de jerarquias//
-	pyramid->AddChildren(shape1);
-	cube->AddChildren(cube2);
-	cube2->AddChildren(cube3);
-	cube3->AddChildren(sprite);
-	cube2->SetScale(1, 1, 1);
-	cube3->SetScale(1, 1, 1);
-	cube2->SetPosition(-3, 0, 0);
-	cube3->SetPosition(-3, 3, 0);
-
-	//cube->GetEntityNode(cube3->GetName())->SetIsAlive(false);
-	
-	//Entity* cierra = modelFBX->GetEntityNode("cierra");
-	//Entity* cierra1 = modelFBX->GetEntityNode("cierra.001");
-	//Entity* cierra2 = modelFBX->GetEntityNode("cierra.002");
-	//cierra->AddChildren(cierra1);
-	//cierra1->AddChildren(cierra2);
-
-
-	cube->RemoveChildren(cube3, GetRootScene());
-
 	SetEnableAABB_DebugGame(false);
-
-	//cube->RemoveChildren(cube2, GetRootScene());
-	/*cout << endl;
-	GetRootScene()->PrintTree();
-	cout << endl;*/
-	//Armo arboles de jerarquias//
 }
 
 void Game::UpdateGame(Windows *_window, Renderer *_render, Input *_input)
@@ -363,13 +172,6 @@ void Game::UpdateGame(Windows *_window, Renderer *_render, Input *_input)
 	if (input->GetKey(KeyBoard::KEY_LEFT_SHIFT) && !audio->GetIsPlayingAudio2D("res/audio/Dale Dale Boca.mp3"))
 	{
 		audio->PlayAudio2D("res/audio/Dale Dale Boca.mp3", true);
-		RemoveObjectInDebugGame(cube);
-		AddObjectInDenugGame(cube2);
-	}
-
-	if (rotateBokitaSkybox && useSkybox)
-	{
-		pyramid->SetRotationY(pyramid->transform.rotation.y - speedAutomaticRotation);
 	}
 
 	if (useCamera)
@@ -379,53 +181,21 @@ void Game::UpdateGame(Windows *_window, Renderer *_render, Input *_input)
 
 	TempMoveLightWithID(windows, 2);
 
-	if (shape1 != NULL) 
-		shape1->Draw(motorasoGui->GetIfWireFrameIsActive());
-
-	if (shape2 != NULL)
-		shape2->Draw(motorasoGui->GetIfWireFrameIsActive());
-
-	if (shape3 != NULL)
-		shape3->Draw(motorasoGui->GetIfWireFrameIsActive());
-
-	if (shape4 != NULL)
-		shape4->Draw(motorasoGui->GetIfWireFrameIsActive());
-
-	if(pyramid != NULL)
-		pyramid->Draw(motorasoGui->GetIfWireFrameIsActive());
-	if (cube != NULL)
-		cube->Draw(motorasoGui->GetIfWireFrameIsActive());
-	if(cube2 != NULL)
-		cube2->Draw(motorasoGui->GetIfWireFrameIsActive());
-	if(cube3 != NULL)
-		cube3->Draw(motorasoGui->GetIfWireFrameIsActive());
-
-	if (sprite != NULL)
-		sprite->Draw(GetTimeClock());
-
-	if (spriteAnimado != NULL)
-		spriteAnimado->Draw(GetTimeClock());
+	
 
 	//MODELS DRAW
 
 	if (modelOBJ != NULL)
 		modelOBJ->Draw(motorasoGui->GetIfWireFrameIsActive());
-	if (modelFBX != NULL)
-		modelFBX->Draw(motorasoGui->GetIfWireFrameIsActive());
-	if (modelOBJ2 != NULL)
-		modelOBJ2->Draw(motorasoGui->GetIfWireFrameIsActive());
-	if (model3DS != NULL)
-		model3DS->Draw(motorasoGui->GetIfWireFrameIsActive());
-	if (modelCOLLADA != NULL)
-		modelCOLLADA->Draw(motorasoGui->GetIfWireFrameIsActive());
-	if (modelSTL != NULL)
-		modelSTL->Draw(motorasoGui->GetIfWireFrameIsActive());
 
-	if (collisionManager != NULL)
+	if (bobFBX != NULL)
+		bobFBX->Draw(motorasoGui->GetIfWireFrameIsActive());
+
+	/*if (collisionManager != NULL)
 	{
-		if (collisionManager->CheckEntitiesOnFrustrum(camera, cube))
+		if (collisionManager->CheckEntitiesOnFrustrum(camera, bobFBX))
 			cout << "ESTA ADENTRO DEL FRUSTRUM" << endl;
-	}
+	}*/
 }
 
 void Game::DestroyGame()
@@ -438,32 +208,8 @@ void Game::DestroyGame()
 	}
 	//---------------------//
 #pragma region MOTOR 2D
-	if (shape1 != NULL) {
-		delete shape1;
-		shape1 = NULL;
-	}
-	if (shape2 != NULL) {
-		delete shape2;
-		shape2 = NULL;
-	}
 #pragma endregion
 
-	if (cube != NULL) {
-		delete cube;
-		cube = NULL;
-	}
-	if (cube2 != NULL) {
-		delete cube2;
-		cube2 = NULL;
-	}
-	if (cube3 != NULL) {
-		delete cube3;
-		cube3 = NULL;
-	}
-	if (pyramid != NULL) {
-		delete pyramid;
-		pyramid = NULL;
-	}
 	//---------------------//
 	if (goldMaterial != NULL) {
 		delete goldMaterial;
@@ -492,12 +238,6 @@ void Game::DestroyGame()
 		mat_shape4 = NULL;
 	}
 
-	if (sprite != NULL)
-		delete sprite;
-
-	if (spriteAnimado != NULL)
-		delete spriteAnimado;
-
 	if (animations != NULL)
 		delete animations;
 
@@ -505,25 +245,10 @@ void Game::DestroyGame()
 		delete modelOBJ;
 		modelOBJ = NULL;
 	}
-	if (modelFBX != NULL) {
-		delete modelFBX;
-		modelFBX = NULL;
-	}
-	if (modelOBJ2 != NULL) {
-		delete modelOBJ2;
-		modelOBJ2 = NULL;
-	}
-	if (model3DS != NULL) {
-		delete model3DS;
-		model3DS = NULL;
-	}
-	if (modelCOLLADA != NULL) {
-		delete modelCOLLADA;
-		modelCOLLADA = NULL;
-	}
-	if (modelSTL != NULL) {
-		delete modelSTL;
-		modelSTL = NULL;
+
+	if (bobFBX != NULL) {
+		delete bobFBX;
+		bobFBX = NULL;
 	}
 
 	if (player3D != NULL)
