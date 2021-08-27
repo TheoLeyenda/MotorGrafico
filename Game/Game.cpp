@@ -111,14 +111,55 @@ void Game::InitGame()
 
 	bobFBX = new Model(render);
 	bobFBX->LoadModel("res/modelos/Bob.fbx", " ");
+	//bobFBX->SetPosition(0, 0, 0);
 	bobFBX->SetScale(50.0f, 50.0f, 50.0f);
 	bobFBX->SetName("Bob_Modelo");
-	bobFBX->SetPosition(0, 0, 0);
 	bobFBX->SetRotationX(-90);
 	bobFBX->SetMaterial(goldMaterial);
 	AddObjectInDenugGame(bobFBX);
 
-	
+	Entity* entity = bobFBX->GetEntityNode("Cabeza");
+	entity->SetPosition(0.0f, 0.0f, 10.8299f);
+
+	entity = bobFBX->GetEntityNode("Cuello");
+	entity->SetPosition(0.0f, 0.0f, 9.05693f);
+
+	entity = bobFBX->GetEntityNode("Torso");
+	entity->SetPosition(0.0f, 0.0f, 5.99098f);
+
+	entity = bobFBX->GetEntityNode("Brazo_Der");
+	entity->SetPosition(4.140750f, 0.0f, 0.0f);
+
+	entity = bobFBX->GetEntityNode("Brazo_Izq");
+	entity->SetPosition(-4.140750f, 0.0f, 0.0f);
+
+	entity = bobFBX->GetEntityNode("Mano_Der");
+	entity->SetPosition(2.646000f, 0.0f, -1.800000f);
+
+	entity = bobFBX->GetEntityNode("Mano_Izq");
+	entity->SetPosition(-2.646000f, 0.0f, -1.800000f);
+
+	entity = bobFBX->GetEntityNode("Pierna_Der");
+	entity->SetPosition(1.78f, 0.0f, -4.000000f);
+
+	entity = bobFBX->GetEntityNode("Pierna_Izq");
+	entity->SetPosition(-1.78f, 0.0f, -4.000000f);
+
+	entity = bobFBX->GetEntityNode("Pata_Der");
+	entity->SetPosition(0.0f, -0.8f, -2.8f);
+
+	entity = bobFBX->GetEntityNode("Pata_Izq");
+	entity->SetPosition(0.0f, -0.8f, -2.8f);
+
+	entity = bobFBX->GetEntityNode("Plane_BSP1");
+	entity->SetPosition(18.2329f, -8.60411f, 6.35373f);
+
+	entity = bobFBX->GetEntityNode("Plane_BSP2");
+	entity->SetPosition(-14.2233f, 13.2296f, 6.35373f);
+
+	entity = bobFBX->GetEntityNode("Plane_BSP3");
+	entity->SetPosition(1.0468f, 1.05765f, 13.8085f);
+
 	if (thirdPerson)
 	{
 		player3D = new PlayerController3D(render);
@@ -147,23 +188,46 @@ void Game::UpdateGame(Windows *_window, Renderer *_render, Input *_input)
 	if (player3D != NULL)
 		player3D->Move(input, timeClock);
 
-	//cout << "Player Pos X: " << player3D->transform.position.x << endl;
-	//cout << "Player Pos Y: " << player3D->transform.position.y << endl;
-	//cout << "Player Pos Z: " << player3D->transform.position.z <<endl;
 
-	//cout << "Player Rot X: " << player3D->transform.rotation.x << endl;
-	//cout << "Player Rot Y: " << player3D->transform.rotation.y << endl;
-	//cout << "Player Rot Z: " << player3D->transform.rotation.z << endl;
+	/*
+	Entity* entity = bobFBX->GetEntityNode("Mano_Der");
+	cout << "Mano_Der: " << "(" << entity->transform.globalPosition.x
+		<< "," << entity->transform.globalPosition.y
+		<< "," << entity->transform.globalPosition.z
+		<< ")" << endl;
+	
+	entity = bobFBX->GetEntityNode("Mano_Izq");
 
-	//cout << "Player Scal X: " << player3D->transform.scale.x << endl;
-	//cout << "Player Scal Y: " << player3D->transform.scale.y << endl;
-	//cout << "Player Scal Z: " << player3D->transform.scale.z << endl;
-	//
-	//cout << "Camera Vertical Distance: " << camera->CalculateVerticalDistanceOfTarget() << endl;
-	//cout << "Camera Horizontal Distance: " << camera->CalculateHorizontalDistanceOfTarget() << endl;
-	//cout << "Camera Distance: "<< camera->CalculateDistanceOfTarget() << endl;
+	cout << "Mano_Izq: " << "(" << entity->transform.globalPosition.x
+		<< "," << entity->transform.globalPosition.y
+		<< "," << entity->transform.globalPosition.z
+		<< ")" << endl;
 
-	//system("cls");
+	entity = bobFBX->GetEntityNode("Plane_BSP3");
+
+	cout << "Plane_BSP3: " << "(" << entity->transform.globalPosition.x
+		<< "," << entity->transform.globalPosition.y
+		<< "," << entity->transform.globalPosition.z
+		<< ")" << endl;
+
+	system("cls");
+
+	entity = bobFBX->GetEntityNode("Plane_BSP2");
+
+	cout << "Plane_BSP2: " << "(" << entity->transform.globalPosition.x
+		<< "," << entity->transform.globalPosition.y
+		<< "," << entity->transform.globalPosition.z
+		<< ")" << endl;
+
+	entity = bobFBX->GetEntityNode("Plane_BSP1");
+
+	cout << "Plane_BSP1: " << "(" << entity->transform.globalPosition.x
+		<< "," << entity->transform.globalPosition.y
+		<< "," << entity->transform.globalPosition.z
+		<< ")" << endl;
+	*/
+
+
 
 	if (input->GetKey(KeyBoard::KEY_RIGHT_SHIFT) && audio->GetIsPlayingAudio2D("res/audio/Dale Dale Boca.mp3"))
 	{

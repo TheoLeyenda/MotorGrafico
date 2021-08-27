@@ -48,6 +48,7 @@ ModelNode* ModelImporter::LoadModel(vector<Mesh*> &modelMeshes, const string& fi
 void ModelImporter::LoadNode(aiNode* node, const aiScene* scene, vector<ModelNode*> &childrens, Renderer* render)
 {
 	int i = 0;
+
 	if (node != scene->mRootNode) 
 	{
 		nodes.push_back(node);
@@ -123,6 +124,7 @@ void ModelImporter::LoadMesh(vector<Mesh*> &modelMeshes, aiMesh* mesh, const aiS
 	for (int i = 0; i < mesh->mNumFaces; i++)
 	{
 		aiFace face = mesh->mFaces[i];
+		
 		for (int j = 0; j < face.mNumIndices; j++)
 		{
 			indices.push_back(face.mIndices[j]);

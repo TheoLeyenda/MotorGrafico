@@ -37,6 +37,7 @@ private:
 	void LoadMesh(vector<Mesh*> &modelMeshes, aiMesh* mesh, const aiScene* scene,ModelNode* &nodeMesh, Renderer* render);
 	void LoadMaterial(const aiScene* scene, const string& texturePath, vector<Texture*> &textureList);
 	void LoadTextureFromFile(aiTextureType type);
+
 public:
 	ModelImporter();
 	~ModelImporter();

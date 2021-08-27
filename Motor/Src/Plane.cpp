@@ -39,10 +39,11 @@ void MyPlane::flipPlane()
 
 float MyPlane::getDistanceToPoint(glm::vec3 point)
 {
-	return glm::dot(_normal, point) + _distance;
+	return glm::dot(_normal, point) + _distance; 
 }
 
 bool MyPlane::getSide(glm::vec3 point)
 {
-	return getDistanceToPoint(point) > 0.0f;
+	return getDistanceToPoint(point) > 0.0f; // si esto es true esta adentro del plano si es false esta afuera del plano.
+											 // le paso la posicion del objeto contra el que quiero comparar.
 }

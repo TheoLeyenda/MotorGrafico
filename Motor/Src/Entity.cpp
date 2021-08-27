@@ -10,6 +10,8 @@ Entity::Entity(Renderer * _renderer)
 	renderer = _renderer;
 
 	internalData.localModel = glm::mat4(1.0f);
+	internalData.globalModel = glm::mat4(1.0f);
+	internalData.originModel = glm::mat4(1.0f);
 	internalData.rotateX = glm::mat4(1.0f);
 	internalData.rotateY = glm::mat4(1.0f);
 	internalData.rotateZ = glm::mat4(1.0f);
@@ -39,6 +41,8 @@ Entity::Entity(Renderer * _renderer, float _isModel)
 	renderer = _renderer;
 
 	internalData.localModel = glm::mat4(1.0f);
+	internalData.globalModel = glm::mat4(1.0f);
+	internalData.originModel = glm::mat4(1.0f);
 	internalData.rotateX = glm::mat4(1.0f);
 	internalData.rotateY = glm::mat4(1.0f);
 	internalData.rotateZ = glm::mat4(1.0f);
@@ -75,12 +79,17 @@ Entity::~Entity()
 void Entity::UpdateMatrixModel()
 {
 	internalData.localModel = internalData.translate * internalData.rotateX * internalData.rotateY * internalData.rotateZ * internalData.scale;
+	internalData.originModel = internalData.localModel;
+
+
 	if (parent != NULL)
 		internalData.globalModel = parent->GetInternalData().globalModel * internalData.localModel;
 	else
 		internalData.globalModel = internalData.localModel;
 
 	internalData.localModel = internalData.globalModel;
+	
+	transform.globalPosition = internalData.localModel * glm::vec4(1, 1, 1, 1.0f);
 
 	for (int i = 0; i < childrens.size(); i++)
 	{
@@ -107,7 +116,7 @@ void Entity::SetPosition(float x, float y, float z)
 	transform.position[0] = x;
 	transform.position[1] = y;
 	transform.position[2] = z;
-
+	
 	internalData.translate = glm::translate(glm::mat4(1.0f), transform.position);
 	UpdateMatrixModel();
 }

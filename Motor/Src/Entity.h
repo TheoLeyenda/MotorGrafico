@@ -55,12 +55,14 @@ struct ENGINE_API Transform
 	glm::vec3 up;
 	glm::vec3 down;
 
+	glm::vec3 globalPosition;
 	glm::vec3 position;
 	glm::vec3 rotation;
 	glm::vec3 scale;
 };
 struct ENGINE_API InternalData
 {
+	glm::mat4 originModel;
 	glm::mat4 localModel;
 	glm::mat4 globalModel;
 	glm::mat4 translate;
@@ -91,7 +93,6 @@ protected:
 
 	Renderer* renderer;
 	InternalData internalData;
-	void UpdateMatrixModel();
 	MathLibrary mathLibrary;
 	float isModel;
 
@@ -121,6 +122,7 @@ protected:
 	bool InmortalObject = false;
 
 public:
+	void UpdateMatrixModel();
 	virtual void Draw(bool& wireFrameActive) = 0;
 	virtual void SetEnableDrawAABB(bool value) = 0;
 

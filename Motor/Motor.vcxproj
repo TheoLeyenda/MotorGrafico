@@ -19,6 +19,8 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Src\BSP_Manager.h" />
+    <ClInclude Include="Src\Plane_BSP.h" />
     <ClInclude Include="Src\AxisAlignedBoundingBox.h" />
     <ClInclude Include="Src\EmptyObject.h" />
     <ClInclude Include="Src\Gui\imconfig.h" />
@@ -60,6 +62,8 @@
     <ClInclude Include="Src\TextureImporter.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Src\BSP_Manager.cpp" />
+    <ClCompile Include="Src\Plane_BSP.cpp" />
     <ClCompile Include="Src\AxisAlignedBoundingBox.cpp" />
     <ClCompile Include="Src\EmptyObject.cpp" />
     <ClCompile Include="Src\Gui\imgui.cpp" />
