@@ -18,7 +18,7 @@ void Plane_BSP::SetPlaneAttach(Entity * plane)
 	planeAttach = plane;
 }
 
-void Plane_BSP::SetCurrenCameraCompare(Entity * camera)
+void Plane_BSP::SetCurrenCameraCompare(Entity* camera)
 {
 	currentCameraCompare = camera;
 }
@@ -52,14 +52,26 @@ void Plane_BSP::GeneratePlane()
 			myPlane->set3Points(PointA, PointB, PointC);
 	}
 }
-
-void Plane_BSP::UpdatePlane_BSP()
+void Plane_BSP::UpdatePlane_BSP(vector<string> registerKeysBSP)
 {
 	GeneratePlane();
+
+	//Filtro otros si hay otro plano BSP en mi vector de objetos y lo remuevo
+	for (int i = 0; i < ObjectsInGame.size(); i++) 
+	{
+		for (int j = 0; j < registerKeysBSP.size(); j++) 
+		{
+			if (ObjectsInGame[i]->GetName().c_str() == registerKeysBSP[j].c_str())
+			{
+				RemoveItemObjectsInGame(i);
+			}
+		}
+	}
 
 	if (myPlane == NULL || currentCameraCompare == NULL || ObjectsInGame.size() <= 0)
 		return;
 
+	//cout << currentCameraCompare->transform.position.x <<" "<< currentCameraCompare->transform.position.y <<" "<< currentCameraCompare->transform.position.z << endl;
 	if (myPlane->getSide(currentCameraCompare->transform.position)) 
 	{
 		currentCameraPosition = CurrentCameraPosition::RightPlane;
@@ -70,15 +82,39 @@ void Plane_BSP::UpdatePlane_BSP()
 	}
 
 	//Dibujo los objetos en funcion de que lado esta la camara
+	//cout << currentCameraPosition << endl;
 	switch (currentCameraPosition)
 	{
+		
 	case CurrentCameraPosition::LeftPlane:
 		//Si la camara esta del lado izquierdo dibujo los objetos que se encuentran en el vector ObjectsLeftPlane y 
 		//dejo de dibujar los objetos que se encuentran en el vector ObjectsRightPlane.
+
+		for (int i = 0; i < ObjectsLeftPlane.size(); i++) 
+		{
+			ObjectsLeftPlane[i]->SetIsAlive(true);
+		}
+
+		for (int i = 0; i < ObjectsRightPlane.size(); i++) 
+		{
+			ObjectsRightPlane[i]->SetIsAlive(false);
+		}
+
 		break;
 	case CurrentCameraPosition::RightPlane:
 		//Si la camara esta del lado derecho dibujo los objetos que se encuentran en el vector ObjectsRightPlane y
 		//dejo de dibujar los objetos que se encuentran en el vector ObjectsLeftPlane.
+
+		for (int i = 0; i < ObjectsLeftPlane.size(); i++)
+		{
+			ObjectsLeftPlane[i]->SetIsAlive(false);
+		}
+
+		for (int i = 0; i < ObjectsRightPlane.size(); i++)
+		{
+			ObjectsRightPlane[i]->SetIsAlive(true);
+		}
+
 		break;
 	}
 	
@@ -99,6 +135,10 @@ void Plane_BSP::UpdatePlane_BSP()
 			ObjectsLeftPlane.push_back(ObjectsInGame[i]);
 		}
 	}
+}
+void Plane_BSP::RemoveItemObjectsInGame(int index)
+{
+	ObjectsInGame.erase(ObjectsInGame.begin() + index);
 }
 
 

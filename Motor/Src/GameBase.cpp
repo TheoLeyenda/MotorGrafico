@@ -6,6 +6,7 @@
 
 vector<Entity*> GameBase::entitysDebugInGame = vector<Entity*>();
 
+
 GameBase::GameBase() {}
 GameBase::~GameBase() {}
 
@@ -63,9 +64,10 @@ int GameBase::InitEngine()
 
 	camera->SetFrustrumCulling();
 
-
-	//AddObjectInDenugGame(camera);
 	camera->SetEnableDrawAABB(false);
+
+	bsp_manager = new BSP_Manager(camera);
+
 #pragma endregion
 
 	glEnable(GL_DEPTH_TEST);
@@ -83,24 +85,22 @@ void GameBase::UpdateEngine()
 		//---------------------//
 		if (useDebugWindows)
 		{
-			//motorasoGui->Begin("Entity Hierarchy", 0, 4);
 			motorasoGui->NewFrame();
 			motorasoGui->TreeEntitys(rootScene);
-			/*for (int i = 0; i < entitysDebugInGame.size(); i++) 
-			{
-			}*/
 		}
 		//---------------------//
 		HandleCamera();
 		//---------------------//
 		HandleLight();
 		//---------------------//
+		if(useBSP_Manager)
+			UpdateBSP_Manager();
+
 		UpdateGame(windows, render, input);
 		//---------------------//
 		if (useDebugWindows)
 		{
 			motorasoGui->Render();
-			//motorasoGui->End();
 		}
 		//---------------------//	
 		glfwPollEvents();
@@ -154,6 +154,16 @@ void GameBase::DestroyEngine()
 		}
 		_lights.erase(_lights.begin());
 	}
+
+	if (bsp_manager != NULL) {
+		delete bsp_manager;
+		bsp_manager = NULL;
+	}
+}
+
+void GameBase::UpdateBSP_Manager()
+{
+	bsp_manager->UpdateBSP_Manager(entitysDebugInGame);
 }
 
 void GameBase::SetEnableAABB_DebugGame(bool value)

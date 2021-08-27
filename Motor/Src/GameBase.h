@@ -19,6 +19,9 @@
 #include "Audio.h"
 #include "MotorasoGui.h"
 #include "ModelNode.h"
+#include "BSP_Manager.h"
+#include "Plane_BSP.h"
+#include "Plane.h"
 
 #define INIT_ERROR -1
 
@@ -38,8 +41,9 @@ private:
 	void ActivateAABB_DebugGame();
 	void DisableAABB_DebugGame();
 
-protected:
+	bool useBSP_Manager = true;
 
+protected:
 	static vector<Entity*> entitysDebugInGame;
 
 	Windows* windows = NULL;
@@ -51,7 +55,11 @@ protected:
 	Material* textureMaterialForLight = NULL;
 	Material* textureMaterialDefault = NULL;
 	MotorasoGui* motorasoGui = NULL;
+	BSP_Manager* bsp_manager = NULL;
 
+	void UpdateBSP_Manager();
+
+	void SetUseBSP_Manager(bool value) { useBSP_Manager = value; }
 public:
 	GameBase();
 	~GameBase();

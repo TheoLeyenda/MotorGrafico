@@ -162,8 +162,8 @@ void MotorasoGui::ShowEntityNodeInfo(Entity * entity)
 	else
 		color = ImVec4(1.0, 0.0f, 0.0f, 1.0f);
 
-	if (!entity->GetIsInmortal())
-	{
+	//if (!entity->GetIsInmortal())
+	//{
 		if (entity->GetIsAlive()) {
 			if (ImGui::Button("Disable object")) {
 				GameBase::DisableObjectInGame(entity);
@@ -176,7 +176,7 @@ void MotorasoGui::ShowEntityNodeInfo(Entity * entity)
 			}
 		}
 		ImGui::ColorButton(entity->GetName().c_str(), color);
-	}
+	//}
 
 	ImGui::Separator();
 

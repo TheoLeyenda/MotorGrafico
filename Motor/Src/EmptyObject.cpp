@@ -5,7 +5,7 @@
 
 EmptyObject::EmptyObject(Renderer* render) :Entity(render) 
 {
-	InmortalObject = true;
+	//InmortalObject = true;
 }
 
 void EmptyObject::BindBuffer() {}

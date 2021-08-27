@@ -5,7 +5,8 @@
 #include "Material.h"
 
 #include "ModelNode.h"
-
+#include "BSP_Manager.h"
+#include "Plane_BSP.h"
 #include <glew.h>
 #include <GLFW/glfw3.h>
 
@@ -17,7 +18,14 @@ ModelImporter::ModelImporter() { indexChildrenLoad = 0; }
 
 ModelImporter::~ModelImporter() {}
 
-ModelNode* ModelImporter::LoadModel(vector<Mesh*> &modelMeshes, const string& filePath, const string& texturePath, ModelNode* rootNode, vector<ModelNode*> &childrens, vector<Texture*> &textureList,Renderer* render)
+ModelNode* ModelImporter::LoadModel(vector<Mesh*> &modelMeshes
+	, const string& filePath
+	, const string& texturePath
+	, ModelNode* rootNode
+	, vector<ModelNode*> &childrens
+	, vector<Texture*> &textureList
+	,Renderer* render
+	, BSP_Manager* bsp_manager)
 {
 	ClearNodesOldModel();
 	ClearAuxiliarNodesOldModel();
@@ -35,11 +43,30 @@ ModelNode* ModelImporter::LoadModel(vector<Mesh*> &modelMeshes, const string& fi
 	auxiliarNodes.push(rootNode);
 	LoadNode(scene->mRootNode, scene, childrens, render);
 
-
 	LoadMesh(modelMeshes, rootNode, scene, render);
 	LoadMesh(modelMeshes, childrens, scene, render);
 
 	LoadMaterial(scene, texturePath, textureList);
+
+	string name = scene->mRootNode->mName.C_Str();
+
+	if (name == bsp_manager->GetKeyBSP()) 
+	{
+		bsp_manager->AddPlane_BSP(new Plane_BSP());
+		bsp_manager->SettingDataLastPlaneBSP(rootNode);
+	}
+
+	for (int i = 0; i < nodes.size(); i++)
+	{
+		string name = nodes[i]->mName.C_Str();
+		if (name == bsp_manager->GetKeyBSP()) 
+		{
+			bsp_manager->AddPlane_BSP(new Plane_BSP());
+			bsp_manager->SettingDataLastPlaneBSP(childrens[i]);
+		}
+	}
+
+	bsp_manager->ShowPlanesAttachPlanes_BSP();
 
 	return rootNode;
 }

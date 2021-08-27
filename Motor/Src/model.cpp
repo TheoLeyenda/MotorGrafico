@@ -4,7 +4,7 @@
 #include <GLFW/glfw3.h>
 
 #include "ModelImporter.h"
-
+#include "BSP_Manager.h"
 #include "ModelNode.h"
 
 #include "AxisAlignedBoundingBox.h"
@@ -30,11 +30,11 @@ Model::~Model()
 	UnloadModel();
 }
 
-void Model::LoadModel(const string & filePath, const string & texturePath)
+void Model::LoadModel(const string & filePath, const string & texturePath, BSP_Manager* bsp_manager)
 {
 	if (modelImporter != NULL) 
 	{
-		rootNode = modelImporter->LoadModel(modelMeshes, filePath, texturePath, rootNode ,modelChildrens, textureList ,renderer);
+		rootNode = modelImporter->LoadModel(modelMeshes, filePath, texturePath, rootNode ,modelChildrens, textureList ,renderer, bsp_manager);
 	}
 
 	if (rootNode != NULL) {
@@ -64,18 +64,21 @@ void Model::LoadModel(const string & filePath, const string & texturePath)
 
 void Model::Draw(bool & wireFrameActive)
 {
-	axisAlignedBoundingBox->UpdateInternalDataBoundingBox(internalData, transform);
+	//if (isAlive) 
+	//{
+		axisAlignedBoundingBox->UpdateInternalDataBoundingBox(internalData, transform);
 
-	if (rootNode != NULL)
-		rootNode->Draw(wireFrameActive);
+		if (rootNode != NULL)
+			rootNode->Draw(wireFrameActive);
 
-	for (int i = 0; i < modelChildrens.size(); i++)
-	{
-		if (modelChildrens[i] != NULL)
-			modelChildrens[i]->Draw(wireFrameActive);
-	}
+		for (int i = 0; i < modelChildrens.size(); i++)
+		{
+			if (modelChildrens[i] != NULL)
+				modelChildrens[i]->Draw(wireFrameActive);
+		}
 
-	axisAlignedBoundingBox->Draw(axisAlignedBoundingBox->GetEnableDraw());
+		axisAlignedBoundingBox->Draw(axisAlignedBoundingBox->GetEnableDraw());
+	//}
 }
 
 void Model::UnloadModel()
@@ -123,18 +126,18 @@ void Model::SetMaterial(Material * mat)
 	}
 }
 
-void Model::SetIsAlive(bool value)
-{
-	Entity::SetIsAlive(value);
-	if (rootNode != NULL)
-		rootNode->SetIsAlive(value);
-
-	for (int i = 0; i < modelChildrens.size(); i++)
-	{
-		if (modelChildrens[i] != NULL)
-			modelChildrens[i]->SetIsAlive(value);
-	}
-}
+//void Model::SetIsAlive(bool value)
+//{
+//	SetIsAlive(value);
+//	if (rootNode != NULL)
+//		rootNode->SetIsAlive(value);
+//
+//	for (int i = 0; i < modelChildrens.size(); i++)
+//	{
+//		if (modelChildrens[i] != NULL)
+//			modelChildrens[i]->SetIsAlive(value);
+//	}
+//}
 
 void Model::BindBuffer(){}
 

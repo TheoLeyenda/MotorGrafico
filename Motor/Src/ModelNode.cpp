@@ -72,20 +72,23 @@ void ModelNode::SetEnableDrawAABB(bool value)
 
 void ModelNode::Draw(bool& wireFrameActive)
 {
-	for (int i = 0; i < _meshList.size(); i++)
+	if (isAlive) 
 	{
-		unsigned int materialIndex = _meshToTex[i];
+		for (int i = 0; i < _meshList.size(); i++)
+		{
+			unsigned int materialIndex = _meshToTex[i];
 
-		if (materialIndex < _textureList.size() && _textureList[materialIndex])
-			_textureList[materialIndex]->BindTexture();
+			if (materialIndex < _textureList.size() && _textureList[materialIndex])
+				_textureList[materialIndex]->BindTexture();
 
-		if (myMat != NULL)
-			myMat->UseMaterial(renderer->GetCurrentShaderUse());
+			if (myMat != NULL)
+				myMat->UseMaterial(renderer->GetCurrentShaderUse());
 
-		_meshList[i]->Draw(wireFrameActive);
+			_meshList[i]->Draw(wireFrameActive);
 
-		if (materialIndex < _textureList.size() && _textureList[materialIndex])
-			_textureList[materialIndex]->UnbindTexture();
+			if (materialIndex < _textureList.size() && _textureList[materialIndex])
+				_textureList[materialIndex]->UnbindTexture();
+		}
 	}
 }
 

@@ -5,8 +5,9 @@
 #include "glm/vec2.hpp"
 #include "glm/vec4.hpp"
 #include "glm/mat4x4.hpp"
+#include "PrivateClass/Export.h"
 
-class MyPlane
+class ENGINE_API MyPlane
 {
 public:
 	MyPlane(glm::vec3 pointA, glm::vec3 pointB, glm::vec3 pointC);

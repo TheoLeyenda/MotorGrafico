@@ -5,7 +5,7 @@ Audio::Audio(Renderer* render) : Entity(render)
 {
 	SoundEngine = irrklang::createIrrKlangDevice();
 	SoundRecorder = irrklang::createIrrKlangAudioRecorder(SoundEngine);
-	InmortalObject = true;
+	//InmortalObject = true;
 }
 
 string Audio::GetClassName()

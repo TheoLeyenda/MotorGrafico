@@ -4,10 +4,10 @@
 #include "Entity.h"
 #include <string>
 #include <string.h>
-
+#include "PrivateClass/Export.h"
 class MyPlane;
 
-class Plane_BSP
+class ENGINE_API Plane_BSP
 {
 public:
 	Plane_BSP();
@@ -32,9 +32,9 @@ public:
 	vector<Entity*> ObjectsLeftPlane;
 	vector<Entity*> ObjectsRightPlane;
 
-	void UpdatePlane_BSP();
+	void UpdatePlane_BSP(vector<string> registerKeysBSP);
 private:
-	
+	void RemoveItemObjectsInGame(int index);
 	Entity* currentCameraCompare = NULL;
 	Entity* planeAttach = NULL;
 	MyPlane* myPlane = NULL; // Con esto saco la matematica del plano

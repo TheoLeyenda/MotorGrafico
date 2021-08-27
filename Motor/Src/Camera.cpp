@@ -11,7 +11,7 @@ Camera::Camera(Renderer* _render, TypeProjectionCamera _typeProjectionCamera) : 
 	_MVP.projection = glm::mat4(1.0f);
 	typeProjectionCamera = _typeProjectionCamera;
 	typeCamera = FirstPerson;
-	InmortalObject = true;
+	//InmortalObject = true;
 }
 
 Camera::~Camera()

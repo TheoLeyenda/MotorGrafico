@@ -12,6 +12,7 @@ using namespace std;
 
 class ModelImporter;
 class ModelNode;
+class BSP_Manager;
 
 class ENGINE_API Model : public Entity
 {
@@ -21,14 +22,14 @@ public:
 	Model(Renderer* render);
 	~Model();
 
-	void LoadModel(const string& filePath, const string& texturePath);
+	void LoadModel(const string& filePath, const string& texturePath, BSP_Manager* bsp_manager);
 	void Draw(bool& wireFrameActive) override;
 	void UnloadModel();
 
 	string GetClassName() override;
 
 	void SetMaterial(Material* mat);
-	virtual void SetIsAlive(bool value);
+	//virtual void SetIsAlive(bool value);
 	
 	ModelNode* GetMyModelNode() { return rootNode; }
 	vector<ModelNode*> GetModelChildrens() { return modelChildrens; }

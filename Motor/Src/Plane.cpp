@@ -1,6 +1,6 @@
 #include "Plane.h"
 #include <math.h>
-
+#include <iostream>
 MyPlane::MyPlane(glm::vec3 pointA, glm::vec3 pointB, glm::vec3 pointC)
 {
 	glm::vec3 line1 = pointB - pointA;
@@ -39,7 +39,8 @@ void MyPlane::flipPlane()
 
 float MyPlane::getDistanceToPoint(glm::vec3 point)
 {
-	return glm::dot(_normal, point) + _distance; 
+	std::cout<< glm::dot(_normal, point) + _distance<<std::endl;
+	return glm::dot(_normal, point) + _distance;
 }
 
 bool MyPlane::getSide(glm::vec3 point)

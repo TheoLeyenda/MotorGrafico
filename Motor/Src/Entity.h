@@ -119,7 +119,7 @@ protected:
 	virtual void BindBuffer() = 0;
 
 	bool isAlive = true;
-	bool InmortalObject = false;
+	//bool InmortalObject = false;
 
 public:
 	void UpdateMatrixModel();
@@ -146,11 +146,11 @@ public:
 	void InitIsModelShader();
 	void CheckIsModel();
 	bool GetIsAlive() { return isAlive; }
-	virtual void SetIsAlive(bool value) 
+	void SetIsAlive(bool value) 
 	{
 		isAlive = value; 
 	}
-	bool GetIsInmortal() { return InmortalObject; }
+	//bool GetIsInmortal() { return InmortalObject; }
 
 	virtual string GetClassName() 
 	{
