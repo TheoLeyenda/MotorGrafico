@@ -34,12 +34,12 @@ void Plane_BSP::GeneratePlane()
 	{
 		glm::vec3 PointA, PointB, PointC;
 
-		PointA = glm::vec3(planeAttach->transform.position.x + (planeAttach->transform.scale.x / 2)
+		PointA = glm::vec3(planeAttach->transform.position.x + (planeAttach->transform.scale.x)
 			, planeAttach->transform.position.y
 			, planeAttach->transform.position.z);
 
 		PointB = glm::vec3(planeAttach->transform.position.x
-			, planeAttach->transform.position.y + (planeAttach->transform.scale.y / 2)
+			, planeAttach->transform.position.y + (planeAttach->transform.scale.y)
 			, planeAttach->transform.position.z);
 
 		PointC = glm::vec3(planeAttach->transform.position.x
@@ -55,6 +55,8 @@ void Plane_BSP::GeneratePlane()
 
 void Plane_BSP::UpdatePlane_BSP()
 {
+	GeneratePlane();
+
 	if (myPlane == NULL || currentCameraCompare == NULL || ObjectsInGame.size() <= 0)
 		return;
 
