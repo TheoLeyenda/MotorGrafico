@@ -89,7 +89,7 @@ void Entity::UpdateMatrixModel()
 
 	internalData.localModel = internalData.globalModel;
 	
-	transform.globalPosition = internalData.localModel * glm::vec4(1, 1, 1, 1.0f);
+	transform.globalPosition = internalData.localModel * glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
 
 	for (int i = 0; i < childrens.size(); i++)
 	{

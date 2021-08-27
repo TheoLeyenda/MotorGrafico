@@ -13,29 +13,18 @@ public:
 	Plane_BSP();
 	~Plane_BSP();
 
-	enum  CurrentCameraPosition
-	{
-		Null,
-		LeftPlane,
-		RightPlane,
-	};
-
-	CurrentCameraPosition currentCameraPosition = Null; 
-
 	void SetPlaneAttach(Entity* plane);
-	void SetCurrenCameraCompare(Entity* camera);
 	Entity* GetPlaneAttach();
 
 	void GeneratePlane();
 
 	vector<Entity*> ObjectsInGame;
-	vector<Entity*> ObjectsLeftPlane;
-	vector<Entity*> ObjectsRightPlane;
+	vector<Entity*> ObjectsNegativePlane;
+	vector<Entity*> ObjectsPositivePlane;
 
 	void UpdatePlane_BSP(vector<string> registerKeysBSP);
 private:
 	void RemoveItemObjectsInGame(int index);
-	Entity* currentCameraCompare = NULL;
 	Entity* planeAttach = NULL;
 	MyPlane* myPlane = NULL; // Con esto saco la matematica del plano
 };

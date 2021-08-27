@@ -39,7 +39,6 @@ void MyPlane::flipPlane()
 
 float MyPlane::getDistanceToPoint(glm::vec3 point)
 {
-	std::cout<< glm::dot(_normal, point) + _distance<<std::endl;
 	return glm::dot(_normal, point) + _distance;
 }
 

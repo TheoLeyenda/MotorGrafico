@@ -86,11 +86,11 @@ void Game::InitGame()
 	AddLight(Light::TypeLight::Spot, 87);
 	SetLightPosition(87, glm::vec3(-50, -50, 0));
 	
-	AddObjectInDenugGame(GetLight(1));
-	AddObjectInDenugGame(GetLight(2));
-	AddObjectInDenugGame(GetLight(6));
-	AddObjectInDenugGame(GetLight(0));
-	AddObjectInDenugGame(GetLight(87));
+	//AddObjectInDenugGame(GetLight(1));
+	//AddObjectInDenugGame(GetLight(2));
+	//AddObjectInDenugGame(GetLight(6));
+	//AddObjectInDenugGame(GetLight(0));
+	//AddObjectInDenugGame(GetLight(87));
 
 	//ChangeColorLight(1, red);
 	//ChangeColorLight(2, yellow);
@@ -107,7 +107,7 @@ void Game::InitGame()
 	modelOBJ->SetPosition(660, 12, -16);
 	modelOBJ->SetRotationY(-0.5);
 	modelOBJ->SetMaterial(goldMaterial);
-	AddObjectInDenugGame(modelOBJ);
+	//AddObjectInDenugGame(modelOBJ);
 
 	bobFBX = new Model(render);
 	bobFBX->LoadModel("res/modelos/Bob.fbx", " ", bsp_manager);

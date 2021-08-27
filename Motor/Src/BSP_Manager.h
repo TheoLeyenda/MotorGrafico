@@ -11,18 +11,18 @@ class Plane_BSP;
 class ENGINE_API BSP_Manager
 {
 private:
-	vector<Plane_BSP*> Planes_BSP;
 	string keyBSP;
+	string auxKeyBSP;
 	void UpdateKeyBSP_Plane(string newKey);
 	Entity* currentCamera = NULL;
 	vector<string> registerKeysBSP;
 public:
+	vector<Plane_BSP*> Planes_BSP; // CAMBIAR ESTO POR UN MAPA DE PLANOS
 	BSP_Manager(Entity* camera);
 	~BSP_Manager();
 	string GetKeyBSP();
-	void SetNewCurrentCameraPlanes_BSP(Entity* camera);
 	void SettingDataLastPlaneBSP(Entity* planeAttach);
-	void AddPlane_BSP(Plane_BSP* newItem);
+	void AddPlane_BSP(Plane_BSP* newItem, string currentKey);
 	void ClearPlanes_BSP();
 	void RemovePlane_BSP(Plane_BSP* itemRemove);
 	void ShowPlanesAttachPlanes_BSP();

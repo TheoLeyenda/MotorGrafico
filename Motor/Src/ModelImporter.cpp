@@ -52,20 +52,24 @@ ModelNode* ModelImporter::LoadModel(vector<Mesh*> &modelMeshes
 
 	if (name == bsp_manager->GetKeyBSP()) 
 	{
-		bsp_manager->AddPlane_BSP(new Plane_BSP());
+		bsp_manager->AddPlane_BSP(new Plane_BSP(), bsp_manager->GetKeyBSP());
 		bsp_manager->SettingDataLastPlaneBSP(rootNode);
 	}
-
-	for (int i = 0; i < nodes.size(); i++)
+	for (int j = 0; j < nodes.size(); j++) 
 	{
-		string name = nodes[i]->mName.C_Str();
-		if (name == bsp_manager->GetKeyBSP()) 
+		for (int i = 0; i < nodes.size(); i++)
 		{
-			bsp_manager->AddPlane_BSP(new Plane_BSP());
-			bsp_manager->SettingDataLastPlaneBSP(childrens[i]);
+			string name = nodes[i]->mName.C_Str();
+			cout << name << "==" << bsp_manager->GetKeyBSP() << endl;
+			if (name == bsp_manager->GetKeyBSP())
+			{
+				bsp_manager->AddPlane_BSP(new Plane_BSP(), bsp_manager->GetKeyBSP());
+				bsp_manager->SettingDataLastPlaneBSP(childrens[i]);
+			}
 		}
 	}
 
+	cout << bsp_manager->Planes_BSP.size() << endl;
 	bsp_manager->ShowPlanesAttachPlanes_BSP();
 
 	return rootNode;

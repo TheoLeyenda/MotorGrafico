@@ -4,6 +4,7 @@
 
 BSP_Manager::BSP_Manager(Entity* camera)
 {
+	auxKeyBSP = "Plane_BSP";
 	UpdateKeyBSP_Plane("Plane_BSP");
 	currentCamera = camera;
 }
@@ -25,18 +26,8 @@ string BSP_Manager::GetKeyBSP()
 	return keyBSP;
 }
 
-void BSP_Manager::SetNewCurrentCameraPlanes_BSP(Entity * camera)
-{
-	currentCamera = camera;
-	for (int i = 0; i < Planes_BSP.size(); i++) 
-	{
-		Planes_BSP[i]->SetCurrenCameraCompare(currentCamera);
-	}
-}
-
 void BSP_Manager::SettingDataLastPlaneBSP(Entity * planeAttach)
 {
-	Planes_BSP[Planes_BSP.size() - 1]->SetCurrenCameraCompare(currentCamera);
 	Planes_BSP[Planes_BSP.size() - 1]->SetPlaneAttach(planeAttach);
 }
 
@@ -46,8 +37,22 @@ void BSP_Manager::UpdateKeyBSP_Plane(string newKey)
 	registerKeysBSP.push_back(keyBSP);
 }
 
-void BSP_Manager::AddPlane_BSP(Plane_BSP * newItem)
+void BSP_Manager::AddPlane_BSP(Plane_BSP * newItem, string currentKey)
 {
+	bool repeatItem = false;
+	for (int i = 0; i < registerKeysBSP.size(); i++) 
+	{
+		if (currentKey.c_str() == registerKeysBSP[i].c_str()) 
+		{
+			repeatItem = true;
+		}
+	}
+
+	if (repeatItem)
+		return;
+	
+	keyBSP.clear();
+	keyBSP = auxKeyBSP;
 	UpdateKeyBSP_Plane(keyBSP);
 	Planes_BSP.push_back(newItem);
 }
@@ -77,18 +82,24 @@ void BSP_Manager::ShowPlanesAttachPlanes_BSP()
 {
 	for (int i = 0; i < Planes_BSP.size(); i++) 
 	{
-		std::cout << Planes_BSP[i]->GetPlaneAttach()->GetName()<<std::endl;
+		std::cout <<"Plane_BSP"<<i<< Planes_BSP[i]->GetPlaneAttach()->GetName()<<std::endl;
 	}
 }
 
 void BSP_Manager::UpdateBSP_Manager(vector<Entity*> ObjectsInBSP)
 {
+	//cout << Planes_BSP.size() << endl;
 	for (int i = 0; i < Planes_BSP.size(); i++) 
 	{
 		if (Planes_BSP[i] != NULL && Planes_BSP[i] != nullptr) {
 			Planes_BSP[i]->ObjectsInGame = ObjectsInBSP;
 			Planes_BSP[i]->UpdatePlane_BSP(registerKeysBSP);
+			//cout << "PLane_BSP" << i << endl;
+			//cout << Planes_BSP[i]->GetPlaneAttach()->transform.globalPosition.x
+			//	<< ", " << Planes_BSP[i]->GetPlaneAttach()->transform.globalPosition.y
+			//	<< ", " << Planes_BSP[i]->GetPlaneAttach()->transform.globalPosition.z << endl;
 		}
 	}
-	system("cls");
+	//cin.get();
+	//system("cls");
 }

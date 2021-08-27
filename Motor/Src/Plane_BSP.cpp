@@ -17,12 +17,6 @@ void Plane_BSP::SetPlaneAttach(Entity * plane)
 {
 	planeAttach = plane;
 }
-
-void Plane_BSP::SetCurrenCameraCompare(Entity* camera)
-{
-	currentCameraCompare = camera;
-}
-
 Entity * Plane_BSP::GetPlaneAttach()
 {
 	return planeAttach;
@@ -34,22 +28,31 @@ void Plane_BSP::GeneratePlane()
 	{
 		glm::vec3 PointA, PointB, PointC;
 
-		PointA = glm::vec3(planeAttach->transform.position.x + (planeAttach->transform.scale.x)
-			, planeAttach->transform.position.y
-			, planeAttach->transform.position.z);
+		PointA = glm::vec3(planeAttach->transform.globalPosition.x + (planeAttach->transform.scale.x)
+			, planeAttach->transform.globalPosition.y
+			, planeAttach->transform.globalPosition.z);
 
-		PointB = glm::vec3(planeAttach->transform.position.x
-			, planeAttach->transform.position.y + (planeAttach->transform.scale.y)
-			, planeAttach->transform.position.z);
+		PointB = glm::vec3(planeAttach->transform.globalPosition.x
+			, planeAttach->transform.globalPosition.y + (planeAttach->transform.scale.y)
+			, planeAttach->transform.globalPosition.z);
 
-		PointC = glm::vec3(planeAttach->transform.position.x
-			, planeAttach->transform.position.y
-			, planeAttach->transform.position.z);
+		PointC = glm::vec3(planeAttach->transform.globalPosition.x
+			, planeAttach->transform.globalPosition.y
+			, planeAttach->transform.globalPosition.z);
 
 		if (myPlane == NULL)
 			myPlane = new MyPlane(PointA, PointB, PointC);
 		else
 			myPlane->set3Points(PointA, PointB, PointC);
+
+		//cout << "PointA" << endl;
+		//cout << PointA.x << "," << PointA.y << "," << PointC.z << endl;
+		//cout << "PointB" << endl;
+		//cout << PointB.x << "," << PointB.y << "," << PointB.z << endl;
+		//cout << "PointC" << endl;
+		//cout << PointC.x << "," << PointC.y << "," << PointC.z << endl;
+
+		//cout << endl;
 	}
 }
 void Plane_BSP::UpdatePlane_BSP(vector<string> registerKeysBSP)
@@ -68,73 +71,41 @@ void Plane_BSP::UpdatePlane_BSP(vector<string> registerKeysBSP)
 		}
 	}
 
-	if (myPlane == NULL || currentCameraCompare == NULL || ObjectsInGame.size() <= 0)
+	if (myPlane == NULL|| ObjectsInGame.size() <= 0)
 		return;
-
-	//cout << currentCameraCompare->transform.position.x <<" "<< currentCameraCompare->transform.position.y <<" "<< currentCameraCompare->transform.position.z << endl;
-	if (myPlane->getSide(currentCameraCompare->transform.position)) 
-	{
-		currentCameraPosition = CurrentCameraPosition::RightPlane;
-	}
-	else
-	{
-		currentCameraPosition = CurrentCameraPosition::LeftPlane;
-	}
-
-	//Dibujo los objetos en funcion de que lado esta la camara
-	//cout << currentCameraPosition << endl;
-	switch (currentCameraPosition)
-	{
-		
-	case CurrentCameraPosition::LeftPlane:
-		//Si la camara esta del lado izquierdo dibujo los objetos que se encuentran en el vector ObjectsLeftPlane y 
-		//dejo de dibujar los objetos que se encuentran en el vector ObjectsRightPlane.
-
-		for (int i = 0; i < ObjectsLeftPlane.size(); i++) 
-		{
-			ObjectsLeftPlane[i]->SetIsAlive(true);
-		}
-
-		for (int i = 0; i < ObjectsRightPlane.size(); i++) 
-		{
-			ObjectsRightPlane[i]->SetIsAlive(false);
-		}
-
-		break;
-	case CurrentCameraPosition::RightPlane:
-		//Si la camara esta del lado derecho dibujo los objetos que se encuentran en el vector ObjectsRightPlane y
-		//dejo de dibujar los objetos que se encuentran en el vector ObjectsLeftPlane.
-
-		for (int i = 0; i < ObjectsLeftPlane.size(); i++)
-		{
-			ObjectsLeftPlane[i]->SetIsAlive(false);
-		}
-
-		for (int i = 0; i < ObjectsRightPlane.size(); i++)
-		{
-			ObjectsRightPlane[i]->SetIsAlive(true);
-		}
-
-		break;
-	}
-	
-	//Limpio los vectores ObjectsLeftPlane y ObjectsRightPlane
-	ObjectsLeftPlane.clear();
-	ObjectsRightPlane.clear();
 
 	//Checkeo de que lados estan los objetos y dependiendo de ello los pongo en un vector o en el otro
 
-	for (int i = 0; i < ObjectsInGame.size(); i++) 
+	for (int i = 0; i < ObjectsInGame.size(); i++)
 	{
-		if(myPlane->getSide(ObjectsInGame[i]->transform.position))
+		//cout << planeAttach->GetName() <<" "<< myPlane->getSide(ObjectsInGame[i]->transform.globalPosition) << endl;
+		if (myPlane->getSide(ObjectsInGame[i]->transform.globalPosition))
 		{
-			ObjectsRightPlane.push_back(ObjectsInGame[i]);
+			ObjectsPositivePlane.push_back(ObjectsInGame[i]);
 		}
 		else
 		{
-			ObjectsLeftPlane.push_back(ObjectsInGame[i]);
+			ObjectsNegativePlane.push_back(ObjectsInGame[i]);
 		}
 	}
+	
+
+	for (int i = 0; i < ObjectsNegativePlane.size(); i++)
+	{
+		ObjectsNegativePlane[i]->SetIsAlive(false);
+	}
+
+	for (int i = 0; i < ObjectsPositivePlane.size(); i++)
+	{
+		ObjectsPositivePlane[i]->SetIsAlive(true);
+	}
+	
+	
+	//Limpio los vectores ObjectsLeftPlane y ObjectsRightPlane
+	ObjectsNegativePlane.clear();
+	ObjectsPositivePlane.clear();
+
+
 }
 void Plane_BSP::RemoveItemObjectsInGame(int index)
 {
