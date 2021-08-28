@@ -13,10 +13,10 @@ BSP_Manager::~BSP_Manager()
 {
 	for (int i = 0; i < Planes_BSP.size(); i++) 
 	{
-		if (Planes_BSP[i] != NULL && Planes_BSP[i] != nullptr) 
+		if (Planes_BSP[registerKeysBSP[i]] != NULL && Planes_BSP[registerKeysBSP[i]] != nullptr)
 		{
-			delete Planes_BSP[i];
-			Planes_BSP[i] = NULL;
+			delete Planes_BSP[registerKeysBSP[i]];
+			Planes_BSP[registerKeysBSP[i]] = NULL;
 		}
 	}
 }
@@ -28,7 +28,10 @@ string BSP_Manager::GetKeyBSP()
 
 void BSP_Manager::SettingDataLastPlaneBSP(Entity * planeAttach)
 {
-	Planes_BSP[Planes_BSP.size() - 1]->SetPlaneAttach(planeAttach);
+	auto isFoundElementMap = Planes_BSP.find(planeAttach->GetName());
+
+	if(isFoundElementMap != Planes_BSP.end())
+		Planes_BSP[planeAttach->GetName()]->SetPlaneAttach(planeAttach);
 }
 
 void BSP_Manager::UpdateKeyBSP_Plane(string newKey)
@@ -37,24 +40,21 @@ void BSP_Manager::UpdateKeyBSP_Plane(string newKey)
 	registerKeysBSP.push_back(keyBSP);
 }
 
-void BSP_Manager::AddPlane_BSP(Plane_BSP * newItem, string currentKey)
+bool BSP_Manager::AddPlane_BSP(Plane_BSP * newItem)
 {
-	bool repeatItem = false;
-	for (int i = 0; i < registerKeysBSP.size(); i++) 
-	{
-		if (currentKey.c_str() == registerKeysBSP[i].c_str()) 
-		{
-			repeatItem = true;
-		}
-	}
-
-	if (repeatItem)
-		return;
+	auto isFoundElementMap = Planes_BSP.find(keyBSP);
 	
+	if (isFoundElementMap != Planes_BSP.end())
+		return false;
+	
+	Planes_BSP.insert(std::make_pair(keyBSP, newItem));
+
 	keyBSP.clear();
 	keyBSP = auxKeyBSP;
 	UpdateKeyBSP_Plane(keyBSP);
-	Planes_BSP.push_back(newItem);
+	
+	return true;
+
 }
 
 void BSP_Manager::ClearPlanes_BSP()
@@ -62,44 +62,43 @@ void BSP_Manager::ClearPlanes_BSP()
 	Planes_BSP.clear();
 }
 
-void BSP_Manager::RemovePlane_BSP(Plane_BSP * itemRemove)
+void BSP_Manager::RemovePlane_BSP(string keyRemovePlane)
 {
-	int index = -1;
-	for (int i = 0; i < Planes_BSP.size(); i++) 
-	{
-		if (Planes_BSP[i] == itemRemove) 
-		{
-			index = i;
-			i = Planes_BSP.size();
-		}
-	}
+	auto isFoundElementMap = Planes_BSP.find(keyRemovePlane);
 
-	if (index != -1) 
-		Planes_BSP.erase(Planes_BSP.begin() + index);
+	if (isFoundElementMap == Planes_BSP.end())
+		return;
+	
+	Planes_BSP.erase(isFoundElementMap);
 }
 
 void BSP_Manager::ShowPlanesAttachPlanes_BSP()
 {
+	cout << "---Planes_BSP---" << endl;
 	for (int i = 0; i < Planes_BSP.size(); i++) 
 	{
-		std::cout <<"Plane_BSP"<<i<< Planes_BSP[i]->GetPlaneAttach()->GetName()<<std::endl;
+		std::cout <<"Element "<<i<<" "<<Planes_BSP[registerKeysBSP[i]]->GetPlaneAttach()->GetName()<<std::endl;
 	}
+	cout << "Cantidad de elementos: " << Planes_BSP.size()<<endl;
+}
+
+void BSP_Manager::ShowRegisterKeyBSP()
+{
+	cout << "---RegisterKeysBSP---" << endl;
+	for (int i = 0; i < registerKeysBSP.size(); i++) 
+	{
+		std::cout << "Element " << i << " " << registerKeysBSP[i]<< std::endl;
+	}
+	cout << "Cantidad de elementos: " << registerKeysBSP.size() << endl;
 }
 
 void BSP_Manager::UpdateBSP_Manager(vector<Entity*> ObjectsInBSP)
 {
-	//cout << Planes_BSP.size() << endl;
 	for (int i = 0; i < Planes_BSP.size(); i++) 
 	{
-		if (Planes_BSP[i] != NULL && Planes_BSP[i] != nullptr) {
-			Planes_BSP[i]->ObjectsInGame = ObjectsInBSP;
-			Planes_BSP[i]->UpdatePlane_BSP(registerKeysBSP);
-			//cout << "PLane_BSP" << i << endl;
-			//cout << Planes_BSP[i]->GetPlaneAttach()->transform.globalPosition.x
-			//	<< ", " << Planes_BSP[i]->GetPlaneAttach()->transform.globalPosition.y
-			//	<< ", " << Planes_BSP[i]->GetPlaneAttach()->transform.globalPosition.z << endl;
+		if (Planes_BSP[registerKeysBSP[i]] != NULL && Planes_BSP[registerKeysBSP[i]] != nullptr) {
+			Planes_BSP[registerKeysBSP[i]]->ObjectsInGame = ObjectsInBSP;
+			Planes_BSP[registerKeysBSP[i]]->UpdatePlane_BSP(registerKeysBSP);
 		}
 	}
-	//cin.get();
-	//system("cls");
 }

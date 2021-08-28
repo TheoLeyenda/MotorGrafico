@@ -5,7 +5,7 @@
 #include "Entity.h"
 #include <string>
 #include <string.h>
-
+#include <map>
 class Plane_BSP;
 
 class ENGINE_API BSP_Manager
@@ -17,16 +17,16 @@ private:
 	Entity* currentCamera = NULL;
 	vector<string> registerKeysBSP;
 public:
-	vector<Plane_BSP*> Planes_BSP; // CAMBIAR ESTO POR UN MAPA DE PLANOS
+	map<string,Plane_BSP*> Planes_BSP; // CAMBIAR ESTO POR UN MAPA DE PLANOS
 	BSP_Manager(Entity* camera);
 	~BSP_Manager();
 	string GetKeyBSP();
 	void SettingDataLastPlaneBSP(Entity* planeAttach);
-	void AddPlane_BSP(Plane_BSP* newItem, string currentKey);
+	bool AddPlane_BSP(Plane_BSP* newItem);
 	void ClearPlanes_BSP();
-	void RemovePlane_BSP(Plane_BSP* itemRemove);
+	void RemovePlane_BSP(string keyRemovePlane);
 	void ShowPlanesAttachPlanes_BSP();
-
+	void ShowRegisterKeyBSP();
 	void UpdateBSP_Manager(vector<Entity*> ObjectsInBSP);
 };
 

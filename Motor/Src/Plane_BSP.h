@@ -22,8 +22,12 @@ public:
 	vector<Entity*> ObjectsNegativePlane;
 	vector<Entity*> ObjectsPositivePlane;
 
+	void SetName(string value) { name = value; }
+	string GetName() { return name; }
+
 	void UpdatePlane_BSP(vector<string> registerKeysBSP);
 private:
+	string name;
 	void RemoveItemObjectsInGame(int index);
 	Entity* planeAttach = NULL;
 	MyPlane* myPlane = NULL; // Con esto saco la matematica del plano
