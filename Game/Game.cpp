@@ -107,7 +107,7 @@ void Game::InitGame()
 	modelOBJ->SetPosition(660, 12, -16);
 	modelOBJ->SetRotationY(-0.5);
 	modelOBJ->SetMaterial(goldMaterial);
-	//AddObjectInDenugGame(modelOBJ);
+	AddObjectInDenugGame(modelOBJ);
 
 	bobFBX = new Model(render);
 	bobFBX->LoadModel("res/modelos/Bob.fbx", " ", bsp_manager);
@@ -154,11 +154,11 @@ void Game::InitGame()
 	entity = bobFBX->GetEntityNode("Plane_BSP1");
 	entity->SetPosition(18.2329f, -8.60411f, 6.35373f);
 
-	entity = bobFBX->GetEntityNode("Plane_BSP2");
+	/*entity = bobFBX->GetEntityNode("Plane_BSP2");
 	entity->SetPosition(-14.2233f, 13.2296f, 6.35373f);
 
 	entity = bobFBX->GetEntityNode("Plane_BSP3");
-	entity->SetPosition(1.0468f, 1.05765f, 13.8085f);
+	entity->SetPosition(1.0468f, 1.05765f, 13.8085f);*/
 
 	if (thirdPerson)
 	{
@@ -179,7 +179,7 @@ void Game::InitGame()
 	}
 	SetUseDebugWindows(true);
 
-	SetEnableAABB_DebugGame(false);
+	SetEnableAABB_DebugGame(true);
 }
 
 void Game::UpdateGame(Windows *_window, Renderer *_render, Input *_input)

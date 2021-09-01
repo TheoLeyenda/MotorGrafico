@@ -44,15 +44,6 @@ void Plane_BSP::GeneratePlane()
 			myPlane = new MyPlane(PointA, PointB, PointC);
 		else
 			myPlane->set3Points(PointA, PointB, PointC);
-
-		//cout << "PointA" << endl;
-		//cout << PointA.x << "," << PointA.y << "," << PointC.z << endl;
-		//cout << "PointB" << endl;
-		//cout << PointB.x << "," << PointB.y << "," << PointB.z << endl;
-		//cout << "PointC" << endl;
-		//cout << PointC.x << "," << PointC.y << "," << PointC.z << endl;
-
-		//cout << endl;
 	}
 }
 void Plane_BSP::UpdatePlane_BSP(vector<string> registerKeysBSP)
