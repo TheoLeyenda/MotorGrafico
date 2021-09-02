@@ -32,25 +32,25 @@ Model::~Model()
 
 void Model::LoadModel(const string & filePath, const string & texturePath, BSP_Manager* bsp_manager)
 {
-	if (modelImporter != NULL) 
+	if (modelImporter != NULL)
 	{
-		rootNode = modelImporter->LoadModel(modelMeshes, filePath, texturePath, rootNode ,modelChildrens, textureList ,renderer, bsp_manager);
+		rootNode = modelImporter->LoadModel(modelMeshes, filePath, texturePath, rootNode, modelChildrens, textureList, renderer, bsp_manager);
 	}
 
 	if (rootNode != NULL) {
 		AddChildren(rootNode);
 		rootNode->_textureList = textureList;
 	}
-	
+
 	for (int i = 0; i < modelChildrens.size(); i++)
 	{
-		if(modelChildrens[i] != NULL)
+		if (modelChildrens[i] != NULL)
 			modelChildrens[i]->_textureList = textureList;
 	}
 
 	vector<glm::vec3> _dataXYZ;
 
-	for (int i = 0; i < modelMeshes.size(); i++) 
+	for (int i = 0; i < modelMeshes.size(); i++)
 	{
 		for (int j = 0; j < modelMeshes[i]->meshXYZVertices.size(); j++)
 		{
@@ -58,8 +58,11 @@ void Model::LoadModel(const string & filePath, const string & texturePath, BSP_M
 		}
 	}
 	//cout << GetName() << ": " << modelMeshes.size()<< " meshes" <<endl;
-	axisAlignedBoundingBox->SetVerticesColliders(axisAlignedBoundingBox->GenerateAxisAlignedBoundingBoxPos(_dataXYZ),
-		axisAlignedBoundingBox->GenerateAxisAlignedBoundingBoxCol());
+	if (axisAlignedBoundingBox != NULL) 
+	{
+		axisAlignedBoundingBox->SetVerticesColliders(axisAlignedBoundingBox->GenerateAxisAlignedBoundingBoxPos(_dataXYZ),
+			axisAlignedBoundingBox->GenerateAxisAlignedBoundingBoxCol());
+	}
 }
 
 void Model::Draw(bool & wireFrameActive)

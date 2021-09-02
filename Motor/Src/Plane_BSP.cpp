@@ -35,14 +35,17 @@ void Plane_BSP::GeneratePlane()
 	cout << "vertex_min_x: " << vertexPlaneBSP.vertex_min_x << endl;
 	cout << "vertex_min_y: " << vertexPlaneBSP.vertex_min_y << endl;
 	cout << "vertex_min_z: " << vertexPlaneBSP.vertex_min_z << endl;
-
+	cout << "----------------------------------------------" << endl;
 	//EL QUE VALGA 0 ES LA NORMAL.
 
 	if (planeAttach != NULL) 
 	{
-		glm::vec3 PointA, PointB, PointC = glm::vec3(0.0f);
-		if (vertexPlaneBSP.vertex_min_x == 0 && vertexPlaneBSP.vertex_max_x == 0)
+		glm::vec3 PointA = glm::vec3(0.0f); 
+		glm::vec3 PointB = glm::vec3(0.0f);
+		glm::vec3 PointC = glm::vec3(0.0f);
+		if ((int)vertexPlaneBSP.vertex_min_x == 0 && (int)vertexPlaneBSP.vertex_max_x == 0)
 		{
+			cout << "ENTRE AL PLANO EJE X" << endl;
 			PointA = glm::vec3(planeAttach->transform.globalPosition.x
 				, planeAttach->transform.globalPosition.y + (planeAttach->transform.scale.y)
 				, planeAttach->transform.globalPosition.z);
@@ -55,8 +58,9 @@ void Plane_BSP::GeneratePlane()
 				, planeAttach->transform.globalPosition.y
 				, planeAttach->transform.globalPosition.z);
 		}
-		else if(vertexPlaneBSP.vertex_min_y == 0 && vertexPlaneBSP.vertex_max_y == 0)
+		else if((int)vertexPlaneBSP.vertex_min_y == 0 && (int)vertexPlaneBSP.vertex_max_y == 0)
 		{
+			cout << "ENTRE AL PLANO EJE Z" << endl;
 			PointA = glm::vec3(planeAttach->transform.globalPosition.x + (planeAttach->transform.scale.x)
 				, planeAttach->transform.globalPosition.y
 				, planeAttach->transform.globalPosition.z);
@@ -69,8 +73,9 @@ void Plane_BSP::GeneratePlane()
 				, planeAttach->transform.globalPosition.y
 				, planeAttach->transform.globalPosition.z);
 		}
-		else if (vertexPlaneBSP.vertex_min_z == 0 && vertexPlaneBSP.vertex_max_z == 0) 
+		else if ((int)vertexPlaneBSP.vertex_min_z == 0 && (int)vertexPlaneBSP.vertex_max_z == 0)
 		{
+			cout << "ENTRE AL PLANO EJE Y" << endl;
 			PointA = glm::vec3(planeAttach->transform.globalPosition.x + (planeAttach->transform.scale.x)
 				, planeAttach->transform.globalPosition.y
 				, planeAttach->transform.globalPosition.z);
@@ -85,6 +90,7 @@ void Plane_BSP::GeneratePlane()
 		}
 		
 
+
 		if (myPlane == NULL)
 			myPlane = new MyPlane(PointA, PointB, PointC);
 		else
@@ -95,6 +101,12 @@ void Plane_BSP::GeneratePlane()
 }
 void Plane_BSP::UpdatePlane_BSP(vector<string> registerKeysBSP)
 {
+	if (planeAttach != NULL) 
+	{
+		if (!planeAttach->GetIsAlive())
+			return;
+	}
+
 	GeneratePlane();
 
 	//Filtro otros si hay otro plano BSP en mi vector de objetos y lo remuevo

@@ -287,6 +287,7 @@ void AxisAlignedBoundingBox::UpdateInternalDataBoundingBox(InternalData & entity
 
 void AxisAlignedBoundingBox::SetVerticesColliders(glm::vec3 values[countVerticesCollider], glm::vec4 colors[countVerticesCollider])
 {
+
 	for (int i = 0; i < countVerticesCollider; i++)
 	{
 		verticesColliderPositions[i].x = values[i].x;

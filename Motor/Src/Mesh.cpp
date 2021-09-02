@@ -89,9 +89,11 @@ void Mesh::CreateMesh(float * vertices, unsigned int * indices, unsigned int num
 
 	axisAlignedBoundingBox->AttachEntity(internalData, transform);
 
-	axisAlignedBoundingBox->SetVerticesColliders(axisAlignedBoundingBox->GenerateAxisAlignedBoundingBoxPos(meshXYZVertices),
-		axisAlignedBoundingBox->GenerateAxisAlignedBoundingBoxCol());
-
+	if (axisAlignedBoundingBox != NULL) 
+	{
+		axisAlignedBoundingBox->SetVerticesColliders(axisAlignedBoundingBox->GenerateAxisAlignedBoundingBoxPos(meshXYZVertices),
+			axisAlignedBoundingBox->GenerateAxisAlignedBoundingBoxCol());
+	}
 	UnbindBuffers();
 }
 
