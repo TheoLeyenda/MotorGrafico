@@ -55,6 +55,13 @@ ModelNode* ModelImporter::LoadModel(vector<Mesh*> &modelMeshes
 		Plane_BSP* p = new Plane_BSP();
 
 		p->SetName(name);
+		p->vertexPlaneBSP.vertex_max_x = vertexsPlanesBSP[indexCurrentPlane].vertex_max_x;
+		p->vertexPlaneBSP.vertex_max_y = vertexsPlanesBSP[indexCurrentPlane].vertex_max_y;
+		p->vertexPlaneBSP.vertex_max_z = vertexsPlanesBSP[indexCurrentPlane].vertex_max_z;
+		p->vertexPlaneBSP.vertex_min_x = vertexsPlanesBSP[indexCurrentPlane].vertex_min_x;
+		p->vertexPlaneBSP.vertex_min_y = vertexsPlanesBSP[indexCurrentPlane].vertex_min_y;
+		p->vertexPlaneBSP.vertex_min_z = vertexsPlanesBSP[indexCurrentPlane].vertex_min_z;
+		indexCurrentPlane++;
 
 		if(bsp_manager->AddPlane_BSP(p))
 			bsp_manager->SettingDataLastPlaneBSP(rootNode);
@@ -70,6 +77,15 @@ ModelNode* ModelImporter::LoadModel(vector<Mesh*> &modelMeshes
 				Plane_BSP* p = new Plane_BSP();
 
 				p->SetName(name);
+
+				p->vertexPlaneBSP.vertex_max_x = vertexsPlanesBSP[indexCurrentPlane].vertex_max_x;
+				p->vertexPlaneBSP.vertex_max_y = vertexsPlanesBSP[indexCurrentPlane].vertex_max_y;
+				p->vertexPlaneBSP.vertex_max_z = vertexsPlanesBSP[indexCurrentPlane].vertex_max_z;
+				p->vertexPlaneBSP.vertex_min_x = vertexsPlanesBSP[indexCurrentPlane].vertex_min_x;
+				p->vertexPlaneBSP.vertex_min_y = vertexsPlanesBSP[indexCurrentPlane].vertex_min_y;
+				p->vertexPlaneBSP.vertex_min_z = vertexsPlanesBSP[indexCurrentPlane].vertex_min_z;
+				indexCurrentPlane++;
+
 				if (bsp_manager->AddPlane_BSP(p))
 					bsp_manager->SettingDataLastPlaneBSP(childrens[i]);
 			}
@@ -143,9 +159,24 @@ void ModelImporter::LoadMesh(vector<Mesh*> &modelMeshes, aiMesh* mesh, const aiS
 	Mesh* newMesh = new Mesh(render);
 	vector<float> vertices;
 	vector<unsigned int> indices;
+	
+
+	string key = "Plane_BSP";
+	key = key + to_string(currentPlane);
+
+	vector<float> valuesX;
+	vector<float> valuesY;
+	vector<float> valuesZ;
 
 	for (int i = 0; i < mesh->mNumVertices; i++)
 	{
+		if (nodeMesh->GetName() == key.c_str())
+		{
+			valuesX.push_back(mesh->mVertices[i].x);
+			valuesY.push_back(mesh->mVertices[i].y);
+			valuesZ.push_back(mesh->mVertices[i].z);
+		}
+
 		vertices.insert(vertices.end(), { mesh->mVertices[i].x,mesh->mVertices[i].y,mesh->mVertices[i].z });
 		newMesh->meshXYZVertices.push_back(glm::vec3(mesh->mVertices[i].x, mesh->mVertices[i].y, mesh->mVertices[i].z));
 		if (mesh->mTextureCoords[0])
@@ -158,6 +189,17 @@ void ModelImporter::LoadMesh(vector<Mesh*> &modelMeshes, aiMesh* mesh, const aiS
 		vertices.insert(vertices.end(), { mesh->mNormals[i].x,mesh->mNormals[i].y,mesh->mNormals[i].z });
 	}
 
+	cout << nodeMesh->GetName() << " == " << key.c_str() << endl;
+	if (nodeMesh->GetName() == key.c_str())
+	{
+		vertexsPlanesBSP.push_back(VertexsPlaneBSP(FindMaxValue(valuesX), FindMinValue(valuesX)
+			, FindMaxValue(valuesY), FindMinValue(valuesY)
+			, FindMaxValue(valuesZ), FindMinValue(valuesZ)));
+		key.clear();
+		key = "Plane_BSP";
+		currentPlane++;
+		key = key + to_string(currentPlane);
+	}
 	for (int i = 0; i < mesh->mNumFaces; i++)
 	{
 		aiFace face = mesh->mFaces[i];
@@ -232,4 +274,40 @@ void ModelImporter::ClearAuxiliarNodesOldModel()
 
 void ModelImporter::LoadTextureFromFile(aiTextureType type)
 {
+}
+
+float ModelImporter::FindMinValue(vector<float> values)
+{
+	if (values.size() <= 0)
+		return -1;
+
+	float min = values[0];
+
+	for (int i = 0; i < values.size(); i++) 
+	{
+		if (values[i] < min) 
+		{
+			min = values[i];
+		}
+	}
+
+	return min;
+}
+
+float ModelImporter::FindMaxValue(vector<float> values)
+{
+	if (values.size() <= 0)
+		return -1;
+
+	float max = values[0];
+
+	for (int i = 0; i < values.size(); i++)
+	{
+		if (values[i] > max)
+		{
+			max = values[i];
+		}
+	}
+
+	return max;
 }

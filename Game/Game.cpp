@@ -252,6 +252,9 @@ void Game::UpdateGame(Windows *_window, Renderer *_render, Input *_input)
 	if (modelOBJ != NULL)
 		modelOBJ->Draw(motorasoGui->GetIfWireFrameIsActive());
 
+
+	cout << modelOBJ->transform.globalPosition.x << "," << modelOBJ->transform.globalPosition.y << "," << modelOBJ->transform.globalPosition.z << endl;
+
 	if (bobFBX != NULL)
 		bobFBX->Draw(motorasoGui->GetIfWireFrameIsActive());
 

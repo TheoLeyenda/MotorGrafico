@@ -30,8 +30,10 @@ void BSP_Manager::SettingDataLastPlaneBSP(Entity * planeAttach)
 {
 	auto isFoundElementMap = Planes_BSP.find(planeAttach->GetName());
 
-	if(isFoundElementMap != Planes_BSP.end())
+	if (isFoundElementMap != Planes_BSP.end()) {
 		Planes_BSP[planeAttach->GetName()]->SetPlaneAttach(planeAttach);
+		Planes_BSP[planeAttach->GetName()]->SetCurrentCameraCompare(currentCamera);
+	}
 }
 
 void BSP_Manager::UpdateKeyBSP_Plane(string newKey)
