@@ -155,11 +155,11 @@ void Game::InitGame()
 	entity->SetPosition(1.0468f, 1.05765f, 13.8085f);
 
 	entity = bobFBX->GetEntityNode("Plane_BSP2");
-	//entity->SetPosition(1.0468f, 1.05765f, 13.8085f);
+	entity->SetPosition(-11.466001f, 0.0f, 0.0f);
 
 
 	entity = bobFBX->GetEntityNode("Plane_BSP3");
-	//entity->SetPosition(1.0468f, 1.05765f, 13.8085f);
+	entity->SetPosition(2.408f, 10.827001f, 0.0f);
 
 
 	if (thirdPerson)
