@@ -36,21 +36,54 @@ void Plane_BSP::GeneratePlane()
 	cout << "vertex_min_y: " << vertexPlaneBSP.vertex_min_y << endl;
 	cout << "vertex_min_z: " << vertexPlaneBSP.vertex_min_z << endl;
 
+	//EL QUE VALGA 0 ES LA NORMAL.
+
 	if (planeAttach != NULL) 
 	{
-		glm::vec3 PointA, PointB, PointC;
+		glm::vec3 PointA, PointB, PointC = glm::vec3(0.0f);
+		if (vertexPlaneBSP.vertex_min_x == 0 && vertexPlaneBSP.vertex_max_x == 0)
+		{
+			PointA = glm::vec3(planeAttach->transform.globalPosition.x
+				, planeAttach->transform.globalPosition.y + (planeAttach->transform.scale.y)
+				, planeAttach->transform.globalPosition.z);
 
-		PointA = glm::vec3(planeAttach->transform.globalPosition.x + (planeAttach->transform.scale.x)
-			, planeAttach->transform.globalPosition.y
-			, planeAttach->transform.globalPosition.z);
+			PointB = glm::vec3(planeAttach->transform.globalPosition.x
+				, planeAttach->transform.globalPosition.y
+				, planeAttach->transform.globalPosition.z + (planeAttach->transform.scale.z));
 
-		PointB = glm::vec3(planeAttach->transform.globalPosition.x
-			, planeAttach->transform.globalPosition.y
-			, planeAttach->transform.globalPosition.z + (planeAttach->transform.scale.z));
+			PointC = glm::vec3(planeAttach->transform.globalPosition.x
+				, planeAttach->transform.globalPosition.y
+				, planeAttach->transform.globalPosition.z);
+		}
+		else if(vertexPlaneBSP.vertex_min_y == 0 && vertexPlaneBSP.vertex_max_y == 0)
+		{
+			PointA = glm::vec3(planeAttach->transform.globalPosition.x + (planeAttach->transform.scale.x)
+				, planeAttach->transform.globalPosition.y
+				, planeAttach->transform.globalPosition.z);
 
-		PointC = glm::vec3(planeAttach->transform.globalPosition.x
-			, planeAttach->transform.globalPosition.y
-			, planeAttach->transform.globalPosition.z );
+			PointB = glm::vec3(planeAttach->transform.globalPosition.x
+				, planeAttach->transform.globalPosition.y + (planeAttach->transform.scale.y)
+				, planeAttach->transform.globalPosition.z);
+
+			PointC = glm::vec3(planeAttach->transform.globalPosition.x
+				, planeAttach->transform.globalPosition.y
+				, planeAttach->transform.globalPosition.z);
+		}
+		else if (vertexPlaneBSP.vertex_min_z == 0 && vertexPlaneBSP.vertex_max_z == 0) 
+		{
+			PointA = glm::vec3(planeAttach->transform.globalPosition.x + (planeAttach->transform.scale.x)
+				, planeAttach->transform.globalPosition.y
+				, planeAttach->transform.globalPosition.z);
+
+			PointB = glm::vec3(planeAttach->transform.globalPosition.x
+				, planeAttach->transform.globalPosition.y
+				, planeAttach->transform.globalPosition.z + (planeAttach->transform.scale.z));
+
+			PointC = glm::vec3(planeAttach->transform.globalPosition.x
+				, planeAttach->transform.globalPosition.y
+				, planeAttach->transform.globalPosition.z);
+		}
+		
 
 		if (myPlane == NULL)
 			myPlane = new MyPlane(PointA, PointB, PointC);
