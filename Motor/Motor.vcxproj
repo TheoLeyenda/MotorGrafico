@@ -46,6 +46,7 @@
     <ClInclude Include="Src\ModelNode.h" />
     <ClInclude Include="Src\MotorasoGui.h" />
     <ClInclude Include="Src\Plane.h" />
+    <ClInclude Include="Src\PlaneBSP.h" />
     <ClInclude Include="Src\Primitive3D.h" />
     <ClInclude Include="Src\MathLibrary.h" />
     <ClInclude Include="Src\PrivateClass\Export.h" />
@@ -83,6 +84,7 @@
     <ClCompile Include="Src\ModelNode.cpp" />
     <ClCompile Include="Src\MotorasoGui.cpp" />
     <ClCompile Include="Src\Plane.cpp" />
+    <ClCompile Include="Src\PlaneBSP.cpp" />
     <ClCompile Include="Src\Primitive3D.cpp" />
     <ClCompile Include="Src\MathLibrary.cpp" />
     <ClCompile Include="Src\Renderer.cpp" />

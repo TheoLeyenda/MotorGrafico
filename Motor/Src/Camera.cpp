@@ -5,6 +5,8 @@
 #include "Material.h"
 #include "AxisAlignedBoundingBox.h"
 
+#include "CollisionManager.h"
+
 Camera::Camera(Renderer* _render, TypeProjectionCamera _typeProjectionCamera) : Entity(_render)
 {
 	_MVP.view = glm::mat4(1.0f);
@@ -168,6 +170,14 @@ void Camera::updateFrustrumPlanes()
 	}
 }
 
+void Camera::renderThingsOnScene(CollisionManager* frustrumCheck, vector<Entity*> objectsInScene)
+{
+	for (int i = 0; i < objectsInScene.size(); i++)
+	{
+		checkObjectHerarchy(frustrumCheck, objectsInScene[i]);
+	}
+}
+
 void Camera::SetEnableDrawAABB(bool value)
 {
 	if (axisAlignedBoundingBox != NULL)
@@ -196,7 +206,9 @@ void Camera::UseCamera(Shader& shader, glm::mat4 trsCamera)
 		if (_AABBPerspective != NULL)
 		{
 			_AABBPerspective->UpdateInternalDataBoundingBox(internalData, transform);
-			_AABBPerspective->Draw(_AABBPerspective->GetEnableDraw());
+			//_AABBPerspective->Draw(_AABBPerspective->GetEnableDraw());
+			bool disable = false;
+			_AABBPerspective->Draw(disable);
 		}
 		break;
 	case Ortho:
@@ -246,6 +258,39 @@ void Camera::CalculateThirdPersonPositionCamera()
 	UpdateCamera();
 }
 
+void Camera::checkObjectHerarchy(CollisionManager* frustrumCheck, Entity * object)
+{
+	if (object->GetIsInmortal())
+		return;
+
+	if(!frustrumCheck->CheckEntitiesOnFrustrum(this, object))
+		disableChildrenAndParent(object);
+	else {
+		object->SetIsAlive(true);
+		for (int i = 0; i < object->GetChildrens().size(); i++)
+		{
+			checkObjectHerarchy(frustrumCheck, object->GetChildrens()[i]);
+		}
+	}
+}
+
+void Camera::disableChildrenAndParent(Entity * parent)
+{
+	parent->SetIsAlive(false);
+	//for (Entity* child : parent->GetChildrens())
+	//{
+	//	disableChildrenAndParent(child);
+	//}
+}
+
+void Camera::enableChildrenAndParent(Entity * parent)
+{
+	parent->SetIsAlive(true);
+	for (Entity* child : parent->GetChildrens())
+	{
+		enableChildrenAndParent(child);
+	}
+}
 
 float Camera::CalculateVerticalDistanceOfTarget() 
 {
@@ -350,17 +395,17 @@ void Camera::SetFrustrumCulling()
 	float nearDist = ((transform.position.z - projectionDataPerspective.near) / (projectionDataPerspective.FOV / projectionDataPerspective.aspect));
 	float farDist = ((transform.position.z - projectionDataPerspective.front) / (projectionDataPerspective.FOV / projectionDataPerspective.aspect));
 
-	float nearZ = (projectionDataPerspective.near - transform.position.z);
+	float nearZ = (transform.position.z);
 	float farZ =  (projectionDataPerspective.front - transform.position.z);
 
 	vector<glm::vec3> _dataXYZOrtho;
 	vector<glm::vec3> _dataXYZPerspective;
 
-	float nearMinX = 10;
-	float nearMaxX = 40;
+	//float nearMinX = -100;
+	//float nearMaxX =  400;
 
-	//float nearMinX = transform.position.x * (-nearDist);
-	//float nearMaxX = transform.position.x * (nearDist);
+	float nearMinX = transform.position.x * (-nearDist);
+	float nearMaxX = transform.position.x * (nearDist);
 	float nearMinY = transform.position.y * (-nearDist);
 	float nearMaxY = transform.position.y * (nearDist);
 	
@@ -402,13 +447,13 @@ void Camera::SetFrustrumCulling()
 	#pragma region PERSPECTIVE VIEW
 	
 	//0
-	_dataXYZPerspective.push_back(glm::vec3(nearMinX / 4, nearMaxY / 4, nearZ / 2));
+	_dataXYZPerspective.push_back(glm::vec3(nearMinX / 16, nearMaxY / 16, nearZ / 1.005f));
 	//1																  
-	_dataXYZPerspective.push_back(glm::vec3(nearMinX / 4, nearMinY / 4, nearZ / 2));
+	_dataXYZPerspective.push_back(glm::vec3(nearMinX / 16, nearMinY / 16, nearZ / 1.005));
 	//2																  
-	_dataXYZPerspective.push_back(glm::vec3(nearMaxX / 4, nearMinY / 4, nearZ / 2));
+	_dataXYZPerspective.push_back(glm::vec3(nearMaxX / 16, nearMinY / 16, nearZ / 1.005));
 	//3																  
-	_dataXYZPerspective.push_back(glm::vec3(nearMaxX / 4, nearMaxY / 4, nearZ / 2));
+	_dataXYZPerspective.push_back(glm::vec3(nearMaxX / 16, nearMaxY / 16, nearZ / 1.005));
 	//4
 	_dataXYZPerspective.push_back(glm::vec3(farMinX / 16, farMaxY / 16, farZ / 2));
 	//5

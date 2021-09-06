@@ -78,13 +78,15 @@ void Game::InitGame()
 	AddLight(Light::TypeLight::Spot, 1);
 	AddLight(Light::TypeLight::Point, 2);
 	AddLight(Light::TypeLight::Point, 6);
-
 	AddLight(Light::TypeLight::Directional, 0);
-	SetSettingsLightCustom(0, glm::vec3(0, 2, -6));
-	SetLightPosition(6, glm::vec3(100, -50, 0));
-	
 	AddLight(Light::TypeLight::Spot, 87);
-	SetLightPosition(87, glm::vec3(-50, -50, 0));
+
+	SetSettingsLightCustom(0, glm::vec3(0, 2, -6));
+	SetLightPosition(87, glm::vec3(225,300,600));
+	SetLightPosition(6, glm::vec3(-634,112,-118));
+	SetLightPosition(2, glm::vec3(1246,115,-70));
+	SetLightPosition(0, glm::vec3(300,-100,600));
+	SetLightPosition(1, glm::vec3(403,300,600));
 	
 	AddObjectInDenugGame(GetLight(1));
 	AddObjectInDenugGame(GetLight(2));
@@ -100,15 +102,39 @@ void Game::InitGame()
 
 	GetMyLightsID();
 
-	modelOBJ = new Model(render);
-	modelOBJ->LoadModel("res/modelos/source/alex.obj", "res/modelos/textures/");
-	modelOBJ->SetScale(50.0f, 50.0f, 50.0f);
-	modelOBJ->SetName("ALEX-MODEL_OBJ");
-	modelOBJ->SetPosition(660, 12, -16);
-	modelOBJ->SetRotationY(-0.5);
-	modelOBJ->SetMaterial(goldMaterial);
-	AddObjectInDenugGame(modelOBJ);
+	Entity* entityToMoveChild = NULL;
 
+	modelFBX = new Model(render);
+	modelFBX->LoadModel("res/modelos/RobotGraficos3.fbx","res/modelos/");
+	modelFBX->SetPosition(680,250,180);
+	modelFBX->SetScale(50,50,50);
+	modelFBX->SetRotationX(-90);
+	modelFBX->SetRotationZ(-90);
+	modelFBX->SetMaterial(textureMaterialForLight);
+	modelFBX->SetName("ROBOT_BSP_TESTING");
+	AddObjectInDenugGame(modelFBX);
+
+	entityToMoveChild = modelFBX->GetEntityNode("BSP_Plane1");
+	if (entityToMoveChild != NULL)
+		entityToMoveChild->SetPosition(-20,0 , 0);
+	
+	entityToMoveChild = modelFBX->GetEntityNode("BSP_Plane2");
+	if (entityToMoveChild != NULL)
+		entityToMoveChild->SetPosition( 0,-20, 0);
+	
+	entityToMoveChild = modelFBX->GetEntityNode("BSP_Plane3");
+	if (entityToMoveChild != NULL)
+		entityToMoveChild->SetPosition( 0, 20, 0);
+
+	//modelOBJ = new Model(render);
+	//modelOBJ->LoadModel("res/modelos/source/alex.obj", "res/modelos/textures/");
+	//modelOBJ->SetScale(50.0f, 50.0f, 50.0f);
+	//modelOBJ->SetName("ALEX-MODEL_OBJ");
+	//modelOBJ->SetPosition(660, 12, -16);
+	//modelOBJ->SetRotationY(-0.5);
+	//modelOBJ->SetMaterial(goldMaterial);
+	//AddObjectInDenugGame(modelOBJ);
+	//
 	//modelFBX = new Model(render);
 	//modelFBX->LoadModel("res/modelos/pochita.fbx", "res/modelos/");
 	//modelFBX->SetScale(50, 50, 50);
@@ -151,79 +177,79 @@ void Game::InitGame()
 	//modelSTL->SetName("DRAGON-MODEL_STL)");
 	//AddObjectInDenugGame(modelSTL);
 
-	pyramid = new Primitive3D(render,Pyramid);
-	pyramid->SetPosition(500.0f, 250.0f, -50.0f);
-	if(useSkybox)
-		pyramid->SetScale(5000.0f, 5000.0f, 5000.0f);
-	else
-		pyramid->SetScale(50.0f, 50.0f, 50.0f);
+	//pyramid = new Primitive3D(render,Pyramid);
+	//pyramid->SetPosition(500.0f, 250.0f, -50.0f);
+	//if(useSkybox)
+	//	pyramid->SetScale(5000.0f, 5000.0f, 5000.0f);
+	//else
+	//	pyramid->SetScale(50.0f, 50.0f, 50.0f);
+	//
+	//pyramid->SetRotationY(6.0f);
+	//pyramid->SetNewMaterial(silverMaterial);
+	//pyramid->SetNewMaterial(textureMaterialForLight);
+	//pyramid->LoadTexture("res/texturas/bokitaElMasGrandePapa.png", false);
+	//pyramid->SetName("pyramid");
+	//AddObjectInDenugGame(pyramid);
 
-	pyramid->SetRotationY(6.0f);
-	pyramid->SetNewMaterial(silverMaterial);
-	pyramid->SetNewMaterial(textureMaterialForLight);
-	pyramid->LoadTexture("res/texturas/bokitaElMasGrandePapa.png", false);
-	pyramid->SetName("pyramid");
-	AddObjectInDenugGame(pyramid);
-
-	cube = new Primitive3D(render, Cube);
-	cube->SetPosition(300, 100.0f, -50.0f);
-	cube->SetScale(50.0f, 50.0f, 50.0f);
-	cube->SetNewMaterial(greenRubberMaterial);
-	cube->SetName("cube");
-	AddObjectInDenugGame(cube);
-
-	cube2 = new Primitive3D(render, Cube);
-	cube2->SetPosition(420.0f, 100.0f, -50.0f);
-	cube2->SetScale(50.0f, 50.0f, 50.0f);
-	cube2->SetNewMaterial(goldMaterial);
-	cube2->SetName("cube2");
-	AddObjectInDenugGame(cube2);
-
-	cube3 = new Primitive3D(render, Cube);
-	cube3->SetPosition(360.0f, 250.0f, -50.0f);
-	cube3->SetScale(50.0f, 50.0f, 50.0f);
-	cube3->SetNewMaterial(textureMaterialDefault);
-	cube3->LoadTexture("res/texturas/Facharda.jpg", false);
-	cube3->SetName("cube3");
-	AddObjectInDenugGame(cube3);
+	//cube = new Primitive3D(render, Cube);
+	//cube->SetPosition(300, 100.0f, -50.0f);
+	//cube->SetScale(50.0f, 50.0f, 50.0f);
+	//cube->SetNewMaterial(greenRubberMaterial);
+	//cube->SetName("cube");
+	//AddObjectInDenugGame(cube);
+	//
+	//cube2 = new Primitive3D(render, Cube);
+	//cube2->SetPosition(420.0f, 100.0f, -50.0f);
+	//cube2->SetScale(50.0f, 50.0f, 50.0f);
+	//cube2->SetNewMaterial(goldMaterial);
+	//cube2->SetName("cube2");
+	//AddObjectInDenugGame(cube2);
+	//
+	//cube3 = new Primitive3D(render, Cube);
+	//cube3->SetPosition(360.0f, 250.0f, -50.0f);
+	//cube3->SetScale(50.0f, 50.0f, 50.0f);
+	//cube3->SetNewMaterial(textureMaterialDefault);
+	//cube3->LoadTexture("res/texturas/Facharda.jpg", false);
+	//cube3->SetName("cube3");
+	//AddObjectInDenugGame(cube3);
 
 	audio = new Audio(render);
 	audio->SetName("audio");
-	AddObjectInDenugGame(audio);
+	//AddObjectInDenugGame(audio);
 
-	shape1 = new Shape(render,TypeShape::QUAD, "res/texturas/Algun dia.png");
-	shape1->SetPosition(-190.0f, 200.0f, 10.0);
-	shape1->SetScale(120.0f, 120.0f, 120.0f);
-	shape1->SetName("Shape1");
-	AddObjectInDenugGame(shape1);
-	
-	shape2 = new Shape(render, TypeShape::TRIANGLE, "res/texturas/bokitaElMasGrandePapa.png");
-	shape2->SetPosition(-320.0f, 200.0f, 10.0);
-	shape2->SetScale(120.0f, 120.0f, 120.0f);
-	shape2->SetNewMaterial(textureMaterialForLight);
-	shape2->SetName("Shape2");
-	AddObjectInDenugGame(shape2);
-
-	shape3 = new Shape(render, TypeShape::QUAD);
-	shape3->SetPosition(-450.0f, 200.0f, 10.0);
-	shape3->SetScale(120.0f, 120.0f, 120.0f);
-	shape3->SetNewMaterial(mat_shape3);
-	shape3->SetName("Shape3");
-	AddObjectInDenugGame(shape3);
-
-	shape4 = new Shape(render, TypeShape::TRIANGLE);
-	shape4->SetPosition(-580.0f, 200.0f, 10.0);
-	shape4->SetScale(120.0f, 120.0f, 120.0f);
-	shape4->SetNewMaterial(mat_shape4);
-	shape4->SetName("Shape4");
-	AddObjectInDenugGame(shape4);
-
-	sprite = new Sprite(render,"res/texturas/nave.png", true);
-	sprite->SetPosition(-360.0f, 350.0f, 10.0);
-	sprite->SetScale(120.0f, 120.0f, 120.0f);
-	sprite->SetRotationZ(91.1f);
-	sprite->SetName("Sprite");
-	AddObjectInDenugGame(sprite);
+	//shape1 = new Shape(render,TypeShape::QUAD, "res/texturas/Algun dia.png");
+	//shape1->SetPosition(-190.0f, 200.0f, 10.0);
+	//shape1->SetScale(120.0f, 120.0f, 120.0f);
+	//shape1->SetName("Shape1");
+	//AddObjectInDenugGame(shape1);
+	//
+	//shape2 = new Shape(render, TypeShape::TRIANGLE, "res/texturas/bokitaElMasGrandePapa.png");
+	//shape2->SetPosition(-320.0f, 200.0f, 10.0);
+	//shape2->SetScale(120.0f, 120.0f, 120.0f);
+	//shape2->SetNewMaterial(textureMaterialForLight);
+	//shape2->SetName("Shape2");
+	//AddObjectInDenugGame(shape2);
+	//
+	//shape3 = new Shape(render, TypeShape::QUAD);
+	//shape3->SetPosition(-450.0f, 200.0f, 10.0);
+	//shape3->SetScale(120.0f, 120.0f, 120.0f);
+	//shape3->SetNewMaterial(mat_shape3);
+	//shape3->SetName("Shape3");
+	//AddObjectInDenugGame(shape3);
+	//
+	//shape4 = new Shape(render, TypeShape::TRIANGLE);
+	//shape4->SetPosition(-580.0f, 200.0f, 10.0);
+	//shape4->SetScale(120.0f, 120.0f, 120.0f);
+	//shape4->SetNewMaterial(mat_shape4);
+	//shape4->SetName("Shape4");
+	//AddObjectInDenugGame(shape4);
+	//
+	//sprite = new Sprite(render,"res/texturas/nave.png", true);
+	//sprite->SetPosition(-360.0f, 350.0f, 10.0);
+	//sprite->SetScale(120.0f, 120.0f, 120.0f);
+	//sprite->SetRotationZ(91.1f);
+	//sprite->SetName("Sprite");
+	//AddObjectInDenugGame(sprite);
 
 	//spriteAnimado = new Sprite(render, "res/texturas/PlayerShit.png", true);
 	//spriteAnimado->SetPosition(windows->GetSizeX() / 2, windows->GetSizeY() / 2, 0.0f);
@@ -303,14 +329,14 @@ void Game::InitGame()
 	SetUseDebugWindows(true);
 
 	//Armo arboles de jerarquias//
-	pyramid->AddChildren(shape1);
-	cube->AddChildren(cube2);
-	cube2->AddChildren(cube3);
-	cube3->AddChildren(sprite);
-	cube2->SetScale(1, 1, 1);
-	cube3->SetScale(1, 1, 1);
-	cube2->SetPosition(-3, 0, 0);
-	cube3->SetPosition(-3, 3, 0);
+	//pyramid->AddChildren(shape1);
+	//cube->AddChildren(cube2);
+	//cube2->AddChildren(cube3);
+	//cube3->AddChildren(sprite);
+	//cube2->SetScale(1, 1, 1);
+	//cube3->SetScale(1, 1, 1);
+	//cube2->SetPosition(-3, 0, 0);
+	//cube3->SetPosition(-3, 3, 0);
 
 	//cube->GetEntityNode(cube3->GetName())->SetIsAlive(false);
 	
@@ -321,7 +347,7 @@ void Game::InitGame()
 	//cierra1->AddChildren(cierra2);
 
 
-	cube->RemoveChildren(cube3, GetRootScene());
+	//cube->RemoveChildren(cube3, GetRootScene());
 
 	SetEnableAABB_DebugGame(true);
 
@@ -358,13 +384,13 @@ void Game::UpdateGame(Windows *_window, Renderer *_render, Input *_input)
 
 	if (input->GetKey(KeyBoard::KEY_RIGHT_SHIFT) && audio->GetIsPlayingAudio2D("res/audio/Dale Dale Boca.mp3"))
 	{
-		audio->StopAll();
+		if(audio != NULL)
+			audio->StopAll();
 	}
 	if (input->GetKey(KeyBoard::KEY_LEFT_SHIFT) && !audio->GetIsPlayingAudio2D("res/audio/Dale Dale Boca.mp3"))
 	{
-		audio->PlayAudio2D("res/audio/Dale Dale Boca.mp3", true);
-		RemoveObjectInDebugGame(cube);
-		AddObjectInDenugGame(cube2);
+		if (audio != NULL)
+			audio->PlayAudio2D("res/audio/Dale Dale Boca.mp3", true);
 	}
 
 	if (rotateBokitaSkybox && useSkybox)
@@ -421,11 +447,11 @@ void Game::UpdateGame(Windows *_window, Renderer *_render, Input *_input)
 	if (modelSTL != NULL)
 		modelSTL->Draw(motorasoGui->GetIfWireFrameIsActive());
 
-	if (collisionManager != NULL)
-	{
-		if (collisionManager->CheckEntitiesOnFrustrum(camera, cube))
-			cout << "ESTA ADENTRO DEL FRUSTRUM" << endl;
-	}
+	//if (collisionManager != NULL)
+	//{
+	//	if (collisionManager->CheckEntitiesOnFrustrum(camera, cube))
+	//		cout << "ESTA ADENTRO DEL FRUSTRUM" << endl;
+	//}
 }
 
 void Game::DestroyGame()

@@ -38,6 +38,8 @@ Light::Light(Renderer * _render, TypeLight type, Camera* camera) : Entity(_rende
 		break;
 	}
 
+	InmortalObject = true;
+
 	UpdateCountLightInShader(_render->GetCurrentShaderUse());
 
 	CreateDataLight();
@@ -70,6 +72,8 @@ Light::Light(glm::vec3 colour, glm::vec3 ambient, glm::vec3 diffuse, glm::vec3 s
 	default:
 		break;
 	}
+
+	InmortalObject = true;
 
 	UpdateCountLightInShader(render->GetCurrentShaderUse());
 

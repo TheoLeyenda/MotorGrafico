@@ -141,6 +141,9 @@
     <ClInclude Include="Src\Plane.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
+    <ClInclude Include="Src\PlaneBSP.h">
+      <Filter>Archivos de encabezado</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Src\GameBase.cpp">
@@ -243,6 +246,9 @@
       <Filter>Archivos de origen</Filter>
     </ClCompile>
     <ClCompile Include="Src\Plane.cpp">
+      <Filter>Archivos de origen</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\PlaneBSP.cpp">
       <Filter>Archivos de origen</Filter>
     </ClCompile>
   </ItemGroup>

@@ -55,6 +55,7 @@ struct ENGINE_API Transform
 	glm::vec3 up;
 	glm::vec3 down;
 
+	glm::vec3 globalPosition;
 	glm::vec3 position;
 	glm::vec3 rotation;
 	glm::vec3 scale;
@@ -63,6 +64,7 @@ struct ENGINE_API InternalData
 {
 	glm::mat4 localModel;
 	glm::mat4 globalModel;
+	glm::mat4 originModel;
 	glm::mat4 translate;
 	glm::mat4 rotateX;
 	glm::mat4 rotateY;

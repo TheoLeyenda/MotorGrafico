@@ -72,6 +72,9 @@ void ModelNode::SetEnableDrawAABB(bool value)
 
 void ModelNode::Draw(bool& wireFrameActive)
 {
+	if (!isAlive)
+		return;
+
 	for (int i = 0; i < _meshList.size(); i++)
 	{
 		unsigned int materialIndex = _meshToTex[i];

@@ -33,6 +33,8 @@ public:
 	float front;
 };
 
+class CollisionManager;
+
 class ENGINE_API Camera : public Entity
 {
 private:
@@ -73,6 +75,10 @@ protected:
 
 	void CalculateThirdPersonPositionCamera();
 
+	void checkObjectHerarchy(CollisionManager* frustrumCheck, Entity* object);
+	void disableChildrenAndParent(Entity* parent);
+	void enableChildrenAndParent(Entity* parent);
+
 	float offsetThirdPersonY = 350;
 
 public:
@@ -86,6 +92,8 @@ public:
 	bool positiveDown(glm::vec3 point);
 
 	void updateFrustrumPlanes();
+
+	void renderThingsOnScene(CollisionManager* frustrumCheck, vector<Entity*> objectsInScene);
 
 	void SetInitOffsetCameraThirdPersonX(float value) { initOffsetCameraThirdPersonX = value; }
 	void SetInitOffsetCameraThirdPersonY(float value) { initOffsetCameraThirdPersonY = value; }
