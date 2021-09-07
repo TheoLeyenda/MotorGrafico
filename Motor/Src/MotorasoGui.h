@@ -44,6 +44,8 @@ public:
 	static void End();
 
 	bool& GetIfWireFrameIsActive() { return _wireFrameActive; }
+
+	static void UpdateIsStaticEntity(Entity* entityNode);
 	static void UpdateWireFrameGui();
 	static void UpdateAABB(Entity* entityNode);
 	float GetSpeedRotation() { return speedRotation; };

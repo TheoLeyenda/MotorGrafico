@@ -117,7 +117,7 @@ protected:
 	unsigned int _normalLocation;
 
 	virtual void BindBuffer() = 0;
-
+	bool isStatic = false;
 	bool isAlive = true;
 	//bool InmortalObject = false;
 
@@ -150,6 +150,13 @@ public:
 	{
 		isAlive = value; 
 	}
+
+	void SetIsStatic(bool value) 
+	{
+		isStatic = value;
+	}
+
+	bool GetIsStatic() { return isStatic; }
 	//bool GetIsInmortal() { return InmortalObject; }
 
 	virtual string GetClassName() 

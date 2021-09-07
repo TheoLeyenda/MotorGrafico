@@ -111,6 +111,14 @@ void MotorasoGui::_TreeEntitys(Entity * entity)
 	}
 }
 
+void MotorasoGui::UpdateIsStaticEntity(Entity * entityNode)
+{
+	ImGui::Separator();
+
+	if (ImGui::Button("IsStatic"))
+		entityNode->SetIsStatic(!entityNode->GetIsStatic());
+}
+
 void MotorasoGui::UpdateWireFrameGui()
 {
 	ImGui::Separator();
@@ -185,6 +193,15 @@ void MotorasoGui::ShowEntityNodeInfo(Entity * entity)
 	ImGui::Separator();
 	if (entity->GetClassName() == "Light")
 		ShowLightInfo((Light*)entity);
+
+
+	UpdateIsStaticEntity(entity);
+
+	if (entity->GetIsStatic())
+		color = ImVec4(0.0, 1.0f, 0.0f, 1.0f);
+	else
+		color = ImVec4(1.0, 0.0f, 0.0f, 1.0f);
+	ImGui::ColorButton("Is Static", color);
 
 	UpdateWireFrameGui();
 

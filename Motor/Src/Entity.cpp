@@ -78,19 +78,21 @@ Entity::~Entity()
 
 void Entity::UpdateMatrixModel()
 {
-	internalData.localModel = internalData.translate * internalData.rotateX * internalData.rotateY * internalData.rotateZ * internalData.scale;
-	internalData.originModel = internalData.localModel;
+	if (!isStatic) 
+	{
+		internalData.localModel = internalData.translate * internalData.rotateX * internalData.rotateY * internalData.rotateZ * internalData.scale;
+		internalData.originModel = internalData.localModel;
 
 
-	if (parent != NULL)
-		internalData.globalModel = parent->GetInternalData().globalModel * internalData.localModel;
-	else
-		internalData.globalModel = internalData.localModel;
+		if (parent != NULL)
+			internalData.globalModel = parent->GetInternalData().globalModel * internalData.localModel;
+		else
+			internalData.globalModel = internalData.localModel;
 
-	internalData.localModel = internalData.globalModel;
-	
-	transform.globalPosition = internalData.localModel * glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
+		internalData.localModel = internalData.globalModel;
 
+		transform.globalPosition = internalData.localModel * glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
+	}
 	for (int i = 0; i < childrens.size(); i++)
 	{
 		childrens[i]->UpdateMatrixModel();
@@ -113,42 +115,99 @@ InternalData Entity::GetInternalData()
 
 void Entity::SetPosition(float x, float y, float z)
 {
-	transform.position[0] = x;
-	transform.position[1] = y;
-	transform.position[2] = z;
-	
-	internalData.translate = glm::translate(glm::mat4(1.0f), transform.position);
-	UpdateMatrixModel();
+	if (!isStatic) 
+	{
+		transform.position[0] = x;
+		transform.position[1] = y;
+		transform.position[2] = z;
+
+		internalData.translate = glm::translate(glm::mat4(1.0f), transform.position);
+		UpdateMatrixModel();
+	}
 }
 
 void Entity::SetPosition(glm::vec3 position)
 {
-	transform.position[0] = position.x;
-	transform.position[1] = position.y;
-	transform.position[2] = position.z;
+	if (!isStatic) 
+	{
+		transform.position[0] = position.x;
+		transform.position[1] = position.y;
+		transform.position[2] = position.z;
 
-	internalData.translate = glm::translate(glm::mat4(1.0f), transform.position);
-	UpdateMatrixModel();
+		internalData.translate = glm::translate(glm::mat4(1.0f), transform.position);
+		UpdateMatrixModel();
+	}
 }
 
 void Entity::SetScale(float x, float y, float z)
 {
-	transform.scale[0] = x;
-	transform.scale[1] = y;
-	transform.scale[2] = z;
+	if (!isStatic)
+	{
+		transform.scale[0] = x;
+		transform.scale[1] = y;
+		transform.scale[2] = z;
 
-	internalData.scale = glm::scale(glm::mat4(1.0f), transform.scale);
-	UpdateMatrixModel();
+		internalData.scale = glm::scale(glm::mat4(1.0f), transform.scale);
+		UpdateMatrixModel();
+	}
 }
 
 void Entity::SetScale(glm::vec3 scale)
 {
-	transform.scale[0] = scale.x;
-	transform.scale[1] = scale.y;
-	transform.scale[2] = scale.z;
+	if (!isStatic)
+	{
+		transform.scale[0] = scale.x;
+		transform.scale[1] = scale.y;
+		transform.scale[2] = scale.z;
 
-	internalData.scale = glm::scale(glm::mat4(1.0f), transform.scale);
-	UpdateMatrixModel();
+		internalData.scale = glm::scale(glm::mat4(1.0f), transform.scale);
+		UpdateMatrixModel();
+	}
+}
+
+void Entity::SetRotationX(float x)
+{
+	if (!isStatic) 
+	{
+		transform.rotation[0] = x;
+		glm::vec3 axis;
+		axis[0] = 1.0f;
+		axis[1] = 0.0f;
+		axis[2] = 0.0f;
+
+		internalData.rotateX = glm::rotate(glm::mat4(1.0f), glm::radians(x), axis);
+		UpdateMatrixModel();
+	}
+}
+
+void Entity::SetRotationY(float y)
+{
+	if (!isStatic)
+	{
+		transform.rotation[1] = y;
+		glm::vec3 axis;
+		axis[0] = 0.0f;
+		axis[1] = 1.0f;
+		axis[2] = 0.0f;
+
+		internalData.rotateY = glm::rotate(glm::mat4(1.0f), glm::radians(y), axis);
+		UpdateMatrixModel();
+	}
+}
+
+void Entity::SetRotationZ(float z)
+{
+	if (!isStatic) 
+	{
+		transform.rotation[2] = z;
+		glm::vec3 axis;
+		axis[0] = 0.0f;
+		axis[1] = 0.0f;
+		axis[2] = 1.0f;
+
+		internalData.rotateZ = glm::rotate(glm::mat4(1.0f), glm::radians(z), axis);
+		UpdateMatrixModel();
+	}
 }
 
 void Entity::SetName(string name)
@@ -159,43 +218,6 @@ void Entity::SetName(string name)
 string Entity::GetName()
 {
 	return nameEntity;
-}
-
-void Entity::SetRotationX(float x)
-{
-	
-	transform.rotation[0] = x;
-	glm::vec3 axis;
-	axis[0] = 1.0f;
-	axis[1] = 0.0f;
-	axis[2] = 0.0f;
-
-	internalData.rotateX = glm::rotate(glm::mat4(1.0f), glm::radians(x), axis);
-	UpdateMatrixModel();
-}
-
-void Entity::SetRotationY(float y)
-{
-	transform.rotation[1] = y;
-	glm::vec3 axis;
-	axis[0] = 0.0f;
-	axis[1] = 1.0f;
-	axis[2] = 0.0f;
-
-	internalData.rotateY = glm::rotate(glm::mat4(1.0f), glm::radians(y), axis);
-	UpdateMatrixModel();
-}
-
-void Entity::SetRotationZ(float z)
-{
-	transform.rotation[2] = z;
-	glm::vec3 axis;
-	axis[0] = 0.0f;
-	axis[1] = 0.0f;
-	axis[2] = 1.0f;
-
-	internalData.rotateZ = glm::rotate(glm::mat4(1.0f), glm::radians(z), axis);
-	UpdateMatrixModel();
 }
 
 void Entity::InitIsModelShader()
