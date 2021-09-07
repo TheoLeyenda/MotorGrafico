@@ -37,8 +37,6 @@ private:
 	vector<vector<glm::vec3>> planesBSP;
 	int indexPlane;
 
-	void PushPlanePositions(float minX, float maxX, float minY, float maxY, float minZ, float maxZ);
-
 	void LoadNode(aiNode* node,const aiScene* scene, vector<ModelNode*> &childrens,Renderer* render);
 	void LoadMesh(vector<Mesh*> &modelMeshes, vector<ModelNode*> childrens, const aiScene* scene, Renderer* render);
 	void LoadMesh(vector<Mesh*> &modelMeshes, ModelNode* rootNode, const aiScene* scene, Renderer* render);

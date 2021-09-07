@@ -106,26 +106,37 @@ void Game::InitGame()
 
 	modelFBX = new Model(render, true);
 	modelFBX->LoadModel("res/modelos/RobotGraficos3.fbx","res/modelos/");
-	modelFBX->SetPosition(680,250,180);
+	modelFBX->SetPosition(540,50,180);
 	modelFBX->SetScale(50,50,50);
-	modelFBX->SetRotationX(-90);
-	modelFBX->SetRotationZ(-90);
 	modelFBX->SetMaterial(textureMaterialForLight);
 	modelFBX->SetName("ROBOT_BSP_TESTING");
 	AddObjectInDenugGame(modelFBX);
 
-	entityToMoveChild = modelFBX->GetEntityNode("BSP_Plane1");
-	if (entityToMoveChild != NULL)
-		entityToMoveChild->SetPosition(-20,0 , 0);
-	
-	entityToMoveChild = modelFBX->GetEntityNode("BSP_Plane2");
-	if (entityToMoveChild != NULL)
-		entityToMoveChild->SetPosition( 0,-20, 0);
-	
-	entityToMoveChild = modelFBX->GetEntityNode("BSP_Plane3");
-	if (entityToMoveChild != NULL)
-		entityToMoveChild->SetPosition( 0, 20, 0);
+	robotLoco = modelFBX->GetEntityNode("CenterOfMass");
 
+	planeBSP1 = modelFBX->GetEntityNode("BSP_Plane1");
+	planeBSP2 = modelFBX->GetEntityNode("BSP_Plane2");
+	planeBSP3 = modelFBX->GetEntityNode("BSP_Plane3");
+
+	modelFBX->RemoveChildren(modelFBX->GetEntityNode("BSP_Plane1"), GetRootScene() );
+	modelFBX->RemoveChildren(modelFBX->GetEntityNode("BSP_Plane2"), GetRootScene() );
+	modelFBX->RemoveChildren(modelFBX->GetEntityNode("BSP_Plane3"), GetRootScene() );
+
+	if (planeBSP1 != NULL)
+	{
+		planeBSP1->SetScale(50,50,50);
+		planeBSP1->SetPosition(540, 0, -200);
+	}
+	if (planeBSP2 != NULL)
+	{
+		planeBSP2->SetScale(50, 50, 50);
+		planeBSP2->SetPosition(1080, 0, 0);
+	}
+	if (planeBSP3 != NULL)
+	{
+		planeBSP3->SetScale(50, 50, 50);
+		planeBSP3->SetPosition(0, 0, 0);
+	}
 	//modelOBJ = new Model(render);
 	//modelOBJ->LoadModel("res/modelos/source/alex.obj", "res/modelos/textures/");
 	//modelOBJ->SetScale(50.0f, 50.0f, 50.0f);
@@ -436,8 +447,35 @@ void Game::UpdateGame(Windows *_window, Renderer *_render, Input *_input)
 
 	if (modelOBJ != NULL)
 		modelOBJ->Draw(motorasoGui->GetIfWireFrameIsActive());
+
 	if (modelFBX != NULL)
+	{
+		robotLoco = modelFBX->GetEntityNode("CenterOfMass");
+
 		modelFBX->Draw(motorasoGui->GetIfWireFrameIsActive());
+		modelFBX->updateBSPPlanes(planeBSP1->transform.globalPosition, planeBSP2->transform.globalPosition, planeBSP3->transform.globalPosition);
+
+		if (modelFBX->planeBSP1 != NULL && modelFBX->planeBSP2 != NULL && modelFBX->planeBSP3 != NULL)
+		{
+
+			cout << "PLANE 1: " << modelFBX->planeBSP1->ObjectPositiveSide(robotLoco)<< endl;
+			cout << "PLANE 2: " << modelFBX->planeBSP2->ObjectPositiveSide(robotLoco)<< endl;
+			cout << "PLANE 3: " << modelFBX->planeBSP3->ObjectPositiveSide(robotLoco)<< endl;
+
+			if (modelFBX->planeBSP1->ObjectPositiveSide(robotLoco) &&
+				modelFBX->planeBSP2->ObjectPositiveSide(robotLoco) &&
+				modelFBX->planeBSP3->ObjectPositiveSide(robotLoco))
+			{
+				cout << "Objeto del lado POSITIVO de los planos" << endl;
+			}
+		}
+		else
+		{
+			cout << "Algun plano en NULL" << endl;
+		}
+	}
+
+
 	if (modelOBJ2 != NULL)
 		modelOBJ2->Draw(motorasoGui->GetIfWireFrameIsActive());
 	if (model3DS != NULL)

@@ -19,6 +19,7 @@
 #include "Audio.h"
 #include "MotorasoGui.h"
 #include "ModelNode.h"
+#include "PlaneBSP.h"
 
 #define INIT_ERROR -1
 

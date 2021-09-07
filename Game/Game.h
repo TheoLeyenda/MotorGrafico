@@ -34,6 +34,11 @@ private:
 
 	Audio* audio = NULL;
 
+	Entity* robotLoco = NULL;
+	Entity* planeBSP1 = NULL;
+	Entity* planeBSP2 = NULL;
+	Entity* planeBSP3 = NULL;
+
 	Model* modelOBJ = NULL;
 	Model* modelOBJ2 = NULL;
 	Model* modelFBX = NULL;

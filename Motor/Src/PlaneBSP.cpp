@@ -1,7 +1,7 @@
 #include "PlaneBSP.h"
+#include "Entity.h"
 
-PlaneBSP::PlaneBSP(Renderer* render, string name, glm::vec3 pointA, glm::vec3 pointB, glm::vec3 pointC)
-	: Entity(render)
+PlaneBSP::PlaneBSP(string name, glm::vec3 pointA, glm::vec3 pointB, glm::vec3 pointC)
 {
 	namePlane = name;
 	plane = new MyPlane(pointA, pointB, pointC);
@@ -16,27 +16,20 @@ PlaneBSP::~PlaneBSP()
 	}
 }
 
-void PlaneBSP::BindBuffer()
+void PlaneBSP::flipPlaneBSP()
 {
-	//Trhow not implemented exception xd
-}
+	if (plane == NULL)
+		return;
 
-void PlaneBSP::Draw(bool & wireFrameActive)
-{
-	//Trhow not implemented exception xd
-}
-
-void PlaneBSP::SetEnableDrawAABB(bool value)
-{
-	//Trhow not implemented exception xd
+	plane->flipPlane();
 }
 
 bool PlaneBSP::ObjectPositiveSide(Entity* object)
 {
-	if (plane == NULL)
+	if (plane == NULL || object == NULL)
 		return false;
 
-	if (plane->getSide(object->transform.position))
+	if (plane->getSide(object->transform.globalPosition))
 		return true;
 	else
 		return false;

@@ -48,12 +48,6 @@ ModelNode* ModelImporter::LoadModel(vector<Mesh*> &modelMeshes, const string& fi
 	return rootNode;
 }
 
-
-void ModelImporter::PushPlanePositions(float minX, float maxX, float minY, float maxY, float minZ, float maxZ)
-{
-
-}
-
 void ModelImporter::LoadNode(aiNode* node, const aiScene* scene, vector<ModelNode*> &childrens, Renderer* render)
 {
 	int i = 0;
@@ -133,7 +127,7 @@ void ModelImporter::LoadMesh(vector<Mesh*> &modelMeshes, aiMesh* mesh, const aiS
 		
 		if (nodeMesh->GetName() == bspPlane.c_str())
 		{
-			planesPosition.push_back(glm::vec3((int)mesh->mVertices[i].x, (int)mesh->mVertices[i].y, (int)mesh->mVertices[i].z));
+			planesPosition.push_back(glm::vec3(mesh->mVertices[i].x, mesh->mVertices[i].y, mesh->mVertices[i].z));
 		}
 	}
 

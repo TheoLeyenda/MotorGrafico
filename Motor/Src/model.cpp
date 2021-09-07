@@ -29,6 +29,17 @@ Model::~Model()
 	if (!myMat)
 		delete myMat;
 
+	if (planeBSP1 != NULL && planeBSP2 != NULL && planeBSP3 != NULL)
+	{
+		delete planeBSP1;
+		delete planeBSP2;
+		delete planeBSP3;
+
+		planeBSP1 = NULL;
+		planeBSP2 = NULL;
+		planeBSP3 = NULL;
+	}
+
 	UnloadModel();
 }
 
@@ -47,14 +58,34 @@ void Model::LoadModel(const string & filePath, const string & texturePath)
 	}
 	else
 	{
-		planeBSP1 = new PlaneBSP(renderer,"BSP_Plane1",modelImporter->getPlanesBSP()[0][0], modelImporter->getPlanesBSP()[0][1],
-			modelImporter->getPlanesBSP()[0][2]);
+		//cout << "POS PLANE 1: " << "[" << modelImporter->getPlanesBSP()[BSP_PLANE1][0].x << "][" << modelImporter->getPlanesBSP()[BSP_PLANE1][0].y <<
+		//	"][" << modelImporter->getPlanesBSP()[BSP_PLANE1][0].z << "]" << endl;
+		//cin.get();
 
-		planeBSP2 = new PlaneBSP(renderer, "BSP_Plane2", modelImporter->getPlanesBSP()[1][0], modelImporter->getPlanesBSP()[1][1],
-			modelImporter->getPlanesBSP()[1][2]);
+		planeBSP1 = new PlaneBSP("BSP_Plane1",modelImporter->getPlanesBSP()[BSP_PLANE1][0], modelImporter->getPlanesBSP()[BSP_PLANE1][2],
+			modelImporter->getPlanesBSP()[BSP_PLANE1][1]);
 
-		planeBSP3 = new PlaneBSP(renderer, "BSP_Plane3", modelImporter->getPlanesBSP()[2][0], modelImporter->getPlanesBSP()[2][1],
-			modelImporter->getPlanesBSP()[2][2]);
+		planeBSP2 = new PlaneBSP("BSP_Plane2", modelImporter->getPlanesBSP()[BSP_PLANE2][0], modelImporter->getPlanesBSP()[BSP_PLANE2][1],
+			modelImporter->getPlanesBSP()[BSP_PLANE2][2]);
+
+		planeBSP3 = new PlaneBSP("BSP_Plane3", modelImporter->getPlanesBSP()[BSP_PLANE3][0], modelImporter->getPlanesBSP()[BSP_PLANE3][2],
+			modelImporter->getPlanesBSP()[BSP_PLANE3][1]);
+
+		cout<<"Normal plane 1: [" << planeBSP1->getPlaneNormal().x << "]["<<
+			planeBSP1->getPlaneNormal().y << "]["<< planeBSP1->getPlaneNormal().z << "]" <<endl;
+		cout << "Normal plane 2: [" << planeBSP2->getPlaneNormal().x << "][" <<
+			planeBSP2->getPlaneNormal().y << "][" << planeBSP2->getPlaneNormal().z << "]" << endl;
+		cout << "Normal plane 3: [" << planeBSP3->getPlaneNormal().x << "][" <<
+			planeBSP3->getPlaneNormal().y << "][" << planeBSP3->getPlaneNormal().z<< "]" << endl;
+		
+		//planeBSP2->flipPlaneBSP();
+		//planeBSP3->flipPlaneBSP();
+		//
+		//cout << "Normal plane 2: [" << planeBSP2->getPlaneNormal().x << "][" <<
+		//	planeBSP2->getPlaneNormal().y << "][" << planeBSP2->getPlaneNormal().z << endl;
+		//
+		//cout << "Normal plane 3: [" << planeBSP3->getPlaneNormal().x << "][" <<
+		//	planeBSP3->getPlaneNormal().y << "][" << planeBSP3->getPlaneNormal().z << "]" << endl;
 
 		for (int i = 0; i < modelImporter->getPlanesBSP().size(); i++)
 		{
@@ -177,17 +208,17 @@ void Model::SetEnableDrawAABB(bool value)
 		axisAlignedBoundingBox->SetEnableDraw(value);
 }
 
-void Model::updateBSPPlanes()
+void Model::updateBSPPlanes(glm::vec3 posPlane1, glm::vec3 posPlane2, glm::vec3 posPlane3)
 {
 	if (!hasBSPPlanes)
 		return;
 
-	planeBSP1->update_BSP_Plane(modelImporter->getPlanesBSP()[0][0], modelImporter->getPlanesBSP()[0][1],
-		modelImporter->getPlanesBSP()[0][2]);
+	planeBSP1->update_BSP_Plane(modelImporter->getPlanesBSP()[0][0] + posPlane1, modelImporter->getPlanesBSP()[0][2] + posPlane1,
+		modelImporter->getPlanesBSP()[0][1] + posPlane1);
 
-	planeBSP2->update_BSP_Plane(modelImporter->getPlanesBSP()[1][0], modelImporter->getPlanesBSP()[1][1],
-		modelImporter->getPlanesBSP()[1][2]);
+	planeBSP2->update_BSP_Plane(modelImporter->getPlanesBSP()[1][0] + posPlane2, modelImporter->getPlanesBSP()[1][1] + posPlane2,
+		modelImporter->getPlanesBSP()[1][2] + posPlane2);
 
-	planeBSP3->update_BSP_Plane(modelImporter->getPlanesBSP()[2][0], modelImporter->getPlanesBSP()[2][1],
-		modelImporter->getPlanesBSP()[2][2]);
+	planeBSP3->update_BSP_Plane(modelImporter->getPlanesBSP()[2][0] + posPlane3, modelImporter->getPlanesBSP()[2][2] + posPlane3,
+		modelImporter->getPlanesBSP()[2][1] + posPlane3);
 }

@@ -15,6 +15,10 @@ using namespace std;
 class ModelImporter;
 class ModelNode;
 
+#define BSP_PLANE1 0
+#define BSP_PLANE2 1
+#define BSP_PLANE3 2
+
 class ENGINE_API Model : public Entity
 {
 private:
@@ -42,7 +46,7 @@ public:
 	vector<ModelNode*> GetModelChildrens() { return modelChildrens; }
 	vector<Mesh*> GetModelMeshes() { return modelMeshes; }
 
-	void updateBSPPlanes();
+	void updateBSPPlanes(glm::vec3 posPlane1, glm::vec3 posPlane2, glm::vec3 posPlane3);
 protected:
 	void BindBuffer() override;
 	void SetEnableDrawAABB(bool value) override;
