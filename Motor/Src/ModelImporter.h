@@ -8,6 +8,8 @@
 
 #include "PrivateClass/Export.h"
 
+#include "glm/vec3.hpp"
+
 struct aiNode;
 struct aiMesh;
 struct aiScene;
@@ -31,6 +33,12 @@ private:
 	stack<ModelNode*> auxiliarNodes;
 	vector<aiNode*> nodes;
 
+	vector<glm::vec3> planesPosition;
+	vector<vector<glm::vec3>> planesBSP;
+	int indexPlane;
+
+	void PushPlanePositions(float minX, float maxX, float minY, float maxY, float minZ, float maxZ);
+
 	void LoadNode(aiNode* node,const aiScene* scene, vector<ModelNode*> &childrens,Renderer* render);
 	void LoadMesh(vector<Mesh*> &modelMeshes, vector<ModelNode*> childrens, const aiScene* scene, Renderer* render);
 	void LoadMesh(vector<Mesh*> &modelMeshes, ModelNode* rootNode, const aiScene* scene, Renderer* render);
@@ -43,6 +51,7 @@ public:
 	ModelNode* LoadModel(vector<Mesh*> &modelMeshes, const string& filePath, const string& texturePath, ModelNode* rootNode, vector<ModelNode*> &childrens, vector<Texture*> &textureList, Renderer* render);
 	void ClearNodesOldModel();
 	void ClearAuxiliarNodesOldModel();
+	vector<vector<glm::vec3>> getPlanesBSP() { return planesBSP; }
 };
 
 #endif

@@ -34,7 +34,7 @@ void PlaneBSP::SetEnableDrawAABB(bool value)
 bool PlaneBSP::ObjectPositiveSide(Entity* object)
 {
 	if (plane == NULL)
-		return;
+		return false;
 
 	if (plane->getSide(object->transform.position))
 		return true;

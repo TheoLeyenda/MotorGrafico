@@ -8,6 +8,8 @@
 #include "Texture.h"
 #include "Material.h"
 
+#include "PlaneBSP.h"
+
 using namespace std;
 
 class ModelImporter;
@@ -18,8 +20,14 @@ class ENGINE_API Model : public Entity
 private:
 	ModelImporter* modelImporter = NULL;
 public:
-	Model(Renderer* render);
+	Model(Renderer* render, bool hasBPSPlane);
 	~Model();
+
+	PlaneBSP* planeBSP1;
+	PlaneBSP* planeBSP2;
+	PlaneBSP* planeBSP3;
+
+	bool hasBSPPlanes;
 
 	void LoadModel(const string& filePath, const string& texturePath);
 	void Draw(bool& wireFrameActive) override;
@@ -34,6 +42,7 @@ public:
 	vector<ModelNode*> GetModelChildrens() { return modelChildrens; }
 	vector<Mesh*> GetModelMeshes() { return modelMeshes; }
 
+	void updateBSPPlanes();
 protected:
 	void BindBuffer() override;
 	void SetEnableDrawAABB(bool value) override;

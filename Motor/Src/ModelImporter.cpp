@@ -13,7 +13,11 @@
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
 
-ModelImporter::ModelImporter() { indexChildrenLoad = 0; }
+ModelImporter::ModelImporter() 
+{ 
+	indexPlane = 1;
+	indexChildrenLoad = 0; 
+}
 
 ModelImporter::~ModelImporter() {}
 
@@ -44,6 +48,11 @@ ModelNode* ModelImporter::LoadModel(vector<Mesh*> &modelMeshes, const string& fi
 	return rootNode;
 }
 
+
+void ModelImporter::PushPlanePositions(float minX, float maxX, float minY, float maxY, float minZ, float maxZ)
+{
+
+}
 
 void ModelImporter::LoadNode(aiNode* node, const aiScene* scene, vector<ModelNode*> &childrens, Renderer* render)
 {
@@ -106,6 +115,9 @@ void ModelImporter::LoadMesh(vector<Mesh*> &modelMeshes, aiMesh* mesh, const aiS
 	vector<float> vertices;
 	vector<unsigned int> indices;
 
+	string bspPlane = "BSP_Plane";
+	bspPlane += to_string(indexPlane);
+
 	for (int i = 0; i < mesh->mNumVertices; i++)
 	{
 		vertices.insert(vertices.end(), { mesh->mVertices[i].x,mesh->mVertices[i].y,mesh->mVertices[i].z });
@@ -118,6 +130,19 @@ void ModelImporter::LoadMesh(vector<Mesh*> &modelMeshes, aiMesh* mesh, const aiS
 			vertices.insert(vertices.end(), { 0.0f,  0.0f });
 		}
 		vertices.insert(vertices.end(), { mesh->mNormals[i].x,mesh->mNormals[i].y,mesh->mNormals[i].z });
+		
+		if (nodeMesh->GetName() == bspPlane.c_str())
+		{
+			planesPosition.push_back(glm::vec3((int)mesh->mVertices[i].x, (int)mesh->mVertices[i].y, (int)mesh->mVertices[i].z));
+		}
+	}
+
+	if (nodeMesh->GetName() == bspPlane.c_str())
+	{
+		indexPlane++;
+		planesBSP.push_back(planesPosition);
+		planesPosition.clear();
+		bspPlane.clear();
 	}
 
 	for (int i = 0; i < mesh->mNumFaces; i++)

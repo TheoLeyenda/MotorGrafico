@@ -104,7 +104,7 @@ void Game::InitGame()
 
 	Entity* entityToMoveChild = NULL;
 
-	modelFBX = new Model(render);
+	modelFBX = new Model(render, true);
 	modelFBX->LoadModel("res/modelos/RobotGraficos3.fbx","res/modelos/");
 	modelFBX->SetPosition(680,250,180);
 	modelFBX->SetScale(50,50,50);

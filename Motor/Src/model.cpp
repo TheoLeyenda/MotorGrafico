@@ -9,11 +9,13 @@
 
 #include "AxisAlignedBoundingBox.h"
 
-Model::Model(Renderer * render) : Entity(render)
+Model::Model(Renderer * render, bool hasBPSPlane) : Entity(render)
 {
 	myMat = NULL;
 	rootNode = NULL;
 	modelImporter = new ModelImporter();
+
+	hasBSPPlanes = hasBPSPlane;
 
 	CreateMyAxisAlignedBoundingBox();
 	axisAlignedBoundingBox->AttachEntity(internalData, transform);
@@ -35,6 +37,37 @@ void Model::LoadModel(const string & filePath, const string & texturePath)
 	if (modelImporter != NULL) 
 	{
 		rootNode = modelImporter->LoadModel(modelMeshes, filePath, texturePath, rootNode ,modelChildrens, textureList ,renderer);
+	}
+
+	if (!hasBSPPlanes)
+	{
+		planeBSP1 = NULL;
+		planeBSP2 = NULL;
+		planeBSP3 = NULL;
+	}
+	else
+	{
+		planeBSP1 = new PlaneBSP(renderer,"BSP_Plane1",modelImporter->getPlanesBSP()[0][0], modelImporter->getPlanesBSP()[0][1],
+			modelImporter->getPlanesBSP()[0][2]);
+
+		planeBSP2 = new PlaneBSP(renderer, "BSP_Plane2", modelImporter->getPlanesBSP()[1][0], modelImporter->getPlanesBSP()[1][1],
+			modelImporter->getPlanesBSP()[1][2]);
+
+		planeBSP3 = new PlaneBSP(renderer, "BSP_Plane3", modelImporter->getPlanesBSP()[2][0], modelImporter->getPlanesBSP()[2][1],
+			modelImporter->getPlanesBSP()[2][2]);
+
+		for (int i = 0; i < modelImporter->getPlanesBSP().size(); i++)
+		{
+			cout << "BSP_PLANE: "<< i+1 << endl;
+
+			for (int j = 0; j < modelImporter->getPlanesBSP()[i].size(); j++)
+			{
+				cout <<"Position: "<< j <<
+					   " X[" << modelImporter->getPlanesBSP()[i][j].x <<
+					   "]Y[" << modelImporter->getPlanesBSP()[i][j].y <<
+					   "]Z[" << modelImporter->getPlanesBSP()[i][j].z <<"]"<<endl;
+			}
+		}
 	}
 
 	if (rootNode != NULL) {
@@ -142,4 +175,19 @@ void Model::SetEnableDrawAABB(bool value)
 {
 	if (axisAlignedBoundingBox != NULL)
 		axisAlignedBoundingBox->SetEnableDraw(value);
+}
+
+void Model::updateBSPPlanes()
+{
+	if (!hasBSPPlanes)
+		return;
+
+	planeBSP1->update_BSP_Plane(modelImporter->getPlanesBSP()[0][0], modelImporter->getPlanesBSP()[0][1],
+		modelImporter->getPlanesBSP()[0][2]);
+
+	planeBSP2->update_BSP_Plane(modelImporter->getPlanesBSP()[1][0], modelImporter->getPlanesBSP()[1][1],
+		modelImporter->getPlanesBSP()[1][2]);
+
+	planeBSP3->update_BSP_Plane(modelImporter->getPlanesBSP()[2][0], modelImporter->getPlanesBSP()[2][1],
+		modelImporter->getPlanesBSP()[2][2]);
 }
