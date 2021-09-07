@@ -29,13 +29,13 @@ Entity * Plane_BSP::GetPlaneAttach()
 void Plane_BSP::GeneratePlane()
 {
 
-	cout << "vertex_max_x: " << vertexPlaneBSP.vertex_max_x << endl;
-	cout << "vertex_max_y: " << vertexPlaneBSP.vertex_max_y << endl;
-	cout << "vertex_max_z: " << vertexPlaneBSP.vertex_max_z << endl;
-	cout << "vertex_min_x: " << vertexPlaneBSP.vertex_min_x << endl;
-	cout << "vertex_min_y: " << vertexPlaneBSP.vertex_min_y << endl;
-	cout << "vertex_min_z: " << vertexPlaneBSP.vertex_min_z << endl;
-	cout << "----------------------------------------------" << endl;
+	//cout << "vertex_max_x: " << vertexPlaneBSP.vertex_max_x << endl;
+	//cout << "vertex_max_y: " << vertexPlaneBSP.vertex_max_y << endl;
+	//cout << "vertex_max_z: " << vertexPlaneBSP.vertex_max_z << endl;
+	//cout << "vertex_min_x: " << vertexPlaneBSP.vertex_min_x << endl;
+	//cout << "vertex_min_y: " << vertexPlaneBSP.vertex_min_y << endl;
+	//cout << "vertex_min_z: " << vertexPlaneBSP.vertex_min_z << endl;
+	//cout << "----------------------------------------------" << endl;
 
 	if (planeAttach != NULL) 
 	{
@@ -44,7 +44,7 @@ void Plane_BSP::GeneratePlane()
 		glm::vec3 PointC = glm::vec3(0.0f);
 		if ((int)vertexPlaneBSP.vertex_min_x == 0 && (int)vertexPlaneBSP.vertex_max_x == 0)
 		{
-			cout << "ENTRE AL PLANO EJE X" << endl;
+			//cout << "ENTRE AL PLANO EJE X" << endl;
 			PointA = glm::vec3(planeAttach->transform.globalPosition.x
 				, planeAttach->transform.globalPosition.y + (planeAttach->transform.scale.y)
 				, planeAttach->transform.globalPosition.z);
@@ -59,7 +59,7 @@ void Plane_BSP::GeneratePlane()
 		}
 		else if((int)vertexPlaneBSP.vertex_min_y == 0 && (int)vertexPlaneBSP.vertex_max_y == 0)
 		{
-			cout << "ENTRE AL PLANO EJE Z" << endl;
+			//cout << "ENTRE AL PLANO EJE Z" << endl;
 			PointA = glm::vec3(planeAttach->transform.globalPosition.x + (planeAttach->transform.scale.x)
 				, planeAttach->transform.globalPosition.y
 				, planeAttach->transform.globalPosition.z);
@@ -74,7 +74,7 @@ void Plane_BSP::GeneratePlane()
 		}
 		else if ((int)vertexPlaneBSP.vertex_min_z == 0 && (int)vertexPlaneBSP.vertex_max_z == 0)
 		{
-			cout << "ENTRE AL PLANO EJE Y" << endl;
+			//cout << "ENTRE AL PLANO EJE Y" << endl;
 			PointA = glm::vec3(planeAttach->transform.globalPosition.x + (planeAttach->transform.scale.x)
 				, planeAttach->transform.globalPosition.y
 				, planeAttach->transform.globalPosition.z);

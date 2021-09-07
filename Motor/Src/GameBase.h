@@ -22,6 +22,7 @@
 #include "BSP_Manager.h"
 #include "Plane_BSP.h"
 #include "Plane.h"
+#include <map>
 
 #define INIT_ERROR -1
 
@@ -55,8 +56,10 @@ protected:
 	Material* textureMaterialForLight = NULL;
 	Material* textureMaterialDefault = NULL;
 	MotorasoGui* motorasoGui = NULL;
-	BSP_Manager* bsp_manager = NULL;
 
+	BSP_Manager* bsp_manager = NULL;
+	vector<Entity*> entitysBSP;
+	void AddEntityInEntitysBSP(Entity* newItem);
 	void UpdateBSP_Manager();
 
 	void SetUseBSP_Manager(bool value) { useBSP_Manager = value; }
@@ -94,6 +97,8 @@ public:
 	virtual void InitGame() = 0; //Inicializa todos las variables del juego.
 	virtual void UpdateGame(Windows *_window, Renderer *_render, Input *_input) = 0; //Update del juego
 	virtual void DestroyGame() = 0; //Funcion que se debe llamar al finalizar el juego (Destruye correctamente todos las funciones internas del juego)
+
+	void ShowEntitys_BSP();
 
 	Time& GetTimeClock();
 	CollisionManager* GetCollisionManager() { return collisionManager; }

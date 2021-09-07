@@ -100,14 +100,14 @@ void Game::InitGame()
 
 	GetMyLightsID();
 
-	modelOBJ = new Model(render);
-	modelOBJ->LoadModel("res/modelos/source/alex.obj", "res/modelos/textures/", bsp_manager);
-	modelOBJ->SetScale(50.0f, 50.0f, 50.0f);
-	modelOBJ->SetName("ALEX-MODEL_OBJ");
-	modelOBJ->SetPosition(660, 12, -16);
-	modelOBJ->SetRotationY(-0.5);
-	modelOBJ->SetMaterial(goldMaterial);
-	AddObjectInDenugGame(modelOBJ);
+	//modelOBJ = new Model(render);
+	//modelOBJ->LoadModel("res/modelos/source/alex.obj", "res/modelos/textures/", bsp_manager);
+	//modelOBJ->SetScale(50.0f, 50.0f, 50.0f);
+	//modelOBJ->SetName("ALEX-MODEL_OBJ");
+	//modelOBJ->SetPosition(660, 12, -16);
+	//modelOBJ->SetRotationY(-0.5);
+	//modelOBJ->SetMaterial(goldMaterial);
+	//AddObjectInDenugGame(modelOBJ);
 
 	bobFBX = new Model(render);
 	bobFBX->LoadModel("res/modelos/Bob.fbx", " ", bsp_manager);
@@ -181,6 +181,14 @@ void Game::InitGame()
 	SetUseDebugWindows(true);
 
 	SetEnableAABB_DebugGame(true);
+
+	cout << "Bob tree" << endl;
+	bobFBX->PrintTree();
+	cout << endl;
+
+	cout << "Entitys in vector BSP" << endl;
+	ShowEntitys_BSP();
+	cout << endl;
 }
 
 void Game::UpdateGame(Windows *_window, Renderer *_render, Input *_input)
@@ -188,7 +196,6 @@ void Game::UpdateGame(Windows *_window, Renderer *_render, Input *_input)
 	//timeClock.FPS();
 	if (player3D != NULL)
 		player3D->Move(input, timeClock);
-
 
 	/*
 	Entity* entity = bobFBX->GetEntityNode("Mano_Der");
@@ -242,23 +249,14 @@ void Game::UpdateGame(Windows *_window, Renderer *_render, Input *_input)
 	if (useCamera)
 		TempInputCamera();
 
-	//TempInputsPlayer1(windows, spriteAnimado);
-
 	TempMoveLightWithID(windows, 2);
 
 	
-
 	//MODELS DRAW
 
-	if (modelOBJ != NULL)
-		modelOBJ->Draw(motorasoGui->GetIfWireFrameIsActive());
-
-
-	cout << modelOBJ->transform.globalPosition.x << "," << modelOBJ->transform.globalPosition.y << "," << modelOBJ->transform.globalPosition.z << endl;
-
-	if (bobFBX != NULL)
+	if (bobFBX != NULL) {
 		bobFBX->Draw(motorasoGui->GetIfWireFrameIsActive());
-
+	}
 	/*if (collisionManager != NULL)
 	{
 		if (collisionManager->CheckEntitiesOnFrustrum(camera, bobFBX))

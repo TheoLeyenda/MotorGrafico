@@ -171,7 +171,11 @@ public:
 	void RemoveChildren(Entity* children, Entity* newParent);
 	Entity* GetEntityNode(string name);
 	Entity* GetChild(int childIndex) const;
+	
 	void PrintTree();
+
+	//void OffMeAndChildrensObjects();
+
 	vector<Entity*> GetChildrens() { return childrens; }
 	//-----------//
 

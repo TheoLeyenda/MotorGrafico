@@ -163,7 +163,7 @@ void GameBase::DestroyEngine()
 
 void GameBase::UpdateBSP_Manager()
 {
-	bsp_manager->UpdateBSP_Manager(entitysDebugInGame);
+	bsp_manager->UpdateBSP_Manager(entitysBSP);
 }
 
 void GameBase::SetEnableAABB_DebugGame(bool value)
@@ -172,6 +172,25 @@ void GameBase::SetEnableAABB_DebugGame(bool value)
 		ActivateAABB_DebugGame();
 	else
 		DisableAABB_DebugGame();
+}
+
+void GameBase::AddEntityInEntitysBSP(Entity * newItem)
+{
+	bool pushEnable = true;
+	for (int i = 0; i < entitysBSP.size(); i++)
+	{
+		if (entitysBSP[i] == newItem)
+		{
+			pushEnable = false;
+		}
+	}
+
+	if(pushEnable)
+		entitysBSP.push_back(newItem);
+	
+	for (Entity* child : newItem->GetChildrens()) {
+		AddEntityInEntitysBSP(child);
+	}
 }
 
 void GameBase::AddObjectInDenugGame(Entity* entity)
@@ -187,6 +206,7 @@ void GameBase::AddObjectInDenugGame(Entity* entity)
 		}
 		entitysDebugInGame.push_back(entity);
 		rootScene->AddChildren(entity);
+		AddEntityInEntitysBSP(entity);
 	}
 }
 
@@ -485,6 +505,14 @@ void GameBase::HandleLight()
 }
 
 
+
+void GameBase::ShowEntitys_BSP()
+{
+	for (int i = 0; i < entitysBSP.size(); i++) 
+	{
+		cout << entitysBSP[i]->GetName() << endl;
+	}
+}
 
 Time& GameBase::GetTimeClock()
 {
