@@ -66,7 +66,7 @@ int GameBase::InitEngine()
 
 	camera->SetEnableDrawAABB(false);
 
-	bsp_manager = new BSP_Manager(camera);
+	bsp_manager = new BSP_Manager(camera, rootScene);
 
 #pragma endregion
 

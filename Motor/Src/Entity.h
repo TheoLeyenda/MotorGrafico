@@ -146,6 +146,8 @@ public:
 	void InitIsModelShader();
 	void CheckIsModel();
 	bool GetIsAlive() { return isAlive; }
+	void DisableMeAndChilds();
+
 	void SetIsAlive(bool value) 
 	{
 		isAlive = value; 

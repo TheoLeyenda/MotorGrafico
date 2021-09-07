@@ -2,11 +2,12 @@
 #include "Plane_BSP.h"
 #include <sstream>
 
-BSP_Manager::BSP_Manager(Entity* camera)
+BSP_Manager::BSP_Manager(Entity* camera, Entity* _rootScene)
 {
 	auxKeyBSP = "Plane_BSP";
 	UpdateKeyBSP_Plane("Plane_BSP");
 	currentCamera = camera;
+	rootScene = _rootScene;
 }
 
 BSP_Manager::~BSP_Manager()
@@ -105,6 +106,8 @@ vector<Entity*> BSP_Manager::FilterPlanesBSP(vector<Entity*> ObjectsInBSP)
 		{
 			if (ObjectsInBSP[i]->GetName() == registerKeysBSP[j])
 			{
+				Entity* parent = ObjectsInBSP[i]->GetParent();
+				parent->RemoveChildren(ObjectsInBSP[i], rootScene);
 				planes.push_back(ObjectsInBSP[i]);
 			}
 		}
@@ -127,6 +130,17 @@ vector<Entity*> BSP_Manager::FilterPlanesBSP(vector<Entity*> ObjectsInBSP)
 	return auxObjectsInBSP;
 }
 
+void BSP_Manager::DisableObjects(vector<Entity*> ObjectsInBSP)
+{
+	for (int i = 0; i < objectsDisableBSP.size(); i++)
+	{
+		if(ObjectsInBSP[objectsDisableBSP[i]]->GetIsAlive())
+			ObjectsInBSP[objectsDisableBSP[i]]->DisableMeAndChilds();
+	}
+
+	objectsDisableBSP.clear();
+}
+
 void BSP_Manager::UpdateBSP_Manager(vector<Entity*> ObjectsInBSP)
 {
 	//Filtro otros si hay otro plano BSP en mi vector de objetos y lo remuevo
@@ -147,10 +161,6 @@ void BSP_Manager::UpdateBSP_Manager(vector<Entity*> ObjectsInBSP)
 		}
 	}
 
-	for (int i = 0; i < objectsDisableBSP.size(); i++) 
-	{
-		ObjectsInBSP[objectsDisableBSP[i]]->SetIsAlive(false);
-	}
+	DisableObjects(ObjectsInBSP);
 
-	objectsDisableBSP.clear();
 }

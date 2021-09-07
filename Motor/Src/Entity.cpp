@@ -391,4 +391,13 @@ void Entity::PrintTree()
 		child->PrintTree();
 	}
 }
+
+void Entity::DisableMeAndChilds()
+{
+	SetIsAlive(false);
+	for (Entity* child : childrens) {
+		child->DisableMeAndChilds();
+	}
+}
+
 #pragma endregion 
