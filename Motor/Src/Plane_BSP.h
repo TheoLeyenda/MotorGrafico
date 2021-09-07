@@ -39,8 +39,8 @@ public:
 	enum  CurrentCameraPosition
 	{
 		Null,
-		LeftPlane,
-		RightPlane,
+		PostivePlane,
+		NegativePlane,
 	};
 
 	VertexsPlaneBSP vertexPlaneBSP = VertexsPlaneBSP(0.0f, 0.0f, 0.0f, 0.0f, 0.0f,0.0f);
@@ -55,13 +55,11 @@ public:
 
 
 	vector<Entity*> ObjectsInGame;
-	vector<Entity*> ObjectsLeftPlane;
-	vector<Entity*> ObjectsRightPlane;
 
 	void SetName(string value) { name = value; }
 	string GetName() { return name; }
 
-	void UpdatePlane_BSP(vector<string> registerKeysBSP);
+	void UpdatePlane_BSP(vector<string> registerKeysBSP, vector<int> &objectsDisable);
 private:
 	
 	Entity* currentCameraCompare;

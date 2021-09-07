@@ -96,11 +96,23 @@ void BSP_Manager::ShowRegisterKeyBSP()
 
 void BSP_Manager::UpdateBSP_Manager(vector<Entity*> ObjectsInBSP)
 {
+	for (int i = 0; i < ObjectsInBSP.size(); i++) 
+	{
+		ObjectsInBSP[i]->SetIsAlive(true);
+	}
+
 	for (int i = 0; i < Planes_BSP.size(); i++) 
 	{
 		if (Planes_BSP[registerKeysBSP[i]] != NULL && Planes_BSP[registerKeysBSP[i]] != nullptr) {
 			Planes_BSP[registerKeysBSP[i]]->ObjectsInGame = ObjectsInBSP;
-			Planes_BSP[registerKeysBSP[i]]->UpdatePlane_BSP(registerKeysBSP);
+			Planes_BSP[registerKeysBSP[i]]->UpdatePlane_BSP(registerKeysBSP, objectsDisableBSP);
 		}
 	}
+
+	for (int i = 0; i < objectsDisableBSP.size(); i++) 
+	{
+		ObjectsInBSP[objectsDisableBSP[i]]->SetIsAlive(false);
+	}
+
+	objectsDisableBSP.clear();
 }

@@ -16,7 +16,9 @@ private:
 	void UpdateKeyBSP_Plane(string newKey);
 	Entity* currentCamera = NULL;
 	vector<string> registerKeysBSP;
+
 public:
+	vector<int> objectsDisableBSP;
 	map<string,Plane_BSP*> Planes_BSP; // CAMBIAR ESTO POR UN MAPA DE PLANOS
 	BSP_Manager(Entity* camera);
 	~BSP_Manager();

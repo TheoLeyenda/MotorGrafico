@@ -1,6 +1,6 @@
 #include "Plane_BSP.h"
 #include "Plane.h"
-
+#include "BSP_Manager.h"
 Plane_BSP::Plane_BSP(){}
 
 
@@ -36,7 +36,6 @@ void Plane_BSP::GeneratePlane()
 	cout << "vertex_min_y: " << vertexPlaneBSP.vertex_min_y << endl;
 	cout << "vertex_min_z: " << vertexPlaneBSP.vertex_min_z << endl;
 	cout << "----------------------------------------------" << endl;
-	//EL QUE VALGA 0 ES LA NORMAL.
 
 	if (planeAttach != NULL) 
 	{
@@ -88,18 +87,13 @@ void Plane_BSP::GeneratePlane()
 				, planeAttach->transform.globalPosition.y
 				, planeAttach->transform.globalPosition.z);
 		}
-		
 
-
-		if (myPlane == NULL)
-			myPlane = new MyPlane(PointA, PointB, PointC);
-		else
-			myPlane->set3Points(PointA, PointB, PointC);
+		myPlane = new MyPlane(PointA, PointB, PointC);
 
 		myPlane->flipPlane();
 	}
 }
-void Plane_BSP::UpdatePlane_BSP(vector<string> registerKeysBSP)
+void Plane_BSP::UpdatePlane_BSP(vector<string> registerKeysBSP, vector<int> &objectsDisable)
 {
 	if (planeAttach != NULL) 
 	{
@@ -107,7 +101,11 @@ void Plane_BSP::UpdatePlane_BSP(vector<string> registerKeysBSP)
 			return;
 	}
 
-	GeneratePlane();
+	if (myPlane == NULL)
+		GeneratePlane(); // SE EJECUTA SOLO SI EL PLANO ES NULO.
+	
+	if (myPlane == NULL)
+		return;
 
 	//Filtro otros si hay otro plano BSP en mi vector de objetos y lo remuevo
 	for (int i = 0; i < ObjectsInGame.size(); i++)
@@ -124,70 +122,41 @@ void Plane_BSP::UpdatePlane_BSP(vector<string> registerKeysBSP)
 	if (myPlane == NULL || currentCameraCompare == NULL || ObjectsInGame.size() <= 0)
 		return;
 
-	//cout << currentCameraCompare->transform.position.x <<" "<< currentCameraCompare->transform.position.y <<" "<< currentCameraCompare->transform.position.z << endl;
 	if (myPlane->getSide(currentCameraCompare->transform.position))
 	{
-		currentCameraPosition = CurrentCameraPosition::RightPlane;
+		currentCameraPosition = CurrentCameraPosition::PostivePlane;
 	}
 	else
 	{
-		currentCameraPosition = CurrentCameraPosition::LeftPlane;
+		currentCameraPosition = CurrentCameraPosition::NegativePlane;
 	}
 
-	//Dibujo los objetos en funcion de que lado esta la camara
-	//cout << currentCameraPosition << endl;
+	//1)Asumir que por defecto todos los objetos estan prendidos
+	//2)hacer el recorrido este en todos los planos.
+	//3)Guardar en una lista auxiliar de ints que representan a los objetos en la lista que debo apagar original 
+	//y despues aplico el prendido y apagado cuando termino el recorrido.
 	switch (currentCameraPosition)
 	{
-
-	case CurrentCameraPosition::LeftPlane:
-		//Si la camara esta del lado izquierdo dibujo los objetos que se encuentran en el vector ObjectsLeftPlane y 
-		//dejo de dibujar los objetos que se encuentran en el vector ObjectsRightPlane.
-
-		for (int i = 0; i < ObjectsLeftPlane.size(); i++)
+	case CurrentCameraPosition::PostivePlane:
+		for (int i = 0; i < ObjectsInGame.size(); i++) 
 		{
-			ObjectsLeftPlane[i]->SetIsAlive(true);
+			if (!myPlane->getSide(ObjectsInGame[i]->transform.globalPosition)) 
+			{
+				objectsDisable.push_back(i);
+			}
 		}
-
-		for (int i = 0; i < ObjectsRightPlane.size(); i++)
-		{
-			ObjectsRightPlane[i]->SetIsAlive(false);
-		}
-
 		break;
-	case CurrentCameraPosition::RightPlane:
-		//Si la camara esta del lado derecho dibujo los objetos que se encuentran en el vector ObjectsRightPlane y
-		//dejo de dibujar los objetos que se encuentran en el vector ObjectsLeftPlane.
-
-		for (int i = 0; i < ObjectsLeftPlane.size(); i++)
+	case CurrentCameraPosition::NegativePlane:
+		for (int i = 0; i < ObjectsInGame.size(); i++) 
 		{
-			ObjectsLeftPlane[i]->SetIsAlive(false);
+			if (myPlane->getSide(ObjectsInGame[i]->transform.globalPosition))
+			{
+				objectsDisable.push_back(i);
+			}
 		}
-
-		for (int i = 0; i < ObjectsRightPlane.size(); i++)
-		{
-			ObjectsRightPlane[i]->SetIsAlive(true);
-		}
-
 		break;
 	}
 
-	//Limpio los vectores ObjectsLeftPlane y ObjectsRightPlane
-	ObjectsLeftPlane.clear();
-	ObjectsRightPlane.clear();
-
-	//Checkeo de que lados estan los objetos y dependiendo de ello los pongo en un vector o en el otro
-
-	for (int i = 0; i < ObjectsInGame.size(); i++)
-	{
-		if (myPlane->getSide(ObjectsInGame[i]->transform.position))
-		{
-			ObjectsRightPlane.push_back(ObjectsInGame[i]);
-		}
-		else
-		{
-			ObjectsLeftPlane.push_back(ObjectsInGame[i]);
-		}
-	}
 }
 void Plane_BSP::RemoveItemObjectsInGame(int index)
 {
