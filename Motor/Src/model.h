@@ -29,7 +29,7 @@ public:
 	string GetClassName() override;
 
 	void SetMaterial(Material* mat);
-	//virtual void SetIsAlive(bool value);
+	virtual void SetIsAlive(bool value);
 	
 	ModelNode* GetMyModelNode() { return rootNode; }
 	vector<ModelNode*> GetModelChildrens() { return modelChildrens; }

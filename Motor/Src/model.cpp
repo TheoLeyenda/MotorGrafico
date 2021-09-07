@@ -67,21 +67,18 @@ void Model::LoadModel(const string & filePath, const string & texturePath, BSP_M
 
 void Model::Draw(bool & wireFrameActive)
 {
-	//if (isAlive) 
-	//{
-		axisAlignedBoundingBox->UpdateInternalDataBoundingBox(internalData, transform);
+	axisAlignedBoundingBox->UpdateInternalDataBoundingBox(internalData, transform);
 
-		if (rootNode != NULL)
-			rootNode->Draw(wireFrameActive);
+	if (rootNode != NULL)
+		rootNode->Draw(wireFrameActive);
 
-		for (int i = 0; i < modelChildrens.size(); i++)
-		{
-			if (modelChildrens[i] != NULL)
-				modelChildrens[i]->Draw(wireFrameActive);
-		}
+	for (int i = 0; i < modelChildrens.size(); i++)
+	{
+		if (modelChildrens[i] != NULL)
+			modelChildrens[i]->Draw(wireFrameActive);
+	}
 
-		axisAlignedBoundingBox->Draw(axisAlignedBoundingBox->GetEnableDraw());
-	//}
+	axisAlignedBoundingBox->Draw(axisAlignedBoundingBox->GetEnableDraw());
 }
 
 void Model::UnloadModel()
@@ -129,18 +126,10 @@ void Model::SetMaterial(Material * mat)
 	}
 }
 
-//void Model::SetIsAlive(bool value)
-//{
-//	SetIsAlive(value);
-//	if (rootNode != NULL)
-//		rootNode->SetIsAlive(value);
-//
-//	for (int i = 0; i < modelChildrens.size(); i++)
-//	{
-//		if (modelChildrens[i] != NULL)
-//			modelChildrens[i]->SetIsAlive(value);
-//	}
-//}
+void Model::SetIsAlive(bool value)
+{
+	SetEnableDrawAABB(value);
+}
 
 void Model::BindBuffer(){}
 
