@@ -107,17 +107,6 @@ void Plane_BSP::UpdatePlane_BSP(vector<string> registerKeysBSP, vector<int> &obj
 	if (myPlane == NULL)
 		return;
 
-	//Filtro otros si hay otro plano BSP en mi vector de objetos y lo remuevo
-	for (int i = 0; i < ObjectsInGame.size(); i++)
-	{
-		for (int j = 0; j < registerKeysBSP.size(); j++)
-		{
-			if (ObjectsInGame[i]->GetName().c_str() == registerKeysBSP[j].c_str())
-			{
-				RemoveItemObjectsInGame(i);
-			}
-		}
-	}
 
 	if (myPlane == NULL || currentCameraCompare == NULL || ObjectsInGame.size() <= 0)
 		return;
@@ -135,6 +124,14 @@ void Plane_BSP::UpdatePlane_BSP(vector<string> registerKeysBSP, vector<int> &obj
 	//2)hacer el recorrido este en todos los planos.
 	//3)Guardar en una lista auxiliar de ints que representan a los objetos en la lista que debo apagar original 
 	//y despues aplico el prendido y apagado cuando termino el recorrido.
+
+	//for (int i = 0; i < ObjectsInGame.size(); i++) 
+	//{
+	//	cout<<ObjectsInGame[i]->GetName()<<endl;
+	//}
+
+	//cin.get();
+
 	switch (currentCameraPosition)
 	{
 	case CurrentCameraPosition::PostivePlane:
@@ -158,10 +155,7 @@ void Plane_BSP::UpdatePlane_BSP(vector<string> registerKeysBSP, vector<int> &obj
 	}
 
 }
-void Plane_BSP::RemoveItemObjectsInGame(int index)
-{
-	ObjectsInGame.erase(ObjectsInGame.begin() + index);
-}
+
 
 
 

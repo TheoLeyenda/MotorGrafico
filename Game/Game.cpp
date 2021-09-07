@@ -184,13 +184,13 @@ void Game::InitGame()
 
 	SetEnableAABB_DebugGame(true);
 
-	cout << "Bob tree" << endl;
-	bobFBX->PrintTree();
-	cout << endl;
+	//cout << "Bob tree" << endl;
+	//bobFBX->PrintTree();
+	//cout << endl;
 
-	cout << "Entitys in vector BSP" << endl;
-	ShowEntitys_BSP();
-	cout << endl;
+	//cout << "Entitys in vector BSP" << endl;
+	//ShowEntitys_BSP();
+	//cout << endl;
 }
 
 void Game::UpdateGame(Windows *_window, Renderer *_render, Input *_input)

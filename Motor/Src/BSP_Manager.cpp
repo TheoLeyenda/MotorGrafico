@@ -94,8 +94,46 @@ void BSP_Manager::ShowRegisterKeyBSP()
 	cout << "Cantidad de elementos: " << registerKeysBSP.size() << endl;
 }
 
+vector<Entity*> BSP_Manager::FilterPlanesBSP(vector<Entity*> ObjectsInBSP)
+{
+	vector<Entity*> planes;
+	vector<Entity*> auxObjectsInBSP;
+
+	for (int i = 0; i < ObjectsInBSP.size(); i++)
+	{
+		for (int j = 0; j < registerKeysBSP.size(); j++)
+		{
+			if (ObjectsInBSP[i]->GetName() == registerKeysBSP[j])
+			{
+				planes.push_back(ObjectsInBSP[i]);
+			}
+		}
+	}
+
+	for (int i = 0; i < ObjectsInBSP.size(); i++)
+	{
+		bool push = true;
+		for (int j = 0; j < planes.size(); j++) {
+
+			if (ObjectsInBSP[i] == planes[j] || ObjectsInBSP[i] == planes[j]->GetChild(0))
+			{
+				push = false;
+			}
+		}
+		if (push)
+			auxObjectsInBSP.push_back(ObjectsInBSP[i]);
+	}
+
+	return auxObjectsInBSP;
+}
+
 void BSP_Manager::UpdateBSP_Manager(vector<Entity*> ObjectsInBSP)
 {
+	//Filtro otros si hay otro plano BSP en mi vector de objetos y lo remuevo
+	vector<Entity*> auxObjectsInBSP = FilterPlanesBSP(ObjectsInBSP);;
+
+	//----------------------------------------------------------------------//
+
 	for (int i = 0; i < ObjectsInBSP.size(); i++) 
 	{
 		ObjectsInBSP[i]->SetIsAlive(true);
@@ -104,7 +142,7 @@ void BSP_Manager::UpdateBSP_Manager(vector<Entity*> ObjectsInBSP)
 	for (int i = 0; i < Planes_BSP.size(); i++) 
 	{
 		if (Planes_BSP[registerKeysBSP[i]] != NULL && Planes_BSP[registerKeysBSP[i]] != nullptr) {
-			Planes_BSP[registerKeysBSP[i]]->ObjectsInGame = ObjectsInBSP;
+			Planes_BSP[registerKeysBSP[i]]->ObjectsInGame = auxObjectsInBSP;
 			Planes_BSP[registerKeysBSP[i]]->UpdatePlane_BSP(registerKeysBSP, objectsDisableBSP);
 		}
 	}

@@ -17,6 +17,7 @@ private:
 	Entity* currentCamera = NULL;
 	vector<string> registerKeysBSP;
 
+	vector<Entity*> FilterPlanesBSP(vector<Entity*> ObjectsInBSP);
 public:
 	vector<int> objectsDisableBSP;
 	map<string,Plane_BSP*> Planes_BSP; // CAMBIAR ESTO POR UN MAPA DE PLANOS

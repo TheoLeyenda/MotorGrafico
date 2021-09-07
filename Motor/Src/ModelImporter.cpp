@@ -214,7 +214,6 @@ void ModelImporter::LoadMesh(vector<Mesh*> &modelMeshes, aiMesh* mesh, const aiS
 	nodeMesh->_meshList.push_back(newMesh);
 	nodeMesh->_meshToTex.push_back(mesh->mMaterialIndex);
 	nodeMesh->AddChildren(newMesh);
-
 	modelMeshes.push_back(newMesh);
 }
 

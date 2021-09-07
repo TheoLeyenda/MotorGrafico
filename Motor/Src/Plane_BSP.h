@@ -65,7 +65,7 @@ private:
 	Entity* currentCameraCompare;
 	
 	string name;
-	void RemoveItemObjectsInGame(int index);
+	
 	Entity* planeAttach = NULL;
 	MyPlane* myPlane = NULL; // Con esto saco la matematica del plano
 };
