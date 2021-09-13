@@ -409,7 +409,7 @@ void Entity::DisableMeAndChilds()
 	}
 }
 
-glm::vec3 * Entity::GetAABBGlobalPositions()
+glm::vec3* Entity::GetAABBGlobalPositions()
 {
 	glm::vec3 auxVec[8];
 
@@ -468,6 +468,19 @@ void Entity::AttachRootScene(Entity* value)
 	for (Entity* child : childrens) 
 	{
 		child->AttachRootScene(value);
+	}
+}
+
+void Entity::CheckIsAliveModel(bool& value)
+{
+	for (Entity* child : childrens)
+	{
+		if (child->GetIsAlive())
+		{
+			//cout << child->GetName() << endl;
+			value = true;
+		}
+		child->CheckIsAliveModel(value);
 	}
 }
 

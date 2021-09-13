@@ -81,6 +81,9 @@ private:
 	//---------//
 protected:
 	
+
+	void CheckIsAliveModel(bool& value);
+
 	void CreateMyAxisAlignedBoundingBox();
 	Entity* rootScene;
 	//FRUSTRUM CULLING
@@ -190,7 +193,7 @@ public:
 	vector<Entity*> GetChildrens() { return childrens; }
 	//-----------//
 
-	glm::vec3* GetAABBGlobalPositions();
+	virtual glm::vec3* GetAABBGlobalPositions();
 
 	glm::vec3 GetForward();
 	

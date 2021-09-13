@@ -120,7 +120,8 @@ void Game::InitGame()
 	bobFBX->AttachRootScene(GetRootScene());
 	AddObjectInDenugGame(bobFBX);
 
-	Entity* entity = bobFBX->GetEntityNode("Cabeza");
+	Entity* entity;
+	entity = bobFBX->GetEntityNode("Cabeza");
 	entity->SetPosition(0.0f, 0.0f, 10.8299f);
 
 	entity = bobFBX->GetEntityNode("Cuello");

@@ -68,6 +68,12 @@ void Model::LoadModel(const string & filePath, const string & texturePath, BSP_M
 
 void Model::Draw(bool & wireFrameActive)
 {
+	
+	isAlive = false;
+
+	CheckIsAliveModel(isAlive);
+	axisAlignedBoundingBox->SetEnableDraw(isAlive);
+
 	if (isAlive)
 	{
 		axisAlignedBoundingBox->UpdateInternalDataBoundingBox(internalData, transform);
@@ -75,15 +81,26 @@ void Model::Draw(bool & wireFrameActive)
 		if (rootNode != NULL)
 			rootNode->Draw(wireFrameActive);
 	}
-	for (int i = 0; i < modelChildrens.size(); i++)
-	{
-		if (modelChildrens[i] != NULL)
-			modelChildrens[i]->Draw(wireFrameActive);
-	}
-	if (isAlive) 
-	{
+		for (int i = 0; i < modelChildrens.size(); i++)
+		{
+			if (modelChildrens[i] != NULL)
+				modelChildrens[i]->Draw(wireFrameActive);
+		}
+
+	if (isAlive)
 		axisAlignedBoundingBox->Draw(axisAlignedBoundingBox->GetEnableDraw());
+}
+
+glm::vec3 * Model::GetAABBGlobalPositions()
+{
+	glm::vec3 auxVec[8];
+
+	for (int i = 0; i < 8; i++)
+	{
+		auxVec[i] = axisAlignedBoundingBox->GetAABBPositions()[i] + transform.position + transform.scale;
 	}
+
+	return auxVec;
 }
 
 void Model::UnloadModel()

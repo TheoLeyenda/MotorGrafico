@@ -30,6 +30,8 @@ public:
 
 	void SetMaterial(Material* mat);
 	
+	virtual glm::vec3* GetAABBGlobalPositions();
+	
 	ModelNode* GetMyModelNode() { return rootNode; }
 	vector<ModelNode*> GetModelChildrens() { return modelChildrens; }
 	vector<Mesh*> GetModelMeshes() { return modelMeshes; }
