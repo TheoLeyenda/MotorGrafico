@@ -39,6 +39,7 @@ Renderer* GetRenderer();
 
 //#include "AxisAlignedBoundingBox.h"
 class AxisAlignedBoundingBox;
+class Plane_BSP;
 
 #include "stb_image.h"
 
@@ -81,7 +82,7 @@ private:
 protected:
 	
 	void CreateMyAxisAlignedBoundingBox();
-
+	Entity* rootScene;
 	//FRUSTRUM CULLING
 	AxisAlignedBoundingBox* axisAlignedBoundingBox = NULL;
 	//---------------//
@@ -120,7 +121,7 @@ protected:
 	bool isStatic = false;
 	bool isAlive = true;
 	//bool InmortalObject = false;
-
+	bool isRootHerarchy = false;
 public:
 	void UpdateMatrixModel();
 	virtual void Draw(bool& wireFrameActive) = 0;
@@ -147,10 +148,11 @@ public:
 	void CheckIsModel();
 	bool GetIsAlive() { return isAlive; }
 	void DisableMeAndChilds();
-
+	void AttachRootScene(Entity* value);
 	virtual void SetIsAlive(bool value) 
 	{
-		isAlive = value; 
+		SetEnableDrawAABB(value);
+		isAlive = value;
 	}
 
 	void SetIsStatic(bool value) 
@@ -188,7 +190,13 @@ public:
 	vector<Entity*> GetChildrens() { return childrens; }
 	//-----------//
 
+	glm::vec3* GetAABBGlobalPositions();
 
 	glm::vec3 GetForward();
+	
+	void SetIsRootHerarchy(bool value) { isRootHerarchy = value; }
+	bool GetIsRootHerarchy() { return isRootHerarchy; }
+
+	void CheckVisibleBSP(vector<Entity*> objectsBSP, vector<int>& indexsObjectsVisibility, vector<Plane_BSP*>& planesBSP);
 };
 #endif

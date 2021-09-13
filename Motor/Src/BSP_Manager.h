@@ -21,7 +21,7 @@ private:
 	void DisableObjects(vector<Entity*> ObjectsInBSP);
 public:
 	vector<int> objectsDisableBSP;
-	map<string,Plane_BSP*> Planes_BSP; // CAMBIAR ESTO POR UN MAPA DE PLANOS
+	map<string,Plane_BSP*> planes_BSP; // CAMBIAR ESTO POR UN MAPA DE PLANOS
 	BSP_Manager(Entity* camera, Entity* _rootScene);
 	~BSP_Manager();
 	string GetKeyBSP();

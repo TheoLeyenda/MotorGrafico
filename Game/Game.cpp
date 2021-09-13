@@ -107,6 +107,7 @@ void Game::InitGame()
 	//modelOBJ->SetPosition(660, 12, -16);
 	//modelOBJ->SetRotationY(-0.5);
 	//modelOBJ->SetMaterial(goldMaterial);
+	//modelOBJ->AttachRootScene(GetRootScene());
 	//AddObjectInDenugGame(modelOBJ);
 
 	bobFBX = new Model(render);
@@ -116,6 +117,7 @@ void Game::InitGame()
 	bobFBX->SetName("Bob_Modelo");
 	bobFBX->SetRotationX(-90);
 	bobFBX->SetMaterial(goldMaterial);
+	bobFBX->AttachRootScene(GetRootScene());
 	AddObjectInDenugGame(bobFBX);
 
 	Entity* entity = bobFBX->GetEntityNode("Cabeza");
@@ -198,44 +200,6 @@ void Game::UpdateGame(Windows *_window, Renderer *_render, Input *_input)
 	//timeClock.FPS();
 	if (player3D != NULL)
 		player3D->Move(input, timeClock);
-
-	/*
-	Entity* entity = bobFBX->GetEntityNode("Mano_Der");
-	cout << "Mano_Der: " << "(" << entity->transform.globalPosition.x
-		<< "," << entity->transform.globalPosition.y
-		<< "," << entity->transform.globalPosition.z
-		<< ")" << endl;
-	
-	entity = bobFBX->GetEntityNode("Mano_Izq");
-
-	cout << "Mano_Izq: " << "(" << entity->transform.globalPosition.x
-		<< "," << entity->transform.globalPosition.y
-		<< "," << entity->transform.globalPosition.z
-		<< ")" << endl;
-
-	entity = bobFBX->GetEntityNode("Plane_BSP3");
-
-	cout << "Plane_BSP3: " << "(" << entity->transform.globalPosition.x
-		<< "," << entity->transform.globalPosition.y
-		<< "," << entity->transform.globalPosition.z
-		<< ")" << endl;
-
-	system("cls");
-
-	entity = bobFBX->GetEntityNode("Plane_BSP2");
-
-	cout << "Plane_BSP2: " << "(" << entity->transform.globalPosition.x
-		<< "," << entity->transform.globalPosition.y
-		<< "," << entity->transform.globalPosition.z
-		<< ")" << endl;
-
-	entity = bobFBX->GetEntityNode("Plane_BSP1");
-
-	cout << "Plane_BSP1: " << "(" << entity->transform.globalPosition.x
-		<< "," << entity->transform.globalPosition.y
-		<< "," << entity->transform.globalPosition.z
-		<< ")" << endl;
-	*/
 
 
 

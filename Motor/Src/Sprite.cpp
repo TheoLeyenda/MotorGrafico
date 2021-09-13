@@ -5,6 +5,8 @@
 //============================================
 Sprite::Sprite(Renderer * _renderer, const char* filePath, bool transparency):Entity2D(_renderer)
 {
+
+	isRootHerarchy = true;
 	renderer = _renderer;
 	_transparency = transparency;
 

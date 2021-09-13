@@ -93,9 +93,9 @@ void Plane_BSP::GeneratePlane()
 		myPlane->flipPlane();
 	}
 }
-void Plane_BSP::UpdatePlane_BSP(vector<string> registerKeysBSP, vector<int> &objectsDisable)
+void Plane_BSP::CheckObjectInPlaneBSP(Entity* ObjectCompare, int indexPlanePush, vector<int>& indexsDisableObjects)
 {
-	if (planeAttach != NULL) 
+	if (planeAttach != NULL)
 	{
 		if (!planeAttach->GetIsAlive())
 			return;
@@ -103,12 +103,12 @@ void Plane_BSP::UpdatePlane_BSP(vector<string> registerKeysBSP, vector<int> &obj
 
 	if (myPlane == NULL)
 		GeneratePlane(); // SE EJECUTA SOLO SI EL PLANO ES NULO.
-	
+
 	if (myPlane == NULL)
 		return;
 
 
-	if (myPlane == NULL || currentCameraCompare == NULL || ObjectsInGame.size() <= 0)
+	if (myPlane == NULL || currentCameraCompare == NULL)
 		return;
 
 	if (myPlane->getSide(currentCameraCompare->transform.position))
@@ -125,37 +125,37 @@ void Plane_BSP::UpdatePlane_BSP(vector<string> registerKeysBSP, vector<int> &obj
 	//3)Guardar en una lista auxiliar de ints que representan a los objetos en la lista que debo apagar original 
 	//y despues aplico el prendido y apagado cuando termino el recorrido.
 
-	//for (int i = 0; i < ObjectsInGame.size(); i++) 
-	//{
-	//	cout<<ObjectsInGame[i]->GetName()<<endl;
-	//}
-
-	//cin.get();
-
 	switch (currentCameraPosition)
 	{
 	case CurrentCameraPosition::PostivePlane:
-		for (int i = 0; i < ObjectsInGame.size(); i++) 
+		if (!myPlane->getSide(ObjectCompare->GetAABBGlobalPositions()[0]) &&
+			!myPlane->getSide(ObjectCompare->GetAABBGlobalPositions()[1]) &&
+			!myPlane->getSide(ObjectCompare->GetAABBGlobalPositions()[2]) &&
+			!myPlane->getSide(ObjectCompare->GetAABBGlobalPositions()[3]) &&
+			!myPlane->getSide(ObjectCompare->GetAABBGlobalPositions()[4]) &&
+			!myPlane->getSide(ObjectCompare->GetAABBGlobalPositions()[5]) &&
+			!myPlane->getSide(ObjectCompare->GetAABBGlobalPositions()[6]) &&
+			!myPlane->getSide(ObjectCompare->GetAABBGlobalPositions()[7]))
 		{
-			if (!myPlane->getSide(ObjectsInGame[i]->transform.globalPosition)) 
-			{
-				objectsDisable.push_back(i);
-			}
+			indexsDisableObjects.push_back(indexPlanePush);
 		}
+
 		break;
 	case CurrentCameraPosition::NegativePlane:
-		for (int i = 0; i < ObjectsInGame.size(); i++) 
+		if (myPlane->getSide(ObjectCompare->GetAABBGlobalPositions()[0]) &&
+			myPlane->getSide(ObjectCompare->GetAABBGlobalPositions()[1]) &&
+			myPlane->getSide(ObjectCompare->GetAABBGlobalPositions()[2]) &&
+			myPlane->getSide(ObjectCompare->GetAABBGlobalPositions()[3]) &&
+			myPlane->getSide(ObjectCompare->GetAABBGlobalPositions()[4]) &&
+			myPlane->getSide(ObjectCompare->GetAABBGlobalPositions()[5]) &&
+			myPlane->getSide(ObjectCompare->GetAABBGlobalPositions()[6]) &&
+			myPlane->getSide(ObjectCompare->GetAABBGlobalPositions()[7]))
 		{
-			if (myPlane->getSide(ObjectsInGame[i]->transform.globalPosition))
-			{
-				objectsDisable.push_back(i);
-			}
+			indexsDisableObjects.push_back(indexPlanePush);
 		}
+
 		break;
+
 	}
-
 }
-
-
-
 

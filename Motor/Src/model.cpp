@@ -17,6 +17,7 @@ Model::Model(Renderer * render) : Entity(render)
 
 	CreateMyAxisAlignedBoundingBox();
 	axisAlignedBoundingBox->AttachEntity(internalData, transform);
+	isRootHerarchy = true;
 }
 
 Model::~Model()
@@ -57,7 +58,7 @@ void Model::LoadModel(const string & filePath, const string & texturePath, BSP_M
 			_dataXYZ.push_back(modelMeshes[i]->meshXYZVertices[j]);
 		}
 	}
-	//cout << GetName() << ": " << modelMeshes.size()<< " meshes" <<endl;
+
 	if (axisAlignedBoundingBox != NULL) 
 	{
 		axisAlignedBoundingBox->SetVerticesColliders(axisAlignedBoundingBox->GenerateAxisAlignedBoundingBoxPos(_dataXYZ),
@@ -67,18 +68,22 @@ void Model::LoadModel(const string & filePath, const string & texturePath, BSP_M
 
 void Model::Draw(bool & wireFrameActive)
 {
-	axisAlignedBoundingBox->UpdateInternalDataBoundingBox(internalData, transform);
+	if (isAlive)
+	{
+		axisAlignedBoundingBox->UpdateInternalDataBoundingBox(internalData, transform);
 
-	if (rootNode != NULL)
-		rootNode->Draw(wireFrameActive);
-
+		if (rootNode != NULL)
+			rootNode->Draw(wireFrameActive);
+	}
 	for (int i = 0; i < modelChildrens.size(); i++)
 	{
 		if (modelChildrens[i] != NULL)
 			modelChildrens[i]->Draw(wireFrameActive);
 	}
-
-	axisAlignedBoundingBox->Draw(axisAlignedBoundingBox->GetEnableDraw());
+	if (isAlive) 
+	{
+		axisAlignedBoundingBox->Draw(axisAlignedBoundingBox->GetEnableDraw());
+	}
 }
 
 void Model::UnloadModel()
@@ -124,11 +129,6 @@ void Model::SetMaterial(Material * mat)
 		if (modelChildrens[i] != NULL)
 			modelChildrens[i]->SetMaterialNode(myMat);
 	}
-}
-
-void Model::SetIsAlive(bool value)
-{
-	SetEnableDrawAABB(value);
 }
 
 void Model::BindBuffer(){}

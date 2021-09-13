@@ -40,6 +40,7 @@ unsigned int indexBufferQuad[countElementsIndexBufferQuad] =
 
 Shape::Shape(Renderer * _renderer,TypeShape typeShape, const char * filePath): Entity2D(_renderer)
 {
+	isRootHerarchy = true;
 	_currentShape = typeShape;
 	renderer = _renderer;
 	_path = filePath;
@@ -61,6 +62,7 @@ Shape::Shape(Renderer * _renderer,TypeShape typeShape, const char * filePath): E
 
 Shape::Shape(Renderer * _renderer, TypeShape typeShape) : Entity2D(_renderer)
 {
+	isRootHerarchy = true;
 	_currentShape = typeShape;
 	renderer = _renderer;
 	_typeMaterial = TypeMaterial::ColorType;

@@ -11,6 +11,8 @@ Primitive3D::Primitive3D(Renderer* renderer) : Entity(renderer)
 {
 	_type = Cube;
 
+	isRootHerarchy = true;
+
 	_path = "None Path";
 	_useTexture = false;
 	my_Mat = NULL;
@@ -48,6 +50,8 @@ Primitive3D::Primitive3D(Renderer* renderer) : Entity(renderer)
 Primitive3D::Primitive3D(Renderer * renderer, TypeModel typeModel) : Entity(renderer)
 {
 	_type = typeModel;
+
+	isRootHerarchy = true;
 
 	_path = "None Path";
 	_useTexture = false;
@@ -88,6 +92,8 @@ Primitive3D::Primitive3D(Renderer* renderer, TypeModel typeModel, const char* fi
 {
 	_type = typeModel;
 	
+	isRootHerarchy = true;
+
 	CreateDataModel();
 
 	_path = filePath;

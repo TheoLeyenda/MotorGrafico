@@ -59,7 +59,7 @@ public:
 	void SetName(string value) { name = value; }
 	string GetName() { return name; }
 
-	void UpdatePlane_BSP(vector<string> registerKeysBSP, vector<int> &objectsDisable);
+	void CheckObjectInPlaneBSP(Entity* ObjectCompare, int indexPlanePush, vector<int>& indexsDisableObjects);
 private:
 	
 	Entity* currentCameraCompare;

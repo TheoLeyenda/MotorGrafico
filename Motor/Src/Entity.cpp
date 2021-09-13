@@ -2,6 +2,7 @@
 #include <glew.h>
 #include <GLFW/glfw3.h>
 #include "AxisAlignedBoundingBox.h"
+#include "Plane_BSP.h"
 #include "MotorasoGui.h"
 
 
@@ -241,7 +242,6 @@ glm::vec3 Entity::GetForward()
 	return glm::vec3(dx, 0, dz);
 }
 
-
 #pragma region UI
 
 void Entity::ShowUI()
@@ -268,6 +268,7 @@ void Entity::_GetEntityNode(string nameID, vector<Entity*>& res)
 
 void Entity::_AddChildren(Entity* children, Entity* newParent)
 {
+
 	if (children == NULL)
 	{
 		cout << "el chidren es nulo" << endl;
@@ -283,6 +284,12 @@ void Entity::_AddChildren(Entity* children, Entity* newParent)
 	}
 	children->parent = newParent;
 	newParent->childrens.push_back(children);
+	
+	//SI EL NUEVO PADRE ES IGUAL AL OBJETO PRINCIPAL DE LA HERARQUIA IsRootScene = true sino false
+
+	if (parent == rootScene)
+		isRootHerarchy = true;
+
 	children->UpdateMatrixModel();
 }
 
@@ -312,6 +319,10 @@ void Entity::AddChildren(Entity * children)
 		childrens.push_back(children);
 	}
 
+	//SI EL NUEVO PADRE ES IGUAL AL OBJETO PRINCIPAL DE LA HERARQUIA IsRootScene = true sino false
+	if (parent == rootScene)
+		isRootHerarchy = true;
+
 	children->UpdateMatrixModel();
 }
 
@@ -323,12 +334,10 @@ void Entity::RemoveChildren(Entity* children, Entity* newParent)
 	{
 		if (childrens[i] == children)
 		{
-			//cout << "ENTRE CHE" << endl;
 			children->parent = newParent;
 			bool push = true;
 			
 			for (int j = 0; j < newParent->childrens.size(); j++) {
-				//cout << children->GetName() << " = " << newParent->childrens[j]->GetName() << endl;
 				if (newParent->childrens[j] == children) 
 				{
 					push = false;
@@ -360,12 +369,12 @@ void Entity::RemoveChildren(Entity* children, Entity* newParent)
 				_AddChildren(children, newParent);
 			}
 			entity->parent = newParent;
-			//cout << "Parent: " << entity->parent->GetName() << endl;
 		}
 	}
-	//cout << endl;
-	//newParent->PrintTree();
-	//cout << endl;
+
+	//SI EL NUEVO PADRE ES IGUAL AL OBJETO PRINCIPAL DE LA HERARQUIA IsRootScene = true sino false
+	if (parent == rootScene)
+		isRootHerarchy = true;
 }
 Entity* Entity::GetEntityNode(string name)
 {
@@ -397,6 +406,68 @@ void Entity::DisableMeAndChilds()
 	SetIsAlive(false);
 	for (Entity* child : childrens) {
 		child->DisableMeAndChilds();
+	}
+}
+
+glm::vec3 * Entity::GetAABBGlobalPositions()
+{
+	glm::vec3 auxVec[8];
+
+	for (int i = 0; i < 8; i++)
+	{
+		auxVec[i] = axisAlignedBoundingBox->GetAABBPositions()[i] + transform.globalPosition + transform.scale;
+	}
+
+	return auxVec;
+}
+
+void Entity::CheckVisibleBSP(vector<Entity*> objectsBSP, vector<int>& indexsObjectsVisibility, vector<Plane_BSP*>& planesBSP)
+{
+	int index = 0;
+	bool parentAlive = true;
+
+	if (parent != NULL)
+		parentAlive = parent->GetIsAlive();
+
+	for (int i = 0; i < objectsBSP.size(); i++)
+	{
+		if (objectsBSP[i] == this)
+		{
+			//cout <<"ID:"<< i << endl;
+			index = i;
+			i = objectsBSP.size();
+		}
+	}
+
+	if (!parentAlive) 
+	{
+		SetIsAlive(false);
+		indexsObjectsVisibility.push_back(index);
+		for (Entity* child : childrens) 
+		{
+			child->SetIsAlive(false);
+		}
+		return;
+	}
+
+	for (int j = 0; j < planesBSP.size(); j++)
+	{
+		planesBSP[j]->CheckObjectInPlaneBSP(this, index, indexsObjectsVisibility);
+	}
+
+
+	for (Entity* child : childrens) {
+		child->CheckVisibleBSP(objectsBSP, indexsObjectsVisibility, planesBSP);
+	}
+}
+
+void Entity::AttachRootScene(Entity* value) 
+{
+	rootScene = value;
+
+	for (Entity* child : childrens) 
+	{
+		child->AttachRootScene(value);
 	}
 }
 
