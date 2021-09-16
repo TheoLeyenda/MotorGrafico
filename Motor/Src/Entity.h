@@ -80,7 +80,6 @@ private:
 	void _AddChildren(Entity* children, Entity* newParent);
 	//---------//
 protected:
-	
 
 	void CheckIsAliveModel(bool& value);
 

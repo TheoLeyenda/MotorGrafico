@@ -100,15 +100,16 @@ void Game::InitGame()
 
 	GetMyLightsID();
 
-	//modelOBJ = new Model(render);
-	//modelOBJ->LoadModel("res/modelos/source/alex.obj", "res/modelos/textures/", bsp_manager);
-	//modelOBJ->SetScale(50.0f, 50.0f, 50.0f);
-	//modelOBJ->SetName("ALEX-MODEL_OBJ");
-	//modelOBJ->SetPosition(660, 12, -16);
-	//modelOBJ->SetRotationY(-0.5);
-	//modelOBJ->SetMaterial(goldMaterial);
-	//modelOBJ->AttachRootScene(GetRootScene());
-	//AddObjectInDenugGame(modelOBJ);
+	modelOBJ = new Model(render);
+	modelOBJ->LoadModel("res/modelos/source/alex.obj", "res/modelos/textures/", bsp_manager);
+	modelOBJ->SetScale(50.0f, 50.0f, 50.0f);
+	modelOBJ->SetName("ALEX (Objeto Fijo)");
+	modelOBJ->SetPosition(660, 12, -16);
+	modelOBJ->SetRotationY(-0.5);
+	modelOBJ->SetMaterial(goldMaterial);
+	modelOBJ->AttachRootScene(GetRootScene());
+	modelOBJ->SetIsStatic(true);
+	AddObjectInDenugGame(modelOBJ);
 
 	bobFBX = new Model(render);
 	bobFBX->LoadModel("res/modelos/Bob.fbx", " ", bsp_manager);
@@ -223,6 +224,10 @@ void Game::UpdateGame(Windows *_window, Renderer *_render, Input *_input)
 
 	if (bobFBX != NULL) {
 		bobFBX->Draw(motorasoGui->GetIfWireFrameIsActive());
+	}
+
+	if (modelOBJ != NULL) {
+		modelOBJ->Draw(motorasoGui->GetIfWireFrameIsActive());
 	}
 	/*if (collisionManager != NULL)
 	{

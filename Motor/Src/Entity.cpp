@@ -443,10 +443,7 @@ void Entity::CheckVisibleBSP(vector<Entity*> objectsBSP, vector<int>& indexsObje
 	{
 		SetIsAlive(false);
 		indexsObjectsVisibility.push_back(index);
-		for (Entity* child : childrens) 
-		{
-			child->SetIsAlive(false);
-		}
+		DisableMeAndChilds();
 		return;
 	}
 

@@ -152,7 +152,6 @@ void BSP_Manager::UpdateBSP_Manager(vector<Entity*> ObjectsInBSP)
 	{
 		ObjectsInBSP[i]->SetIsAlive(true);
 	}
-	
 
 	for (int i = 0; i < registerKeysBSP.size(); i++)
 	{
@@ -164,7 +163,6 @@ void BSP_Manager::UpdateBSP_Manager(vector<Entity*> ObjectsInBSP)
 
 	for (int i = 0; i < auxObjectsInBSP.size(); i++)
 	{
-		//cout << auxObjectsInBSP[i]->GetIsRootHerarchy() << endl;
 		if (auxObjectsInBSP[i]->GetIsRootHerarchy()) 
 		{
 			auxObjectsInBSP[i]->CheckVisibleBSP(auxObjectsInBSP, objectsDisableBSP, vecPlanesBSP);
@@ -172,7 +170,6 @@ void BSP_Manager::UpdateBSP_Manager(vector<Entity*> ObjectsInBSP)
 	}
 
 	DisableObjects(ObjectsInBSP);
-
 
 	auxObjectsInBSP.clear();
 	vecPlanesBSP.clear();
