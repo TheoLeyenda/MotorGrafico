@@ -9,6 +9,8 @@
 
 #include "AxisAlignedBoundingBox.h"
 
+#include "Camera.h"
+
 Model::Model(Renderer * render, bool hasBPSPlane) : Entity(render)
 {
 	myMat = NULL;
@@ -128,18 +130,21 @@ void Model::LoadModel(const string & filePath, const string & texturePath)
 
 void Model::Draw(bool & wireFrameActive)
 {
-	axisAlignedBoundingBox->UpdateInternalDataBoundingBox(internalData, transform);
-
-	if (rootNode != NULL)
-		rootNode->Draw(wireFrameActive);
-
-	for (int i = 0; i < modelChildrens.size(); i++)
+	if (isAlive || InmortalObject)
 	{
-		if (modelChildrens[i] != NULL)
-			modelChildrens[i]->Draw(wireFrameActive);
-	}
+		axisAlignedBoundingBox->UpdateInternalDataBoundingBox(internalData, transform);
 
-	axisAlignedBoundingBox->Draw(axisAlignedBoundingBox->GetEnableDraw());
+		if (rootNode != NULL)
+			rootNode->Draw(wireFrameActive);
+
+		for (int i = 0; i < modelChildrens.size(); i++)
+		{
+			if (modelChildrens[i] != NULL)
+				modelChildrens[i]->Draw(wireFrameActive);
+		}
+
+		axisAlignedBoundingBox->Draw(axisAlignedBoundingBox->GetEnableDraw());
+	}
 }
 
 void Model::UnloadModel()
@@ -200,6 +205,11 @@ void Model::SetIsAlive(bool value)
 	}
 }
 
+void Model::ChangeDrawState(Entity* nodeToChange, bool value)
+{
+	nodeToChange->SetIsAlive(value);
+}
+
 void Model::BindBuffer(){}
 
 void Model::SetEnableDrawAABB(bool value)
@@ -208,10 +218,35 @@ void Model::SetEnableDrawAABB(bool value)
 		axisAlignedBoundingBox->SetEnableDraw(value);
 }
 
+void Model::updateNodesIndexBSP()
+{
+	if (planeBSP1 != NULL && planeBSP2 != NULL && planeBSP3 != NULL)
+	{
+		Entity::SetIndexBSPPlanes((int)planeBSP1->ObjectPositiveSide(this), (int)planeBSP2->ObjectPositiveSide(this),
+			(int)planeBSP3->ObjectPositiveSide(this));
+		
+		if (rootNode != NULL)
+		{
+			rootNode->SetIndexBSPPlanes((int)planeBSP1->ObjectPositiveSide(rootNode), (int)planeBSP2->ObjectPositiveSide(rootNode),
+				(int)planeBSP3->ObjectPositiveSide(rootNode));
+		}
+		for (int i = 0; i < modelChildrens.size(); i++)
+		{
+			if (modelChildrens[i] != NULL)
+			{
+				modelChildrens[i]->SetIndexBSPPlanes((int)planeBSP1->ObjectPositiveSide(rootNode), (int)planeBSP2->ObjectPositiveSide(rootNode),
+					(int)planeBSP3->ObjectPositiveSide(rootNode));
+			}
+		}
+	}
+}
+
 void Model::updateBSPPlanes(glm::vec3 posPlane1, glm::vec3 posPlane2, glm::vec3 posPlane3)
 {
 	if (!hasBSPPlanes)
 		return;
+	
+	updateNodesIndexBSP();
 
 	planeBSP1->update_BSP_Plane(modelImporter->getPlanesBSP()[0][0] + posPlane1, modelImporter->getPlanesBSP()[0][2] + posPlane1,
 		modelImporter->getPlanesBSP()[0][1] + posPlane1);
@@ -221,4 +256,56 @@ void Model::updateBSPPlanes(glm::vec3 posPlane1, glm::vec3 posPlane2, glm::vec3 
 
 	planeBSP3->update_BSP_Plane(modelImporter->getPlanesBSP()[2][0] + posPlane3, modelImporter->getPlanesBSP()[2][2] + posPlane3,
 		modelImporter->getPlanesBSP()[2][1] + posPlane3);
+}
+
+void Model::checkBSPRecursive(Camera* camera, Entity* nodeToCompute)
+{
+	if (planeBSP1 != NULL && planeBSP2 != NULL && planeBSP3 != NULL)
+	{
+		if (nodeToCompute != NULL)
+		{
+			if (checkIfIsOnSide(camera, nodeToCompute))
+			{
+				ChangeDrawState(nodeToCompute, true);
+
+				for (int i = 0; i < nodeToCompute->GetChildrens().size(); i++)
+				{
+					if (nodeToCompute->GetChildrens()[i] != NULL)
+					{
+						checkBSPRecursive(camera, nodeToCompute->GetChildrens()[i]);
+					}
+				}
+			}
+			else
+			{
+				ChangeDrawState(nodeToCompute, false);
+
+				for (int i = 0; i < nodeToCompute->GetChildrens().size(); i++)
+				{
+					if (nodeToCompute->GetChildrens()[i] != NULL)
+					{
+						ChangeDrawState(nodeToCompute->GetChildrens()[i], false);
+					}
+				}
+			}
+		}
+	}
+}
+
+bool Model::checkIfIsOnSide(Camera* camera, Entity* node)
+{
+	for (int i = 0; i < amountPlanesBSP; i++)
+	{
+		if (node->CheckAmountIndicesTrue(camera))
+		{
+			cout << node->GetName() << " esta dentro de los planos" << endl;
+			return true;
+		}
+		else
+		{
+			cout << node->GetName() << " esta fuera" << endl;
+			return false;
+		}
+	}
+	return false;
 }

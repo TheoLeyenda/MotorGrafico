@@ -71,6 +71,9 @@ struct ENGINE_API InternalData
 	glm::mat4 rotateZ;
 	glm::mat4 scale;
 };
+
+const int amountPlanesBSP = 3;
+
 class ENGINE_API Entity
 {
 private:
@@ -150,12 +153,19 @@ public:
 	{
 		isAlive = value; 
 	}
+	void SetInmortalObject(bool value);
 	bool GetIsInmortal() { return InmortalObject; }
 
 	virtual string GetClassName() 
 	{
 		return "Entity"; // Aplicar override en todas las clases hijo.
 	}
+	// PLANES BSP //
+	int indexBSP[amountPlanesBSP];
+	virtual void SetIndexBSPPlanes(int plane1, int plane2, int plane3);
+	int* GetIndicesBSP() { return indexBSP; }
+	int amountIndicesTrue;
+	bool CheckAmountIndicesTrue(Camera* camera);
 
 	//UI//
 	void ShowUI();
@@ -174,7 +184,6 @@ public:
 	void PrintTree();
 	vector<Entity*> GetChildrens() { return childrens; }
 	//-----------//
-
 
 	glm::vec3 GetForward();
 };

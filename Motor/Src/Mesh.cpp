@@ -97,7 +97,7 @@ void Mesh::CreateMesh(float * vertices, unsigned int * indices, unsigned int num
 
 void Mesh::Draw(bool& wireFrameActive)
 {
-	if (isAlive) 
+	if (isAlive || InmortalObject) 
 	{
 		BindBuffer();
 

@@ -1,5 +1,6 @@
 #include "..\Motor\Src\GameBase.h"
 #include "Game.h"
+#include <algorithm>
 
 enum TypeDrawShape
 {
@@ -48,7 +49,6 @@ glm::vec3 offsetThirdPerson;
 //LIGHT
 float ambientIntensity;
 float diffuseIntensity;
-
 
 Game::Game() :GameBase() {}
 
@@ -110,9 +110,6 @@ void Game::InitGame()
 	modelFBX->SetScale(50,50,50);
 	modelFBX->SetMaterial(textureMaterialForLight);
 	modelFBX->SetName("ROBOT_BSP_TESTING");
-	AddObjectInDenugGame(modelFBX);
-
-	robotLoco = modelFBX->GetEntityNode("CenterOfMass");
 
 	planeBSP1 = modelFBX->GetEntityNode("BSP_Plane1");
 	planeBSP2 = modelFBX->GetEntityNode("BSP_Plane2");
@@ -121,6 +118,12 @@ void Game::InitGame()
 	modelFBX->RemoveChildren(modelFBX->GetEntityNode("BSP_Plane1"), GetRootScene() );
 	modelFBX->RemoveChildren(modelFBX->GetEntityNode("BSP_Plane2"), GetRootScene() );
 	modelFBX->RemoveChildren(modelFBX->GetEntityNode("BSP_Plane3"), GetRootScene() );
+
+	planeBSP1->SetInmortalObject(true);
+	planeBSP2->SetInmortalObject(true);
+	planeBSP3->SetInmortalObject(true);
+
+	AddObjectInDenugGame(modelFBX);
 
 	if (planeBSP1 != NULL)
 	{
@@ -369,6 +372,34 @@ void Game::InitGame()
 	//Armo arboles de jerarquias//
 }
 
+bool Game::CheckIfIsOnSide()
+{
+	for (int i = 0; i < amountPlanesBSP; i++)
+	{
+		if (camera->GetIndicesBSP()[i] == modelFBX->GetMyModelNode()->GetIndicesBSP()[i])
+		{
+			if (bspPlanesActive < amountPlanesBSP)
+				bspPlanesActive++;
+		}
+		else
+		{
+			if (bspPlanesActive > 0)
+				bspPlanesActive--;
+		}
+	}
+
+	if (bspPlanesActive == amountPlanesBSP)
+	{
+		bspPlanesActive = 0;
+		return true;
+	}
+	else
+	{
+		bspPlanesActive = 0;
+		return false;
+	}
+}
+
 void Game::UpdateGame(Windows *_window, Renderer *_render, Input *_input)
 {
 	//timeClock.FPS();
@@ -450,31 +481,30 @@ void Game::UpdateGame(Windows *_window, Renderer *_render, Input *_input)
 
 	if (modelFBX != NULL)
 	{
-		robotLoco = modelFBX->GetEntityNode("CenterOfMass");
+		DrawModeslBSPCompare();
 
 		modelFBX->Draw(motorasoGui->GetIfWireFrameIsActive());
+
+		DrawPlanesBSP();
+
 		modelFBX->updateBSPPlanes(planeBSP1->transform.globalPosition, planeBSP2->transform.globalPosition, planeBSP3->transform.globalPosition);
 
 		if (modelFBX->planeBSP1 != NULL && modelFBX->planeBSP2 != NULL && modelFBX->planeBSP3 != NULL)
 		{
+			CheckCameraBSPIndices();
 
-			cout << "PLANE 1: " << modelFBX->planeBSP1->ObjectPositiveSide(robotLoco)<< endl;
-			cout << "PLANE 2: " << modelFBX->planeBSP2->ObjectPositiveSide(robotLoco)<< endl;
-			cout << "PLANE 3: " << modelFBX->planeBSP3->ObjectPositiveSide(robotLoco)<< endl;
+			//modelFBX->checkBSPRecursive(camera, modelFBX->GetModelChildrens()[3]);
 
-			if (modelFBX->planeBSP1->ObjectPositiveSide(robotLoco) &&
-				modelFBX->planeBSP2->ObjectPositiveSide(robotLoco) &&
-				modelFBX->planeBSP3->ObjectPositiveSide(robotLoco))
-			{
-				cout << "Objeto del lado POSITIVO de los planos" << endl;
-			}
+			if(CheckIfIsOnSide())
+				modelFBX->SetIsAlive(true);
+			else
+				modelFBX->SetIsAlive(false);
 		}
 		else
 		{
 			cout << "Algun plano en NULL" << endl;
 		}
 	}
-
 
 	if (modelOBJ2 != NULL)
 		modelOBJ2->Draw(motorasoGui->GetIfWireFrameIsActive());
@@ -484,12 +514,6 @@ void Game::UpdateGame(Windows *_window, Renderer *_render, Input *_input)
 		modelCOLLADA->Draw(motorasoGui->GetIfWireFrameIsActive());
 	if (modelSTL != NULL)
 		modelSTL->Draw(motorasoGui->GetIfWireFrameIsActive());
-
-	//if (collisionManager != NULL)
-	//{
-	//	if (collisionManager->CheckEntitiesOnFrustrum(camera, cube))
-	//		cout << "ESTA ADENTRO DEL FRUSTRUM" << endl;
-	//}
 }
 
 void Game::DestroyGame()
@@ -594,6 +618,25 @@ void Game::DestroyGame()
 		delete player3D;
 }
 
+void Game::DrawModeslBSPCompare()
+{
+	modelFBX->Draw(motorasoGui->GetIfWireFrameIsActive());
+}
+
+void Game::DrawPlanesBSP()
+{
+	planeBSP1->Draw(motorasoGui->GetIfWireFrameIsActive());
+	planeBSP2->Draw(motorasoGui->GetIfWireFrameIsActive());
+	planeBSP3->Draw(motorasoGui->GetIfWireFrameIsActive());
+}
+
+void Game::CheckCameraBSPIndices()
+{
+	camera->SetIndexBSPPlanes(modelFBX->planeBSP1->ObjectPositiveSide(camera),
+						      modelFBX->planeBSP2->ObjectPositiveSide(camera),
+						      modelFBX->planeBSP3->ObjectPositiveSide(camera));
+}
+
 void Game::TempColorInput(Windows* windows, Shape* shape)
 {
 	//---------------------//
@@ -678,7 +721,6 @@ void Game::TempInputCamera()
 		speed = speedRotateCamera * timeClock.deltaTime();
 		camera->RotateCameraX(-speed);
 	}
-
 	
 	if(!thirdPerson)
 		camera->SetPosition(newPositionCamX, newPositionCamY, newPositionCamZ);

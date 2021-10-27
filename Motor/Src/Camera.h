@@ -93,6 +93,11 @@ public:
 
 	void updateFrustrumPlanes();
 
+	int indicesBSP[amountPlanesBSP];
+
+	void SetIndexBSPPlanes(int plane1, int plane2, int plane3);
+	int* GetIndicesBSP() { return indicesBSP; }
+
 	void renderThingsOnScene(CollisionManager* frustrumCheck, vector<Entity*> objectsInScene);
 
 	void SetInitOffsetCameraThirdPersonX(float value) { initOffsetCameraThirdPersonX = value; }

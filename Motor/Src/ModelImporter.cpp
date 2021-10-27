@@ -59,7 +59,8 @@ void ModelImporter::LoadNode(aiNode* node, const aiScene* scene, vector<ModelNod
 	{
 		ModelNode* n = new ModelNode(render, node->mChildren[i]);
 
-		childrens.push_back(n);
+		if(n->GetName() != "BSP_Plane1" || n->GetName() != "BSP_Plane2" || n->GetName() != "BSP_Plane3")
+			childrens.push_back(n);
 
 		if (auxiliarNodes.size() > 0) {
 			if (!auxiliarNodes.top()->allchildrensDone) {
@@ -133,6 +134,8 @@ void ModelImporter::LoadMesh(vector<Mesh*> &modelMeshes, aiMesh* mesh, const aiS
 
 	if (nodeMesh->GetName() == bspPlane.c_str())
 	{
+		newMesh->SetInmortalObject(true);
+
 		indexPlane++;
 		planesBSP.push_back(planesPosition);
 		planesPosition.clear();

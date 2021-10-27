@@ -11,6 +11,7 @@ struct aiScene;
 class Mesh;
 class Texture;
 
+
 class ENGINE_API ModelNode : public Entity
 {
 public:
@@ -31,6 +32,8 @@ public:
 
 	void PrintMyInfo();
 	void SetEnableDrawAABB(bool value) override;
+	void SetIndexBSPPlanes(int plane1, int plane2, int plane3);
+	void ClearIndexBSPPlanes();
 
 protected:
 	void BindBuffer() override;

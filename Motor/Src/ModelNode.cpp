@@ -70,25 +70,39 @@ void ModelNode::SetEnableDrawAABB(bool value)
 	}
 }
 
+void ModelNode::SetIndexBSPPlanes(int plane1, int plane2, int plane3)
+{
+	indexBSP[0] = plane1;
+	indexBSP[1] = plane2;
+	indexBSP[2] = plane3;
+}
+
+void ModelNode::ClearIndexBSPPlanes()
+{
+	indexBSP[0] = -1;
+	indexBSP[1] = -1;
+	indexBSP[2] = -1;
+}
+
 void ModelNode::Draw(bool& wireFrameActive)
 {
-	if (!isAlive)
-		return;
-
-	for (int i = 0; i < _meshList.size(); i++)
+	if (isAlive || InmortalObject)
 	{
-		unsigned int materialIndex = _meshToTex[i];
+		for (int i = 0; i < _meshList.size(); i++)
+		{
+			unsigned int materialIndex = _meshToTex[i];
 
-		if (materialIndex < _textureList.size() && _textureList[materialIndex])
-			_textureList[materialIndex]->BindTexture();
+			if (materialIndex < _textureList.size() && _textureList[materialIndex])
+				_textureList[materialIndex]->BindTexture();
 
-		if (myMat != NULL)
-			myMat->UseMaterial(renderer->GetCurrentShaderUse());
+			if (myMat != NULL)
+				myMat->UseMaterial(renderer->GetCurrentShaderUse());
 
-		_meshList[i]->Draw(wireFrameActive);
+			_meshList[i]->Draw(wireFrameActive);
 
-		if (materialIndex < _textureList.size() && _textureList[materialIndex])
-			_textureList[materialIndex]->UnbindTexture();
+			if (materialIndex < _textureList.size() && _textureList[materialIndex])
+				_textureList[materialIndex]->UnbindTexture();
+		}
 	}
 }
 

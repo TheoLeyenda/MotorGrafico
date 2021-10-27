@@ -170,6 +170,13 @@ void Camera::updateFrustrumPlanes()
 	}
 }
 
+void Camera::SetIndexBSPPlanes(int plane1, int plane2, int plane3)
+{
+	indicesBSP[0] = plane1;
+	indicesBSP[1] = plane2;
+	indicesBSP[2] = plane3;
+}
+
 void Camera::renderThingsOnScene(CollisionManager* frustrumCheck, vector<Entity*> objectsInScene)
 {
 	for (int i = 0; i < objectsInScene.size(); i++)

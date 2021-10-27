@@ -34,7 +34,6 @@ private:
 
 	Audio* audio = NULL;
 
-	Entity* robotLoco = NULL;
 	Entity* planeBSP1 = NULL;
 	Entity* planeBSP2 = NULL;
 	Entity* planeBSP3 = NULL;
@@ -45,6 +44,8 @@ private:
 	Model* model3DS = NULL;
 	Model* modelCOLLADA = NULL;
 	Model* modelSTL = NULL;
+
+	int bspPlanesActive;
 public:
 	Game();
 	~Game();
@@ -55,6 +56,12 @@ public:
 	void InitGame() override;
 	void UpdateGame(Windows *_window, Renderer *_render, Input *_input) override;
 	void DestroyGame() override;
+
+	//BSP SYSTEM
+	void DrawModeslBSPCompare();
+	void DrawPlanesBSP();
+	void CheckCameraBSPIndices();
+	bool CheckIfIsOnSide();
 
 	void InitMaterials();
 	void TempInputs(Windows* windows, Entity* shape);

@@ -3,7 +3,7 @@
 #include <GLFW/glfw3.h>
 #include "AxisAlignedBoundingBox.h"
 #include "MotorasoGui.h"
-
+#include "Camera.h"
 
 Entity::Entity(Renderer * _renderer)
 {
@@ -33,6 +33,7 @@ Entity::Entity(Renderer * _renderer)
 	SetScale(1, 1, 1);
 
 	isModel = 0;
+	amountIndicesTrue = 0;
 	nameEntity = "Entity sin nombre";
 
 }
@@ -212,6 +213,11 @@ void Entity::CheckIsModel()
 	glUniform1f(_uniformIsModelLocation, isModel);
 }
 
+void Entity::SetInmortalObject(bool value)
+{
+	InmortalObject = value;
+}
+
 glm::vec3 Entity::GetForward()
 {
 	float dx = (float)(1 * mathLibrary.sin(mathLibrary.ToRadians(transform.rotation.y)));
@@ -222,6 +228,41 @@ glm::vec3 Entity::GetForward()
 
 
 #pragma region UI
+
+void Entity::SetIndexBSPPlanes(int plane1, int plane2, int plane3)
+{
+	indexBSP[0] = plane1;
+	indexBSP[1] = plane2;
+	indexBSP[2] = plane3;
+}
+
+bool Entity::CheckAmountIndicesTrue(Camera * camera)
+{
+	for (int i = 0; i < amountPlanesBSP; i++)
+	{
+		if (camera->GetIndicesBSP()[i] == this->GetIndicesBSP()[i])
+		{
+			if (amountIndicesTrue < amountPlanesBSP)
+				amountIndicesTrue++;
+		}
+		else
+		{
+			if (amountIndicesTrue > 0)
+				amountIndicesTrue--;
+		}
+
+		if (amountIndicesTrue == amountPlanesBSP)
+		{
+			amountIndicesTrue = 0;
+			return true;
+		}
+		else
+		{
+			amountIndicesTrue = 0;
+			return false;
+		}
+	}
+}
 
 void Entity::ShowUI()
 {

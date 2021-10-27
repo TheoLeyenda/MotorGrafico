@@ -41,12 +41,16 @@ public:
 
 	void SetMaterial(Material* mat);
 	virtual void SetIsAlive(bool value);
+	void ChangeDrawState(Entity* nodeToChange, bool value);
 	
 	ModelNode* GetMyModelNode() { return rootNode; }
 	vector<ModelNode*> GetModelChildrens() { return modelChildrens; }
 	vector<Mesh*> GetModelMeshes() { return modelMeshes; }
 
+	void updateNodesIndexBSP();
 	void updateBSPPlanes(glm::vec3 posPlane1, glm::vec3 posPlane2, glm::vec3 posPlane3);
+	void checkBSPRecursive(Camera* camera, Entity* rootNode);
+	bool checkIfIsOnSide(Camera* camera, Entity* node);
 protected:
 	void BindBuffer() override;
 	void SetEnableDrawAABB(bool value) override;
