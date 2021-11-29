@@ -76,7 +76,6 @@ protected:
 
 public:
 	void SetEnableDrawAABB(bool value) override;
-	void ChangeActualFrustrum();
 
 	bool positiveNear(glm::vec3 point);
 	bool positiveFar(glm::vec3 point);
@@ -85,7 +84,6 @@ public:
 	bool positiveTop(glm::vec3 point);
 	bool positiveDown(glm::vec3 point);
 
-	void updateFrustrumPlanes();
 
 	void SetInitOffsetCameraThirdPersonX(float value) { initOffsetCameraThirdPersonX = value; }
 	void SetInitOffsetCameraThirdPersonY(float value) { initOffsetCameraThirdPersonY = value; }
@@ -129,7 +127,7 @@ public:
 
 	void ChangePerspective(TypeProjectionCamera _typeProjectionCamera);
 
-	void SetFrustrumCulling();
+	//void SetFrustrumCulling();
 
 	void UseProjection();
 

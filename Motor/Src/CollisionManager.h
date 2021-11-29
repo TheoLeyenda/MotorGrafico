@@ -25,7 +25,6 @@ public:
 
 	bool CheckTrigger2D(Entity2D* myEntity, Entity2D* toCheckEntity2D, glm::vec3 myScale, glm::vec3 toCheckScale);
 	bool CheckCollision2D(Entity2D * myEntity, Entity2D* toCheckEntity2D, float speedMyEntity, glm::vec3 myScale, glm::vec3 toCheckScale);
-	bool CheckEntitiesOnFrustrum(Camera* actualFrustrumCamera, Entity* entitiesOnGame);
 };
 
 #endif

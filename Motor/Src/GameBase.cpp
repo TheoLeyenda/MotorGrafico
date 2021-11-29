@@ -60,9 +60,6 @@ int GameBase::InitEngine()
 	camera->InitCamera(camera->transform.position, glm::vec3(0.0f, 1.0f, 0.0f), -90, 0);
 	camera->SetViewFirstPerson();
 	camera->SetName("Camera");
-	camera->ChangeActualFrustrum();
-
-	camera->SetFrustrumCulling();
 
 	camera->SetEnableDrawAABB(false);
 

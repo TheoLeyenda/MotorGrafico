@@ -188,6 +188,7 @@ void Game::InitGame()
 
 	SetEnableAABB_DebugGame(true);
 
+	SetUseBSP_Manager(false);
 	//cout << "Bob tree" << endl;
 	//bobFBX->PrintTree();
 	//cout << endl;
