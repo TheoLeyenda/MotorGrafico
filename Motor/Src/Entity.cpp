@@ -4,6 +4,7 @@
 #include "AxisAlignedBoundingBox.h"
 #include "Plane_BSP.h"
 #include "MotorasoGui.h"
+#include "FrustrumCulling.h"
 
 
 Entity::Entity(Renderer * _renderer)
@@ -19,12 +20,12 @@ Entity::Entity(Renderer * _renderer)
 	internalData.scale = glm::mat4(1.0f);
 	internalData.translate = glm::mat4(1.0f);
 
-	transform.forward = glm::vec3(0.0f, 0.0f, 1.0f);
-	transform.backward = glm::vec3(0.0f, 0.0f, -1.0f);
-	transform.left = glm::vec3(-1.0f, 0.0f, 0.0f);
-	transform.right = glm::vec3(1.0f, 0.0f, 0.0f);
-	transform.up = glm::vec3(0.0f, 1.0f, 0.0f);
-	transform.down = glm::vec3(0.0f, -1.0f, 0.0f);
+	transform.forward = glm::vec4(0.0f, 0.0f, 1.0f,0.0f);
+	transform.backward = glm::vec4(0.0f, 0.0f, -1.0f,0.0f);
+	transform.left = glm::vec4(-1.0f, 0.0f, 0.0f,0.0f);
+	transform.right = glm::vec4(1.0f, 0.0f, 0.0f,0.0f);
+	transform.up = glm::vec4(0.0f, 1.0f, 0.0f,0.0f);
+	transform.down = glm::vec4(0.0f, -1.0f, 0.0f,0.0f);
 
 	SetPosition(0, 0, 0);
 	SetRotationX(0);
@@ -50,12 +51,12 @@ Entity::Entity(Renderer * _renderer, float _isModel)
 	internalData.scale = glm::mat4(1.0f);
 	internalData.translate = glm::mat4(1.0f);
 
-	transform.forward = glm::vec3(0.0f, 0.0f, 1.0f);
-	transform.backward = glm::vec3(0.0f, 0.0f, -1.0f);
-	transform.left = glm::vec3(-1.0f, 0.0f, 0.0f);
-	transform.right = glm::vec3(1.0f, 0.0f, 0.0f);
-	transform.up = glm::vec3(0.0f, 1.0f, 0.0f);
-	transform.down = glm::vec3(0.0f, -1.0f, 0.0f);
+	transform.forward = glm::vec4(0.0f, 0.0f, 1.0f,0.0f);
+	transform.backward = glm::vec4(0.0f, 0.0f, -1.0f,0.0f);
+	transform.left = glm::vec4(-1.0f, 0.0f, 0.0f, 0.0f);
+	transform.right = glm::vec4(1.0f, 0.0f, 0.0f, 0.0f);
+	transform.up = glm::vec4(0.0f, 1.0f, 0.0f, 0.0f);
+	transform.down = glm::vec4(0.0f, -1.0f, 0.0f,0.0f);
 
 	SetPosition(0, 0, 0);
 	SetRotationX(0);
@@ -234,12 +235,78 @@ void Entity::CheckIsModel()
 	glUniform1f(_uniformIsModelLocation, isModel);
 }
 
-glm::vec3 Entity::GetForward()
-{
-	float dx = (float)(1 * mathLibrary.sin(mathLibrary.ToRadians(transform.rotation.y)));
-	float dz = (float)(1 * mathLibrary.cos(mathLibrary.ToRadians(transform.rotation.y)));
+glm::quat Entity::EulerToQuat(glm::vec3 euler) {
+	euler *= deg2rad;
 
-	return glm::vec3(dx, 0, dz);
+	float cy = cos(euler.z * 0.5);
+	float sy = sin(euler.z * 0.5);
+	float cp = cos(euler.x * 0.5);
+	float sp = sin(euler.x * 0.5);
+	float cr = cos(euler.y * 0.5);
+	float sr = sin(euler.y * 0.5);
+
+	glm::quat q;
+	q.w = cr * cp * cy + sr * sp * sy;
+	q.x = cr * sp * cy + sr * cp * sy;
+	q.y = sr * cp * cy - cr * sp * sy;
+	q.z = cr * cp * sy - sr * sp * cy;
+	return q;
+}
+
+glm::vec3 Entity::QuatXVec(glm::quat quat, glm::vec3 vec) {
+	float x2 = quat.x * 2.0f;
+	float y2 = quat.y * 2.0f;
+	float z2 = quat.z * 2.0f;
+	float xx2 = quat.x * x2;
+	float yy2 = quat.y * y2;
+	float zz2 = quat.z * z2;
+	float xy2 = quat.x * y2;
+	float xz2 = quat.x * z2;
+	float yz2 = quat.y * z2;
+	float wx2 = quat.w * x2;
+	float wy2 = quat.w * y2;
+	float wz2 = quat.w * z2;
+
+	glm::vec3 res;
+	res.x = (1.0f - (yy2 + zz2)) * vec.x + (xy2 - wz2) * vec.y + (xz2 + wy2) * vec.z;
+	res.y = (xy2 + wz2) * vec.x + (1.0f - (xx2 + zz2)) * vec.y + (yz2 - wx2) * vec.z;
+	res.z = (xz2 - wy2) * vec.x + (yz2 + wx2) * vec.y + (1.0f - (xx2 + yy2)) * vec.z;
+	return res;
+}
+
+void Entity::UpdateTransformsData() 
+{
+	transform.rotationQuaternion = EulerToQuat(transform.rotation);
+	transform.forward = glm::vec4(QuatXVec(transform.rotationQuaternion, glm::vec3(0, 0, 1)),0);
+	transform.up = glm::vec4(QuatXVec(transform.rotationQuaternion, glm::vec3(0, 1, 0)),0);
+	transform.right = glm::vec4(QuatXVec(transform.rotationQuaternion, glm::vec3(1, 0, 0)),0);
+}
+glm::vec4 Entity::GetForward()
+{
+	//float dx = (float)(1 * mathLibrary.sin(mathLibrary.ToRadians(transform.rotation.y)));
+	//float dz = (float)(1 * mathLibrary.cos(mathLibrary.ToRadians(transform.rotation.y)));
+
+	//return glm::vec3(dx, 0, dz);
+	transform.rotationQuaternion = EulerToQuat(transform.rotation);
+	transform.forward = glm::vec4(QuatXVec(transform.rotationQuaternion, glm::vec3(0, 0, 1)),0);
+
+	return transform.forward;
+}
+
+glm::vec4 Entity::GetUp() 
+{
+	transform.rotationQuaternion = EulerToQuat(transform.rotation);
+	transform.up = glm::vec4(QuatXVec(transform.rotationQuaternion, glm::vec3(0, 1, 0)),0);
+
+	return transform.up;
+}
+
+glm::vec4 Entity::GetRight() 
+{
+	transform.rotationQuaternion = EulerToQuat(transform.rotation);
+	transform.right = glm::vec4(QuatXVec(transform.rotationQuaternion, glm::vec3(1, 0, 0)),0);
+
+	return transform.right;
 }
 
 #pragma region UI
@@ -408,7 +475,6 @@ void Entity::DisableMeAndChilds()
 		child->DisableMeAndChilds();
 	}
 }
-
 glm::vec3* Entity::GetAABBGlobalPositions()
 {
 	glm::vec3 auxVec[8];
@@ -420,6 +486,8 @@ glm::vec3* Entity::GetAABBGlobalPositions()
 
 	return auxVec;
 }
+
+
 
 void Entity::CheckVisibleBSP(vector<Entity*> objectsBSP, vector<int>& indexsObjectsVisibility, vector<Plane_BSP*>& planesBSP)
 {
@@ -456,6 +524,44 @@ void Entity::CheckVisibleBSP(vector<Entity*> objectsBSP, vector<int>& indexsObje
 	for (Entity* child : childrens) {
 		child->CheckVisibleBSP(objectsBSP, indexsObjectsVisibility, planesBSP);
 	}
+}
+
+
+
+void Entity::CheckVisibleFrustrumCulling(vector<Entity*> ObjectsInFrustrum, vector<int>& indexsObjectsDisables, FrustrumCulling* frustrumCulling)
+{
+	int index = 0;
+	bool parentAlive = true;
+
+	if (parent != NULL)
+		parentAlive = parent->GetIsAlive();
+
+	for (int i = 0; i < ObjectsInFrustrum.size(); i++)
+	{
+		if (ObjectsInFrustrum[i] == this) 
+		{
+			index = i;
+			i = ObjectsInFrustrum.size();
+		}
+	}
+
+	if (!parentAlive)
+	{
+		SetIsAlive(false);
+		indexsObjectsDisables.push_back(index);
+		DisableMeAndChilds();
+		return;
+	}
+
+	frustrumCulling->CheckObjectInFrustrum(index,indexsObjectsDisables, this);
+
+	for (Entity* child : childrens) {
+		child->CheckVisibleFrustrumCulling(ObjectsInFrustrum, indexsObjectsDisables, frustrumCulling);
+	}
+}
+void Entity::ShowPosition()
+{
+	cout << GetName() << " position: (" << transform.position.x << "," << transform.position.y << "," << transform.position.z << ")" << endl;
 }
 
 void Entity::AttachRootScene(Entity* value) 

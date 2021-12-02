@@ -120,11 +120,6 @@ void Plane_BSP::CheckObjectInPlaneBSP(Entity* ObjectCompare, int indexPlanePush,
 		currentCameraPosition = CurrentCameraPosition::NegativePlane;
 	}
 
-	//1)Asumir que por defecto todos los objetos estan prendidos
-	//2)hacer el recorrido este en todos los planos.
-	//3)Guardar en una lista auxiliar de ints que representan a los objetos en la lista que debo apagar original 
-	//y despues aplico el prendido y apagado cuando termino el recorrido.
-
 	switch (currentCameraPosition)
 	{
 	case CurrentCameraPosition::PostivePlane:

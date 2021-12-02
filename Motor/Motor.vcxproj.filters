@@ -147,6 +147,9 @@
     <ClInclude Include="Src\BSP_Manager.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
+    <ClInclude Include="Src\FrustrumCulling.h">
+      <Filter>Archivos de encabezado</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Src\GameBase.cpp">
@@ -255,6 +258,9 @@
       <Filter>Archivos de origen</Filter>
     </ClCompile>
     <ClCompile Include="Src\BSP_Manager.cpp">
+      <Filter>Archivos de origen</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\FrustrumCulling.cpp">
       <Filter>Archivos de origen</Filter>
     </ClCompile>
   </ItemGroup>

@@ -20,6 +20,11 @@ MyPlane::MyPlane(glm::vec3 normal, glm::vec3 point)
 
 MyPlane::~MyPlane(){}
 
+void MyPlane::set3Points(glm::vec3 normal, glm::vec3 point) 
+{
+	_normal = glm::normalize(normal);
+	_distance = 0 - glm::dot(_normal, point);
+}
 void MyPlane::set3Points(glm::vec3 pointA, glm::vec3 pointB, glm::vec3 pointC)
 {
 	glm::vec3 line1 = pointB - pointA;

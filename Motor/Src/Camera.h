@@ -4,6 +4,8 @@
 #include "Entity.h"
 #include "Plane.h"
 
+class FrustrumCulling;
+
 static enum TypeProjectionCamera
 {
 	Perspective,
@@ -36,6 +38,12 @@ public:
 class ENGINE_API Camera : public Entity
 {
 private:
+	bool useFrustrum;
+	FrustrumCulling* frustrumCulling;
+public:
+	vector<Entity*> objectsCheckFrustrum;
+private:
+	vector<int> indexsObjectsDisable;
 
 	TypeCamera typeCamera;
 	Entity* targetThirdPerson;
@@ -50,14 +58,6 @@ private:
 	AxisAlignedBoundingBox* _AABBPerspective;
 
 	AxisAlignedBoundingBox* _actualFrustrumInUse;
-
-	MyPlane* _nearPlane = NULL;
-	MyPlane* _farPlane = NULL;
-	MyPlane* _rightPlane = NULL;
-	MyPlane* _leftPlane = NULL;
-	MyPlane* _downPlane = NULL;
-	MyPlane* _topPlane = NULL;
-
 
 	float _yaw;
 	float _pitch;
@@ -75,16 +75,10 @@ protected:
 	float offsetThirdPersonY = 350;
 
 public:
+	void SetUseFrustrum(bool value) { useFrustrum = value; }
+	void UseFrustrum();
+
 	void SetEnableDrawAABB(bool value) override;
-
-	bool positiveNear(glm::vec3 point);
-	bool positiveFar(glm::vec3 point);
-	bool positiveLeft(glm::vec3 point);
-	bool positiveRight(glm::vec3 point);
-	bool positiveTop(glm::vec3 point);
-	bool positiveDown(glm::vec3 point);
-
-
 	void SetInitOffsetCameraThirdPersonX(float value) { initOffsetCameraThirdPersonX = value; }
 	void SetInitOffsetCameraThirdPersonY(float value) { initOffsetCameraThirdPersonY = value; }
 	void SetInitOffsetCameraThirdPersonZ(float value) { initOffsetCameraThirdPersonZ = value; }
@@ -126,8 +120,6 @@ public:
 	void SetDataOrtho(float left, float right, float bottom, float top, float near, float front);
 
 	void ChangePerspective(TypeProjectionCamera _typeProjectionCamera);
-
-	//void SetFrustrumCulling();
 
 	void UseProjection();
 

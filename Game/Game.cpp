@@ -184,18 +184,11 @@ void Game::InitGame()
 	{
 		camera->SetTypeCamera(TypeCamera::FirstPerson);
 	}
+
 	SetUseDebugWindows(true);
-
 	SetEnableAABB_DebugGame(true);
-
 	SetUseBSP_Manager(false);
-	//cout << "Bob tree" << endl;
-	//bobFBX->PrintTree();
-	//cout << endl;
-
-	//cout << "Entitys in vector BSP" << endl;
-	//ShowEntitys_BSP();
-	//cout << endl;
+	camera->SetUseFrustrum(true);
 }
 
 void Game::UpdateGame(Windows *_window, Renderer *_render, Input *_input)

@@ -20,6 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Src\BSP_Manager.h" />
+    <ClInclude Include="Src\FrustrumCulling.h" />
     <ClInclude Include="Src\Plane_BSP.h" />
     <ClInclude Include="Src\AxisAlignedBoundingBox.h" />
     <ClInclude Include="Src\EmptyObject.h" />
@@ -63,6 +64,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Src\BSP_Manager.cpp" />
+    <ClCompile Include="Src\FrustrumCulling.cpp" />
     <ClCompile Include="Src\Plane_BSP.cpp" />
     <ClCompile Include="Src\AxisAlignedBoundingBox.cpp" />
     <ClCompile Include="Src\EmptyObject.cpp" />

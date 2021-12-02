@@ -40,6 +40,7 @@ Renderer* GetRenderer();
 //#include "AxisAlignedBoundingBox.h"
 class AxisAlignedBoundingBox;
 class Plane_BSP;
+class FrustrumCulling;
 
 #include "stb_image.h"
 
@@ -49,17 +50,18 @@ class Plane_BSP;
 
 struct ENGINE_API Transform
 {
-	glm::vec3 forward;
-	glm::vec3 backward;
-	glm::vec3 left;
-	glm::vec3 right;
-	glm::vec3 up;
-	glm::vec3 down;
+	glm::vec4 forward;
+	glm::vec4 backward;
+	glm::vec4 left;
+	glm::vec4 right;
+	glm::vec4 up;
+	glm::vec4 down;
 
 	glm::vec3 globalPosition;
 	glm::vec3 position;
 	glm::vec3 rotation;
 	glm::vec3 scale;
+	glm::quat rotationQuaternion;
 };
 struct ENGINE_API InternalData
 {
@@ -80,6 +82,7 @@ private:
 	void _AddChildren(Entity* children, Entity* newParent);
 	//---------//
 protected:
+	float deg2rad = (glm::pi<float>() * 2.0f) / 360.0f;
 
 	void CheckIsAliveModel(bool& value);
 
@@ -194,11 +197,21 @@ public:
 
 	virtual glm::vec3* GetAABBGlobalPositions();
 
-	glm::vec3 GetForward();
-	
+	glm::quat EulerToQuat(glm::vec3 euler);
+	glm::vec3 QuatXVec(glm::quat quat, glm::vec3 vec);
+	void UpdateTransformsData();
+
+	glm::vec4 GetForward();
+	glm::vec4 GetUp();
+	glm::vec4 GetRight();
+
 	void SetIsRootHerarchy(bool value) { isRootHerarchy = value; }
 	bool GetIsRootHerarchy() { return isRootHerarchy; }
 
 	void CheckVisibleBSP(vector<Entity*> objectsBSP, vector<int>& indexsObjectsVisibility, vector<Plane_BSP*>& planesBSP);
+	void CheckVisibleFrustrumCulling(vector<Entity*> ObjectsInFrustrum, vector<int>& indexObjectsVisibility, FrustrumCulling* FrustrumCulling);
+
+	void ShowPosition();
+	
 };
 #endif

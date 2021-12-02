@@ -4,6 +4,7 @@
 #include <GLFW/glfw3.h>
 #include "Material.h"
 #include "AxisAlignedBoundingBox.h"
+#include "FrustrumCulling.h"
 
 Camera::Camera(Renderer* _render, TypeProjectionCamera _typeProjectionCamera) : Entity(_render)
 {
@@ -11,6 +12,7 @@ Camera::Camera(Renderer* _render, TypeProjectionCamera _typeProjectionCamera) : 
 	_MVP.projection = glm::mat4(1.0f);
 	typeProjectionCamera = _typeProjectionCamera;
 	typeCamera = FirstPerson;
+	frustrumCulling = new FrustrumCulling();
 	//InmortalObject = true;
 }
 
@@ -23,85 +25,10 @@ Camera::~Camera()
 		_AABBOrthographic = NULL;
 		_AABBPerspective = NULL;
 	}
-
-	if (_nearPlane != NULL)
-	{
-		delete _nearPlane;
-		_nearPlane = NULL;
+	if (frustrumCulling != NULL) {
+		delete frustrumCulling;
+		frustrumCulling = NULL;
 	}
-	if (_farPlane != NULL)
-	{
-		delete _farPlane;
-		_farPlane = NULL;
-	}
-	if (_downPlane != NULL)
-	{
-		delete _downPlane;
-		_downPlane = NULL;
-	}
-	if (_topPlane != NULL)
-	{
-		delete _topPlane;
-		_topPlane = NULL;
-	}
-	if (_leftPlane != NULL)
-	{
-		delete _leftPlane;
-		_leftPlane = NULL;
-	}
-	if (_rightPlane != NULL)
-	{
-		delete _rightPlane;
-		_rightPlane = NULL;
-	}
-}
-
-bool Camera::positiveNear(glm::vec3 point)
-{
-	if (_nearPlane == NULL)
-		return false;
-
-	return _nearPlane->getSide(point);
-}
-
-bool Camera::positiveFar(glm::vec3 point)
-{
-	if (_farPlane == NULL)
-		return false;
-
-	return _farPlane->getSide(point);
-}
-
-bool Camera::positiveLeft(glm::vec3 point)
-{
-	if (_leftPlane == NULL)
-		return false;
-
-	return _leftPlane->getSide(point);
-}
-
-bool Camera::positiveRight(glm::vec3 point)
-{
-	if (_rightPlane == NULL)
-		return false;
-
-	return _rightPlane->getSide(point);
-}
-
-bool Camera::positiveTop(glm::vec3 point)
-{
-	if (_topPlane == NULL)
-		return false;
-
-	return _topPlane->getSide(point);
-}
-
-bool Camera::positiveDown(glm::vec3 point)
-{
-	if (_downPlane == NULL)
-		return false;
-
-	return _downPlane->getSide(point);
 }
 
 void Camera::SetEnableDrawAABB(bool value)
@@ -120,8 +47,35 @@ void Camera::BindBuffer(){}
 
 void Camera::Draw(bool & wireFrameActive)
 {
+	UseFrustrum();
 	UseCamera(renderer->GetCurrentShaderUse(), internalData.localModel);
 }
+
+void Camera::UseFrustrum()
+{
+	if (useFrustrum)
+	{
+		for (int i = 0; i < objectsCheckFrustrum.size(); i++)
+		{
+			objectsCheckFrustrum[i]->SetIsAlive(true);
+		}
+		frustrumCulling->UpdateFrustrum(this);
+
+		for (int i = 0; i < objectsCheckFrustrum.size(); i++)
+		{
+			objectsCheckFrustrum[i]->CheckVisibleFrustrumCulling(objectsCheckFrustrum, indexsObjectsDisable, frustrumCulling);
+		}
+
+		for (int i = 0; i < indexsObjectsDisable.size(); i++)
+		{
+			objectsCheckFrustrum[indexsObjectsDisable[i]]->SetIsAlive(false);
+		}
+
+		indexsObjectsDisable.clear();
+
+	}
+}
+
 void Camera::UseCamera(Shader& shader, glm::mat4 trsCamera)
 {
 	unsigned int transformLoc = glGetUniformLocation(shader.getId(), "model");

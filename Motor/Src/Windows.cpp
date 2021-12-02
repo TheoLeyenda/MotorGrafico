@@ -17,6 +17,12 @@ Windows::Windows(int x, int y, const char* name)
 	SetSize(x, y);
 }
 //============================================
+Windows::Windows(const char* name)
+{
+	RefWindow = glfwCreateWindow(with, height, name, NULL, NULL);
+	SetSize(with, height);
+}
+//============================================
 Windows::~Windows()
 {
 	glfwDestroyWindow(RefWindow);

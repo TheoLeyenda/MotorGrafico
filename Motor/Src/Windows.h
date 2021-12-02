@@ -13,10 +13,19 @@ private:
 	int sizeY;
 	char nameWindows[TAM];
 	bool fullscreen;
+
+	int windowScale = 75;
+
+	int height = windowScale * 9;
+	int with = windowScale * 16;
 public:
 	Windows();
 	Windows(int x, int y, const char* name);
+	Windows(const char* name);
 	~Windows();
+	int GetWindowsScale() { return windowScale; }
+	int GetWith() { return with; }
+	int GetHeight() { return height; }
 	void SetSize(int _sizeX, int _sizeY);
 	int GetSizeX();
 	int GetSizeY();
@@ -26,8 +35,6 @@ public:
 	int CheckCreateWindows();
 	void CreateContextWindows();
 	bool CheckGLFWwindowShouldClose();
-	//void ClearWindows();
 	void SwapBuffersWindows();
-	//void EventsWindows();
 };
 #endif

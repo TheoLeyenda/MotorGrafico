@@ -63,6 +63,9 @@ protected:
 	void UpdateBSP_Manager();
 
 	void SetUseBSP_Manager(bool value) { useBSP_Manager = value; }
+
+	void AddEntityInFrustrumCulling(Entity* newItem);
+
 public:
 	GameBase();
 	~GameBase();

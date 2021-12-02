@@ -6,7 +6,6 @@
 
 vector<Entity*> GameBase::entitysDebugInGame = vector<Entity*>();
 
-
 GameBase::GameBase() {}
 GameBase::~GameBase() {}
 
@@ -14,10 +13,10 @@ int GameBase::InitEngine()
 {
 	bool initGLFW = glfwInit();
 
-	windows = new Windows(1080, 680, "MOTORASO");
+	windows = new Windows("MOTORASO");
 	render = new Renderer();
 	input = new Input(windows->GetWindowsPtr());
-	camera = new Camera(render, TypeProjectionCamera::Ortho);
+	camera = new Camera(render, TypeProjectionCamera::Perspective);
 
 	collisionManager = new CollisionManager();
 
@@ -54,9 +53,9 @@ int GameBase::InitEngine()
 #pragma region CREACION Y SETEO DE CAMARA DEFAULT
 
 	camera->SetDataOrtho(0.0f, windows->GetSizeX(), 0.0f, windows->GetSizeY(),   100.0f, -10000.0f);
-	camera->SetDataPerspective(65.0f, windows->GetSizeX(), windows->GetSizeY(),  100.1f, -10000.0f);
+	camera->SetDataPerspective(65.0f, windows->GetSizeX(), windows->GetSizeY(),  100.1f, -2000.0f);
 	camera->UseProjection();
-	camera->SetPosition(300.0f, 100.0f, 200.0f);
+	camera->SetPosition(300.0f, 250.0f, 850.0f);
 	camera->InitCamera(camera->transform.position, glm::vec3(0.0f, 1.0f, 0.0f), -90, 0);
 	camera->SetViewFirstPerson();
 	camera->SetName("Camera");
@@ -182,11 +181,30 @@ void GameBase::AddEntityInEntitysBSP(Entity * newItem)
 		}
 	}
 
-	if(pushEnable)
+	if (pushEnable)
 		entitysBSP.push_back(newItem);
-	
+
 	for (Entity* child : newItem->GetChildrens()) {
 		AddEntityInEntitysBSP(child);
+	}
+}
+
+
+void GameBase::AddEntityInFrustrumCulling(Entity * newItem)
+{
+	bool pushEnableFrustrumCulling = true;
+
+	for (int i = 0; i < camera->objectsCheckFrustrum.size(); i++)
+	{
+		if (camera->objectsCheckFrustrum[i] == newItem)
+			pushEnableFrustrumCulling = false;
+	}
+
+	if (pushEnableFrustrumCulling)
+		camera->objectsCheckFrustrum.push_back(newItem);
+
+	for (Entity* child : newItem->GetChildrens()) {
+		AddEntityInFrustrumCulling(child);
 	}
 }
 
@@ -204,6 +222,7 @@ void GameBase::AddObjectInDenugGame(Entity* entity)
 		entitysDebugInGame.push_back(entity);
 		rootScene->AddChildren(entity);
 		AddEntityInEntitysBSP(entity);
+		AddEntityInFrustrumCulling(entity);
 	}
 }
 
@@ -486,7 +505,7 @@ void GameBase::HandleCamera()
 		camera->SetViewThirdPerson();
 		break;
 	}
-
+	camera->UseFrustrum();
 	camera->UseCamera(render->GetCurrentShaderUse(), camera->GetInternalData().localModel);
 }
 
