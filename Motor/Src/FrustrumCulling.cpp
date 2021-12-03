@@ -23,16 +23,17 @@ void FrustrumCulling::UpdateFrustrum(Camera* camera)
 	//Calculo los planos Right y Left.
 	glm::mat4 rotCameraForward;
 	
+	//internalData.rotateY = glm::rotate(glm::mat4(1.0f), glm::radians(y), axis);
 	rotCameraForward = glm::rotate(glm::mat4(1.0f), glm::radians(camera->projectionDataPerspective.FOV / 2), glm::vec3(0, 1, 0));
 	cameraForward = cameraForward * rotCameraForward;
 
-	_rightPlane->set3Points(cameraForward, cameraUp);
+	_rightPlane->set3Points(cameraForward, cameraPosition + cameraUp);
 	cameraForward = auxCameraForward;
 
 	rotCameraForward = glm::rotate(glm::mat4(1.0f), glm::radians(-camera->projectionDataPerspective.FOV / 2), glm::vec3(0, 1, 0));
 	cameraForward = cameraForward * rotCameraForward;
 
-	_leftPlane->set3Points(cameraForward, cameraUp);
+	_leftPlane->set3Points(cameraForward, cameraPosition + cameraUp);
 	cameraForward = auxCameraForward;
 	//================================//
 
@@ -55,8 +56,11 @@ void FrustrumCulling::UpdateFrustrum(Camera* camera)
 	//Flipeo los planos
 	_nearPlane->flipPlane();
 	_rightPlane->flipPlane();
+	_leftPlane->flipPlane();
 	_downPlane->flipPlane();
 	//========================//
+
+	
 
 
 
@@ -75,7 +79,16 @@ void FrustrumCulling::CheckObjectInFrustrum(int indexObject, vector<int>& indexs
 							&& CheckObjectInPlane(_topPlane, objectCompare)
 							&& CheckObjectInPlane(_downPlane, objectCompare));
 
-	
+	if (objectCompare->GetName() == "ALEX (Objeto Fijo)") {
+		cout << "Near: " << CheckObjectInPlane(_nearPlane, objectCompare) << endl;
+		cout << "Far: " << CheckObjectInPlane(_farPlane, objectCompare) << endl;
+		cout << "Right: " << CheckObjectInPlane(_rightPlane, objectCompare) << endl;
+		cout << "Left: " << CheckObjectInPlane(_leftPlane, objectCompare) << endl;
+		cout << "Top: " << CheckObjectInPlane(_topPlane, objectCompare) << endl;
+		cout << "Down: " << CheckObjectInPlane(_downPlane, objectCompare) << endl;
+		//cin.get();
+	}
+
 	if (!objectInFrustrum) 
 	{
 		indexsObjectsDisables.push_back(indexObject);
