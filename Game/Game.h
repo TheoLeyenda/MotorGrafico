@@ -9,6 +9,8 @@ private:
 
 	PlayerController3D* player3D = NULL;
 
+	Primitive3D* cube = NULL;
+
 	Animation* animations = NULL;
 
 	Material* goldMaterial = NULL;
@@ -19,8 +21,6 @@ private:
 	Material* mat_shape4 = NULL;
 
 	Audio* audio = NULL;
-
-	Model* modelOBJ = NULL;
 	Model* bobFBX = NULL;
 public:
 	Game();

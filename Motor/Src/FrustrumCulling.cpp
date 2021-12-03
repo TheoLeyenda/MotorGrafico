@@ -4,7 +4,6 @@
 
 void FrustrumCulling::UpdateFrustrum(Camera* camera)
 {
-	float modifireFov = 15;
 	float offsideNearValue = camera->projectionDataPerspective.near;
 	float offsideFarPlane = camera->projectionDataPerspective.front;
 
@@ -39,7 +38,7 @@ void FrustrumCulling::UpdateFrustrum(Camera* camera)
 	//================================//
 
 	//Calculo los planos Top y Down.
-	float angleRotate = (camera->projectionDataPerspective.FOV /16) * 9;
+	float angleRotate = camera->projectionDataPerspective.FOV - 10;
 
 	rotCameraForward = glm::rotate(glm::mat4(1.0f), glm::radians(angleRotate), glm::vec3(1, 0, 0));
 	cameraForward = cameraForward * rotCameraForward;

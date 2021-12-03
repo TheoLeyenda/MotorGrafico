@@ -100,20 +100,16 @@ void Game::InitGame()
 
 	GetMyLightsID();
 
-	modelOBJ = new Model(render);
-	modelOBJ->LoadModel("res/modelos/source/alex.obj", "res/modelos/textures/", bsp_manager);
-	modelOBJ->SetScale(50.0f, 50.0f, 50.0f);
-	modelOBJ->SetName("ALEX (Objeto Fijo)");
-	modelOBJ->SetPosition(660, 12, -16);
-	modelOBJ->SetRotationY(-0.5);
-	modelOBJ->SetMaterial(goldMaterial);
-	modelOBJ->AttachRootScene(GetRootScene());
-	modelOBJ->SetIsStatic(true);
-	AddObjectInDenugGame(modelOBJ);
+	cube = new Primitive3D(render, Cube);
+	cube->SetPosition(300, 100.0f, -50.0f);
+	cube->SetScale(100.0f, 100.0f, 100.0f);
+	cube->SetNewMaterial(greenRubberMaterial);
+	cube->SetName("cube");
+	cube->SetIsStatic(true);
+	AddObjectInDenugGame(cube);
 
 	bobFBX = new Model(render);
 	bobFBX->LoadModel("res/modelos/Bob.fbx", " ", bsp_manager);
-	//bobFBX->SetPosition(0, 0, 0);
 	bobFBX->SetScale(50.0f, 50.0f, 50.0f);
 	bobFBX->SetName("Bob_Modelo");
 	bobFBX->SetRotationX(-90);
@@ -122,6 +118,14 @@ void Game::InitGame()
 	AddObjectInDenugGame(bobFBX);
 
 	Entity* entity;
+	entity = bobFBX->GetEntityNode("RootNode");
+	entity->RemoveChildren(bobFBX->GetEntityNode("Bob"), bobFBX);
+	entity->RemoveChildren(bobFBX->GetEntityNode("Entity"), bobFBX);
+	entity->RemoveChildren(bobFBX->GetEntityNode("Entity.003"), bobFBX);
+	entity->RemoveChildren(bobFBX->GetEntityNode("Entity.002"), bobFBX);
+	entity->RemoveChildren(bobFBX->GetEntityNode("Entity.001"), bobFBX);
+	bobFBX->RemoveChildren(entity, GetRootScene());
+
 	entity = bobFBX->GetEntityNode("Cabeza");
 	entity->SetPosition(0.0f, 0.0f, 10.8299f);
 
@@ -155,36 +159,6 @@ void Game::InitGame()
 	entity = bobFBX->GetEntityNode("Pata_Izq");
 	entity->SetPosition(0.0f, -0.8f, -2.8f);
 
-	entity = bobFBX->GetEntityNode("Plane_BSP1");
-	entity->SetPosition(1.0468f, 1.05765f, 13.8085f);
-	entity->SetIsStatic(true);
-
-	entity = bobFBX->GetEntityNode("Plane_BSP2");
-	entity->SetPosition(-11.466001f, 0.0f, 0.0f);
-	entity->SetIsStatic(true);
-
-	entity = bobFBX->GetEntityNode("Plane_BSP3");
-	entity->SetPosition(2.408f, 10.827001f, 0.0f);
-	entity->SetIsStatic(true);
-
-	if (thirdPerson)
-	{
-		player3D = new PlayerController3D(render);
-		player3D->SetMyModel(modelOBJ);
-		player3D->SetRUN_SPEED(350);
-		player3D->SetTURN_SPEED(400);
-		camera->SetTargetThirdPerson(player3D);
-		camera->SetTypeCamera(TypeCamera::ThirdPerson);
-		camera->SetViewThirdPerson();
-		camera->SetInitOffsetCameraThirdPersonX(0.0f);
-		camera->SetInitOffsetCameraThirdPersonY(0.0f);
-		camera->SetInitOffsetCameraThirdPersonZ(250.0f);
-	}
-	else 
-	{
-		camera->SetTypeCamera(TypeCamera::FirstPerson);
-	}
-
 	SetUseDebugWindows(true);
 	SetEnableAABB_DebugGame(true);
 	SetUseBSP_Manager(false);
@@ -196,8 +170,6 @@ void Game::UpdateGame(Windows *_window, Renderer *_render, Input *_input)
 	//timeClock.FPS();
 	if (player3D != NULL)
 		player3D->Move(input, timeClock);
-
-
 
 	if (input->GetKey(KeyBoard::KEY_RIGHT_SHIFT) && audio->GetIsPlayingAudio2D("res/audio/Dale Dale Boca.mp3"))
 	{
@@ -219,15 +191,9 @@ void Game::UpdateGame(Windows *_window, Renderer *_render, Input *_input)
 	if (bobFBX != NULL) {
 		bobFBX->Draw(motorasoGui->GetIfWireFrameIsActive());
 	}
+	if (cube != NULL)
+		cube->Draw(motorasoGui->GetIfWireFrameIsActive());
 
-	if (modelOBJ != NULL) {
-		modelOBJ->Draw(motorasoGui->GetIfWireFrameIsActive());
-	}
-	/*if (collisionManager != NULL)
-	{
-		if (collisionManager->CheckEntitiesOnFrustrum(camera, bobFBX))
-			cout << "ESTA ADENTRO DEL FRUSTRUM" << endl;
-	}*/
 }
 
 void Game::DestroyGame()
@@ -273,14 +239,14 @@ void Game::DestroyGame()
 	if (animations != NULL)
 		delete animations;
 
-	if (modelOBJ != NULL) {
-		delete modelOBJ;
-		modelOBJ = NULL;
-	}
-
 	if (bobFBX != NULL) {
 		delete bobFBX;
 		bobFBX = NULL;
+	}
+
+	if (cube != NULL) {
+		delete cube;
+		cube = NULL;
 	}
 
 	if (player3D != NULL)
