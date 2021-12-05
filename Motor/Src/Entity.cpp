@@ -500,7 +500,14 @@ glm::vec3* Entity::GetAABBGlobalPositions()
 
 	for (int i = 0; i < 8; i++)
 	{
-		auxVec[i] = axisAlignedBoundingBox->GetAABBPositions()[i] + transform.globalPosition + transform.globalScale;
+		if (GetClassName() == "Primitive3D")
+		{
+			auxVec[i] = axisAlignedBoundingBox->GetAABBPositions()[i] + transform.globalPosition - transform.scale;
+		}
+		else 
+		{
+			auxVec[i] = axisAlignedBoundingBox->GetAABBPositions()[i] + transform.globalPosition - transform.globalScale;
+		}
 	}
 
 	return auxVec;
