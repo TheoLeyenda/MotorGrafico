@@ -57,6 +57,7 @@ struct ENGINE_API Transform
 	glm::vec4 up;
 	glm::vec4 down;
 
+	glm::vec3 globalScale;
 	glm::vec3 globalPosition;
 	glm::vec3 position;
 	glm::vec3 rotation;
@@ -121,6 +122,8 @@ protected:
 	unsigned int _texLocation;
 	unsigned int _colorLocation;
 	unsigned int _normalLocation;
+
+	void CalculateScaleToParent();
 
 	virtual void BindBuffer() = 0;
 	bool isStatic = false;

@@ -60,11 +60,6 @@ void FrustrumCulling::UpdateFrustrum(Camera* camera)
 	_downPlane->flipPlane();
 	_topPlane->flipPlane();
 	//========================//
-
-	
-
-
-
 }
 
 void FrustrumCulling::CheckObjectInFrustrum(int indexObject, vector<int>& indexsObjectsDisables, Entity * objectCompare)

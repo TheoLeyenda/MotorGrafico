@@ -20,6 +20,7 @@ Entity::Entity(Renderer * _renderer)
 	internalData.scale = glm::mat4(1.0f);
 	internalData.translate = glm::mat4(1.0f);
 
+	transform.globalScale = glm::vec3(1.0f);
 	transform.forward = glm::vec4(0.0f, 0.0f, 1.0f,0.0f);
 	transform.backward = glm::vec4(0.0f, 0.0f, -1.0f,0.0f);
 	transform.left = glm::vec4(-1.0f, 0.0f, 0.0f,0.0f);
@@ -51,6 +52,7 @@ Entity::Entity(Renderer * _renderer, float _isModel)
 	internalData.scale = glm::mat4(1.0f);
 	internalData.translate = glm::mat4(1.0f);
 
+	transform.globalScale = glm::vec3(1.0f);
 	transform.forward = glm::vec4(0.0f, 0.0f, 1.0f,0.0f);
 	transform.backward = glm::vec4(0.0f, 0.0f, -1.0f,0.0f);
 	transform.left = glm::vec4(-1.0f, 0.0f, 0.0f, 0.0f);
@@ -78,13 +80,14 @@ Entity::~Entity()
 	}
 }
 
+
+
 void Entity::UpdateMatrixModel()
 {
 	if (!isStatic) 
 	{
 		internalData.localModel = internalData.translate * internalData.rotateX * internalData.rotateY * internalData.rotateZ * internalData.scale;
 		internalData.originModel = internalData.localModel;
-
 
 		if (parent != NULL)
 			internalData.globalModel = parent->GetInternalData().globalModel * internalData.localModel;
@@ -150,6 +153,7 @@ void Entity::SetScale(float x, float y, float z)
 		transform.scale[2] = z;
 
 		internalData.scale = glm::scale(glm::mat4(1.0f), transform.scale);
+		CalculateScaleToParent();
 		UpdateMatrixModel();
 	}
 }
@@ -163,7 +167,22 @@ void Entity::SetScale(glm::vec3 scale)
 		transform.scale[2] = scale.z;
 
 		internalData.scale = glm::scale(glm::mat4(1.0f), transform.scale);
+		CalculateScaleToParent();
 		UpdateMatrixModel();
+	}
+}
+
+void Entity::CalculateScaleToParent()
+{
+	if (parent != NULL)
+	{
+		transform.globalScale = glm::vec3(transform.globalScale.x * parent->transform.scale.x
+			, transform.globalScale.y * parent->transform.scale.y
+			, transform.globalScale.z * parent->transform.scale.z);
+		for (Entity* child : childrens)
+		{
+			child->CalculateScaleToParent();
+		}
 	}
 }
 
@@ -481,7 +500,7 @@ glm::vec3* Entity::GetAABBGlobalPositions()
 
 	for (int i = 0; i < 8; i++)
 	{
-		auxVec[i] = axisAlignedBoundingBox->GetAABBPositions()[i] + transform.globalPosition + transform.scale;
+		auxVec[i] = axisAlignedBoundingBox->GetAABBPositions()[i] + transform.globalPosition + transform.globalScale;
 	}
 
 	return auxVec;
