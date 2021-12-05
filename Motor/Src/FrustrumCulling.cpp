@@ -4,6 +4,7 @@
 
 void FrustrumCulling::UpdateFrustrum(Camera* camera)
 {
+	float offsetRightPlane = 150;
 	float offsideNearValue = camera->projectionDataPerspective.near;
 	float offsideFarPlane = camera->projectionDataPerspective.front;
 
@@ -33,7 +34,7 @@ void FrustrumCulling::UpdateFrustrum(Camera* camera)
 	rotCameraForward = glm::rotate(glm::mat4(1.0f), glm::radians(-camera->projectionDataPerspective.FOV / 1.5f), glm::vec3(0, 1, 0));
 	cameraForward = cameraForward * rotCameraForward;
 
-	_leftPlane->set3Points(cameraForward, glm::vec4(camera->transform.position.x + 250, camera->transform.position.y,camera->transform.position.z,0)/*+ cameraUp*/);
+	_leftPlane->set3Points(cameraForward, glm::vec4(camera->transform.position.x + offsetRightPlane, camera->transform.position.y,camera->transform.position.z,0)/*+ cameraUp*/);
 	cameraForward = auxCameraForward;
 	//================================//
 
