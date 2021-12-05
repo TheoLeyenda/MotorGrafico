@@ -126,6 +126,8 @@ void Game::InitGame()
 	entity->RemoveChildren(bobFBX->GetEntityNode("Entity.001"), bobFBX);
 	bobFBX->RemoveChildren(entity, GetRootScene());
 
+
+
 	entity = bobFBX->GetEntityNode("Cabeza");
 	entity->SetPosition(0.0f, 0.0f, 10.8299f);
 
