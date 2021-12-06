@@ -209,11 +209,12 @@ void GameBase::AddEntityInFrustrumCulling(Entity * newItem)
 	for (Entity* child : newItem->GetChildrens()) {
 		AddEntityInFrustrumCulling(child);
 	}
+
 }
 
 void GameBase::AddObjectInDenugGame(Entity* entity)
 {
-	if (entity != NULL) 
+	if (entity != NULL)
 	{
 		for (int i = 0; i < entitysDebugInGame.size(); i++)
 		{
