@@ -28,8 +28,14 @@ private:
 	static Entity* lastEntitySelected;
 	static Entity* currentEntitySelected;
 	static void _TreeEntitys(Entity* entity);
+
+	static int countObjectInScreen;
+
 public:
 	MotorasoGui(Windows* window);
+	static void SetCountObjectInScreen(int value) { countObjectInScreen = value; };
+	static int GetCountObjectInScreen() { return countObjectInScreen; }
+	static void CheckCountObjectsInScreen(Entity* entityRoot);
 	static void CreateContext(Windows* window);
 	static void Destroy();
 	static void NewFrame();

@@ -82,7 +82,10 @@ void GameBase::UpdateEngine()
 		if (useDebugWindows)
 		{
 			motorasoGui->NewFrame();
+			motorasoGui->SetCountObjectInScreen(0);
 			motorasoGui->TreeEntitys(rootScene);
+			motorasoGui->CheckCountObjectsInScreen(rootScene);
+			motorasoGui->Text("Objetos en pantalla: "+to_string(motorasoGui->GetCountObjectInScreen()));
 		}
 		//---------------------//
 		HandleCamera();

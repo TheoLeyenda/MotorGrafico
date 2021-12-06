@@ -13,9 +13,10 @@
 Entity* MotorasoGui::lastEntitySelected;
 Entity* MotorasoGui::currentEntitySelected;
 
-float MotorasoGui::speedPosition = 15.0f;
+float MotorasoGui::speedPosition = 30.0f;
 float MotorasoGui::speedRotation = 1.0f;
 float MotorasoGui::speedScalated = 50.0f;
+int MotorasoGui::countObjectInScreen = 0;
 bool MotorasoGui::_wireFrameActive = false;
 
 MotorasoGui::MotorasoGui(Windows* window)
@@ -23,6 +24,7 @@ MotorasoGui::MotorasoGui(Windows* window)
 	CreateContext(window);
 	_window = window;
 }
+
 void MotorasoGui::TreeEntitys(Entity * entityNode)
 {
 	_TreeEntitys(entityNode);
@@ -35,6 +37,51 @@ void MotorasoGui::TreeEntitys(Entity * entityNode)
 			//lastEntitySelected->HideUI();
 			lastEntitySelected = currentEntitySelected;
 		}
+	}
+}
+
+void MotorasoGui::_TreeEntitys(Entity * entity)
+{
+	if (entity->GetIsUILocked()) { return; }
+	ImGuiTreeNodeFlags flags = ImGuiTreeNodeFlags_OpenOnArrow;
+	if (entity == currentEntitySelected) {
+		flags |= ImGuiTreeNodeFlags_Selected;
+	}
+	if (entity->GetChildrens().empty()) {
+		flags |= ImGuiTreeNodeFlags_Leaf;
+	}
+	bool isOpened = ImGui::TreeNodeEx(entity->GetName().c_str(), flags);
+	bool isSelected = ImGui::IsItemClicked();
+	if (isOpened) {
+		if (isSelected) {
+			if (!lastEntitySelected) {
+				lastEntitySelected = entity;
+			}
+			else {
+				lastEntitySelected = currentEntitySelected;
+			}
+			currentEntitySelected = entity;
+		}
+		for (Entity* child : entity->GetChildrens()) {
+			_TreeEntitys(child);
+		}
+		ImGui::TreePop();
+	}
+	else {
+		if (isSelected) {
+			currentEntitySelected = entity;
+		}
+	}
+}
+
+void MotorasoGui::CheckCountObjectsInScreen(Entity* entityRoot)
+{
+	if (entityRoot->GetIsAlive())
+		countObjectInScreen++;
+
+	for (Entity* child : entityRoot->GetChildrens()) 
+	{
+		CheckCountObjectsInScreen(child);
 	}
 }
 
@@ -75,40 +122,6 @@ void MotorasoGui::ShowTransform(Entity* entityNode)
 	entityNode->SetRotationZ(newRot[2]);
 	entityNode->SetScale(glm::vec3(newScl[0], newScl[1], newScl[2]));
 	ImGui::Separator();
-}
-
-void MotorasoGui::_TreeEntitys(Entity * entity)
-{
-	if (entity->GetIsUILocked()) { return; }
-	ImGuiTreeNodeFlags flags = ImGuiTreeNodeFlags_OpenOnArrow;
-	if (entity == currentEntitySelected) {
-		flags |= ImGuiTreeNodeFlags_Selected;
-	}
-	if (entity->GetChildrens().empty()) {
-		flags |= ImGuiTreeNodeFlags_Leaf;
-	}
-	bool isOpened = ImGui::TreeNodeEx(entity->GetName().c_str(), flags);
-	bool isSelected = ImGui::IsItemClicked();
-	if (isOpened) {
-		if (isSelected) {
-			if (!lastEntitySelected) {
-				lastEntitySelected = entity;
-			}
-			else {
-				lastEntitySelected = currentEntitySelected;
-			}
-			currentEntitySelected = entity;
-		}
-		for (Entity* child : entity->GetChildrens()) {
-			_TreeEntitys(child);
-		}
-		ImGui::TreePop();
-	}
-	else {
-		if (isSelected) {
-			currentEntitySelected = entity;
-		}
-	}
 }
 
 void MotorasoGui::UpdateIsStaticEntity(Entity * entityNode)
@@ -194,7 +207,6 @@ void MotorasoGui::ShowEntityNodeInfo(Entity * entity)
 	if (entity->GetClassName() == "Light")
 		ShowLightInfo((Light*)entity);
 
-
 	UpdateIsStaticEntity(entity);
 
 	if (entity->GetIsStatic())
@@ -258,6 +270,8 @@ void MotorasoGui::Begin(const string & windowName, bool opened, size_t flags)
 {
 	ImGui::Begin(windowName.c_str(), &opened, flags);
 }
+
+
 
 void MotorasoGui::CreateContext(Windows * window)
 {

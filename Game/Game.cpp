@@ -85,12 +85,6 @@ void Game::InitGame()
 	
 	AddLight(Light::TypeLight::Spot, 87);
 	SetLightPosition(87, glm::vec3(-50, -50, 0));
-	
-	//AddObjectInDenugGame(GetLight(1));
-	//AddObjectInDenugGame(GetLight(2));
-	//AddObjectInDenugGame(GetLight(6));
-	//AddObjectInDenugGame(GetLight(0));
-	//AddObjectInDenugGame(GetLight(87));
 
 	//ChangeColorLight(1, red);
 	//ChangeColorLight(2, yellow);
@@ -118,13 +112,6 @@ void Game::InitGame()
 	AddObjectInDenugGame(bobFBX);
 
 	Entity* entity;
-	entity = bobFBX->GetEntityNode("RootNode");
-	entity->RemoveChildren(bobFBX->GetEntityNode("Bob"), bobFBX);
-	entity->RemoveChildren(bobFBX->GetEntityNode("Entity"), bobFBX);
-	entity->RemoveChildren(bobFBX->GetEntityNode("Entity.003"), bobFBX);
-	entity->RemoveChildren(bobFBX->GetEntityNode("Entity.002"), bobFBX);
-	entity->RemoveChildren(bobFBX->GetEntityNode("Entity.001"), bobFBX);
-	bobFBX->RemoveChildren(entity, GetRootScene());
 
 	entity = bobFBX->GetEntityNode("Cabeza");
 	entity->SetPosition(0.0f, 0.0f, 10.8299f);
