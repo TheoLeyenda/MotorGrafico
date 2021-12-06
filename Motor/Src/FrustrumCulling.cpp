@@ -27,13 +27,13 @@ void FrustrumCulling::UpdateFrustrum(Camera* camera)
 	rotCameraForward = glm::rotate(glm::mat4(1.0f), glm::radians(camera->projectionDataPerspective.FOV / 1.6f), glm::vec3(0, 1, 0));
 	cameraForward = cameraForward * rotCameraForward;
 
-	_rightPlane->set3Points(cameraForward, cameraPosition);
+	_leftPlane->set3Points(cameraForward, cameraPosition);
 	cameraForward = auxCameraForward;
 
 	rotCameraForward = glm::rotate(glm::mat4(1.0f), glm::radians(-camera->projectionDataPerspective.FOV / 1.5f), glm::vec3(0, 1, 0));
 	cameraForward = cameraForward * rotCameraForward;
 
-	_leftPlane->set3Points(cameraForward, glm::vec4(camera->transform.position.x + offsetRightPlane, camera->transform.position.y,camera->transform.position.z,0));
+	_rightPlane->set3Points(cameraForward, glm::vec4(camera->transform.position.x + offsetRightPlane, camera->transform.position.y,camera->transform.position.z,0));
 	cameraForward = auxCameraForward;
 	//================================//
 
@@ -43,13 +43,13 @@ void FrustrumCulling::UpdateFrustrum(Camera* camera)
 	rotCameraForward = glm::rotate(glm::mat4(1.0f), glm::radians(angleRotate), glm::vec3(1, 0, 0));
 	cameraForward = cameraForward * rotCameraForward;
 	
-	_topPlane->set3Points(cameraForward, cameraPosition /*+ cameraRight*/);
+	_topPlane->set3Points(cameraForward, cameraPosition);
 	cameraForward = auxCameraForward;
 
 	rotCameraForward = glm::rotate(glm::mat4(1.0f), glm::radians(-angleRotate), glm::vec3(1, 0, 0));
 	cameraForward = cameraForward * rotCameraForward;
 	
-	_downPlane->set3Points(cameraForward, cameraPosition /*+ cameraRight*/);
+	_downPlane->set3Points(cameraForward, cameraPosition);
 	cameraForward = auxCameraForward;
 	//================================//
 

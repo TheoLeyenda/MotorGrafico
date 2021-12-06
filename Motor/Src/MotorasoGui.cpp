@@ -13,7 +13,7 @@
 Entity* MotorasoGui::lastEntitySelected;
 Entity* MotorasoGui::currentEntitySelected;
 
-float MotorasoGui::speedPosition = 30.0f;
+float MotorasoGui::speedPosition = 40.0f;
 float MotorasoGui::speedRotation = 1.0f;
 float MotorasoGui::speedScalated = 50.0f;
 int MotorasoGui::countObjectInScreen = 0;

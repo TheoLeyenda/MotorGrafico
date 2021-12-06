@@ -63,7 +63,8 @@ void Camera::UseFrustrum()
 
 		for (int i = 0; i < objectsCheckFrustrum.size(); i++)
 		{
-			objectsCheckFrustrum[i]->CheckVisibleFrustrumCulling(objectsCheckFrustrum, indexsObjectsDisable, frustrumCulling);
+			if(objectsCheckFrustrum[i]->GetIsAlive())
+				objectsCheckFrustrum[i]->CheckVisibleFrustrumCulling(objectsCheckFrustrum, indexsObjectsDisable, frustrumCulling);
 		}
 
 		for (int i = 0; i < indexsObjectsDisable.size(); i++)
@@ -72,7 +73,6 @@ void Camera::UseFrustrum()
 		}
 
 		indexsObjectsDisable.clear();
-
 	}
 }
 

@@ -85,7 +85,7 @@ void GameBase::UpdateEngine()
 			motorasoGui->SetCountObjectInScreen(0);
 			motorasoGui->TreeEntitys(rootScene);
 			motorasoGui->CheckCountObjectsInScreen(rootScene);
-			motorasoGui->Text("Objetos en pantalla: "+to_string(motorasoGui->GetCountObjectInScreen()));
+			motorasoGui->Text("Objetos en pantalla: "+to_string(motorasoGui->GetCountObjectInScreen() - 1));
 		}
 		//---------------------//
 		HandleCamera();
