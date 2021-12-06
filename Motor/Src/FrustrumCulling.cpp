@@ -64,10 +64,6 @@ void FrustrumCulling::UpdateFrustrum(Camera* camera)
 
 void FrustrumCulling::CheckObjectInFrustrum(int indexObject, vector<int>& indexsObjectsDisables, Entity * objectCompare)
 {
-	//Determinar si el objeto se dibuja o no.
-	//Si se dibuja pusheo el indice al array de indices de objetos que no se dibujan.
-
-	//Para determinar si se dibuja o no debo reccorrer todos sus vertices y ver si todos estos estan dentro del frustrum.
 	bool objectInFrustrum = (CheckObjectInPlane(_nearPlane, objectCompare)
 							&& CheckObjectInPlane(_farPlane, objectCompare)
 							&& CheckObjectInPlane(_rightPlane, objectCompare)
