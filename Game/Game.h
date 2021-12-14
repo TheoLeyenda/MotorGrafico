@@ -9,7 +9,7 @@ private:
 
 	PlayerController3D* player3D = NULL;
 
-	Primitive3D* cube = NULL;
+	//Primitive3D* cube = NULL;
 
 	Animation* animations = NULL;
 

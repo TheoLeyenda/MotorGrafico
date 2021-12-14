@@ -94,13 +94,13 @@ void Game::InitGame()
 
 	GetMyLightsID();
 
-	cube = new Primitive3D(render, Cube);
-	cube->SetPosition(300, 100.0f, -50.0f);
-	cube->SetScale(100.0f, 100.0f, 100.0f);
-	cube->SetNewMaterial(greenRubberMaterial);
-	cube->SetName("cube");
-	cube->SetIsStatic(true);
-	AddObjectInDenugGame(cube);
+	//cube = new Primitive3D(render, Cube);
+	//cube->SetPosition(300, 100.0f, -50.0f);
+	//cube->SetScale(100.0f, 100.0f, 100.0f);
+	//cube->SetNewMaterial(greenRubberMaterial);
+	//cube->SetName("cube");
+	//cube->SetIsStatic(true);
+	//AddObjectInDenugGame(cube);
 
 	bobFBX = new Model(render);
 	bobFBX->LoadModel("res/modelos/Bob.fbx", " ", bsp_manager);
@@ -178,8 +178,8 @@ void Game::UpdateGame(Windows *_window, Renderer *_render, Input *_input)
 	if (bobFBX != NULL) {
 		bobFBX->Draw(motorasoGui->GetIfWireFrameIsActive());
 	}
-	if (cube != NULL)
-		cube->Draw(motorasoGui->GetIfWireFrameIsActive());
+	//if (cube != NULL)
+	//	cube->Draw(motorasoGui->GetIfWireFrameIsActive());
 
 }
 
@@ -231,10 +231,10 @@ void Game::DestroyGame()
 		bobFBX = NULL;
 	}
 
-	if (cube != NULL) {
-		delete cube;
-		cube = NULL;
-	}
+	//if (cube != NULL) {
+	//	delete cube;
+	//	cube = NULL;
+	//}
 
 	if (player3D != NULL)
 		delete player3D;
