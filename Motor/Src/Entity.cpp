@@ -585,6 +585,7 @@ void Entity::CheckVisibleFrustrumCulling(vector<Entity*> ObjectsInFrustrum, vect
 		child->CheckVisibleFrustrumCulling(ObjectsInFrustrum, indexsObjectsDisables, frustrumCulling);
 	}
 }
+
 void Entity::ShowPosition()
 {
 	cout << GetName() << " position: (" << transform.position.x << "," << transform.position.y << "," << transform.position.z << ")" << endl;
